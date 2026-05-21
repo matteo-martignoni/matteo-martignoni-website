@@ -7,11 +7,13 @@ import cloudflare from '@astrojs/cloudflare';
 // — Bilingual EN/IT: English at root (/), Italian at /it/
 // — Tailwind v4 via official Vite plugin
 // — Cloudflare adapter for Workers + Assets deployment
+// — output: 'static' — all pages are prerendered at build time
+//   (we have no server-side routes; this is faster and more reliable)
 // https://docs.astro.build/en/reference/configuration-reference/
 
 export default defineConfig({
   site: 'https://matteomartignoni.com',
-  output: 'server',
+  output: 'static',
   adapter: cloudflare(),
   i18n: {
     defaultLocale: 'en',
