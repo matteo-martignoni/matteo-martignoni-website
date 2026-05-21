@@ -1,0 +1,67 @@
+---
+// MediaPlaceholder — sage rectangle that stands in for video/image content
+// Used during build phases when real media isn't available yet
+// Will be replaced by a Video/Image component once media is integrated
+
+interface Props {
+  caption?: string;
+  aspectRatio?: '16/10' | '16/9' | '4/3' | '1/1';
+  showPlayIcon?: boolean;
+  chapter?: string;
+}
+
+const {
+  caption,
+  aspectRatio = '16/10',
+  showPlayIcon = true,
+  chapter,
+} = Astro.props;
+
+const aspectClass = {
+  '16/10': 'aspect-[16/10]',
+  '16/9': 'aspect-video',
+  '4/3': 'aspect-[4/3]',
+  '1/1': 'aspect-square',
+}[aspectRatio];
+---
+
+<figure class="relative w-full">
+  <div
+    class:list={[
+      'relative w-full bg-sage-100/40 overflow-hidden',
+      aspectClass,
+    ]}
+  >
+    {showPlayIcon && (
+      <div class="absolute inset-0 flex items-center justify-center" aria-hidden="true">
+        <div class="w-16 h-16 rounded-full border border-sage-700/30 flex items-center justify-center">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6 4L16 10L6 16V4Z"
+              fill="currentColor"
+              class="text-sage-700/60"
+            />
+          </svg>
+        </div>
+      </div>
+    )}
+
+    {chapter && (
+      <div class="absolute bottom-4 left-4 text-xs uppercase tracking-widest text-sage-900/80">
+        {chapter}
+      </div>
+    )}
+  </div>
+
+  {caption && (
+    <figcaption class="mt-3 text-xs text-ink-500">
+      {caption}
+    </figcaption>
+  )}
+</figure>
