@@ -1,33 +1,55 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import MediaPlaceholder from '../../components/MediaPlaceholder.astro';
 ---
 <BaseLayout
   title="Matteo Martignoni — Sviluppo di marchi. Italia ed estero."
-  description="Venticinque anni di lavoro con marchi tra Europa, Asia e Americhe."
+  description="Venticinque anni di lavoro con marchi tra Europa, Asia e Americhe. Diesel, Eastpak, Surface to Air, Aēsop, Reflex."
   lang="it"
 >
   <section class="max-w-3xl py-8 md:py-12">
 
-    <p class="text-xs uppercase tracking-widest text-terracotta-900 mb-6">
-      Iterazione 02 · il layout
+    <p class="text-xs uppercase tracking-widest text-terracotta-900 mb-8">
+      Introduzione
     </p>
 
-    <h2 class="text-3xl md:text-4xl font-medium text-ink-900 leading-tight mb-6">
+    <h2 class="text-3xl md:text-4xl font-medium text-ink-900 leading-tight mb-8">
       Venticinque anni di lavoro con marchi tra Europa, Asia e Americhe.
     </h2>
 
-    <div class="w-10 h-px bg-sage-100 mb-8" aria-hidden="true"></div>
+    <div class="flex items-center gap-3 mb-8" aria-hidden="true">
+      <div class="w-10 h-px bg-sage-100"></div>
+    </div>
 
-    <p class="text-ink-700 leading-relaxed mb-4">
-      Diesel, Eastpak, Surface to Air, Aēsop, Reflex. Oggi dirigo un ufficio
-      strategico a Milano e ho co-fondato NOVA, una società di esperienze
-      con intelligenza artificiale.
-    </p>
+    <div class="space-y-5 text-ink-700 leading-relaxed mb-12">
+      <p>
+        Diesel, Eastpak, Surface to Air, Aēsop, Reflex. Oggi dirigo l'ufficio
+        milanese di un'agenzia strategica, e ho co-fondato NOVA — una società
+        di esperienze con intelligenza artificiale che apre la sua prima
+        mostra nel 2025.
+      </p>
+      <p>
+        Accolgo progetti di marca come partner senior — vicino al prodotto,
+        vicino alle persone. Nuove categorie, retail, licenze, riposizionamento.
+        Lavoro che richiede giudizio e mani insieme.
+      </p>
+    </div>
 
-    <p class="text-ink-700 leading-relaxed">
-      Accolgo progetti di brand come partner senior — vicino al prodotto,
-      vicino alle persone.
-    </p>
+    <a
+      href="/it/manualita"
+      class="inline-flex items-center gap-3 text-xs uppercase tracking-widest text-terracotta-900 hover:text-terracotta-700 transition-colors duration-200 group"
+    >
+      <span class="group-hover:underline underline-offset-4">Entra in bottega</span>
+      <span class="inline-block transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">→</span>
+    </a>
 
   </section>
+
+  <section class="max-w-5xl mt-20 md:mt-28">
+    <MediaPlaceholder
+      chapter="Capitolo 01 — Aēsop Italia, 2015"
+      aspectRatio="16/10"
+    />
+  </section>
+
 </BaseLayout>
