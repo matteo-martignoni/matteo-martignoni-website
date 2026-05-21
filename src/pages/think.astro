@@ -1,6 +1,14 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHero from '../components/SectionHero.astro';
+import CompetencyAccordion from '../components/CompetencyAccordion.astro';
+
+// Load all EN competencies, sorted by order field (01 through 06)
+const allCompetencies = await getCollection('competencies');
+const competencies = allCompetencies
+  .filter(item => item.data.lang === 'en')
+  .sort((a, b) => a.data.order - b.data.order);
 ---
 <BaseLayout
   title="Think — Matteo Martignoni"
@@ -14,13 +22,20 @@ import SectionHero from '../components/SectionHero.astro';
     intro="Twenty-five years distilled into six interrelated practices. They work as lenses for reading a brand problem. Most projects touch three or four of them at once."
   />
 
-  <section class="max-w-3xl mt-16 md:mt-20">
-    <p class="text-xs uppercase tracking-widest text-ink-500/70 mb-2">
-      Coming next
-    </p>
-    <p class="text-ink-500 leading-relaxed">
-      The six practices, each with a description and a couple of project examples. Building in the next iteration.
-    </p>
+  <section class="max-w-3xl mt-12 md:mt-16">
+
+    {competencies.map((item, index) => (
+      <CompetencyAccordion
+        number={item.data.number}
+        title={item.data.title}
+        description={item.data.description}
+        examples={item.data.examples}
+        isFirst={index === 0}
+      />
+    ))}
+
+    <div class="border-b border-warm-200" aria-hidden="true"></div>
+
   </section>
 
 </BaseLayout>

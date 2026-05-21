@@ -1,6 +1,14 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SectionHero from '../../components/SectionHero.astro';
+import CompetencyAccordion from '../../components/CompetencyAccordion.astro';
+
+// Load all IT competencies, sorted by order field (01 through 06)
+const allCompetencies = await getCollection('competencies');
+const competencies = allCompetencies
+  .filter(item => item.data.lang === 'it')
+  .sort((a, b) => a.data.order - b.data.order);
 ---
 <BaseLayout
   title="Pensiero — Matteo Martignoni"
@@ -14,13 +22,20 @@ import SectionHero from '../../components/SectionHero.astro';
     intro="Venticinque anni distillati in sei pratiche tra loro collegate. Sono lenti utili per leggere un problema di marca. La maggior parte dei progetti ne tocca tre o quattro insieme."
   />
 
-  <section class="max-w-3xl mt-16 md:mt-20">
-    <p class="text-xs uppercase tracking-widest text-ink-500/70 mb-2">
-      In arrivo
-    </p>
-    <p class="text-ink-500 leading-relaxed">
-      Le sei pratiche, ciascuna con una descrizione e un paio di esempi di progetto. In costruzione nella prossima iterazione.
-    </p>
+  <section class="max-w-3xl mt-12 md:mt-16">
+
+    {competencies.map((item, index) => (
+      <CompetencyAccordion
+        number={item.data.number}
+        title={item.data.title}
+        description={item.data.description}
+        examples={item.data.examples}
+        isFirst={index === 0}
+      />
+    ))}
+
+    <div class="border-b border-warm-200" aria-hidden="true"></div>
+
   </section>
 
 </BaseLayout>
