@@ -7,10 +7,17 @@ import { glob } from 'astro/loaders';
 
 // "competencies" collection — the 6 areas of practice in Think section
 // Each file: src/content/competencies/{nn}-{slug}.{lang}.md
+//
+// generateId is set explicitly so dotted filenames like
+// "01-international-development.en.md" generate unique IDs.
+// Without this, Astro's default ID stripping may treat .en.md as a double
+// extension and collide EN/IT entries with the same numerical prefix.
+
 const competencies = defineCollection({
   loader: glob({
     pattern: '*.{en,it}.md',
     base: './src/content/competencies',
+    generateId: ({ entry }) => entry.replace(/\.md$/, ''),
   }),
   schema: z.object({
     number: z.string(),           // "01" through "06"
