@@ -1,13 +1,17 @@
 ---
 // BaseLayout — shared HTML structure for all pages
-// Handles head, meta, fonts, and global CSS
+// Now includes Header (with nav + language switcher) and Footer
+// Pages provide their main content via the default slot
 
 import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import type { Lang } from '../i18n/ui';
 
 interface Props {
   title: string;
   description?: string;
-  lang?: 'en' | 'it';
+  lang?: Lang;
 }
 
 const {
@@ -15,6 +19,8 @@ const {
   description = 'Matteo Martignoni — Brand development, premium and luxury. Italy and abroad.',
   lang = 'en',
 } = Astro.props;
+
+const currentPath = Astro.url.pathname;
 ---
 <!DOCTYPE html>
 <html lang={lang}>
@@ -33,7 +39,13 @@ const {
 
     <title>{title}</title>
   </head>
-  <body>
-    <slot />
+  <body class="min-h-screen flex flex-col">
+    <Header lang={lang} currentPath={currentPath} />
+
+    <main class="flex-1 px-8 md:px-12">
+      <slot />
+    </main>
+
+    <Footer lang={lang} />
   </body>
 </html>

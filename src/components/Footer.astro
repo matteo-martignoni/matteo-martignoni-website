@@ -1,0 +1,39 @@
+---
+// Footer — minimal, single row, hairline divider above
+// Copyright + location | external links
+
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<footer class="px-8 py-8 md:px-12 md:py-10 mt-24">
+  <div class="border-t border-warm-200 pt-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-xs tracking-wide text-ink-500/80">
+    <div class="uppercase letter-spacing-wide">
+      Matteo Martignoni · {t('footer.location')} · {t('footer.copyright')}
+    </div>
+    <div class="flex items-center gap-4 uppercase">
+      <a
+        href="https://www.linkedin.com/in/matteomartignoni/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hover:text-terracotta-900 transition-colors duration-200"
+      >
+        {t('footer.linkedin')}
+      </a>
+      <span class="text-ink-500/40">·</span>
+      <a
+        href="/vcard.vcf"
+        class="hover:text-terracotta-900 transition-colors duration-200"
+      >
+        {t('footer.vcard')}
+      </a>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,43 @@
+---
+// Header — appears at the top of every page
+// Two-column layout: identity (left) | language switcher (right)
+// Then navigation below in left column
+
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/ui';
+import Navigation from './Navigation.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+
+interface Props {
+  lang: Lang;
+  currentPath?: string;
+}
+
+const { lang, currentPath } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<header class="px-8 py-8 md:px-12 md:py-10">
+  <div class="flex items-start justify-between mb-12">
+    <div>
+      <a
+        href={lang === 'en' ? '/' : '/it/'}
+        class="block group"
+        aria-label="Home"
+      >
+        <h1 class="text-base font-medium text-ink-900 group-hover:text-terracotta-900 transition-colors duration-200">
+          Matteo Martignoni
+        </h1>
+        <p class="text-xs text-ink-500 mt-0.5">
+          {t('header.tagline')}
+        </p>
+      </a>
+    </div>
+
+    <LanguageSwitcher lang={lang} currentPath={currentPath} />
+  </div>
+
+  <div class="w-8 h-px bg-sage-100 mb-8" aria-hidden="true"></div>
+
+  <Navigation lang={lang} currentPath={currentPath} />
+</header>

@@ -1,0 +1,46 @@
+---
+// LanguageSwitcher — EN / IT toggle in top right
+// Active language in muted ink, target language in terracotta accent
+
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  currentPath?: string;
+}
+
+const { lang, currentPath = '/' } = Astro.props;
+
+// Compute the matching URL in the opposite language
+// /        →  /it/
+// /it/     →  /
+// /think   →  /it/pensiero  (handled via section path mapping later, fallback to root for now)
+// /it/x    →  /
+function getAltUrl(): string {
+  if (lang === 'en') {
+    // EN → IT: prepend /it/, default to /it/ for root
+    if (currentPath === '/' || currentPath === '') return '/it/';
+    return `/it${currentPath}`;
+  } else {
+    // IT → EN: strip /it/ prefix
+    const stripped = currentPath.replace(/^\/it/, '') || '/';
+    return stripped;
+  }
+}
+
+const altUrl = getAltUrl();
+const altLabel = lang === 'en' ? 'IT' : 'EN';
+const currentLabel = lang === 'en' ? 'EN' : 'IT';
+---
+
+<div class="flex items-center gap-1 text-xs tracking-wider">
+  <span class="text-ink-500/60">{currentLabel}</span>
+  <span class="text-ink-500/40">/</span>
+  <a
+    href={altUrl}
+    class="text-terracotta-900 hover:text-terracotta-700 transition-colors duration-200"
+    aria-label={`Switch to ${altLabel === 'IT' ? 'Italian' : 'English'}`}
+  >
+    {altLabel}
+  </a>
+</div>

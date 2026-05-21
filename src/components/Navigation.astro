@@ -1,0 +1,53 @@
+---
+// Navigation — 4 section links with active state
+// Highlights the current section based on URL path
+
+import type { Lang } from '../i18n/ui';
+import { useTranslations, sectionPaths } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  currentPath?: string;
+}
+
+const { lang, currentPath = '' } = Astro.props;
+const t = useTranslations(lang);
+const paths = sectionPaths[lang];
+
+const items = [
+  { num: '01', key: 'nav.think' as const, href: paths.think },
+  { num: '02', key: 'nav.make' as const, href: paths.make },
+  { num: '03', key: 'nav.circle' as const, href: paths.circle },
+  { num: '04', key: 'nav.visit' as const, href: paths.visit },
+];
+
+// Determine which item is active
+function isActive(href: string): boolean {
+  if (!currentPath) return false;
+  return currentPath.startsWith(href);
+}
+---
+
+<nav class="flex flex-col gap-3" aria-label="Sections">
+  {items.map(item => {
+    const active = isActive(item.href);
+    return (
+      <a
+        href={item.href}
+        class:list={[
+          'group flex items-baseline gap-3 text-xs uppercase tracking-wider transition-colors duration-200',
+          active ? 'text-ink-900' : 'text-ink-500 hover:text-ink-900',
+        ]}
+        aria-current={active ? 'page' : undefined}
+      >
+        <span class:list={[
+          'tabular-nums',
+          active ? 'text-terracotta-900' : 'text-ink-500/60 group-hover:text-terracotta-900',
+        ]}>
+          {item.num}
+        </span>
+        <span>{t(item.key)}</span>
+      </a>
+    );
+  })}
+</nav>
