@@ -1,6 +1,7 @@
 ---
 // LanguageSwitcher — EN / IT toggle in top right
 // Active language in muted ink, target language in terracotta accent
+// Maps section paths bilingually: /think ↔ /it/pensiero, etc.
 
 import type { Lang } from '../i18n/ui';
 
@@ -11,20 +12,39 @@ interface Props {
 
 const { lang, currentPath = '/' } = Astro.props;
 
-// Compute the matching URL in the opposite language
-// /        →  /it/
-// /it/     →  /
-// /think   →  /it/pensiero  (handled via section path mapping later, fallback to root for now)
-// /it/x    →  /
+// Bidirectional section route mapping
+// EN slug → IT slug (and vice versa via reverse lookup)
+const sectionMap: Record<string, string> = {
+  think: 'pensiero',
+  make: 'manualita',
+  circle: 'maestri',
+  visit: 'bottega',
+};
+
+const reverseSectionMap: Record<string, string> = Object.fromEntries(
+  Object.entries(sectionMap).map(([en, it]) => [it, en])
+);
+
+// Compute the URL of the current page in the opposite language
 function getAltUrl(): string {
+  // Strip leading/trailing slashes for clean parsing
+  const path = currentPath.replace(/^\/+|\/+$/g, '');
+
   if (lang === 'en') {
-    // EN → IT: prepend /it/, default to /it/ for root
-    if (currentPath === '/' || currentPath === '') return '/it/';
-    return `/it${currentPath}`;
+    // EN → IT
+    if (!path) return '/it/'; // root home
+    const itSlug = sectionMap[path];
+    if (itSlug) return `/it/${itSlug}`;
+    return '/it/'; // fallback to IT home if no mapping
   } else {
-    // IT → EN: strip /it/ prefix
-    const stripped = currentPath.replace(/^\/it/, '') || '/';
-    return stripped;
+    // IT → EN
+    // Path looks like "it" or "it/pensiero"
+    const parts = path.split('/');
+    if (parts.length <= 1) return '/'; // /it/ → /
+    const itSlug = parts[1]; // e.g. "pensiero"
+    const enSlug = reverseSectionMap[itSlug];
+    if (enSlug) return `/${enSlug}`;
+    return '/'; // fallback to EN home
   }
 }
 
