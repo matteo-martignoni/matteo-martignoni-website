@@ -9,6 +9,8 @@ location: "Milan"
 years: "2015 — 2016"
 sector: "Australian luxury cosmetics, owned retail"
 founded: false
+videoPath: "/aesop_italia_web.mp4"
+videoTone: "sage"
 meta:
   - label: "Global reach"
     value: "18 countries, 300+ stores"

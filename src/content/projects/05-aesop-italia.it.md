@@ -9,6 +9,8 @@ location: "Milano"
 years: "2015 — 2016"
 sector: "Cosmetica australiana di lusso, retail diretto"
 founded: false
+videoPath: "/aesop_italia_web.mp4"
+videoTone: "sage"
 meta:
   - label: "Presenza globale"
     value: "18 paesi, oltre 300 negozi"
