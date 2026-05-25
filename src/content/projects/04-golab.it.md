@@ -10,7 +10,7 @@ years: "2017 — oggi"
 sector: "Agenzia creativa boutique"
 founded: false
 videoPath: "/golab_web.mp4"
-videoTone: "terracotta"
+videoTone: "sage"
 meta:
   - label: "Campi"
     value: "Moda, arte"

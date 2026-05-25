@@ -10,7 +10,7 @@ years: "2017 — today"
 sector: "Boutique creative agency"
 founded: false
 videoPath: "/golab_web.mp4"
-videoTone: "terracotta"
+videoTone: "sage"
 meta:
   - label: "Fields"
     value: "Fashion, art"
