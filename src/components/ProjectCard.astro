@@ -123,13 +123,14 @@ const hasVideo = !!videoPath;
         <div class="w-full md:w-2/5 shrink-0 self-start">
           <div class="video-wrapper group/video relative overflow-hidden aspect-video rounded-sm">
 
-            <video
-              class="w-full h-full object-cover"
-              loop
-              muted
-              playsinline
-              preload="metadata"
-            >
+        <video
+          class="w-full h-full object-cover"
+          autoplay
+          loop
+          muted
+          playsinline
+          preload="auto"
+        >
               <source src={videoPath} type="video/mp4" />
             </video>
 
