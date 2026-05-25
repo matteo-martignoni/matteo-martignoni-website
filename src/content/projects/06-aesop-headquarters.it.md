@@ -9,7 +9,7 @@ location: "Melbourne"
 years: "2012 — 2015"
 sector: "Cosmetica australiana di lusso, retail diretto"
 founded: false
-videoPath: "/videos/Aesop_HQ_web.mp4"
+videoPath: "/Aesop_HQ_web.mp4"
 videoTone: "sage"
 meta:
   - label: "Presenza globale"
