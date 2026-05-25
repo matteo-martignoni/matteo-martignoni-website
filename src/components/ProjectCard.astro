@@ -1,4 +1,14 @@
 ---
+// ProjectCard — project row with expandable detail
+//
+// Layout when video is present:
+//   TOP ROW:  [metadata grid left] [video with overlay right]  — roughly equal heights
+//   DIVIDER:  sage hairline, full width
+//   BOTTOM:   narrative text, full width (max-w-2xl)
+//
+// This eliminates the L-shaped column problem where long text extends far below the video.
+// The metadata and video share the same horizontal band; narrative runs unobstructed below.
+
 interface MetaItem {
   label: string;
   value: string;
@@ -38,8 +48,6 @@ const {
   sectorLabel = 'Sector',
 } = Astro.props;
 
-// Overlay colour — strong tint at 0.75 opacity
-// Hover removes overlay via CSS .video-wrapper:hover .video-overlay { opacity: 0 }
 const overlayColor = videoTone === 'sage'
   ? 'rgba(168, 212, 188, 0.75)'
   : 'rgba(201, 123, 92, 0.75)';
@@ -52,6 +60,7 @@ const hasVideo = !!videoPath;
   class="project group border-t border-warm-200"
   open={isFirst}
 >
+  <!-- Collapsed row -->
   <summary class="list-none cursor-pointer py-5 md:py-6 flex items-center gap-3 md:gap-4 hover:bg-sage-100/10 px-4 -mx-4 transition-colors duration-200">
 
     <span
@@ -88,56 +97,69 @@ const hasVideo = !!videoPath;
 
   </summary>
 
+  <!-- Expanded content -->
   <div class="pb-8 md:pb-10 pl-8 md:pl-10 pr-4">
 
     {hasVideo ? (
-      <div class="flex flex-col md:flex-row gap-8 md:gap-10">
+      /* WITH VIDEO: metadata + video in top row, narrative below */
+      <div>
 
-        <!-- Text column -->
-        <div class="flex-1 min-w-0 max-w-xl">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-4 mb-8">
-            <div>
-              <p class="text-xs uppercase tracking-widest text-ink-500/60 mb-1">{roleLabel}</p>
-              <p class="text-sm text-ink-700 leading-relaxed">{role}</p>
-            </div>
-            <div>
-              <p class="text-xs uppercase tracking-widest text-ink-500/60 mb-1">{sectorLabel}</p>
-              <p class="text-sm text-ink-700 leading-relaxed">{sector}</p>
-            </div>
-            {meta.map(item => (
+        <!-- Top row: metadata left, video right -->
+        <div class="flex flex-col md:flex-row gap-8 md:gap-10 mb-8">
+
+          <!-- Metadata column -->
+          <div class="flex-1 min-w-0">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-4">
               <div>
-                <p class="text-xs uppercase tracking-widest text-ink-500/60 mb-1">{item.label}</p>
-                <p class="text-sm text-ink-700 leading-relaxed">{item.value}</p>
+                <p class="text-xs uppercase tracking-widest text-ink-500/60 mb-1">{roleLabel}</p>
+                <p class="text-sm text-ink-700 leading-relaxed">{role}</p>
               </div>
-            ))}
+              <div>
+                <p class="text-xs uppercase tracking-widest text-ink-500/60 mb-1">{sectorLabel}</p>
+                <p class="text-sm text-ink-700 leading-relaxed">{sector}</p>
+              </div>
+              {meta.map(item => (
+                <div>
+                  <p class="text-xs uppercase tracking-widest text-ink-500/60 mb-1">{item.label}</p>
+                  <p class="text-sm text-ink-700 leading-relaxed">{item.value}</p>
+                </div>
+              ))}
+            </div>
           </div>
-          <div class="w-8 h-px bg-sage-100 mb-6" aria-hidden="true"></div>
-          <div class="project-body"><slot /></div>
+
+          <!-- Video column -->
+          <div class="w-full md:w-5/12 shrink-0">
+            <div class="video-wrapper relative overflow-hidden aspect-video rounded-sm">
+              <video
+                class="w-full h-full object-cover"
+                autoplay
+                loop
+                muted
+                playsinline
+                preload="auto"
+              >
+                <source src={videoPath} type="video/mp4" />
+              </video>
+              <div
+                class="video-overlay absolute inset-0 pointer-events-none"
+                style={`background-color: ${overlayColor};`}
+              ></div>
+            </div>
+          </div>
+
         </div>
 
-        <!-- Video column -->
-        <div class="w-full md:w-2/5 shrink-0 self-start">
-          <div class="video-wrapper relative overflow-hidden aspect-video rounded-sm">
-            <video
-              class="w-full h-full object-cover"
-              autoplay
-              loop
-              muted
-              playsinline
-              preload="auto"
-            >
-              <source src={videoPath} type="video/mp4" />
-            </video>
-            <!-- Colour overlay — CSS hover removes it (more reliable than Tailwind group variant on video) -->
-            <div
-              class="video-overlay absolute inset-0 pointer-events-none"
-              style={`background-color: ${overlayColor};`}
-            ></div>
-          </div>
+        <!-- Full-width divider -->
+        <div class="w-8 h-px bg-sage-100 mb-6" aria-hidden="true"></div>
+
+        <!-- Narrative text — full width, comfortable reading measure -->
+        <div class="project-body max-w-2xl">
+          <slot />
         </div>
 
       </div>
     ) : (
+      /* WITHOUT VIDEO: single column */
       <div class="max-w-2xl">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4 mb-8">
           <div>
@@ -167,7 +189,7 @@ const hasVideo = !!videoPath;
   details summary::-webkit-details-marker { display: none; }
   details summary::marker { display: none; }
 
-  /* Video overlay: strong tint by default, fades out on hover */
+  /* Video overlay: strong colour tint, fades on hover */
   .video-wrapper .video-overlay {
     opacity: 1;
     transition: opacity 600ms ease;
