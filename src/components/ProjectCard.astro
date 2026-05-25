@@ -1,9 +1,10 @@
 ---
 // ProjectCard — project row with expandable detail
 // When videoPath is provided: two-column layout with overlay video on the right
-// Overlay tone: sage (#A8D4BC) or terracotta (#C97B5C) with mix-blend-mode multiply
-// Hover on video: overlay fades out to reveal original colours (500ms)
-// Video plays when card opens, pauses when card closes
+// Overlay: semi-transparent sage or terracotta tint (opacity 0.55)
+// Hover on video: overlay fades to 0 revealing original colours (500ms)
+// Note: mix-blend-mode: multiply does not work on <video> elements in any browser
+// (video is composited on a separate GPU layer). Plain opacity overlay is used instead.
 
 interface MetaItem {
   label: string;
@@ -44,7 +45,13 @@ const {
   sectorLabel = 'Sector',
 } = Astro.props;
 
-const overlayColor = videoTone === 'sage' ? '#A8D4BC' : '#C97B5C';
+// Semi-transparent overlay colours
+// Sage: #A8D4BC at ~55% opacity gives a cool green tint
+// Terracotta: #C97B5C at ~55% opacity gives a warm amber tint
+const overlayColor = videoTone === 'sage'
+  ? 'rgba(168, 212, 188, 0.55)'
+  : 'rgba(201, 123, 92, 0.55)';
+
 const hasVideo = !!videoPath;
 ---
 
@@ -53,7 +60,6 @@ const hasVideo = !!videoPath;
   class="project group border-t border-warm-200"
   open={isFirst}
 >
-  <!-- Collapsed row: marker + number + title + location + years + toggle -->
   <summary class="list-none cursor-pointer py-5 md:py-6 flex items-center gap-3 md:gap-4 hover:bg-sage-100/10 px-4 -mx-4 transition-colors duration-200">
 
     <span
@@ -90,11 +96,9 @@ const hasVideo = !!videoPath;
 
   </summary>
 
-  <!-- Expanded content -->
   <div class="pb-8 md:pb-10 pl-8 md:pl-10 pr-4">
 
     {hasVideo ? (
-      /* Two-column layout: text left, video right */
       <div class="flex flex-col md:flex-row gap-8 md:gap-10">
 
         <!-- Text column -->
@@ -121,23 +125,23 @@ const hasVideo = !!videoPath;
 
         <!-- Video column with colour overlay -->
         <div class="w-full md:w-2/5 shrink-0 self-start">
-          <div class="video-wrapper group/video relative overflow-hidden aspect-video rounded-sm">
+          <div class="group/video relative overflow-hidden aspect-video rounded-sm">
 
-        <video
-          class="w-full h-full object-cover"
-          autoplay
-          loop
-          muted
-          playsinline
-          preload="auto"
-        >
+            <video
+              class="w-full h-full object-cover"
+              autoplay
+              loop
+              muted
+              playsinline
+              preload="auto"
+            >
               <source src={videoPath} type="video/mp4" />
             </video>
 
-            <!-- Colour overlay — fades out on hover to reveal original colours -->
+            <!-- Semi-transparent colour overlay — fades out on hover -->
             <div
-              class="video-overlay absolute inset-0 pointer-events-none transition-opacity duration-500 group-hover/video:opacity-0"
-              style={`background-color: ${overlayColor}; mix-blend-mode: multiply; opacity: 0.6;`}
+              class="absolute inset-0 pointer-events-none transition-opacity duration-500 group-hover/video:opacity-0"
+              style={`background-color: ${overlayColor};`}
             ></div>
 
           </div>
@@ -145,7 +149,6 @@ const hasVideo = !!videoPath;
 
       </div>
     ) : (
-      /* Single-column layout (no video) */
       <div class="max-w-2xl">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4 mb-8">
           <div>
@@ -187,14 +190,10 @@ const hasVideo = !!videoPath;
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('details.project');
-
     cards.forEach(detail => {
       const video = detail.querySelector('video') as HTMLVideoElement | null;
-
       detail.addEventListener('toggle', (event) => {
         const target = event.target as HTMLDetailsElement;
-
-        // Play/pause video when card opens/closes
         if (video) {
           if (target.open) {
             video.play().catch(() => {});
@@ -203,8 +202,6 @@ const hasVideo = !!videoPath;
             video.currentTime = 0;
           }
         }
-
-        // Single-open accordion: close the other open card
         if (target.open) {
           cards.forEach(other => {
             if (other !== target && (other as HTMLDetailsElement).open) {
