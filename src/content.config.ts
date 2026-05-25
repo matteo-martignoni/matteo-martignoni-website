@@ -1,18 +1,7 @@
-// Content collections configuration
-// Defines the structure (schema) of each content collection
-// Astro validates every Markdown file against these schemas at build time
-
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-// "competencies" collection — the 6 areas of practice in Think section
-// Each file: src/content/competencies/{nn}-{slug}.{lang}.md
-//
-// generateId is set explicitly so dotted filenames like
-// "01-international-development.en.md" generate unique IDs.
-// Without this, Astro's default ID stripping may treat .en.md as a double
-// extension and collide EN/IT entries with the same numerical prefix.
-
+// "competencies" — 6 areas of practice (Think section)
 const competencies = defineCollection({
   loader: glob({
     pattern: '*.{en,it}.md',
@@ -20,16 +9,39 @@ const competencies = defineCollection({
     generateId: ({ entry }) => entry.replace(/\.md$/, ''),
   }),
   schema: z.object({
-    number: z.string(),           // "01" through "06"
-    slug: z.string(),             // "international-development"
-    title: z.string(),            // "International development"
+    number: z.string(),
+    slug: z.string(),
+    title: z.string(),
     lang: z.enum(['en', 'it']),
-    description: z.string(),      // 1-2 lines, the Layer 1 visible always
-    examples: z.array(z.string()).optional(),  // bullet points for Layer 2
-    order: z.number(),            // 1-6 for sorting
+    description: z.string(),
+    examples: z.array(z.string()).optional(),
+    order: z.number(),
   }),
 });
 
-export const collections = {
-  competencies,
-};
+// "projects" — 10 project cards (Make section)
+const projects = defineCollection({
+  loader: glob({
+    pattern: '*.{en,it}.md',
+    base: './src/content/projects',
+    generateId: ({ entry }) => entry.replace(/\.md$/, ''),
+  }),
+  schema: z.object({
+    number: z.string(),
+    slug: z.string(),
+    title: z.string(),
+    lang: z.enum(['en', 'it']),
+    order: z.number(),
+    role: z.string(),
+    location: z.string(),
+    years: z.string(),
+    sector: z.string(),
+    founded: z.boolean().optional().default(false),
+    meta: z.array(z.object({
+      label: z.string(),
+      value: z.string(),
+    })).optional(),
+  }),
+});
+
+export const collections = { competencies, projects };
