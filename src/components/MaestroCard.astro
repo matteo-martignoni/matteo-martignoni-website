@@ -1,0 +1,101 @@
+---
+// MaestroCard — a single mentor with expandable italic quote
+// Collapsed: name + role
+// Expanded: vertical sage line + italic serif quote + optional project link
+// First mentor is open by default
+
+interface Props {
+  name: string;
+  role: string;
+  projectHref?: string;
+  projectLabel?: string;
+  linkPrefix?: string;
+  isFirst?: boolean;
+}
+
+const {
+  name,
+  role,
+  projectHref,
+  projectLabel,
+  linkPrefix = 'A project we worked on',
+  isFirst = false,
+} = Astro.props;
+---
+
+<details
+  class="maestro group border-t border-warm-200 py-10 md:py-12"
+  open={isFirst}
+>
+  <summary class="list-none cursor-pointer flex items-start justify-between gap-6 hover:opacity-80 transition-opacity duration-200">
+
+    <div>
+      <h3 class="text-xl md:text-2xl font-medium text-ink-900 leading-tight">
+        {name}
+      </h3>
+      <p class="text-sm text-ink-500 mt-1.5">
+        {role}
+      </p>
+    </div>
+
+    <span
+      class="text-xs text-terracotta-900 shrink-0 mt-1 transition-transform duration-500 group-[&[open]]:rotate-45"
+      aria-hidden="true"
+    >+</span>
+
+  </summary>
+
+  <!-- Expanded: sage left line + italic quote + optional link -->
+  <div class="mt-8 pl-5 border-l-2 border-sage-100">
+
+    <blockquote class="maestro-quote">
+      <slot />
+    </blockquote>
+
+    {projectHref && projectLabel && (
+      <a
+        href={projectHref}
+        class="inline-flex items-center gap-2 mt-6 text-xs uppercase tracking-wider text-terracotta-900 hover:text-terracotta-700 transition-colors duration-200"
+      >
+        <span aria-hidden="true">→</span>
+        <span>{linkPrefix}: {projectLabel}</span>
+      </a>
+    )}
+
+  </div>
+</details>
+
+<style>
+  /* Hide native details marker */
+  details summary::-webkit-details-marker { display: none; }
+  details summary::marker { display: none; }
+
+  /* Italic serif quote */
+  .maestro-quote :global(p) {
+    font-family: var(--font-serif, Georgia, serif);
+    font-style: italic;
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--color-ink-900, #1A1A1A);
+    margin: 0;
+  }
+</style>
+
+<script>
+  // Single-open accordion: opening one maestro closes the others
+  document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('details.maestro');
+    cards.forEach(detail => {
+      detail.addEventListener('toggle', (event) => {
+        const target = event.target as HTMLDetailsElement;
+        if (target.open) {
+          cards.forEach(other => {
+            if (other !== target && (other as HTMLDetailsElement).open) {
+              (other as HTMLDetailsElement).open = false;
+            }
+          });
+        }
+      });
+    });
+  });
+</script>

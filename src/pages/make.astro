@@ -32,6 +32,7 @@ const renderedProjects = await Promise.all(
 
     {renderedProjects.map(({ data, Content }, index) => (
       <ProjectCard
+        id={data.slug}
         number={data.number}
         title={data.title}
         role={data.role}

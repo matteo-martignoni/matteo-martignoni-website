@@ -1,7 +1,6 @@
 ---
 // ProjectCard — single project row with expandable detail
-// Collapsed: marker + number + title + location + years + toggle
-// Expanded: metadata grid + sage divider + narrative text (slot)
+// id prop enables anchor links from the Maestri section (e.g. /make#aesop-italia)
 
 interface MetaItem {
   label: string;
@@ -9,6 +8,7 @@ interface MetaItem {
 }
 
 interface Props {
+  id?: string;
   number: string;
   title: string;
   role: string;
@@ -23,6 +23,7 @@ interface Props {
 }
 
 const {
+  id,
   number,
   title,
   role,
@@ -38,12 +39,12 @@ const {
 ---
 
 <details
+  id={id}
   class="project group border-t border-warm-200"
   open={isFirst}
 >
   <summary class="list-none cursor-pointer py-5 md:py-6 flex items-center gap-3 md:gap-4 hover:bg-sage-100/10 px-4 -mx-4 transition-colors duration-200">
 
-    <!-- Founded marker — takes space even when not shown, keeps alignment -->
     <span
       class:list={[
         "w-1.5 h-1.5 rounded-full shrink-0",
@@ -52,7 +53,6 @@ const {
       aria-hidden="true"
     ></span>
 
-    <!-- Number -->
     <span class:list={[
       "text-xs uppercase tracking-wider tabular-nums shrink-0 w-5",
       founded ? "text-terracotta-900" : "text-ink-500/50 group-hover:text-terracotta-900 transition-colors duration-200"
@@ -60,22 +60,18 @@ const {
       {number}
     </span>
 
-    <!-- Title -->
     <h3 class="flex-1 text-base md:text-lg font-medium text-ink-900 leading-tight">
       {title}
     </h3>
 
-    <!-- Location — hidden on mobile -->
     <span class="hidden md:inline text-xs uppercase tracking-wider text-ink-500/50 shrink-0 tabular-nums">
       {location}
     </span>
 
-    <!-- Years -->
     <span class="text-xs uppercase tracking-wider text-ink-500/50 shrink-0 tabular-nums">
       {years}
     </span>
 
-    <!-- Toggle icon -->
     <span
       class="text-xs text-terracotta-900 shrink-0 transition-transform duration-300 group-[&[open]]:rotate-45 ml-1"
       aria-hidden="true"
@@ -83,10 +79,8 @@ const {
 
   </summary>
 
-  <!-- Expanded content -->
   <div class="pb-8 md:pb-10 pl-8 md:pl-10 pr-4 max-w-2xl">
 
-    <!-- Metadata grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4 mb-8">
 
       <div>
@@ -108,10 +102,8 @@ const {
 
     </div>
 
-    <!-- Sage divider -->
     <div class="w-8 h-px bg-sage-100 mb-6" aria-hidden="true"></div>
 
-    <!-- Narrative text from slot -->
     <div class="project-body">
       <slot />
     </div>
@@ -120,11 +112,9 @@ const {
 </details>
 
 <style>
-  /* Hide native details marker */
   details summary::-webkit-details-marker { display: none; }
   details summary::marker { display: none; }
 
-  /* Narrative prose styling */
   .project-body :global(p) {
     font-size: 0.875rem;
     line-height: 1.75;
@@ -137,7 +127,6 @@ const {
 </style>
 
 <script>
-  // Single-open accordion: opening one project closes the others
   document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('details.project');
     cards.forEach(detail => {

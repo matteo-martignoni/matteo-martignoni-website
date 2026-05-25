@@ -44,4 +44,23 @@ const projects = defineCollection({
   }),
 });
 
-export const collections = { competencies, projects };
+// "mentors" — 4 maestri (Circle section)
+const mentors = defineCollection({
+  loader: glob({
+    pattern: '*.{en,it}.md',
+    base: './src/content/mentors',
+    generateId: ({ entry }) => entry.replace(/\.md$/, ''),
+  }),
+  schema: z.object({
+    number: z.string(),
+    slug: z.string(),
+    name: z.string(),
+    lang: z.enum(['en', 'it']),
+    order: z.number(),
+    role: z.string(),
+    projectSlug: z.string().optional(),
+    projectLabel: z.string().optional(),
+  }),
+});
+
+export const collections = { competencies, projects, mentors };

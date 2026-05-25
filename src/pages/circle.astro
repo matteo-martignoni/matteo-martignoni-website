@@ -1,6 +1,20 @@
 ---
+import { getCollection, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHero from '../components/SectionHero.astro';
+import MaestroCard from '../components/MaestroCard.astro';
+
+const allMentors = await getCollection('mentors');
+const mentors = allMentors
+  .filter(item => item.data.lang === 'en')
+  .sort((a, b) => a.data.order - b.data.order);
+
+const renderedMentors = await Promise.all(
+  mentors.map(async (mentor) => {
+    const { Content } = await render(mentor);
+    return { data: mentor.data, Content };
+  })
+);
 ---
 <BaseLayout
   title="Circle — Matteo Martignoni"
@@ -14,13 +28,24 @@ import SectionHero from '../components/SectionHero.astro';
     intro="Every practice is built with help. Four mentors taught me distinct things: ethics and patience, taste and ease, scale from nothing, the discipline of method. Each is worth a sentence."
   />
 
-  <section class="max-w-3xl mt-16 md:mt-20">
-    <p class="text-xs uppercase tracking-widest text-ink-500/70 mb-2">
-      Coming next
-    </p>
-    <p class="text-ink-500 leading-relaxed">
-      The four names. Each with their role, the lesson, and a link to the project we worked on together where applicable. Building in the next iteration.
-    </p>
+  <!-- Tinted background section — warm white #F4F1EA signals a change of register -->
+  <section class="max-w-3xl mt-12 md:mt-16 bg-warm-100 -mx-8 md:-mx-12 px-8 md:px-12 pt-2 pb-6">
+
+    {renderedMentors.map(({ data, Content }, index) => (
+      <MaestroCard
+        name={data.name}
+        role={data.role}
+        projectHref={data.projectSlug ? `/make#${data.projectSlug}` : undefined}
+        projectLabel={data.projectLabel}
+        linkPrefix="A project we worked on"
+        isFirst={index === 0}
+      >
+        <Content />
+      </MaestroCard>
+    ))}
+
+    <div class="border-b border-warm-200" aria-hidden="true"></div>
+
   </section>
 
 </BaseLayout>
