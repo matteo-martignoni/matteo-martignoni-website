@@ -1,11 +1,4 @@
 ---
-// ProjectCard — project row with expandable detail
-// When videoPath is provided: two-column layout with overlay video on the right
-// Overlay: semi-transparent sage or terracotta tint (opacity 0.55)
-// Hover on video: overlay fades to 0 revealing original colours (500ms)
-// Note: mix-blend-mode: multiply does not work on <video> elements in any browser
-// (video is composited on a separate GPU layer). Plain opacity overlay is used instead.
-
 interface MetaItem {
   label: string;
   value: string;
@@ -45,12 +38,11 @@ const {
   sectorLabel = 'Sector',
 } = Astro.props;
 
-// Semi-transparent overlay colours
-// Sage: #A8D4BC at ~55% opacity gives a cool green tint
-// Terracotta: #C97B5C at ~55% opacity gives a warm amber tint
+// Overlay colour — strong tint at 0.75 opacity
+// Hover removes overlay via CSS .video-wrapper:hover .video-overlay { opacity: 0 }
 const overlayColor = videoTone === 'sage'
-  ? 'rgba(168, 212, 188, 0.55)'
-  : 'rgba(201, 123, 92, 0.55)';
+  ? 'rgba(168, 212, 188, 0.75)'
+  : 'rgba(201, 123, 92, 0.75)';
 
 const hasVideo = !!videoPath;
 ---
@@ -123,10 +115,9 @@ const hasVideo = !!videoPath;
           <div class="project-body"><slot /></div>
         </div>
 
-        <!-- Video column with colour overlay -->
+        <!-- Video column -->
         <div class="w-full md:w-2/5 shrink-0 self-start">
-          <div class="group/video relative overflow-hidden aspect-video rounded-sm">
-
+          <div class="video-wrapper relative overflow-hidden aspect-video rounded-sm">
             <video
               class="w-full h-full object-cover"
               autoplay
@@ -137,13 +128,11 @@ const hasVideo = !!videoPath;
             >
               <source src={videoPath} type="video/mp4" />
             </video>
-
-            <!-- Semi-transparent colour overlay — fades out on hover -->
+            <!-- Colour overlay — CSS hover removes it (more reliable than Tailwind group variant on video) -->
             <div
-              class="absolute inset-0 pointer-events-none transition-opacity duration-500 group-hover/video:opacity-0"
+              class="video-overlay absolute inset-0 pointer-events-none"
               style={`background-color: ${overlayColor};`}
             ></div>
-
           </div>
         </div>
 
@@ -178,6 +167,16 @@ const hasVideo = !!videoPath;
   details summary::-webkit-details-marker { display: none; }
   details summary::marker { display: none; }
 
+  /* Video overlay: strong tint by default, fades out on hover */
+  .video-wrapper .video-overlay {
+    opacity: 1;
+    transition: opacity 600ms ease;
+  }
+  .video-wrapper:hover .video-overlay {
+    opacity: 0;
+  }
+
+  /* Narrative prose */
   .project-body :global(p) {
     font-size: 0.875rem;
     line-height: 1.75;
