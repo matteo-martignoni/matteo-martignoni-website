@@ -1,6 +1,9 @@
 ---
-// ProjectCard — single project row with expandable detail
-// id prop enables anchor links from the Maestri section (e.g. /make#aesop-italia)
+// ProjectCard — project row with expandable detail
+// When videoPath is provided: two-column layout with overlay video on the right
+// Overlay tone: sage (#A8D4BC) or terracotta (#C97B5C) with mix-blend-mode multiply
+// Hover on video: overlay fades out to reveal original colours (500ms)
+// Video plays when card opens, pauses when card closes
 
 interface MetaItem {
   label: string;
@@ -17,6 +20,8 @@ interface Props {
   sector: string;
   founded?: boolean;
   meta?: MetaItem[];
+  videoPath?: string;
+  videoTone?: 'sage' | 'terracotta';
   isFirst?: boolean;
   roleLabel?: string;
   sectorLabel?: string;
@@ -32,10 +37,15 @@ const {
   sector,
   founded = false,
   meta = [],
+  videoPath,
+  videoTone = 'sage',
   isFirst = false,
   roleLabel = 'Role',
   sectorLabel = 'Sector',
 } = Astro.props;
+
+const overlayColor = videoTone === 'sage' ? '#A8D4BC' : '#C97B5C';
+const hasVideo = !!videoPath;
 ---
 
 <details
@@ -43,6 +53,7 @@ const {
   class="project group border-t border-warm-200"
   open={isFirst}
 >
+  <!-- Collapsed row: marker + number + title + location + years + toggle -->
   <summary class="list-none cursor-pointer py-5 md:py-6 flex items-center gap-3 md:gap-4 hover:bg-sage-100/10 px-4 -mx-4 transition-colors duration-200">
 
     <span
@@ -79,34 +90,82 @@ const {
 
   </summary>
 
-  <div class="pb-8 md:pb-10 pl-8 md:pl-10 pr-4 max-w-2xl">
+  <!-- Expanded content -->
+  <div class="pb-8 md:pb-10 pl-8 md:pl-10 pr-4">
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4 mb-8">
+    {hasVideo ? (
+      /* Two-column layout: text left, video right */
+      <div class="flex flex-col md:flex-row gap-8 md:gap-10">
 
-      <div>
-        <p class="text-xs uppercase tracking-widest text-ink-500/60 mb-1">{roleLabel}</p>
-        <p class="text-sm text-ink-700 leading-relaxed">{role}</p>
-      </div>
-
-      <div>
-        <p class="text-xs uppercase tracking-widest text-ink-500/60 mb-1">{sectorLabel}</p>
-        <p class="text-sm text-ink-700 leading-relaxed">{sector}</p>
-      </div>
-
-      {meta.map(item => (
-        <div>
-          <p class="text-xs uppercase tracking-widest text-ink-500/60 mb-1">{item.label}</p>
-          <p class="text-sm text-ink-700 leading-relaxed">{item.value}</p>
+        <!-- Text column -->
+        <div class="flex-1 min-w-0 max-w-xl">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-4 mb-8">
+            <div>
+              <p class="text-xs uppercase tracking-widest text-ink-500/60 mb-1">{roleLabel}</p>
+              <p class="text-sm text-ink-700 leading-relaxed">{role}</p>
+            </div>
+            <div>
+              <p class="text-xs uppercase tracking-widest text-ink-500/60 mb-1">{sectorLabel}</p>
+              <p class="text-sm text-ink-700 leading-relaxed">{sector}</p>
+            </div>
+            {meta.map(item => (
+              <div>
+                <p class="text-xs uppercase tracking-widest text-ink-500/60 mb-1">{item.label}</p>
+                <p class="text-sm text-ink-700 leading-relaxed">{item.value}</p>
+              </div>
+            ))}
+          </div>
+          <div class="w-8 h-px bg-sage-100 mb-6" aria-hidden="true"></div>
+          <div class="project-body"><slot /></div>
         </div>
-      ))}
 
-    </div>
+        <!-- Video column with colour overlay -->
+        <div class="w-full md:w-2/5 shrink-0 self-start">
+          <div class="video-wrapper group/video relative overflow-hidden aspect-video rounded-sm">
 
-    <div class="w-8 h-px bg-sage-100 mb-6" aria-hidden="true"></div>
+            <video
+              class="w-full h-full object-cover"
+              loop
+              muted
+              playsinline
+              preload="metadata"
+            >
+              <source src={videoPath} type="video/mp4" />
+            </video>
 
-    <div class="project-body">
-      <slot />
-    </div>
+            <!-- Colour overlay — fades out on hover to reveal original colours -->
+            <div
+              class="video-overlay absolute inset-0 pointer-events-none transition-opacity duration-500 group-hover/video:opacity-0"
+              style={`background-color: ${overlayColor}; mix-blend-mode: multiply; opacity: 0.6;`}
+            ></div>
+
+          </div>
+        </div>
+
+      </div>
+    ) : (
+      /* Single-column layout (no video) */
+      <div class="max-w-2xl">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4 mb-8">
+          <div>
+            <p class="text-xs uppercase tracking-widest text-ink-500/60 mb-1">{roleLabel}</p>
+            <p class="text-sm text-ink-700 leading-relaxed">{role}</p>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-widest text-ink-500/60 mb-1">{sectorLabel}</p>
+            <p class="text-sm text-ink-700 leading-relaxed">{sector}</p>
+          </div>
+          {meta.map(item => (
+            <div>
+              <p class="text-xs uppercase tracking-widest text-ink-500/60 mb-1">{item.label}</p>
+              <p class="text-sm text-ink-700 leading-relaxed">{item.value}</p>
+            </div>
+          ))}
+        </div>
+        <div class="w-8 h-px bg-sage-100 mb-6" aria-hidden="true"></div>
+        <div class="project-body"><slot /></div>
+      </div>
+    )}
 
   </div>
 </details>
@@ -121,17 +180,30 @@ const {
     color: var(--color-ink-700, #3D3D3A);
     margin-bottom: 1rem;
   }
-  .project-body :global(p:last-child) {
-    margin-bottom: 0;
-  }
+  .project-body :global(p:last-child) { margin-bottom: 0; }
 </style>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('details.project');
+
     cards.forEach(detail => {
+      const video = detail.querySelector('video') as HTMLVideoElement | null;
+
       detail.addEventListener('toggle', (event) => {
         const target = event.target as HTMLDetailsElement;
+
+        // Play/pause video when card opens/closes
+        if (video) {
+          if (target.open) {
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+            video.currentTime = 0;
+          }
+        }
+
+        // Single-open accordion: close the other open card
         if (target.open) {
           cards.forEach(other => {
             if (other !== target && (other as HTMLDetailsElement).open) {

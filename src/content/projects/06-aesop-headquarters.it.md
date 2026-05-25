@@ -9,6 +9,8 @@ location: "Melbourne"
 years: "2012 — 2015"
 sector: "Cosmetica australiana di lusso, retail diretto"
 founded: false
+videoPath: "/videos/Aesop_HQ_web.mp4"
+videoTone: "sage"
 meta:
   - label: "Presenza globale"
     value: "18 paesi, oltre 300 negozi"

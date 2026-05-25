@@ -41,6 +41,9 @@ const projects = defineCollection({
       label: z.string(),
       value: z.string(),
     })).optional(),
+    // Optional video — path relative to public/ and colour tone for the overlay
+    videoPath: z.string().optional(),
+    videoTone: z.enum(['sage', 'terracotta']).optional(),
   }),
 });
 
