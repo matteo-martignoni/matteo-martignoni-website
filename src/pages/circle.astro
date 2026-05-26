@@ -38,7 +38,7 @@ const renderedMentors = await Promise.all(
         projectHref={data.projectSlug ? `/make#${data.projectSlug}` : undefined}
         projectLabel={data.projectLabel}
         linkPrefix="A project we worked on"
-        isFirst={index === 0}
+        isFirst={false}
       >
         <Content />
       </MaestroCard>

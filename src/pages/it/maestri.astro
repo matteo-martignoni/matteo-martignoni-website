@@ -37,7 +37,7 @@ const renderedMentors = await Promise.all(
         projectHref={data.projectSlug ? `/it/manualita#${data.projectSlug}` : undefined}
         projectLabel={data.projectLabel}
         linkPrefix="Un progetto su cui abbiamo lavorato"
-        isFirst={index === 0}
+        isFirst={false}
       >
         <Content />
       </MaestroCard>
