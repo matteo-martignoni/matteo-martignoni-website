@@ -7,71 +7,66 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   lang="it"
 >
 
-  <div class="flex flex-col md:flex-row md:items-stretch gap-12 md:gap-16 md:min-h-[80vh]">
+  <section class="hero-section relative overflow-hidden -mx-8 md:-mx-12" style="min-height: 72vh;">
 
-    <!-- Left column: identity text -->
-    <div class="flex-1 flex flex-col justify-center py-8 md:py-0 max-w-sm">
+    <video
+      class="absolute inset-0 w-full h-full object-cover"
+      autoplay loop muted playsinline preload="auto"
+    >
+      <source src="/morphe_web.mp4" type="video/mp4" />
+    </video>
 
-      <h1 class="text-4xl md:text-5xl font-medium text-ink-900 leading-tight mb-2">
-        Testa e mani.
-      </h1>
-      <p class="text-2xl md:text-3xl text-ink-500 mb-10">
-        La bottega dei marchi.
-      </p>
+    <div class="hero-overlay absolute inset-0 z-10 pointer-events-none"></div>
 
-      <p class="text-sm text-ink-700 leading-relaxed">
-        Venticinque anni a costruire e riposizionare marchi nella moda,
-        bellezza, cultura e tecnologia.
-        Basato in Italia, attivo a livello internazionale.
-      </p>
+    <div class="relative z-20 flex flex-col md:flex-row" style="min-height: 72vh;">
 
-    </div>
+      <!-- White text panel -->
+      <div class="bg-white flex items-center w-full md:w-5/12 shrink-0 py-14 md:py-0 px-8 md:px-12 lg:px-14">
+        <div>
+          <h1 class="text-4xl md:text-5xl font-medium text-ink-900 leading-tight mb-2">
+            Testa e mani.
+          </h1>
+          <p class="text-2xl md:text-3xl text-ink-500 mb-10">
+            La bottega dei marchi.
+          </p>
+          <p class="text-sm text-ink-700 leading-relaxed max-w-xs">
+            Venticinque anni a costruire e riposizionare marchi nella moda,
+            bellezza, cultura e tecnologia.
+            Basato in Italia, attivo a livello internazionale.
+          </p>
+        </div>
+      </div>
 
-    <!-- Right column: video hero -->
-    <div class="w-full md:w-1/2 min-h-[60vw] md:min-h-0 hero-video-wrapper relative overflow-hidden rounded-sm">
-
-      <video
-        class="absolute inset-0 w-full h-full object-cover"
-        autoplay
-        loop
-        muted
-        playsinline
-        preload="auto"
-      >
-        <source src="/morphe_web.mp4" type="video/mp4" />
-      </video>
-
-      <!-- Sage overlay — 0.75, hover reveal -->
-      <div class="hero-overlay absolute inset-0 pointer-events-none"></div>
-
-      <!-- Credit strip — in Italian -->
-      <div class="absolute bottom-0 left-0 right-0 hero-credit px-5 pt-8 pb-4 pointer-events-none">
-        <p class="text-xs text-white/75 leading-relaxed">
-          Morphē è un video creato da Lucy McRae per Aēsop.
-          Una visione distopica ma romantica sulla creazione in laboratorio.
-        </p>
+      <!-- Video area -->
+      <div class="flex-1 relative min-h-[55vw] md:min-h-0">
+        <div class="absolute bottom-0 left-0 right-0 hero-credit px-5 pt-8 pb-4 pointer-events-none">
+          <p class="text-xs text-white/75 leading-relaxed">
+            Morphē è un video creato da Lucy McRae per Aēsop.
+            Una visione distopica ma romantica sulla creazione in laboratorio.
+          </p>
+        </div>
       </div>
 
     </div>
 
-  </div>
+  </section>
 
 </BaseLayout>
 
 <style>
-  .hero-video-wrapper .hero-overlay {
+  .hero-section .hero-overlay {
     background-color: rgba(168, 212, 188, 0.75);
     opacity: 1;
     transition: opacity 600ms ease;
   }
-  .hero-video-wrapper:hover .hero-overlay {
+  .hero-section:hover .hero-overlay {
     opacity: 0;
   }
   .hero-credit {
     background: linear-gradient(
       to top,
       rgba(0, 0, 0, 0.55) 0%,
-      rgba(0, 0, 0, 0.15) 60%,
+      rgba(0, 0, 0, 0.1) 65%,
       transparent 100%
     );
   }
