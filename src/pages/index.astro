@@ -7,53 +7,67 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   lang="en"
 >
 
-  <!-- Hero: full-width video behind, white text panel floating on left -->
-  <section class="hero-section relative overflow-hidden -mx-8 md:-mx-12" style="min-height: 72vh;">
+  <!--
+    Hero: true full-viewport-width section.
+    The `margin-left: calc(-50vw + 50%)` trick breaks out of ANY parent
+    padding or max-width constraint — the only reliable full-bleed technique.
+    Video fills the entire section behind everything.
+    White text panel floats on the left with z-index above video + overlay.
+  -->
+  <section
+    class="hero-section relative overflow-hidden"
+    style="
+      min-height: 74vh;
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      margin-right: calc(-50vw + 50%);
+    "
+  >
 
-    <!-- Video — absolute, fills the entire section -->
+    <!-- Video: covers the full section, anchored center -->
     <video
-      class="absolute inset-0 w-full h-full object-cover"
-      autoplay loop muted playsinline preload="auto"
+      class="absolute inset-0 w-full h-full object-cover object-center"
+      autoplay
+      loop
+      muted
+      playsinline
+      preload="auto"
     >
       <source src="/morphe_web.mp4" type="video/mp4" />
     </video>
 
-    <!-- Sage overlay — full width, fades on hover to reveal original colours -->
+    <!-- Sage overlay: full width, fades on hover -->
     <div class="hero-overlay absolute inset-0 z-10 pointer-events-none"></div>
 
-    <!-- Layout layer: white panel left + transparent video area right -->
-    <div class="relative z-20 flex flex-col md:flex-row" style="min-height: 72vh;">
-
-      <!-- White text panel — covers left 42% on desktop, full width on mobile -->
-      <div class="bg-white flex items-center w-full md:w-5/12 shrink-0 py-14 md:py-0 px-8 md:px-12 lg:px-14">
-        <div>
-          <h1 class="text-4xl md:text-5xl font-medium text-ink-900 leading-tight mb-2">
-            Hand &amp; mind.
-          </h1>
-          <p class="text-2xl md:text-3xl text-ink-500 mb-10">
-            Workshop of brands.
-          </p>
-          <p class="text-sm text-ink-700 leading-relaxed max-w-xs">
-            Twenty-five years building and repositioning brands across
-            fashion, beauty, culture, and technology.
-            Italy-based, internationally active.
-          </p>
-        </div>
+    <!-- White text panel: absolute left, full height, 40% wide -->
+    <div
+      class="absolute inset-y-0 left-0 z-20 bg-white flex items-center"
+      style="width: 40%;"
+    >
+      <div class="px-12 md:px-16 lg:px-20 max-w-md">
+        <h1 class="text-4xl md:text-5xl font-medium text-ink-900 leading-tight mb-2">
+          Hand &amp; mind.
+        </h1>
+        <p class="text-2xl md:text-3xl text-ink-500 mb-10">
+          Workshop of brands.
+        </p>
+        <p class="text-sm text-ink-700 leading-relaxed">
+          Twenty-five years building and repositioning brands across
+          fashion, beauty, culture, and technology.
+          Italy-based, internationally active.
+        </p>
       </div>
+    </div>
 
-      <!-- Video area — transparent, lets video + overlay show through -->
-      <div class="flex-1 relative min-h-[55vw] md:min-h-0">
-
-        <!-- Credit strip — anchored to bottom of video area -->
-        <div class="absolute bottom-0 left-0 right-0 hero-credit px-5 pt-8 pb-4 pointer-events-none">
-          <p class="text-xs text-white/75 leading-relaxed">
-            Morphē is a video created by Lucy McRae for Aēsop.
-            A dystopian yet romantic take on lab-based creation.
-          </p>
-        </div>
-
-      </div>
-
+    <!-- Credit strip: bottom of the video area (right 60%) -->
+    <div
+      class="absolute bottom-0 z-20 hero-credit px-6 pt-10 pb-4 pointer-events-none"
+      style="left: 40%; right: 0;"
+    >
+      <p class="text-xs text-white/75 leading-relaxed">
+        Morphē is a video created by Lucy McRae for Aēsop.
+        A dystopian yet romantic take on lab-based creation.
+      </p>
     </div>
 
   </section>
@@ -61,19 +75,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <style>
-  /* Sage overlay: full strength by default */
+  /* Sage overlay: full strength, fades on hover anywhere in the section */
   .hero-section .hero-overlay {
     background-color: rgba(168, 212, 188, 0.75);
     opacity: 1;
     transition: opacity 600ms ease;
   }
-
-  /* Hover anywhere on section fades the overlay on the video side */
   .hero-section:hover .hero-overlay {
     opacity: 0;
   }
 
-  /* Credit strip: gradient from dark at bottom to transparent */
+  /* Credit gradient: dark at bottom, fades to transparent */
   .hero-credit {
     background: linear-gradient(
       to top,
