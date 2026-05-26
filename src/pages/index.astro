@@ -7,57 +7,49 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   lang="en"
 >
 
-  <section
-    slot="full-bleed"
-    class="hero-section"
-    style="position: relative; min-height: 74vh; overflow: hidden;"
-  >
+  <!--
+    STRUCTURE:
+    Mobile  — flex-col: [text box on top] [video below]
+    Desktop — block: video-wrap is absolute (left aligned to "M"), text box floats in normal flow
 
-    <!--
-      LAYER 1: video — independent, anchored to left.
-      Left edge aligns with the "M" of Matteo Martignoni in the header:
-        mobile:  px-8 (2rem) + mark (35px) + gap-3 (0.75rem)  = ~79px
-        desktop: px-12 (3rem) + mark (35px) + gap-3 (0.75rem) = ~95px
-      CSS class .hero-video handles responsive left via media query.
-    -->
-    <video
-      class="hero-video"
-      autoplay loop muted playsinline preload="auto"
-    >
-      <source src="/morphe_web.mp4" type="video/mp4" />
-    </video>
+    hero-video-wrap contains video + overlay + credit so:
+    - overlay covers ONLY the video, not the full page
+    - credit is anchored inside the video area
+    - hover effect is scoped to the video area only
+  -->
+  <section slot="full-bleed" class="hero-section">
 
-    <!-- Sage overlay — sits on the video, fades on hover -->
-    <div
-      class="hero-overlay"
-      style="position: absolute; inset: 0; z-index: 1; pointer-events: none;"
-    ></div>
+    <!-- VIDEO WRAP: relative on mobile (60vw tall), absolute on desktop -->
+    <div class="hero-video-wrap">
 
-    <!-- LAYERS 2 + 3: relative flow, vertically centered -->
-    <div
-      style="
-        position: relative;
-        z-index: 2;
-        display: flex;
-        align-items: center;
-        min-height: 74vh;
-        padding: 3rem 4rem;
-      "
-    >
-      <!-- LAYER 2: white box — dimensions driven by content -->
-      <div style="background: white; padding: 3rem 3.5rem; max-width: 480px;">
+      <!-- Layer 1: video -->
+      <video
+        class="hero-video"
+        autoplay loop muted playsinline preload="auto"
+      >
+        <source src="/morphe_web.mp4" type="video/mp4" />
+      </video>
 
-        <!-- LAYER 3: text -->
-        <h1
-          class="text-4xl md:text-5xl font-medium text-ink-900 leading-tight"
-          style="margin-bottom: 0.5rem;"
-        >
+      <!-- Layer 2: sage overlay — scoped to video area only -->
+      <div class="hero-overlay"></div>
+
+      <!-- Credit: right-aligned, bottom of video area, no gradient -->
+      <div class="hero-credit">
+        <p>
+          Morphē is a video created by Lucy McRae for Aēsop.
+          A dystopian yet romantic take on lab-based creation.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- TEXT BOX: on top on mobile, floats left on desktop -->
+    <div class="hero-content">
+      <div class="hero-text-box">
+        <h1 class="text-4xl md:text-5xl font-medium text-ink-900 leading-tight" style="margin-bottom:0.5rem">
           Hand &amp; mind.
         </h1>
-        <p
-          class="text-2xl md:text-3xl text-ink-500"
-          style="margin-bottom: 2.5rem;"
-        >
+        <p class="text-2xl md:text-3xl text-ink-500" style="margin-bottom:2.5rem">
           Workshop of brands.
         </p>
         <p class="text-sm text-ink-700 leading-relaxed">
@@ -65,19 +57,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           fashion, beauty, culture, and technology.
           Italy-based, internationally active.
         </p>
-
       </div>
-    </div>
-
-    <!-- Credit strip -->
-    <div
-      class="hero-credit"
-      style="position: absolute; bottom: 0; left: 0; right: 0; z-index: 3; padding: 2.5rem 4rem 1.25rem;"
-    >
-      <p style="font-size: 0.75rem; color: rgba(255,255,255,0.7); line-height: 1.6;">
-        Morphē is a video created by Lucy McRae for Aēsop.
-        A dystopian yet romantic take on lab-based creation.
-      </p>
     </div>
 
   </section>
@@ -85,43 +65,127 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <style>
-  /* LAYER 1: video — left edge aligned with "M" of Matteo Martignoni */
-  .hero-video {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    /* mobile: px-8 (2rem) + mark (35px) + gap-3 (0.75rem) */
-    left: calc(2rem + 35px + 0.75rem);
-    height: 100%;
-    object-fit: cover;
-    object-position: left center;
-    z-index: 0;
-  }
-  @media (min-width: 768px) {
-    .hero-video {
-      /* desktop: px-12 (3rem) + mark (35px) + gap-3 (0.75rem) */
-      left: calc(3rem + 35px + 0.75rem);
-    }
+  /* ── MOBILE: stacked (text top, video bottom) ── */
+
+  .hero-section {
+    display: flex;
+    flex-direction: column;
   }
 
-  /* Sage overlay: full strength, fades on hover */
+  /* Text box: first in the stack */
+  .hero-content {
+    order: 1;
+    padding: 3rem 2rem;
+  }
+  .hero-text-box {
+    background: white;
+    padding: 2rem 2rem;
+  }
+
+  /* Video wrap: second in the stack, relative so overlay works inside it */
+  .hero-video-wrap {
+    order: 2;
+    position: relative;
+    width: 100%;
+    height: 60vw;
+    overflow: hidden;
+    min-height: 240px;
+  }
+
+  /* Video fills the wrap */
+  .hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* Overlay: covers only the video-wrap */
   .hero-overlay {
+    position: absolute;
+    inset: 0;
     background-color: rgba(168, 212, 188, 0.75);
     opacity: 1;
     transition: opacity 600ms ease;
+    pointer-events: none;
   }
-  .hero-section:hover .hero-overlay {
+
+  /* Hover reveal: only when cursor is over the video */
+  .hero-video-wrap:hover .hero-overlay {
     opacity: 0;
   }
 
-  /* Credit strip gradient */
+  /* Credit: right-aligned, no gradient, subtle text shadow for legibility */
   .hero-credit {
-    background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.50) 0%,
-      rgba(0, 0, 0, 0.08) 60%,
-      transparent 100%
-    );
+    position: absolute;
+    bottom: 1rem;
+    right: 1.25rem;
+    text-align: right;
+    max-width: 360px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .hero-credit p {
+    font-size: 0.7rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.75);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  }
+
+
+  /* ── DESKTOP (md+): absolute video, text floats left ── */
+
+  @media (min-width: 768px) {
+
+    .hero-section {
+      display: block;
+      position: relative;
+      min-height: 74vh;
+      overflow: hidden;
+    }
+
+    /* Video wrap: absolute, left edge aligned with "M" in header */
+    .hero-video-wrap {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      /* px-12 (3rem) + mark (35px) + gap-3 (0.75rem) = ~95px */
+      left: calc(3rem + 35px + 0.75rem);
+      width: auto;
+      height: auto;
+      order: 0;
+    }
+
+    /* On desktop, anchor video content to the left of the wrap */
+    .hero-video {
+      object-position: left center;
+    }
+
+    /* Text box: relative flow, vertically centered */
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      min-height: 74vh;
+      padding: 3rem 4rem;
+      order: 0;
+    }
+    .hero-text-box {
+      padding: 3rem 3.5rem;
+      max-width: 480px;
+    }
+
+    /* Credit: slightly more space on desktop */
+    .hero-credit {
+      bottom: 1.25rem;
+      right: 1.5rem;
+    }
+    .hero-credit p {
+      font-size: 0.75rem;
+    }
   }
 </style>
