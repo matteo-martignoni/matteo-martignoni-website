@@ -146,25 +146,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       overflow: hidden;
     }
 
-    /* Video wrap: absolute, left edge aligned with "M" in header */
     .hero-video-wrap {
       position: absolute;
       top: 0;
       bottom: 0;
       right: 0;
-      /* px-12 (3rem) + mark (35px) + gap-3 (0.75rem) = ~95px */
       left: calc(3rem + 35px + 0.75rem);
       width: auto;
       height: auto;
       order: 0;
     }
 
-    /* On desktop, anchor video content to the left of the wrap */
     .hero-video {
       object-position: left center;
     }
 
-    /* Text box: relative flow, vertically centered */
     .hero-content {
       position: relative;
       z-index: 2;
@@ -173,19 +169,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       min-height: 74vh;
       padding: 3rem 4rem;
       order: 0;
+      pointer-events: none;
     }
+
     .hero-text-box {
       padding: 3rem 3.5rem;
       max-width: 480px;
+      pointer-events: auto;
     }
 
-    /* Credit: slightly more space on desktop */
     .hero-credit {
       bottom: 1.25rem;
       right: 1.5rem;
     }
+
     .hero-credit p {
       font-size: 0.75rem;
     }
+
   }
 </style>

@@ -101,12 +101,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
   }
   @media (min-width: 768px) {
+
     .hero-section {
       display: block;
       position: relative;
       min-height: 74vh;
       overflow: hidden;
     }
+
     .hero-video-wrap {
       position: absolute;
       top: 0;
@@ -117,9 +119,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       height: auto;
       order: 0;
     }
+
     .hero-video {
       object-position: left center;
     }
+
     .hero-content {
       position: relative;
       z-index: 2;
@@ -128,17 +132,23 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       min-height: 74vh;
       padding: 3rem 4rem;
       order: 0;
+      pointer-events: none;
     }
+
     .hero-text-box {
       padding: 3rem 3.5rem;
       max-width: 480px;
+      pointer-events: auto;
     }
+
     .hero-credit {
       bottom: 1.25rem;
       right: 1.5rem;
     }
+
     .hero-credit p {
       font-size: 0.75rem;
     }
+
   }
 </style>
