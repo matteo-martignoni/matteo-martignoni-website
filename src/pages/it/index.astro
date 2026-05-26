@@ -1,55 +1,92 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import MediaPlaceholder from '../../components/MediaPlaceholder.astro';
 ---
 <BaseLayout
-  title="Matteo Martignoni — Sviluppo di marchi. Italia ed estero."
-  description="Venticinque anni di lavoro con marchi tra Europa, Asia e Americhe. Diesel, Eastpak, Surface to Air, Aēsop, Reflex."
+  title="Matteo Martignoni — Stratega di marca"
+  description="Testa e mani. La bottega dei marchi. Venticinque anni a costruire e riposizionare marchi nella moda, bellezza, cultura e tecnologia."
   lang="it"
 >
-  <section class="max-w-3xl py-8 md:py-12">
 
-    <p class="text-xs uppercase tracking-widest text-terracotta-900 mb-8">
-      Introduzione
-    </p>
+  <div class="flex flex-col md:flex-row md:items-stretch gap-12 md:gap-16 md:min-h-[80vh]">
 
-    <h2 class="text-3xl md:text-4xl font-medium text-ink-900 leading-tight mb-8">
-      Venticinque anni di lavoro con marchi tra Europa, Asia e Americhe.
-    </h2>
+    <!-- Left column: identity text -->
+    <div class="flex-1 flex flex-col justify-center py-8 md:py-0 max-w-sm">
 
-    <div class="flex items-center gap-3 mb-8" aria-hidden="true">
-      <div class="w-10 h-px bg-sage-100"></div>
+      <p class="text-xs uppercase tracking-widest text-ink-500 mb-8">
+        Stratega di marca · Bottega da uno
+      </p>
+
+      <h1 class="text-4xl md:text-5xl font-medium text-ink-900 leading-tight mb-2">
+        Testa e mani.
+      </h1>
+      <p class="text-2xl md:text-3xl text-ink-500 mb-10">
+        La bottega dei marchi.
+      </p>
+
+      <p class="text-sm text-ink-700 leading-relaxed mb-10">
+        Venticinque anni a costruire e riposizionare marchi nella moda,
+        bellezza, cultura e tecnologia.
+        Basato in Italia, attivo a livello internazionale.
+      </p>
+
+      <!-- Section links -->
+      <nav class="flex flex-wrap gap-x-6 gap-y-3" aria-label="Sezioni">
+        <a href="/it/pensiero"  class="text-xs uppercase tracking-wider text-ink-500 hover:text-terracotta-900 transition-colors duration-200">Pensiero</a>
+        <a href="/it/manualita" class="text-xs uppercase tracking-wider text-ink-500 hover:text-terracotta-900 transition-colors duration-200">Manualità</a>
+        <a href="/it/maestri"   class="text-xs uppercase tracking-wider text-ink-500 hover:text-terracotta-900 transition-colors duration-200">Maestri</a>
+        <a href="/it/bottega"   class="text-xs uppercase tracking-wider text-ink-500 hover:text-terracotta-900 transition-colors duration-200">Bottega</a>
+      </nav>
+
     </div>
 
-    <div class="space-y-5 text-ink-700 leading-relaxed mb-12">
-      <p>
-        Diesel, Eastpak, Surface to Air, Aēsop, Reflex. Oggi dirigo l'ufficio
-        milanese di un'agenzia strategica, e ho co-fondato NOVA — una società
-        di esperienze con intelligenza artificiale che apre la sua prima
-        mostra nel 2025.
-      </p>
-      <p>
-        Accolgo progetti di marca come partner senior — vicino al prodotto,
-        vicino alle persone. Nuove categorie, retail, licenze, riposizionamento.
-        Lavoro che richiede giudizio e mani insieme.
-      </p>
+    <!-- Right column: video hero with sage overlay + credit strip -->
+    <!-- Credit kept in English — it is an artwork credit, not site copy -->
+    <div class="w-full md:w-1/2 min-h-[60vw] md:min-h-0 hero-video-wrapper relative overflow-hidden rounded-sm">
+
+      <video
+        class="absolute inset-0 w-full h-full object-cover"
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="auto"
+      >
+        <source src="/morphe_web.mp4" type="video/mp4" />
+      </video>
+
+      <!-- Sage overlay — full strength, fades on hover -->
+      <div class="hero-overlay absolute inset-0 pointer-events-none"></div>
+
+      <!-- Credit strip — artwork credit stays in English -->
+      <div class="absolute bottom-0 left-0 right-0 hero-credit px-5 pt-8 pb-4 pointer-events-none">
+        <p class="text-xs text-white/75 leading-relaxed">
+          Morphē is a video created by Lucy McRae for Aēsop.
+          A dystopian yet romantic take on lab-based creation.
+        </p>
+      </div>
+
     </div>
 
-    <a
-      href="/it/manualita"
-      class="inline-flex items-center gap-3 text-xs uppercase tracking-widest text-terracotta-900 hover:text-terracotta-700 transition-colors duration-200 group"
-    >
-      <span class="group-hover:underline underline-offset-4">Entra in bottega</span>
-      <span class="inline-block transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">→</span>
-    </a>
-
-  </section>
-
-  <section class="max-w-5xl mt-20 md:mt-28">
-    <MediaPlaceholder
-      chapter="Capitolo 01 — Aēsop Italia, 2015"
-      aspectRatio="16/10"
-    />
-  </section>
+  </div>
 
 </BaseLayout>
+
+<style>
+  .hero-video-wrapper .hero-overlay {
+    background-color: rgba(168, 212, 188, 0.75);
+    opacity: 1;
+    transition: opacity 600ms ease;
+  }
+  .hero-video-wrapper:hover .hero-overlay {
+    opacity: 0;
+  }
+
+  .hero-credit {
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.55) 0%,
+      rgba(0, 0, 0, 0.15) 60%,
+      transparent 100%
+    );
+  }
+</style>
