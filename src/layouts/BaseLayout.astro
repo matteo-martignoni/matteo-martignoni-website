@@ -1,26 +1,19 @@
 ---
-// BaseLayout — shared HTML structure for all pages
-// Now includes Header (with nav + language switcher) and Footer
-// Pages provide their main content via the default slot
-
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import type { Lang } from '../i18n/ui';
 
 interface Props {
   title: string;
   description?: string;
-  lang?: Lang;
+  lang?: 'en' | 'it';
 }
 
 const {
   title,
-  description = 'Matteo Martignoni — Brand development, premium and luxury. Italy and abroad.',
+  description = 'Matteo Martignoni — Brand strategist. Workshop of brands.',
   lang = 'en',
 } = Astro.props;
-
-const currentPath = Astro.url.pathname;
 ---
 <!DOCTYPE html>
 <html lang={lang}>
@@ -29,24 +22,31 @@ const currentPath = Astro.url.pathname;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Newsreader:ital,wght@1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Newsreader:ital,opsz,wght@1,6..72,400&display=swap"
       rel="stylesheet"
     />
-
     <title>{title}</title>
   </head>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <body class="min-h-screen flex flex-col">
-    <Header lang={lang} currentPath={currentPath} />
+  <body class="min-h-screen flex flex-col bg-warm-50 text-ink-900">
+
+    <Header lang={lang} />
+
+    <!--
+      full-bleed slot: renders OUTSIDE the padded <main>.
+      Direct child of <body> — no padding, no max-width, no overflow.
+      Used exclusively for the homepage hero section.
+      All other pages use the default <slot /> inside <main>.
+    -->
+    <slot name="full-bleed" />
 
     <main class="flex-1 px-8 md:px-12">
       <slot />
     </main>
 
     <Footer lang={lang} />
+
   </body>
 </html>

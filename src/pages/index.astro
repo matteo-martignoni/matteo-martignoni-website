@@ -8,25 +8,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 >
 
   <!--
-    Hero: true full-viewport-width section.
-    The `margin-left: calc(-50vw + 50%)` trick breaks out of ANY parent
-    padding or max-width constraint — the only reliable full-bleed technique.
-    Video fills the entire section behind everything.
-    White text panel floats on the left with z-index above video + overlay.
+    The hero section uses slot="full-bleed" to render OUTSIDE the padded main.
+    It becomes a direct child of <body>, so it is truly full-viewport-width
+    with no padding, max-width, or overflow constraints from any parent.
+    The white text panel is positioned absolute over the left 40%.
+    The video fills the full section behind everything.
   -->
   <section
+    slot="full-bleed"
     class="hero-section relative overflow-hidden"
-    style="
-      min-height: 74vh;
-      width: 100vw;
-      margin-left: calc(-50vw + 50%);
-      margin-right: calc(-50vw + 50%);
-    "
+    style="min-height: 74vh;"
   >
 
-    <!-- Video: covers the full section, anchored center -->
+    <!-- Video: covers the full section from edge to edge -->
     <video
-      class="absolute inset-0 w-full h-full object-cover object-left"
+      class="absolute inset-0 w-full h-full object-cover object-center"
       autoplay
       loop
       muted
@@ -36,15 +32,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <source src="/morphe_web.mp4" type="video/mp4" />
     </video>
 
-    <!-- Sage overlay: full width, fades on hover -->
+    <!-- Sage overlay: full width, fades on hover to reveal original colours -->
     <div class="hero-overlay absolute inset-0 z-10 pointer-events-none"></div>
 
-    <!-- White text panel: absolute left, full height, 40% wide -->
+    <!-- White text panel: absolute over left 40% of the full-width section -->
     <div
       class="absolute inset-y-0 left-0 z-20 bg-white flex items-center"
       style="width: 40%;"
     >
-      <div class="px-12 md:px-16 lg:px-20 max-w-md">
+      <div class="px-8 md:px-12 lg:px-16 max-w-md">
         <h1 class="text-4xl md:text-5xl font-medium text-ink-900 leading-tight mb-2">
           Hand &amp; mind.
         </h1>
@@ -59,7 +55,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
     </div>
 
-    <!-- Credit strip: bottom of the video area (right 60%) -->
+    <!-- Credit strip: anchored to bottom of the video area (right 60%) -->
     <div
       class="absolute bottom-0 z-20 hero-credit px-6 pt-10 pb-4 pointer-events-none"
       style="left: 40%; right: 0;"
@@ -75,7 +71,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <style>
-  /* Sage overlay: full strength, fades on hover anywhere in the section */
   .hero-section .hero-overlay {
     background-color: rgba(168, 212, 188, 0.75);
     opacity: 1;
@@ -84,8 +79,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .hero-section:hover .hero-overlay {
     opacity: 0;
   }
-
-  /* Credit gradient: dark at bottom, fades to transparent */
   .hero-credit {
     background: linear-gradient(
       to top,
