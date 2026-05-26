@@ -12,10 +12,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <!-- Left column: identity text -->
     <div class="flex-1 flex flex-col justify-center py-8 md:py-0 max-w-sm">
 
-      <p class="text-xs uppercase tracking-widest text-ink-500 mb-8">
-        Brand strategist · Workshop of one
-      </p>
-
       <h1 class="text-4xl md:text-5xl font-medium text-ink-900 leading-tight mb-2">
         Hand &amp; mind.
       </h1>
@@ -23,23 +19,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         Workshop of brands.
       </p>
 
-      <p class="text-sm text-ink-700 leading-relaxed mb-10">
+      <p class="text-sm text-ink-700 leading-relaxed">
         Twenty-five years building and repositioning brands across
         fashion, beauty, culture, and technology.
         Italy-based, internationally active.
       </p>
 
-      <!-- Section links -->
-      <nav class="flex flex-wrap gap-x-6 gap-y-3" aria-label="Sections">
-        <a href="/think"  class="text-xs uppercase tracking-wider text-ink-500 hover:text-terracotta-900 transition-colors duration-200">Think</a>
-        <a href="/make"   class="text-xs uppercase tracking-wider text-ink-500 hover:text-terracotta-900 transition-colors duration-200">Make</a>
-        <a href="/circle" class="text-xs uppercase tracking-wider text-ink-500 hover:text-terracotta-900 transition-colors duration-200">Circle</a>
-        <a href="/visit"  class="text-xs uppercase tracking-wider text-ink-500 hover:text-terracotta-900 transition-colors duration-200">Visit</a>
-      </nav>
-
     </div>
 
-    <!-- Right column: video hero with sage overlay + credit strip -->
+    <!-- Right column: video hero -->
     <div class="w-full md:w-1/2 min-h-[60vw] md:min-h-0 hero-video-wrapper relative overflow-hidden rounded-sm">
 
       <video
@@ -53,10 +41,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <source src="/morphe_web.mp4" type="video/mp4" />
       </video>
 
-      <!-- Sage overlay — full strength, fades on hover to reveal original colours -->
+      <!-- Sage overlay — 0.75, hover reveal -->
       <div class="hero-overlay absolute inset-0 pointer-events-none"></div>
 
-      <!-- Credit strip — persistent, readable in both states -->
+      <!-- Credit strip -->
       <div class="absolute bottom-0 left-0 right-0 hero-credit px-5 pt-8 pb-4 pointer-events-none">
         <p class="text-xs text-white/75 leading-relaxed">
           Morphē is a video created by Lucy McRae for Aēsop.
@@ -71,7 +59,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <style>
-  /* Sage overlay: full opacity by default, fades on hover */
   .hero-video-wrapper .hero-overlay {
     background-color: rgba(168, 212, 188, 0.75);
     opacity: 1;
@@ -80,8 +67,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .hero-video-wrapper:hover .hero-overlay {
     opacity: 0;
   }
-
-  /* Credit strip: gradient from transparent to dark, always readable */
   .hero-credit {
     background: linear-gradient(
       to top,

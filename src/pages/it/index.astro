@@ -12,10 +12,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     <!-- Left column: identity text -->
     <div class="flex-1 flex flex-col justify-center py-8 md:py-0 max-w-sm">
 
-      <p class="text-xs uppercase tracking-widest text-ink-500 mb-8">
-        Stratega di marca · Bottega da uno
-      </p>
-
       <h1 class="text-4xl md:text-5xl font-medium text-ink-900 leading-tight mb-2">
         Testa e mani.
       </h1>
@@ -23,24 +19,15 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         La bottega dei marchi.
       </p>
 
-      <p class="text-sm text-ink-700 leading-relaxed mb-10">
+      <p class="text-sm text-ink-700 leading-relaxed">
         Venticinque anni a costruire e riposizionare marchi nella moda,
         bellezza, cultura e tecnologia.
         Basato in Italia, attivo a livello internazionale.
       </p>
 
-      <!-- Section links -->
-      <nav class="flex flex-wrap gap-x-6 gap-y-3" aria-label="Sezioni">
-        <a href="/it/pensiero"  class="text-xs uppercase tracking-wider text-ink-500 hover:text-terracotta-900 transition-colors duration-200">Pensiero</a>
-        <a href="/it/manualita" class="text-xs uppercase tracking-wider text-ink-500 hover:text-terracotta-900 transition-colors duration-200">Manualità</a>
-        <a href="/it/maestri"   class="text-xs uppercase tracking-wider text-ink-500 hover:text-terracotta-900 transition-colors duration-200">Maestri</a>
-        <a href="/it/bottega"   class="text-xs uppercase tracking-wider text-ink-500 hover:text-terracotta-900 transition-colors duration-200">Bottega</a>
-      </nav>
-
     </div>
 
-    <!-- Right column: video hero with sage overlay + credit strip -->
-    <!-- Credit kept in English — it is an artwork credit, not site copy -->
+    <!-- Right column: video hero -->
     <div class="w-full md:w-1/2 min-h-[60vw] md:min-h-0 hero-video-wrapper relative overflow-hidden rounded-sm">
 
       <video
@@ -54,14 +41,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         <source src="/morphe_web.mp4" type="video/mp4" />
       </video>
 
-      <!-- Sage overlay — full strength, fades on hover -->
+      <!-- Sage overlay — 0.75, hover reveal -->
       <div class="hero-overlay absolute inset-0 pointer-events-none"></div>
 
-      <!-- Credit strip — artwork credit stays in English -->
+      <!-- Credit strip — in Italian -->
       <div class="absolute bottom-0 left-0 right-0 hero-credit px-5 pt-8 pb-4 pointer-events-none">
         <p class="text-xs text-white/75 leading-relaxed">
-          Morphē è una creazione di Lucy McRae per Aēsop.
-          Distopia e romanticismo come parte della creazione in laboratorio.
+          Morphē è un video creato da Lucy McRae per Aēsop.
+          Una visione distopica ma romantica sulla creazione in laboratorio.
         </p>
       </div>
 
@@ -80,7 +67,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   .hero-video-wrapper:hover .hero-overlay {
     opacity: 0;
   }
-
   .hero-credit {
     background: linear-gradient(
       to top,
