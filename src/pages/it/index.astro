@@ -9,32 +9,44 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
   <section
     slot="full-bleed"
-    class="hero-section relative overflow-hidden"
-    style="min-height: 74vh;"
+    class="hero-section"
+    style="position: relative; min-height: 74vh; overflow: hidden;"
   >
 
+    <!-- LAYER 1: video — indipendente, full width, ancorato a sinistra -->
     <video
-      class="absolute inset-0 w-full h-full object-cover object-center"
-      autoplay
-      loop
-      muted
-      playsinline
-      preload="auto"
+      style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: left center; z-index: 0;"
+      autoplay loop muted playsinline preload="auto"
     >
       <source src="/morphe_web.mp4" type="video/mp4" />
     </video>
 
-    <div class="hero-overlay absolute inset-0 z-10 pointer-events-none"></div>
-
+    <!-- Overlay sage -->
     <div
-      class="absolute inset-y-0 left-0 z-20 bg-white flex items-center"
-      style="width: 40%;"
+      class="hero-overlay"
+      style="position: absolute; inset: 0; z-index: 1; pointer-events: none;"
+    ></div>
+
+    <!-- LAYER 2 + 3: flusso relativo, centrato verticalmente -->
+    <div
+      style="
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        min-height: 74vh;
+        padding: 3rem 4rem;
+      "
     >
-      <div class="px-8 md:px-12 lg:px-16 max-w-md">
-        <h1 class="text-4xl md:text-5xl font-medium text-ink-900 leading-tight mb-2">
+
+      <!-- LAYER 2: box bianco — dimensioni determinate dal testo -->
+      <div style="background: white; padding: 3rem 3.5rem; max-width: 480px;">
+
+        <!-- LAYER 3: testo -->
+        <h1 class="text-4xl md:text-5xl font-medium text-ink-900 leading-tight" style="margin-bottom: 0.5rem;">
           Testa e mani.
         </h1>
-        <p class="text-2xl md:text-3xl text-ink-500 mb-10">
+        <p class="text-2xl md:text-3xl text-ink-500" style="margin-bottom: 2.5rem;">
           La bottega dei marchi.
         </p>
         <p class="text-sm text-ink-700 leading-relaxed">
@@ -42,15 +54,18 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           bellezza, cultura e tecnologia.
           Basato in Italia, attivo a livello internazionale.
         </p>
+
       </div>
     </div>
 
+    <!-- Credit strip -->
     <div
-      class="absolute bottom-0 z-20 hero-credit px-6 pt-10 pb-4 pointer-events-none"
-      style="left: 40%; right: 0;"
+      class="hero-credit"
+      style="position: absolute; bottom: 0; left: 0; right: 0; z-index: 3; padding: 2.5rem 4rem 1.25rem;"
     >
-      <p class="text-xs text-white/75 leading-relaxed">
-        Morphe, creato da Lucy McRae, offre una visione distopica e romantica della creazione in laboratorio.
+      <p style="font-size: 0.75rem; color: rgba(255,255,255,0.7); line-height: 1.6;">
+        Morphē è un video creato da Lucy McRae per Aēsop.
+        Una visione distopica ma romantica sulla creazione in laboratorio.
       </p>
     </div>
 
@@ -59,7 +74,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <style>
-  .hero-section .hero-overlay {
+  .hero-overlay {
     background-color: rgba(168, 212, 188, 0.75);
     opacity: 1;
     transition: opacity 600ms ease;
@@ -70,8 +85,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   .hero-credit {
     background: linear-gradient(
       to top,
-      rgba(0, 0, 0, 0.55) 0%,
-      rgba(0, 0, 0, 0.1) 65%,
+      rgba(0, 0, 0, 0.50) 0%,
+      rgba(0, 0, 0, 0.08) 60%,
       transparent 100%
     );
   }
