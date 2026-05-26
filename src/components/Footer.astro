@@ -1,39 +1,79 @@
 ---
-// Footer — minimal, single row, hairline divider above
-// Copyright + location | external links
-
-import type { Lang } from '../i18n/ui';
-import { useTranslations } from '../i18n/ui';
-
 interface Props {
-  lang: Lang;
+  lang: 'en' | 'it';
 }
 
 const { lang } = Astro.props;
-const t = useTranslations(lang);
+
+const copy = {
+  en: {
+    rights: 'All rights reserved.',
+    linkedin: 'LinkedIn',
+    vcard: 'vCard',
+  },
+  it: {
+    rights: 'Tutti i diritti riservati.',
+    linkedin: 'LinkedIn',
+    vcard: 'vCard',
+  },
+};
+
+const t = copy[lang];
+const year = new Date().getFullYear();
 ---
 
-<footer class="px-8 py-8 md:px-12 md:py-10 mt-24">
-  <div class="border-t border-warm-200 pt-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-xs tracking-wide text-ink-500/80">
-    <div class="uppercase letter-spacing-wide">
-      Matteo Martignoni · {t('footer.location')} · {t('footer.copyright')}
+<footer class="px-8 md:px-12 py-12 md:py-16 mt-16 border-t border-warm-200">
+
+  <div class="max-w-3xl">
+
+    <!-- MM mark — sage, small, above legal line -->
+    <div class="mb-5">
+      <svg
+        width="29" height="18"
+        viewBox="0 0 64 40"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <line x1="2" y1="38" x2="2" y2="2" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
+        <line x1="7" y1="38" x2="7" y2="2" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
+        <line x1="28" y1="38" x2="28" y2="2" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
+        <line x1="33" y1="38" x2="33" y2="2" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
+        <line x1="57" y1="38" x2="57" y2="2" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
+        <line x1="62" y1="38" x2="62" y2="2" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
+        <line x1="7" y1="2" x2="17" y2="22" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
+        <line x1="28" y1="2" x2="17" y2="22" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
+        <line x1="33" y1="2" x2="45" y2="22" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
+        <line x1="57" y1="2" x2="45" y2="22" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
+      </svg>
     </div>
-    <div class="flex items-center gap-4 uppercase">
+
+    <!-- Legal line: copyright + links -->
+    <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
+
+      <span class="text-xs text-ink-500">
+        &copy; {year} Matteo Martignoni. {t.rights}
+      </span>
+
       <a
         href="https://www.linkedin.com/in/matteomartignoni/"
         target="_blank"
         rel="noopener noreferrer"
-        class="hover:text-terracotta-900 transition-colors duration-200"
+        class="text-xs text-ink-500 hover:text-terracotta-900 transition-colors duration-200"
       >
-        {t('footer.linkedin')}
+        {t.linkedin}
       </a>
-      <span class="text-ink-500/40">·</span>
+
       <a
         href="/vcard.vcf"
-        class="hover:text-terracotta-900 transition-colors duration-200"
+        download
+        class="text-xs text-ink-500 hover:text-terracotta-900 transition-colors duration-200"
       >
-        {t('footer.vcard')}
+        {t.vcard}
       </a>
+
     </div>
+
   </div>
+
 </footer>
