@@ -13,23 +13,27 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     style="position: relative; min-height: 74vh; overflow: hidden;"
   >
 
-    <!-- LAYER 1: video — independent, full section width, anchored left -->
-    <!-- Has no relationship with layers 2 and 3 -->
+    <!--
+      LAYER 1: video — independent, anchored to left.
+      Left edge aligns with the "M" of Matteo Martignoni in the header:
+        mobile:  px-8 (2rem) + mark (35px) + gap-3 (0.75rem)  = ~79px
+        desktop: px-12 (3rem) + mark (35px) + gap-3 (0.75rem) = ~95px
+      CSS class .hero-video handles responsive left via media query.
+    -->
     <video
-      style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: left center; z-index: 0;"
+      class="hero-video"
       autoplay loop muted playsinline preload="auto"
     >
       <source src="/morphe_web.mp4" type="video/mp4" />
     </video>
 
-    <!-- Sage overlay — sits on layer 1, fades on hover -->
+    <!-- Sage overlay — sits on the video, fades on hover -->
     <div
       class="hero-overlay"
       style="position: absolute; inset: 0; z-index: 1; pointer-events: none;"
     ></div>
 
-    <!-- LAYERS 2 + 3: relative flow, vertically centered in the section -->
-    <!-- Layer 2 (white box) and layer 3 (text) are linked — box sizes to text -->
+    <!-- LAYERS 2 + 3: relative flow, vertically centered -->
     <div
       style="
         position: relative;
@@ -40,15 +44,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         padding: 3rem 4rem;
       "
     >
-
-      <!-- LAYER 2: white box — dimensions driven purely by content -->
+      <!-- LAYER 2: white box — dimensions driven by content -->
       <div style="background: white; padding: 3rem 3.5rem; max-width: 480px;">
 
         <!-- LAYER 3: text -->
-        <h1 class="text-4xl md:text-5xl font-medium text-ink-900 leading-tight" style="margin-bottom: 0.5rem;">
+        <h1
+          class="text-4xl md:text-5xl font-medium text-ink-900 leading-tight"
+          style="margin-bottom: 0.5rem;"
+        >
           Hand &amp; mind.
         </h1>
-        <p class="text-2xl md:text-3xl text-ink-500" style="margin-bottom: 2.5rem;">
+        <p
+          class="text-2xl md:text-3xl text-ink-500"
+          style="margin-bottom: 2.5rem;"
+        >
           Workshop of brands.
         </p>
         <p class="text-sm text-ink-700 leading-relaxed">
@@ -60,7 +69,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
     </div>
 
-    <!-- Credit strip — anchored to bottom of the section -->
+    <!-- Credit strip -->
     <div
       class="hero-credit"
       style="position: absolute; bottom: 0; left: 0; right: 0; z-index: 3; padding: 2.5rem 4rem 1.25rem;"
@@ -76,6 +85,27 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <style>
+  /* LAYER 1: video — left edge aligned with "M" of Matteo Martignoni */
+  .hero-video {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    /* mobile: px-8 (2rem) + mark (35px) + gap-3 (0.75rem) */
+    left: calc(2rem + 35px + 0.75rem);
+    height: 100%;
+    object-fit: cover;
+    object-position: left center;
+    z-index: 0;
+  }
+  @media (min-width: 768px) {
+    .hero-video {
+      /* desktop: px-12 (3rem) + mark (35px) + gap-3 (0.75rem) */
+      left: calc(3rem + 35px + 0.75rem);
+    }
+  }
+
+  /* Sage overlay: full strength, fades on hover */
   .hero-overlay {
     background-color: rgba(168, 212, 188, 0.75);
     opacity: 1;
@@ -84,6 +114,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .hero-section:hover .hero-overlay {
     opacity: 0;
   }
+
+  /* Credit strip gradient */
   .hero-credit {
     background: linear-gradient(
       to top,
