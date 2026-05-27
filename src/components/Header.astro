@@ -1,6 +1,5 @@
 ---
 import Navigation from './Navigation.astro';
-import LanguageSwitcher from './LanguageSwitcher.astro';
 
 interface Props {
   lang: 'en' | 'it';
@@ -8,45 +7,216 @@ interface Props {
 
 const { lang } = Astro.props;
 const homeUrl = lang === 'it' ? '/it/' : '/';
+
+// Language switcher — smart mapping to equivalent page in other language
+const path = Astro.url.pathname;
+const enUrl = path.startsWith('/it')
+  ? path.replace(/^\/it/, '') || '/'
+  : path;
+const itUrl = path.startsWith('/it')
+  ? path
+  : '/it' + (path === '/' ? '/' : path);
+
+// Active page helper for mobile nav
+function isActive(href: string): boolean {
+  return path === href || path === href + '/' || path.startsWith(href + '/');
+}
+
+const navItems = lang === 'en'
+  ? [
+      { label: 'Think',     href: '/think'        },
+      { label: 'Make',      href: '/make'          },
+      { label: 'Circle',    href: '/circle'        },
+      { label: 'Visit',     href: '/visit'         },
+    ]
+  : [
+      { label: 'Pensiero',  href: '/it/pensiero'  },
+      { label: 'Manualità', href: '/it/manualita' },
+      { label: 'Maestri',   href: '/it/maestri'   },
+      { label: 'Bottega',   href: '/it/bottega'   },
+    ];
 ---
 
-<header class="px-8 md:px-12 py-6 flex items-center justify-between">
+<!-- Header: always on top (z-50), same background as page -->
+<header
+  id="site-header"
+  class="px-8 md:px-12 py-6 flex items-center justify-between bg-warm-50 relative"
+  style="z-index: 60;"
+>
 
-  <!-- Brand: MM mark + site name -->
-  <a href={homeUrl} class="flex items-center gap-3 group" aria-label="Matteo Martignoni — home">
-
-    <!-- MM monogram mark in sage, no circle -->
-    <svg
-      width="35" height="22"
-      viewBox="0 0 64 40"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      class="shrink-0 transition-opacity duration-200 group-hover:opacity-70"
-    >
-      <line x1="2" y1="38" x2="2" y2="2" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
-      <line x1="7" y1="38" x2="7" y2="2" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
-      <line x1="28" y1="38" x2="28" y2="2" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
-      <line x1="33" y1="38" x2="33" y2="2" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
-      <line x1="57" y1="38" x2="57" y2="2" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
-      <line x1="62" y1="38" x2="62" y2="2" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
-      <line x1="7" y1="2" x2="17" y2="22" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
-      <line x1="28" y1="2" x2="17" y2="22" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
-      <line x1="33" y1="2" x2="45" y2="22" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
-      <line x1="57" y1="2" x2="45" y2="22" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
+  <!-- Brand: MM mark + name (always visible) -->
+  <a
+    href={homeUrl}
+    class="flex items-center gap-3 group"
+    aria-label="Matteo Martignoni — home"
+  >
+    <svg width="35" height="22" viewBox="0 0 64 40" fill="none" aria-hidden="true"
+      class="shrink-0 transition-opacity duration-200 group-hover:opacity-70">
+      <line x1="2"  y1="38" x2="2"  y2="2"  stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
+      <line x1="7"  y1="38" x2="7"  y2="2"  stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
+      <line x1="28" y1="38" x2="28" y2="2"  stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
+      <line x1="33" y1="38" x2="33" y2="2"  stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
+      <line x1="57" y1="38" x2="57" y2="2"  stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
+      <line x1="62" y1="38" x2="62" y2="2"  stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
+      <line x1="7"  y1="2"  x2="17" y2="22" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
+      <line x1="28" y1="2"  x2="17" y2="22" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
+      <line x1="33" y1="2"  x2="45" y2="22" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
+      <line x1="57" y1="2"  x2="45" y2="22" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
     </svg>
-
-    <!-- Site name -->
     <span class="text-sm font-medium text-ink-900 tracking-wide transition-opacity duration-200 group-hover:opacity-70">
       Matteo Martignoni
     </span>
-
   </a>
 
-  <!-- Navigation + language switcher -->
-  <div class="flex items-center gap-6 md:gap-8">
+  <!-- Desktop: nav + language switcher -->
+  <div class="hidden md:flex items-center gap-8">
     <Navigation lang={lang} />
-    <LanguageSwitcher lang={lang} />
+    <div class="flex items-center gap-2 text-xs uppercase tracking-wider">
+      <a href={enUrl} class:list={["transition-colors duration-200", lang === 'en' ? "text-ink-900 font-medium" : "text-ink-500 hover:text-ink-900"]}>EN</a>
+      <span class="text-ink-500/40">/</span>
+      <a href={itUrl} class:list={["transition-colors duration-200", lang === 'it' ? "text-ink-900 font-medium" : "text-ink-500 hover:text-ink-900"]}>IT</a>
+    </div>
   </div>
 
+  <!-- Mobile: hamburger button -->
+  <button
+    id="hamburger-btn"
+    class="md:hidden flex items-center justify-center w-10 h-10 -mr-1 text-ink-900"
+    aria-label={lang === 'it' ? 'Apri menu' : 'Open menu'}
+    aria-expanded="false"
+    aria-controls="mobile-menu"
+  >
+    <!-- Hamburger (3 lines) -->
+    <svg id="icon-open" width="22" height="14" viewBox="0 0 22 14" fill="none" aria-hidden="true">
+      <line x1="0" y1="1"  x2="22" y2="1"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="0" y1="7"  x2="22" y2="7"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="0" y1="13" x2="22" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <!-- Close (X) — hidden initially -->
+    <svg id="icon-close" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" class="hidden">
+      <line x1="1" y1="1"  x2="17" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="17" y1="1" x2="1"  y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </button>
+
 </header>
+
+<!-- Mobile menu panel: full screen, slides down from top -->
+<div
+  id="mobile-menu"
+  class="md:hidden mobile-menu-panel"
+  aria-hidden="true"
+  role="dialog"
+  aria-label={lang === 'it' ? 'Navigazione' : 'Navigation'}
+>
+  <div class="flex flex-col justify-between h-full px-8" style="padding-top: 6rem; padding-bottom: 3rem;">
+
+    <!-- Nav links: large, generous tap targets -->
+    <nav>
+      <ul class="list-none m-0 p-0">
+        {navItems.map(item => (
+          <li>
+            <a
+              href={item.href}
+              data-menu-link
+              class:list={[
+                "mobile-nav-link",
+                isActive(item.href) ? "text-terracotta-900" : "text-ink-900"
+              ]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <!-- Language switcher: bottom of panel -->
+    <div class="flex items-center gap-5 pt-12 border-t border-warm-200">
+      <a
+        href={enUrl}
+        class:list={[
+          "text-sm uppercase tracking-widest transition-colors duration-200",
+          lang === 'en' ? "text-terracotta-900 font-medium" : "text-ink-500"
+        ]}
+      >EN</a>
+      <span class="text-ink-500/30">/</span>
+      <a
+        href={itUrl}
+        class:list={[
+          "text-sm uppercase tracking-widest transition-colors duration-200",
+          lang === 'it' ? "text-terracotta-900 font-medium" : "text-ink-500"
+        ]}
+      >IT</a>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  /* Mobile menu: fixed full screen, slides down from above */
+  .mobile-menu-panel {
+    position: fixed;
+    inset: 0;
+    background-color: var(--color-warm-50, #FAFAF8);
+    z-index: 50;
+    transform: translateY(-100%);
+    transition: transform 380ms cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+  }
+
+  .mobile-menu-panel.is-open {
+    transform: translateY(0);
+  }
+
+  /* Large nav links — easy to tap on any phone */
+  .mobile-nav-link {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+    padding: 0.65rem 0;
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+</style>
+
+<script>
+  const btn    = document.getElementById('hamburger-btn') as HTMLButtonElement | null;
+  const menu   = document.getElementById('mobile-menu') as HTMLElement | null;
+  const iconO  = document.getElementById('icon-open')  as SVGElement | null;
+  const iconC  = document.getElementById('icon-close') as SVGElement | null;
+
+  function openMenu() {
+    menu?.classList.add('is-open');
+    menu?.setAttribute('aria-hidden', 'false');
+    btn?.setAttribute('aria-expanded', 'true');
+    iconO?.classList.add('hidden');
+    iconC?.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    menu?.classList.remove('is-open');
+    menu?.setAttribute('aria-hidden', 'true');
+    btn?.setAttribute('aria-expanded', 'false');
+    iconO?.classList.remove('hidden');
+    iconC?.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  // Toggle on hamburger tap
+  btn?.addEventListener('click', () => {
+    menu?.classList.contains('is-open') ? closeMenu() : openMenu();
+  });
+
+  // Close when a nav link is tapped
+  document.querySelectorAll('[data-menu-link]').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  // Close on ESC
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeMenu();
+  });
+</script>
