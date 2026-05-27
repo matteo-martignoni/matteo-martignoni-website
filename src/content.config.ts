@@ -1,7 +1,6 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-// "competencies" — 6 areas of practice (Think section)
 const competencies = defineCollection({
   loader: glob({
     pattern: '*.{en,it}.md',
@@ -19,7 +18,6 @@ const competencies = defineCollection({
   }),
 });
 
-// "projects" — 10 project cards (Make section)
 const projects = defineCollection({
   loader: glob({
     pattern: '*.{en,it}.md',
@@ -41,13 +39,11 @@ const projects = defineCollection({
       label: z.string(),
       value: z.string(),
     })).optional(),
-    // Optional video — path relative to public/ and colour tone for the overlay
     videoPath: z.string().optional(),
     videoTone: z.enum(['sage', 'terracotta']).optional(),
   }),
 });
 
-// "mentors" — 4 maestri (Circle section)
 const mentors = defineCollection({
   loader: glob({
     pattern: '*.{en,it}.md',
@@ -61,6 +57,7 @@ const mentors = defineCollection({
     lang: z.enum(['en', 'it']),
     order: z.number(),
     role: z.string(),
+    portrait: z.string().optional(),   // ← AGGIUNTO
     projectSlug: z.string().optional(),
     projectLabel: z.string().optional(),
   }),

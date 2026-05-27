@@ -1,0 +1,31 @@
+# Patch frontmatter — src/content/mentors/
+
+Aggiungi il campo `portrait` al frontmatter di ciascun file .en.md e .it.md
+
+─────────────────────────────────────────────
+dennis-paphitis.en.md   /   dennis-paphitis.it.md
+─────────────────────────────────────────────
+portrait: /images/maestri/dennis-paphitis.jpg
+
+─────────────────────────────────────────────
+jeremie-rozan.en.md   /   jeremie-rozan.it.md
+─────────────────────────────────────────────
+portrait: /images/maestri/jeremie-rozan.jpg
+
+ATTENZIONE — rinomina anche i file:
+  jeremy-rozan.en.md  →  jeremie-rozan.en.md
+  jeremy-rozan.it.md  →  jeremie-rozan.it.md
+
+E aggiorna nel frontmatter:
+  slug: jeremie-rozan       (era jeremy-rozan)
+  name: Jeremie Rozan       (era Jeremy Rozan)
+
+─────────────────────────────────────────────
+renzo-rosso.en.md   /   renzo-rosso.it.md
+─────────────────────────────────────────────
+portrait: /images/maestri/renzo-rosso.jpg
+
+─────────────────────────────────────────────
+luca-sacchetti.en.md   /   luca-sacchetti.it.md
+─────────────────────────────────────────────
+portrait: /images/maestri/luca-sacchetti.jpg

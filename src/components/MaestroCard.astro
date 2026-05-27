@@ -1,34 +1,32 @@
 ---
 // MaestroCard — a single mentor with expandable italic quote
 // Collapsed: name + role
-// Expanded: vertical sage line + italic serif quote + optional project link
+// Expanded: vertical sage line + italic serif quote + optional portrait + optional project link
 // First mentor is open by default
-
 interface Props {
   name: string;
   role: string;
+  portrait?: string;
   projectHref?: string;
   projectLabel?: string;
   linkPrefix?: string;
   isFirst?: boolean;
 }
-
 const {
   name,
   role,
+  portrait,
   projectHref,
   projectLabel,
   linkPrefix = 'A project we worked on',
   isFirst = false,
 } = Astro.props;
 ---
-
 <details
   class="maestro group border-t border-warm-200 py-10 md:py-12"
   open={isFirst}
 >
   <summary class="list-none cursor-pointer flex items-start justify-between gap-6 hover:opacity-80 transition-opacity duration-200">
-
     <div>
       <h3 class="text-xl md:text-2xl font-medium text-ink-900 leading-tight">
         {name}
@@ -37,40 +35,50 @@ const {
         {role}
       </p>
     </div>
-
     <span
       class="text-xs text-terracotta-900 shrink-0 mt-1 transition-transform duration-500 group-[&[open]]:rotate-45"
       aria-hidden="true"
     >+</span>
-
   </summary>
 
-  <!-- Expanded: sage left line + italic quote + optional link -->
-  <div class="mt-8 pl-5 border-l-2 border-sage-100">
+  <!-- Expanded: quote left + portrait right -->
+  <div class="mt-8 flex flex-col-reverse md:flex-row md:items-start md:gap-12">
 
-    <blockquote class="maestro-quote">
-      <slot />
-    </blockquote>
+    <!-- Left: sage line + quote + link -->
+    <div class="flex-1 pl-5 border-l-2 border-sage-100 mt-8 md:mt-0">
+      <blockquote class="maestro-quote">
+        <slot />
+      </blockquote>
+      {projectHref && projectLabel && (
+        <a
+          href={projectHref}
+          class="inline-flex items-center gap-2 mt-6 text-xs uppercase tracking-wider text-terracotta-900 hover:text-terracotta-700 transition-colors duration-200"
+        >
+          <span aria-hidden="true">→</span>
+          <span>{linkPrefix}: {projectLabel}</span>
+        </a>
+      )}
+    </div>
 
-    {projectHref && projectLabel && (
-      <a
-        href={projectHref}
-        class="inline-flex items-center gap-2 mt-6 text-xs uppercase tracking-wider text-terracotta-900 hover:text-terracotta-700 transition-colors duration-200"
-      >
-        <span aria-hidden="true">→</span>
-        <span>{linkPrefix}: {projectLabel}</span>
-      </a>
+    <!-- Right: illustrated portrait (optional) -->
+    {portrait && (
+      <div class="w-36 md:w-44 shrink-0 self-start">
+        <img
+          src={portrait}
+          alt=""
+          aria-hidden="true"
+          class="w-full h-auto"
+          loading="lazy"
+        />
+      </div>
     )}
 
   </div>
 </details>
 
 <style>
-  /* Hide native details marker */
   details summary::-webkit-details-marker { display: none; }
   details summary::marker { display: none; }
-
-  /* Italic serif quote */
   .maestro-quote :global(p) {
     font-family: var(--font-serif, Georgia, serif);
     font-style: italic;
