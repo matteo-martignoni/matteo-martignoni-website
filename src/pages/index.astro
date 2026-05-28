@@ -1,8 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// Video catalogue — add new entries here as more videos become available.
-// credit_en and credit_it are displayed at the bottom of the video area.
+// Video catalogue — add entries here as more videos become available.
+// Each entry has its own credit text in EN and IT.
 const videos = [
   {
     src: '/morphe_web.mp4',
@@ -11,12 +11,11 @@ const videos = [
   },
   {
     src: '/saint_louis_web.mp4',
-    credit_en: 'Saint Louis exhibition at MDW, Church of Carmine.',
-    credit_it: 'Esposizione Saint Louis durante il Salone del Mobile, Chiesa del Carmine.',
+    credit_en: 'Carefully designed light installation by Nonotak for Saint Louis.',
+    credit_it: 'Installazione luminosa di Nonotak per Saint Louis.',
   },
 ];
 
-// Serialise the video list for the client-side rotation script.
 const videosJson = JSON.stringify(videos);
 ---
 <BaseLayout
@@ -25,31 +24,46 @@ const videosJson = JSON.stringify(videos);
   lang="en"
 >
 
-  <section
-    slot="full-bleed"
-    class="hero-section"
-    style="position: relative; min-height: 74vh; overflow: hidden;"
-  >
+  <!--
+    ARCHITECTURE:
+    Mobile  — flex-col: [text box top] [video wrap bottom]
+    Desktop — block: video-wrap absolute aligned to "M", text in relative flow
 
-    <!-- LAYER 1: video — set by JavaScript from sessionStorage rotation -->
-    <!-- The video element starts empty; the inline script below fills it -->
-    <video
-      id="hero-video"
-      class="hero-video"
-      autoplay loop muted playsinline preload="auto"
-    >
-      <!-- <source> injected by rotation script -->
-    </video>
+    The .hero-video-wrap contains the video, the sage overlay, and the credit.
+    This scopes the overlay and credit exclusively to the video area —
+    no overlay bleed into the white text panel, no full-width shadow stripe.
 
-    <!-- Sage overlay — fades on hover -->
-    <div class="hero-overlay absolute inset-0 z-10 pointer-events-none"></div>
+    Rotation: localStorage counter advances by 1 on each page load,
+    cycling through all videos sequentially. Works across tabs and sessions.
+  -->
 
-    <!-- LAYERS 2 + 3: white box over left side -->
-    <div
-      style="position: relative; z-index: 2; display: flex; align-items: center; min-height: 74vh; padding: 3rem 4rem;"
-    >
-      <div style="background: white; padding: 3rem 3.5rem; max-width: 480px;">
-        <h1 class="text-4xl md:text-5xl font-medium text-ink-900 leading-tight" style="margin-bottom: 0.5rem;">
+  <section slot="full-bleed" class="hero-section">
+
+    <!-- VIDEO WRAP: relative + fixed height on mobile; absolute on desktop -->
+    <div class="hero-video-wrap">
+
+      <!-- Layer 1: video — src injected by rotation script -->
+      <video
+        id="hero-video"
+        class="hero-video"
+        autoplay loop muted playsinline preload="auto"
+      ></video>
+
+      <!-- Layer 2: sage overlay — scoped to video wrap only -->
+      <div class="hero-overlay"></div>
+
+      <!-- Credit: bottom-right of video area, no gradient, text-shadow -->
+      <div class="hero-credit">
+        <p id="hero-credit-text"></p>
+      </div>
+
+    </div>
+
+    <!-- TEXT BOX: above video on mobile, relative flow on desktop -->
+    <div class="hero-content">
+      <div class="hero-text-box">
+        <h1 class="text-4xl md:text-5xl font-medium text-ink-900 leading-tight"
+            style="margin-bottom: 0.5rem;">
           Hand &amp; mind.
         </h1>
         <p class="text-2xl md:text-3xl text-ink-500" style="margin-bottom: 2.5rem;">
@@ -63,39 +77,25 @@ const videosJson = JSON.stringify(videos);
       </div>
     </div>
 
-    <!-- Credit strip — text injected by rotation script -->
-    <div
-      id="hero-credit"
-      class="hero-credit"
-      style="position: absolute; bottom: 0; left: 0; right: 0; z-index: 3; padding: 2.5rem 4rem 1.25rem;"
-    >
-      <p id="hero-credit-text" style="font-size: 0.75rem; color: rgba(255,255,255,0.7); line-height: 1.6; text-align: right;"></p>
-    </div>
-
   </section>
 
 </BaseLayout>
 
-<!-- Video rotation: pick a random video once per browser session -->
+<!-- Video rotation via localStorage: advances sequentially on every page load -->
 <script define:vars={{ videosJson }}>
   (function () {
     const videos = JSON.parse(videosJson);
     const KEY = 'hero_video_index';
 
-    // Read from sessionStorage — same video for the whole session
-    let idx = sessionStorage.getItem(KEY);
-    if (idx === null || isNaN(Number(idx))) {
-      idx = Math.floor(Math.random() * videos.length);
-      sessionStorage.setItem(KEY, String(idx));
-    } else {
-      idx = Number(idx);
-      // Advance to the next video on subsequent sessions
-      // (sessionStorage is per tab; this ensures variety across new tabs)
-    }
+    // Read last shown index, advance by 1, wrap around
+    let prev = parseInt(localStorage.getItem(KEY) ?? '-1', 10);
+    if (isNaN(prev)) prev = -1;
+    const idx = (prev + 1) % videos.length;
+    localStorage.setItem(KEY, String(idx));
 
-    const chosen = videos[idx % videos.length];
+    const chosen = videos[idx];
 
-    // Inject <source> into the video element
+    // Inject video source
     const videoEl = document.getElementById('hero-video');
     if (videoEl) {
       const source = document.createElement('source');
@@ -106,45 +106,135 @@ const videosJson = JSON.stringify(videos);
       videoEl.play().catch(() => {});
     }
 
-    // Inject credit text (EN version)
+    // Inject EN credit
     const creditEl = document.getElementById('hero-credit-text');
-    if (creditEl) {
-      creditEl.textContent = chosen.credit_en;
-    }
+    if (creditEl) creditEl.textContent = chosen.credit_en;
   })();
 </script>
 
 <style>
+  /* ── MOBILE: text on top, video below ── */
+
+  .hero-section {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-content {
+    order: 1;
+    padding: 3rem 2rem;
+  }
+
+  .hero-text-box {
+    background: white;
+    padding: 2rem;
+  }
+
+  /* Video wrap: relative block on mobile */
+  .hero-video-wrap {
+    order: 2;
+    position: relative;
+    width: 100%;
+    height: 60vw;
+    min-height: 240px;
+    overflow: hidden;
+  }
+
   .hero-video {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: calc(2rem + 35px + 0.75rem);
+    inset: 0;
+    width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: left center;
-    z-index: 0;
+    object-position: center;
   }
-  @media (min-width: 768px) {
-    .hero-video {
-      left: calc(3rem + 35px + 0.75rem);
-    }
-  }
+
+  /* Overlay: scoped to .hero-video-wrap — no full-page bleed */
   .hero-overlay {
+    position: absolute;
+    inset: 0;
     background-color: rgba(168, 212, 188, 0.75);
     opacity: 1;
     transition: opacity 600ms ease;
+    pointer-events: none;
   }
-  .hero-section:hover .hero-overlay {
+
+  /* Hover reveal: only when cursor is over the video area */
+  .hero-video-wrap:hover .hero-overlay {
     opacity: 0;
   }
+
+  /* Credit: bottom-right of video wrap, no gradient, text-shadow for legibility */
   .hero-credit {
-    background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.50) 0%,
-      rgba(0, 0, 0, 0.08) 60%,
-      transparent 100%
-    );
+    position: absolute;
+    bottom: 1rem;
+    right: 1.25rem;
+    text-align: right;
+    max-width: 360px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .hero-credit p {
+    font-size: 0.7rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.75);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  }
+
+
+  /* ── DESKTOP (md+): absolute video wrap aligned to "M" ── */
+
+  @media (min-width: 768px) {
+
+    .hero-section {
+      display: block;
+      position: relative;
+      min-height: 74vh;
+      overflow: hidden;
+    }
+
+    /* Video wrap: absolute, left edge aligned with "M" in header */
+    .hero-video-wrap {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      /* px-12 (3rem) + MM mark (35px) + gap-3 (0.75rem) = ~95px */
+      left: calc(3rem + 35px + 0.75rem);
+      width: auto;
+      height: auto;
+      order: 0;
+    }
+
+    .hero-video {
+      object-position: left center;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      min-height: 74vh;
+      padding: 3rem 4rem;
+      order: 0;
+      pointer-events: none; /* passes hover through to video wrap */
+    }
+
+    .hero-text-box {
+      padding: 3rem 3.5rem;
+      max-width: 480px;
+      pointer-events: auto; /* text remains selectable */
+    }
+
+    .hero-credit {
+      bottom: 1.25rem;
+      right: 1.5rem;
+    }
+
+    .hero-credit p {
+      font-size: 0.75rem;
+    }
   }
 </style>

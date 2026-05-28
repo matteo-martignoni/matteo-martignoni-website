@@ -9,8 +9,8 @@ const videos = [
   },
   {
     src: '/saint_louis_web.mp4',
-    credit_en: 'Saint Louis exhibition at MDW, Church of Carmine.',
-    credit_it: 'Esposizione Saint Louis durante il Salone del Mobile, Chiesa del Carmine.',
+    credit_en: 'Carefully designed light installation by Nonotak for Saint Louis.',
+    credit_it: 'Installazione luminosa di Nonotak per Saint Louis.',
   },
 ];
 
@@ -22,26 +22,24 @@ const videosJson = JSON.stringify(videos);
   lang="it"
 >
 
-  <section
-    slot="full-bleed"
-    class="hero-section"
-    style="position: relative; min-height: 74vh; overflow: hidden;"
-  >
+  <section slot="full-bleed" class="hero-section">
 
-    <video
-      id="hero-video"
-      class="hero-video"
-      autoplay loop muted playsinline preload="auto"
-    >
-    </video>
+    <div class="hero-video-wrap">
+      <video
+        id="hero-video"
+        class="hero-video"
+        autoplay loop muted playsinline preload="auto"
+      ></video>
+      <div class="hero-overlay"></div>
+      <div class="hero-credit">
+        <p id="hero-credit-text"></p>
+      </div>
+    </div>
 
-    <div class="hero-overlay absolute inset-0 z-10 pointer-events-none"></div>
-
-    <div
-      style="position: relative; z-index: 2; display: flex; align-items: center; min-height: 74vh; padding: 3rem 4rem;"
-    >
-      <div style="background: white; padding: 3rem 3.5rem; max-width: 480px;">
-        <h1 class="text-4xl md:text-5xl font-medium text-ink-900 leading-tight" style="margin-bottom: 0.5rem;">
+    <div class="hero-content">
+      <div class="hero-text-box">
+        <h1 class="text-4xl md:text-5xl font-medium text-ink-900 leading-tight"
+            style="margin-bottom: 0.5rem;">
           Testa e mani.
         </h1>
         <p class="text-2xl md:text-3xl text-ink-500" style="margin-bottom: 2.5rem;">
@@ -55,33 +53,21 @@ const videosJson = JSON.stringify(videos);
       </div>
     </div>
 
-    <div
-      id="hero-credit"
-      class="hero-credit"
-      style="position: absolute; bottom: 0; left: 0; right: 0; z-index: 3; padding: 2.5rem 4rem 1.25rem;"
-    >
-      <p id="hero-credit-text" style="font-size: 0.75rem; color: rgba(255,255,255,0.7); line-height: 1.6; text-align: right;"></p>
-    </div>
-
   </section>
 
 </BaseLayout>
 
-<!-- Video rotation — IT version uses credit_it -->
 <script define:vars={{ videosJson }}>
   (function () {
     const videos = JSON.parse(videosJson);
     const KEY = 'hero_video_index';
 
-    let idx = sessionStorage.getItem(KEY);
-    if (idx === null || isNaN(Number(idx))) {
-      idx = Math.floor(Math.random() * videos.length);
-      sessionStorage.setItem(KEY, String(idx));
-    } else {
-      idx = Number(idx);
-    }
+    let prev = parseInt(localStorage.getItem(KEY) ?? '-1', 10);
+    if (isNaN(prev)) prev = -1;
+    const idx = (prev + 1) % videos.length;
+    localStorage.setItem(KEY, String(idx));
 
-    const chosen = videos[idx % videos.length];
+    const chosen = videos[idx];
 
     const videoEl = document.getElementById('hero-video');
     if (videoEl) {
@@ -95,43 +81,107 @@ const videosJson = JSON.stringify(videos);
 
     // IT version uses credit_it
     const creditEl = document.getElementById('hero-credit-text');
-    if (creditEl) {
-      creditEl.textContent = chosen.credit_it;
-    }
+    if (creditEl) creditEl.textContent = chosen.credit_it;
   })();
 </script>
 
 <style>
+  .hero-section {
+    display: flex;
+    flex-direction: column;
+  }
+  .hero-content {
+    order: 1;
+    padding: 3rem 2rem;
+  }
+  .hero-text-box {
+    background: white;
+    padding: 2rem;
+  }
+  .hero-video-wrap {
+    order: 2;
+    position: relative;
+    width: 100%;
+    height: 60vw;
+    min-height: 240px;
+    overflow: hidden;
+  }
   .hero-video {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: calc(2rem + 35px + 0.75rem);
+    inset: 0;
+    width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: left center;
-    z-index: 0;
-  }
-  @media (min-width: 768px) {
-    .hero-video {
-      left: calc(3rem + 35px + 0.75rem);
-    }
+    object-position: center;
   }
   .hero-overlay {
+    position: absolute;
+    inset: 0;
     background-color: rgba(168, 212, 188, 0.75);
     opacity: 1;
     transition: opacity 600ms ease;
+    pointer-events: none;
   }
-  .hero-section:hover .hero-overlay {
+  .hero-video-wrap:hover .hero-overlay {
     opacity: 0;
   }
   .hero-credit {
-    background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.50) 0%,
-      rgba(0, 0, 0, 0.08) 60%,
-      transparent 100%
-    );
+    position: absolute;
+    bottom: 1rem;
+    right: 1.25rem;
+    text-align: right;
+    max-width: 360px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .hero-credit p {
+    font-size: 0.7rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.75);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  }
+
+  @media (min-width: 768px) {
+    .hero-section {
+      display: block;
+      position: relative;
+      min-height: 74vh;
+      overflow: hidden;
+    }
+    .hero-video-wrap {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: calc(3rem + 35px + 0.75rem);
+      width: auto;
+      height: auto;
+      order: 0;
+    }
+    .hero-video {
+      object-position: left center;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      min-height: 74vh;
+      padding: 3rem 4rem;
+      order: 0;
+      pointer-events: none;
+    }
+    .hero-text-box {
+      padding: 3rem 3.5rem;
+      max-width: 480px;
+      pointer-events: auto;
+    }
+    .hero-credit {
+      bottom: 1.25rem;
+      right: 1.5rem;
+    }
+    .hero-credit p {
+      font-size: 0.75rem;
+    }
   }
 </style>
