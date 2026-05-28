@@ -5,6 +5,7 @@ name: "Renzo Rosso"
 lang: "it"
 order: 3
 role: "Fondatore, Diesel e Gruppo OTB"
+portrait: /images/maestri/renzo-rosso.jpg
 projectSlug: "diesel"
 projectLabel: "Diesel, 2001 — 2007"
 ---
