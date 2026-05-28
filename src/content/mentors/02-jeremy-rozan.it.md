@@ -5,7 +5,7 @@ name: "Jeremie Rozan"
 lang: "it"
 order: 2
 role: "Fondatore, Surface to Air"
-portrait: /images/maestri/jeremie-rozan.jpg
+portrait: /images/maestri/jeremie-rozan.png
 projectSlug: "surface-to-air-consulting"
 projectLabel: "Surface to Air Consulting, 2009 — 2011"
 ---

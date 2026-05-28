@@ -5,7 +5,7 @@ name: "Dennis Paphitis"
 lang: "en"
 order: 1
 role: "Founder, Aēsop"
-portrait: /images/maestri/dennis-paphitis.jpg
+portrait: /images/maestri/dennis-paphitis.png
 projectSlug: "aesop-italia"
 projectLabel: "Aēsop Italy, 2015 — 2016"
 ---
