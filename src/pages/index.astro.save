@@ -10,14 +10,9 @@ const videos = [
     credit_it: 'Morphē: la visione distopica e romantica di Lucy McRae sulla creazione in laboratorio.',
   },
   {
-    src: '/saint_louis_web.mp4',
+    src: '/XX^saint_louis_web.mp4',
     credit_en: 'Carefully designed light installation by Nonotak for Saint Louis.',
     credit_it: 'Installazione luminosa di Nonotak per Saint Louis.',
-  },
-  {
-    src: '/corneliani_web.mp4',
-    credit_en: 'Olographic catwalk, Milan Men\'s Fashion Week.',
-    credit_it: 'Sfilata olografica, settimana della moda uomo, Milano.',
   },
 ];
 
