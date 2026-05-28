@@ -1,5 +1,20 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const videos = [
+  {
+    src: '/morphe_web.mp4',
+    credit_en: 'Morphē: the dystopian yet romantic take on lab-based creation by Lucy McRae.',
+    credit_it: 'Morphē: la visione distopica e romantica di Lucy McRae sulla creazione in laboratorio.',
+  },
+  {
+    src: '/saint_louis_web.mp4',
+    credit_en: 'Saint Louis exhibition at MDW, Church of Carmine.',
+    credit_it: 'Esposizione Saint Louis durante il Salone del Mobile, Chiesa del Carmine.',
+  },
+];
+
+const videosJson = JSON.stringify(videos);
 ---
 <BaseLayout
   title="Matteo Martignoni — Stratega di marca"
@@ -7,29 +22,29 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   lang="it"
 >
 
-  <section slot="full-bleed" class="hero-section">
+  <section
+    slot="full-bleed"
+    class="hero-section"
+    style="position: relative; min-height: 74vh; overflow: hidden;"
+  >
 
-    <div class="hero-video-wrap">
-      <video
-        class="hero-video"
-        autoplay loop muted playsinline preload="auto"
-      >
-        <source src="/morphe_web.mp4" type="video/mp4" />
-      </video>
-      <div class="hero-overlay"></div>
-      <div class="hero-credit">
-        <p>
-          Morphē: la visione distopica e romantica di Lucy McRae sulla creazione in laboratorio.
-        </p>
-      </div>
-    </div>
+    <video
+      id="hero-video"
+      class="hero-video"
+      autoplay loop muted playsinline preload="auto"
+    >
+    </video>
 
-    <div class="hero-content">
-      <div class="hero-text-box">
-        <h1 class="text-4xl md:text-5xl font-medium text-ink-900 leading-tight" style="margin-bottom:0.5rem">
+    <div class="hero-overlay absolute inset-0 z-10 pointer-events-none"></div>
+
+    <div
+      style="position: relative; z-index: 2; display: flex; align-items: center; min-height: 74vh; padding: 3rem 4rem;"
+    >
+      <div style="background: white; padding: 3rem 3.5rem; max-width: 480px;">
+        <h1 class="text-4xl md:text-5xl font-medium text-ink-900 leading-tight" style="margin-bottom: 0.5rem;">
           Testa e mani.
         </h1>
-        <p class="text-2xl md:text-3xl text-ink-500" style="margin-bottom:2.5rem">
+        <p class="text-2xl md:text-3xl text-ink-500" style="margin-bottom: 2.5rem;">
           La bottega dei marchi.
         </p>
         <p class="text-sm text-ink-700 leading-relaxed">
@@ -40,114 +55,83 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       </div>
     </div>
 
+    <div
+      id="hero-credit"
+      class="hero-credit"
+      style="position: absolute; bottom: 0; left: 0; right: 0; z-index: 3; padding: 2.5rem 4rem 1.25rem;"
+    >
+      <p id="hero-credit-text" style="font-size: 0.75rem; color: rgba(255,255,255,0.7); line-height: 1.6; text-align: right;"></p>
+    </div>
+
   </section>
 
 </BaseLayout>
 
+<!-- Video rotation — IT version uses credit_it -->
+<script define:vars={{ videosJson }}>
+  (function () {
+    const videos = JSON.parse(videosJson);
+    const KEY = 'hero_video_index';
+
+    let idx = sessionStorage.getItem(KEY);
+    if (idx === null || isNaN(Number(idx))) {
+      idx = Math.floor(Math.random() * videos.length);
+      sessionStorage.setItem(KEY, String(idx));
+    } else {
+      idx = Number(idx);
+    }
+
+    const chosen = videos[idx % videos.length];
+
+    const videoEl = document.getElementById('hero-video');
+    if (videoEl) {
+      const source = document.createElement('source');
+      source.src = chosen.src;
+      source.type = 'video/mp4';
+      videoEl.appendChild(source);
+      videoEl.load();
+      videoEl.play().catch(() => {});
+    }
+
+    // IT version uses credit_it
+    const creditEl = document.getElementById('hero-credit-text');
+    if (creditEl) {
+      creditEl.textContent = chosen.credit_it;
+    }
+  })();
+</script>
+
 <style>
-  .hero-section {
-    display: flex;
-    flex-direction: column;
-  }
-  .hero-content {
-    order: 1;
-    padding: 3rem 2rem;
-  }
-  .hero-text-box {
-    background: white;
-    padding: 2rem 2rem;
-  }
-  .hero-video-wrap {
-    order: 2;
-    position: relative;
-    width: 100%;
-    height: 60vw;
-    overflow: hidden;
-    min-height: 240px;
-  }
   .hero-video {
     position: absolute;
-    inset: 0;
-    width: 100%;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: calc(2rem + 35px + 0.75rem);
     height: 100%;
     object-fit: cover;
-    object-position: center;
+    object-position: left center;
+    z-index: 0;
+  }
+  @media (min-width: 768px) {
+    .hero-video {
+      left: calc(3rem + 35px + 0.75rem);
+    }
   }
   .hero-overlay {
-    position: absolute;
-    inset: 0;
     background-color: rgba(168, 212, 188, 0.75);
     opacity: 1;
     transition: opacity 600ms ease;
-    pointer-events: none;
   }
-  .hero-video-wrap:hover .hero-overlay {
+  .hero-section:hover .hero-overlay {
     opacity: 0;
   }
   .hero-credit {
-    position: absolute;
-    bottom: 1rem;
-    right: 1.25rem;
-    text-align: right;
-    max-width: 360px;
-    z-index: 2;
-    pointer-events: none;
-  }
-  .hero-credit p {
-    font-size: 0.7rem;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.75);
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
-  }
-  @media (min-width: 768px) {
-
-    .hero-section {
-      display: block;
-      position: relative;
-      min-height: 74vh;
-      overflow: hidden;
-    }
-
-    .hero-video-wrap {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      right: 0;
-      left: calc(3rem + 35px + 0.75rem);
-      width: auto;
-      height: auto;
-      order: 0;
-    }
-
-    .hero-video {
-      object-position: left center;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      align-items: center;
-      min-height: 74vh;
-      padding: 3rem 4rem;
-      order: 0;
-      pointer-events: none;
-    }
-
-    .hero-text-box {
-      padding: 3rem 3.5rem;
-      max-width: 480px;
-      pointer-events: auto;
-    }
-
-    .hero-credit {
-      bottom: 1.25rem;
-      right: 1.5rem;
-    }
-
-    .hero-credit p {
-      font-size: 0.75rem;
-    }
-
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.50) 0%,
+      rgba(0, 0, 0, 0.08) 60%,
+      transparent 100%
+    );
   }
 </style>

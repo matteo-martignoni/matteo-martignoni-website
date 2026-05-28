@@ -1,5 +1,23 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Video catalogue — add new entries here as more videos become available.
+// credit_en and credit_it are displayed at the bottom of the video area.
+const videos = [
+  {
+    src: '/morphe_web.mp4',
+    credit_en: 'Morphē: the dystopian yet romantic take on lab-based creation by Lucy McRae.',
+    credit_it: 'Morphē: la visione distopica e romantica di Lucy McRae sulla creazione in laboratorio.',
+  },
+  {
+    src: '/saint_louis_web.mp4',
+    credit_en: 'Saint Louis exhibition at MDW, Church of Carmine.',
+    credit_it: 'Esposizione Saint Louis durante il Salone del Mobile, Chiesa del Carmine.',
+  },
+];
+
+// Serialise the video list for the client-side rotation script.
+const videosJson = JSON.stringify(videos);
 ---
 <BaseLayout
   title="Matteo Martignoni — Brand Strategist"
@@ -7,48 +25,34 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   lang="en"
 >
 
-  <!--
-    STRUCTURE:
-    Mobile  — flex-col: [text box on top] [video below]
-    Desktop — block: video-wrap is absolute (left aligned to "M"), text box floats in normal flow
+  <section
+    slot="full-bleed"
+    class="hero-section"
+    style="position: relative; min-height: 74vh; overflow: hidden;"
+  >
 
-    hero-video-wrap contains video + overlay + credit so:
-    - overlay covers ONLY the video, not the full page
-    - credit is anchored inside the video area
-    - hover effect is scoped to the video area only
-  -->
-  <section slot="full-bleed" class="hero-section">
+    <!-- LAYER 1: video — set by JavaScript from sessionStorage rotation -->
+    <!-- The video element starts empty; the inline script below fills it -->
+    <video
+      id="hero-video"
+      class="hero-video"
+      autoplay loop muted playsinline preload="auto"
+    >
+      <!-- <source> injected by rotation script -->
+    </video>
 
-    <!-- VIDEO WRAP: relative on mobile (60vw tall), absolute on desktop -->
-    <div class="hero-video-wrap">
+    <!-- Sage overlay — fades on hover -->
+    <div class="hero-overlay absolute inset-0 z-10 pointer-events-none"></div>
 
-      <!-- Layer 1: video -->
-      <video
-        class="hero-video"
-        autoplay loop muted playsinline preload="auto"
-      >
-        <source src="/morphe_web.mp4" type="video/mp4" />
-      </video>
-
-      <!-- Layer 2: sage overlay — scoped to video area only -->
-      <div class="hero-overlay"></div>
-
-      <!-- Credit: right-aligned, bottom of video area, no gradient -->
-      <div class="hero-credit">
-        <p>
-          Morphē: the dystopian yet romantic take on lab-based creation by Lucy McRae.
-        </p>
-      </div>
-
-    </div>
-
-    <!-- TEXT BOX: on top on mobile, floats left on desktop -->
-    <div class="hero-content">
-      <div class="hero-text-box">
-        <h1 class="text-4xl md:text-5xl font-medium text-ink-900 leading-tight" style="margin-bottom:0.5rem">
+    <!-- LAYERS 2 + 3: white box over left side -->
+    <div
+      style="position: relative; z-index: 2; display: flex; align-items: center; min-height: 74vh; padding: 3rem 4rem;"
+    >
+      <div style="background: white; padding: 3rem 3.5rem; max-width: 480px;">
+        <h1 class="text-4xl md:text-5xl font-medium text-ink-900 leading-tight" style="margin-bottom: 0.5rem;">
           Hand &amp; mind.
         </h1>
-        <p class="text-2xl md:text-3xl text-ink-500" style="margin-bottom:2.5rem">
+        <p class="text-2xl md:text-3xl text-ink-500" style="margin-bottom: 2.5rem;">
           Workshop of brands.
         </p>
         <p class="text-sm text-ink-700 leading-relaxed">
@@ -59,132 +63,88 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
     </div>
 
+    <!-- Credit strip — text injected by rotation script -->
+    <div
+      id="hero-credit"
+      class="hero-credit"
+      style="position: absolute; bottom: 0; left: 0; right: 0; z-index: 3; padding: 2.5rem 4rem 1.25rem;"
+    >
+      <p id="hero-credit-text" style="font-size: 0.75rem; color: rgba(255,255,255,0.7); line-height: 1.6; text-align: right;"></p>
+    </div>
+
   </section>
 
 </BaseLayout>
 
+<!-- Video rotation: pick a random video once per browser session -->
+<script define:vars={{ videosJson }}>
+  (function () {
+    const videos = JSON.parse(videosJson);
+    const KEY = 'hero_video_index';
+
+    // Read from sessionStorage — same video for the whole session
+    let idx = sessionStorage.getItem(KEY);
+    if (idx === null || isNaN(Number(idx))) {
+      idx = Math.floor(Math.random() * videos.length);
+      sessionStorage.setItem(KEY, String(idx));
+    } else {
+      idx = Number(idx);
+      // Advance to the next video on subsequent sessions
+      // (sessionStorage is per tab; this ensures variety across new tabs)
+    }
+
+    const chosen = videos[idx % videos.length];
+
+    // Inject <source> into the video element
+    const videoEl = document.getElementById('hero-video');
+    if (videoEl) {
+      const source = document.createElement('source');
+      source.src = chosen.src;
+      source.type = 'video/mp4';
+      videoEl.appendChild(source);
+      videoEl.load();
+      videoEl.play().catch(() => {});
+    }
+
+    // Inject credit text (EN version)
+    const creditEl = document.getElementById('hero-credit-text');
+    if (creditEl) {
+      creditEl.textContent = chosen.credit_en;
+    }
+  })();
+</script>
+
 <style>
-  /* ── MOBILE: stacked (text top, video bottom) ── */
-
-  .hero-section {
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* Text box: first in the stack */
-  .hero-content {
-    order: 1;
-    padding: 3rem 2rem;
-  }
-  .hero-text-box {
-    background: white;
-    padding: 2rem 2rem;
-  }
-
-  /* Video wrap: second in the stack, relative so overlay works inside it */
-  .hero-video-wrap {
-    order: 2;
-    position: relative;
-    width: 100%;
-    height: 60vw;
-    overflow: hidden;
-    min-height: 240px;
-  }
-
-  /* Video fills the wrap */
   .hero-video {
     position: absolute;
-    inset: 0;
-    width: 100%;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: calc(2rem + 35px + 0.75rem);
     height: 100%;
     object-fit: cover;
-    object-position: center;
+    object-position: left center;
+    z-index: 0;
   }
-
-  /* Overlay: covers only the video-wrap */
+  @media (min-width: 768px) {
+    .hero-video {
+      left: calc(3rem + 35px + 0.75rem);
+    }
+  }
   .hero-overlay {
-    position: absolute;
-    inset: 0;
     background-color: rgba(168, 212, 188, 0.75);
     opacity: 1;
     transition: opacity 600ms ease;
-    pointer-events: none;
   }
-
-  /* Hover reveal: only when cursor is over the video */
-  .hero-video-wrap:hover .hero-overlay {
+  .hero-section:hover .hero-overlay {
     opacity: 0;
   }
-
-  /* Credit: right-aligned, no gradient, subtle text shadow for legibility */
   .hero-credit {
-    position: absolute;
-    bottom: 1rem;
-    right: 1.25rem;
-    text-align: right;
-    max-width: 360px;
-    z-index: 2;
-    pointer-events: none;
-  }
-  .hero-credit p {
-    font-size: 0.7rem;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.75);
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
-  }
-
-
-  /* ── DESKTOP (md+): absolute video, text floats left ── */
-
-  @media (min-width: 768px) {
-
-    .hero-section {
-      display: block;
-      position: relative;
-      min-height: 74vh;
-      overflow: hidden;
-    }
-
-    .hero-video-wrap {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      right: 0;
-      left: calc(3rem + 35px + 0.75rem);
-      width: auto;
-      height: auto;
-      order: 0;
-    }
-
-    .hero-video {
-      object-position: left center;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      align-items: center;
-      min-height: 74vh;
-      padding: 3rem 4rem;
-      order: 0;
-      pointer-events: none;
-    }
-
-    .hero-text-box {
-      padding: 3rem 3.5rem;
-      max-width: 480px;
-      pointer-events: auto;
-    }
-
-    .hero-credit {
-      bottom: 1.25rem;
-      right: 1.5rem;
-    }
-
-    .hero-credit p {
-      font-size: 0.75rem;
-    }
-
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.50) 0%,
+      rgba(0, 0, 0, 0.08) 60%,
+      transparent 100%
+    );
   }
 </style>
