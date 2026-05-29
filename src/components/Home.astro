@@ -17,7 +17,7 @@ const { lang } = Astro.props;
 
 const copy = {
   en: {
-    h1: 'Hand & mind.',
+    h1: 'Hands & mind.',
     sub: 'Workshop of brands.',
     intro:
       'Twenty-five years building and repositioning brands across fashion, beauty, culture, and technology. Italy-based, internationally active.',
@@ -115,7 +115,7 @@ const t = copy[lang];
   .home-stage .portrait {
     position: absolute;
     z-index: 1;
-    height: 70%;
+    height: 56%;
     width: auto;
     left: 50%;
     top: -2%;
@@ -125,7 +125,7 @@ const t = copy[lang];
   .home-stage .hands {
     position: absolute;
     z-index: 1;
-    height: 46%;
+    height: 69%;
     width: auto;
     left: 50%;
     bottom: -4%;
@@ -148,13 +148,18 @@ const t = copy[lang];
     opacity: 0.85;
   }
 
-  .home-stage .disk.terra {
-    width: 46%;
+  /* Hands sit over a terracotta triangle (angular = making/craft),
+     a deliberate contrast to the organic sage circle behind the head. */
+  .home-stage .terra {
+    width: 74%;
+    aspect-ratio: 1 / 1;
     left: 50%;
-    bottom: -2%;
-    transform: translateX(-48%);
+    bottom: -3%;
+    transform: translateX(-50%);
     background: var(--color-terracotta-500);
     opacity: 0.55;
+    border-radius: 0;
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%); /* apex up */
   }
 
   /* Desktop: title left, composition right */
