@@ -3,6 +3,8 @@
 // First competency in the list is open by default; clicking another closes the open one
 // Uses native <details>/<summary> for accessibility, with custom styling
 
+import CompetencyIcon from './CompetencyIcon.astro';
+
 interface Props {
   number: string;
   title: string;
@@ -18,7 +20,11 @@ const { number, title, description, examples = [], isFirst = false } = Astro.pro
   class="competency group border-t border-warm-200 [&[open]]:bg-sage-100/8 transition-colors duration-300"
   open={isFirst}
 >
-  <summary class="cursor-pointer list-none py-6 md:py-7 flex items-baseline gap-5 md:gap-6 transition-colors duration-200 hover:bg-sage-100/15 px-4 -mx-4">
+  <summary class="cursor-pointer list-none py-6 md:py-7 flex items-center gap-4 md:gap-5 transition-colors duration-200 hover:bg-sage-100/15 px-4 -mx-4">
+
+    <span class="shrink-0 flex items-center" aria-hidden="true">
+      <CompetencyIcon number={number} />
+    </span>
 
     <span class="text-xs uppercase tracking-widest text-terracotta-900 tabular-nums shrink-0 w-6">
       {number}

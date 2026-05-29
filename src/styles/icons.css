@@ -1,0 +1,102 @@
+/* ============================================================
+   Matteo Martignoni — icone competenza (filo unico)
+   Animazioni di ingresso, one-shot, attivate quando l'icona
+   entra nel viewport. Niente loop infinito (paletti moodboard v2).
+
+   Sorgente canonica: "Sito MM/Icone/icons.css". Mantenere allineato.
+   Il blocco "Site integration" in fondo è specifico di questo sito.
+   ============================================================ */
+
+.icon{
+  color: var(--color-ink-900, #1A1A1A);   /* il tratto usa currentColor */
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Tratto hairline a qualsiasi dimensione */
+.icon path,
+.icon circle,
+.icon use,
+.icon line{ vector-effect: non-scaling-stroke; }
+
+/* --------------------------------------------------------------
+   Stato di partenza (il "prima" della scena).
+   Applicato SOLO quando il JS marca l'icona con .animate.
+   Senza JS o senza questo CSS, l'SVG resta nello stato finale,
+   cioè leggibile (scena conclusa).
+   -------------------------------------------------------------- */
+.icon.animate .flag-l,
+.icon.animate .flag-r{ opacity: 0; transform: translateY(8px); }
+
+.icon.animate .box-l{ opacity: 0; transform: translate(15px, 12px); }
+.icon.animate .box-r{ opacity: 0; transform: translate(-15px, 12px); }
+
+.icon.animate .pass{ transform: translateX(-9px); }
+
+.icon.animate .walker{ transform: translate(9px, 33px); }
+
+.icon.animate .star-3,
+.icon.animate .star-4,
+.icon.animate .star-5{ fill-opacity: 0; }
+
+.icon .door{ transform-box: fill-box; transform-origin: left center; }
+
+/* --------------------------------------------------------------
+   Trigger: il JS aggiunge .play quando l'icona è visibile.
+   Durate 0,7–1,2s, easing morbido, nessun rimbalzo. One-shot.
+   -------------------------------------------------------------- */
+.icon.animate.play .flag-l{ animation: ico-rise .7s ease-out forwards; }
+.icon.animate.play .flag-r{ animation: ico-rise .7s ease-out .2s forwards; }
+
+.icon.animate.play .box-l,
+.icon.animate.play .box-r{ animation: ico-emerge .8s cubic-bezier(.22, 1, .36, 1) forwards; }
+
+.icon.animate.play .pass{ animation: ico-handoff 1s ease-in-out forwards; }
+
+.icon.animate.play .door{ animation: ico-open 1s ease-in-out forwards; }
+
+.icon.animate.play .walker{ animation: ico-cross 1.2s ease-in-out forwards; }
+
+.icon.animate.play .star-3{ animation: ico-fill .35s ease-out .15s forwards; }
+.icon.animate.play .star-4{ animation: ico-fill .35s ease-out .45s forwards; }
+.icon.animate.play .star-5{ animation: ico-fill .35s ease-out .75s forwards; }
+
+@keyframes ico-rise   { to{ opacity: 1; transform: translateY(0); } }
+@keyframes ico-emerge { to{ opacity: 1; transform: translate(0, 0); } }
+@keyframes ico-handoff{ to{ transform: translateX(9px); } }
+@keyframes ico-open   { to{ transform: scaleX(.14); } }
+@keyframes ico-cross  { 0%{ transform: translate(9px, 33px); }
+                        50%{ transform: translate(24px, 20px); }
+                        100%{ transform: translate(39px, 33px); } }
+@keyframes ico-fill   { to{ fill-opacity: 1; } }
+
+/* --------------------------------------------------------------
+   Accessibilità: nessun movimento, mostra direttamente lo stato finale.
+   -------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce){
+  .icon.animate .flag-l,
+  .icon.animate .flag-r,
+  .icon.animate .box-l,
+  .icon.animate .box-r{ opacity: 1; transform: none; }
+  .icon.animate .pass{ transform: translateX(9px); }
+  .icon.animate .walker{ transform: translate(39px, 33px); }
+  .icon.animate .star-3,
+  .icon.animate .star-4,
+  .icon.animate .star-5{ fill-opacity: 1; }
+  .icon .door{ transform: scaleX(.14); }
+  .icon.animate.play *{ animation: none !important; }
+}
+
+/* ============================================================
+   Site integration — righe competenza in Think / Pensiero
+   ============================================================ */
+
+/* Più piccola nella riga dell'accordion */
+.competency .icon{ width: 30px; height: 30px; }
+
+/* Inchiostro di default; terracotta quando la competenza è aperta,
+   in accordo con il numero e il "+" già terracotta. */
+.competency[open] .icon{ color: var(--color-terracotta-900, #8B4F35); }
+.competency summary:hover .icon{ color: var(--color-terracotta-900, #8B4F35); }
