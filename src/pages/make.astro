@@ -28,6 +28,22 @@ const renderedProjects = await Promise.all(
     intro="Three of them I founded with head, heart, and hands together. The others I led for someone else's vision."
   />
 
+  <!-- CV download — discreet text CTA in the site's link idiom -->
+  <div class="max-w-3xl mt-8 md:mt-10">
+    <a
+      href="/cv/Matteo-Martignoni-CV.pdf"
+      download
+      class="inline-flex items-center gap-2.5 text-xs uppercase tracking-wider text-terracotta-900 hover:text-terracotta-700 transition-colors duration-200"
+    >
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <line x1="8" y1="2" x2="8" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M4 7.5 8 11.5 12 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="3.5" y1="14" x2="12.5" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span>Download CV (PDF)</span>
+    </a>
+  </div>
+
   <section class="max-w-3xl mt-12 md:mt-16">
 
     {renderedProjects.map(({ data, Content }, index) => (
