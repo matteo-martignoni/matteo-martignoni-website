@@ -1,0 +1,20 @@
+# Build output
+dist/
+.astro/
+
+# Dependencies
+node_modules/
+
+# macOS
+.DS_Store
+
+# Editor / backup files
+*.save
+
+# Environment
+.env
+.env.*
+.dev.vars
+
+# Cloudflare / Wrangler
+.wrangler/
