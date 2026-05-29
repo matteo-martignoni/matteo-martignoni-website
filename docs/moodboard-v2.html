@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moodboard v2.0 · Il filo unico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&family=Newsreader:ital,opsz@1,6..72&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAFAF8; --tint:#F4F1EA; --hairline:#E5E1D8;
+    --ink:#1A1A1A; --t2:#3D3D3A; --muted:#6B6B6B; --disabled:#B5B2A8;
+    --sage:#A8D4BC; --sage-dark:#3D5A4A;
+    --terra:#C97B5C; --terra-dark:#8B4F35;
+    --sans:'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+    --serif:'Newsreader', Georgia, serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased}
+  body{
+    margin:0; background:var(--bg); color:var(--t2);
+    font-family:var(--sans); font-weight:400; line-height:1.62;
+    font-size:15px;
+  }
+  .wrap{max-width:880px; margin:0 auto; padding:88px 32px 120px}
+  .lbl{font-size:10px; font-weight:500; letter-spacing:.16em; text-transform:uppercase; color:var(--muted)}
+  .terra{color:var(--terra-dark)}
+  h1{font-family:var(--sans); font-weight:500; font-size:46px; line-height:1.04; letter-spacing:-.02em; color:var(--ink); margin:14px 0 0}
+  h1 .sub{display:block; font-family:var(--serif); font-style:italic; font-weight:400; font-size:23px; color:var(--muted); letter-spacing:0; margin-top:10px}
+  h2{font-weight:500; font-size:22px; letter-spacing:-.01em; color:var(--ink); margin:0}
+  h3{font-weight:500; font-size:14px; letter-spacing:.02em; color:var(--ink); margin:0 0 4px}
+  p{margin:0 0 16px; max-width:62ch}
+  .secnum{font-size:12px; font-weight:500; letter-spacing:.06em; color:var(--terra-dark)}
+  section{padding:52px 0 8px; border-top:.5px solid var(--hairline); margin-top:52px}
+  section:first-of-type{border-top:none; margin-top:0}
+  .head-row{display:flex; align-items:baseline; gap:18px; margin-bottom:26px}
+  .quiet{color:var(--muted)}
+  .italic{font-family:var(--serif); font-style:italic}
+  em{font-family:var(--serif); font-style:italic; color:var(--t2)}
+  .spec{font-size:13px; color:var(--muted); margin:18px 0 0; padding:0; list-style:none}
+  .spec li{padding:7px 0; border-bottom:.5px solid var(--hairline); display:flex; gap:14px}
+  .spec li b{color:var(--ink); font-weight:500; min-width:128px; display:inline-block}
+  /* hero stroke study */
+  .study{background:var(--bg); border:.5px solid var(--hairline); border-radius:14px; padding:30px; margin:8px 0 6px}
+  .study svg{display:block; width:100%; height:auto}
+  .hairlink{display:inline-block; margin-top:8px; font-size:11px; letter-spacing:.04em; color:var(--terra-dark)}
+  /* icon scene grid */
+  .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--hairline); border:.5px solid var(--hairline); border-radius:14px; overflow:hidden; margin-top:8px}
+  .cell{background:var(--bg); padding:26px 22px 24px; display:flex; flex-direction:column}
+  .cell .ico{height:86px; display:flex; align-items:center; justify-content:center; margin-bottom:18px}
+  .cell .ico svg{width:64px; height:64px; overflow:visible}
+  .cell .cn{font-size:11px; font-weight:500; letter-spacing:.06em; color:var(--terra-dark); margin-bottom:5px}
+  .cell .nm{font-size:14px; font-weight:500; color:var(--ink); margin-bottom:3px}
+  .cell .ds{font-size:12px; color:var(--muted); line-height:1.5}
+  .ln{fill:none; stroke:var(--ink); stroke-width:1; stroke-linecap:round; stroke-linejoin:round}
+  /* no-go columns */
+  .cols{display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--hairline); border:.5px solid var(--hairline); border-radius:14px; overflow:hidden; margin:6px 0 22px}
+  .col{background:var(--bg); padding:24px}
+  .col.enter{background:#eef6f1}
+  .col h3 .dot{display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:8px; vertical-align:middle}
+  .col ul{margin:12px 0 0; padding:0; list-style:none; font-size:13px}
+  .col li{padding:6px 0 6px 16px; position:relative; color:var(--t2)}
+  .col li::before{content:""; position:absolute; left:0; top:13px; width:6px; height:.5px; background:var(--muted)}
+  .stale{margin-top:0}
+  .stale ul{columns:2; column-gap:32px; font-size:12.5px; color:var(--muted); margin:14px 0 0; padding:0; list-style:none}
+  .stale li{padding:4px 0 4px 14px; position:relative; break-inside:avoid}
+  .stale li::before{content:"×"; position:absolute; left:0; color:var(--disabled)}
+  /* references */
+  .refs{font-size:13.5px; color:var(--t2)}
+  .refs .world{padding:16px 0; border-bottom:.5px solid var(--hairline)}
+  .refs .world:last-child{border-bottom:none}
+  .refs .wt{font-weight:500; color:var(--ink); font-size:13px; letter-spacing:.02em}
+  .refs .names{color:var(--muted); margin-top:4px}
+  /* synthesis */
+  .synth{background:var(--tint); border-radius:14px; padding:34px 32px}
+  .synth p{font-family:var(--serif); font-style:italic; font-size:21px; line-height:1.4; color:var(--ink); max-width:none; margin:0 0 8px}
+  .synth .en{color:var(--t2)}
+  .synth .it{color:var(--sage-dark)}
+  /* checkpoint */
+  .check{display:grid; grid-template-columns:1fr 1fr; gap:32px; font-size:13.5px}
+  .check ul{margin:10px 0 0; padding:0; list-style:none}
+  .check li{padding:7px 0; border-bottom:.5px solid var(--hairline); display:flex; gap:10px}
+  .check .mk{color:var(--sage-dark); font-weight:500}
+  .check .nx{color:var(--terra-dark); font-weight:500}
+  footer{margin-top:64px; padding-top:22px; border-top:.5px solid var(--hairline); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--disabled)}
+  /* ---------- animations ---------- */
+  @keyframes draw{to{stroke-dashoffset:0}}
+  @keyframes popL{0%,16%{transform:translate(0,0);opacity:0}48%,74%{transform:translate(-15px,-12px);opacity:1}96%,100%{transform:translate(0,0);opacity:0}}
+  @keyframes popR{0%,16%{transform:translate(0,0);opacity:0}48%,74%{transform:translate(15px,-12px);opacity:1}96%,100%{transform:translate(0,0);opacity:0}}
+  @keyframes plant{0%,18%{transform:translate(0,7px);opacity:0}50%,80%{transform:translate(0,0);opacity:1}97%,100%{transform:translate(0,7px);opacity:0}}
+  @keyframes swing{0%,14%{transform:scaleX(1)}48%,72%{transform:scaleX(.12)}92%,100%{transform:scaleX(1)}}
+  @keyframes pass{0%{transform:translateX(-7px)}50%{transform:translateX(7px)}100%{transform:translateX(-7px)}}
+  @keyframes walk{0%{transform:translate(9px,33px)}50%{transform:translate(24px,20px)}100%{transform:translate(39px,33px)}}
+  @keyframes grow{0%{stroke-dashoffset:1}55%,90%{stroke-dashoffset:0}100%{stroke-dashoffset:1}}
+
+  .heroline{stroke-dasharray:1; stroke-dashoffset:1; animation:draw 3.4s ease forwards}
+  .boxL{opacity:0; animation:popL 3.6s ease-in-out infinite}
+  .boxR{opacity:0; animation:popR 3.6s ease-in-out infinite}
+  .flagL{opacity:0; animation:plant 3.6s ease-in-out infinite}
+  .flagR{opacity:0; animation:plant 3.6s ease-in-out infinite .3s}
+  .door{transform-box:fill-box; transform-origin:left center; animation:swing 3.4s ease-in-out infinite}
+  .pass{animation:pass 2.8s ease-in-out infinite}
+  .walker{animation:walk 3.2s ease-in-out infinite alternate}
+  .hair{stroke-dasharray:1; stroke-dashoffset:1; animation:grow 3.6s ease-in-out infinite}
+
+  @media (max-width:640px){
+    .wrap{padding:56px 20px 80px}
+    h1{font-size:34px}
+    .grid{grid-template-columns:1fr 1fr}
+    .cols,.check{grid-template-columns:1fr}
+    .stale ul{columns:1}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .heroline,.hair{animation:none; stroke-dashoffset:0}
+    .boxL{opacity:1; transform:translate(-15px,-12px)}
+    .boxR{opacity:1; transform:translate(15px,-12px)}
+    .flagL,.flagR{opacity:1; transform:translate(0,0)}
+    .door{transform:scaleX(.4)}
+    .pass,.walker{animation:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="lbl">Moodboard · <span class="terra">v2.0</span> · revisione</span>
+    <h1>Il filo unico
+      <span class="sub">Quando il disegno diventa il concetto.</span>
+    </h1>
+  </header>
+
+  <section>
+    <div class="head-row"><span class="secnum">00</span><h2>Cosa cambia dalla v1</h2></div>
+    <p>Nella prima versione il colore e il tratto erano un <em>accento</em>: servivano a marcare un pensiero, mai a decorarlo. La no-go list bandiva esplicitamente le icone illustrate e l'animazione.</p>
+    <p>La v2.0 prende una decisione diversa e consapevole: <strong style="font-weight:500;color:var(--ink)">il disegno smette di essere accento e diventa struttura</strong>. La bottega ora ha una mano che disegna, in vista, una sola linea. L'icona non è più un segnaposto neutro: è il gesto stesso del mestiere.</p>
+    <p>Questo sposta il registro: da "parete bianca silenziosa" a "parete bianca su cui qualcuno traccia". Resta silenzio, resta rigore; si aggiunge una mano. Di conseguenza la no-go list va riscritta, ed è quello che facciamo più sotto: non aprendo le porte a tutto, ma definendo dove finisce il disegno e dove comincerebbe il cartone.</p>
+  </section>
+
+  <section>
+    <div class="head-row"><span class="secnum">03</span><h2>Studio del tratto · il filo unico</h2></div>
+    <p>La stella polare è il disegno già in progetto: una linea che non si stacca mai dal foglio, si attraversa, si annoda, e lascia le code aperte. Escludiamo colori e geometrie piene. Resta solo il gesto.</p>
+
+    <div class="study">
+      <svg viewBox="0 0 600 200" role="img" aria-label="Specimen di linea continua">
+        <path class="heroline" pathLength="1" fill="none" stroke="#1A1A1A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"
+          d="M28 132 C56 52 142 44 152 116 C160 174 86 182 96 120 C104 70 188 66 236 96 C300 134 320 58 396 72 C452 82 446 146 504 138 C548 132 556 96 540 70 C528 50 498 58 504 86 C508 108 540 110 572 92"/>
+      </svg>
+    </div>
+    <span class="hairlink italic" style="font-style:italic;color:var(--muted);font-size:13px">Una sola linea, mai sollevata.</span>
+
+    <ul class="spec">
+      <li><b>Peso</b> ultra-sottile, fra 0,5 e 1px. In produzione <code>vector-effect: non-scaling-stroke</code>, così il filo resta hairline anche ingrandito.</li>
+      <li><b>Estremità</b> aperte, mai chiuse di netto. <code>stroke-linecap: round</code>.</li>
+      <li><b>Autoincrocio</b> ammesso e cercato: è la firma del riferimento (i loop, i nodi).</li>
+      <li><b>Irregolarità</b> voluta: il segno è di mano, non di compasso. Curve mai perfettamente simmetriche.</li>
+      <li><b>Colore</b> il filo è inchiostro <code>#1A1A1A</code>. Sage e terracotta restano funzionali, fuori dalla linea.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="head-row"><span class="secnum">04</span><h2>Le icone come scene</h2></div>
+    <p>Il principio nuovo: l'icona non <em>rappresenta</em> il significato, lo <em>mette in atto</em>. È una piccola scena che si recita in un gesto. Sotto, le sei competenze come scene a filo unico: concept a misura indicativa, da rifinire con un illustratore a dimensione reale.</p>
+
+    <div class="grid">
+      <!-- 01 Sviluppo internazionale -->
+      <div class="cell">
+        <div class="ico">
+          <svg viewBox="0 0 48 48" role="img" aria-label="Bandierine piantate su una linea di terra">
+            <path class="ln" d="M6 39c11-2 25-2 36 0"/>
+            <path class="ln" d="M24 39V15c4 0 7 2 8.4 4.2-2.2 2-5 3-8.4 3"/>
+            <g class="flagL"><path class="ln" d="M13 39V23c3 0 5.2 1.4 6.2 3-1.6 1.5-3.7 2.2-6.2 2.2"/></g>
+            <g class="flagR"><path class="ln" d="M35 39V23c3 0 5.2 1.4 6.2 3-1.6 1.5-3.7 2.2-6.2 2.2"/></g>
+          </svg>
+        </div>
+        <span class="cn">01</span>
+        <span class="nm">Sviluppo internazionale</span>
+        <span class="ds">Una bandierina si pianta, poi ne spuntano altre due sulla linea di terra. Mercati aperti, uno dopo l'altro.</span>
+      </div>
+
+      <!-- 02 Nuove categorie -->
+      <div class="cell">
+        <div class="ico">
+          <svg viewBox="0 0 48 48" role="img" aria-label="Una scatola da cui escono due scatole più piccole">
+            <path class="ln" d="M14 41c-2.6-7.5-2.6-16 0-23.5 7.5-2.6 16-2.6 23.5 0 2.6 7.5 2.6 16 0 23.5-7.5 2.6-16 2.6-23.5 0-2.4-7-2.5-14.5-.4-21.8"/>
+            <g class="boxL"><path class="ln" d="M18 22c2.6-1 5.6-1 8 0 1 2.6 1 5.6 0 8-2.6 1-5.6 1-8 0-.9-2.4-1-5 .3-7.6"/></g>
+            <g class="boxR"><path class="ln" d="M18 22c2.6-1 5.6-1 8 0 1 2.6 1 5.6 0 8-2.6 1-5.6 1-8 0-.9-2.4-1-5 .3-7.6"/></g>
+          </svg>
+        </div>
+        <span class="cn">02</span>
+        <span class="nm">Nuove categorie</span>
+        <span class="ds">Una scatola si apre e ne nascono due più piccole. Un tipo di prodotto che prima non c'era.</span>
+      </div>
+
+      <!-- 03 Licensing -->
+      <div class="cell">
+        <div class="ico">
+          <svg viewBox="0 0 48 48" role="img" aria-label="Un cerchio che passa fra due mani">
+            <path class="ln" d="M11 18c-4 2.5-4 9.5 0 12 2.5 1.6 4.8 1.6 7 .8"/>
+            <path class="ln" d="M11 19.5l.2 4M14 19l.2 4.5M17 19.6l.2 3.8"/>
+            <path class="ln" d="M37 18c4 2.5 4 9.5 0 12-2.5 1.6-4.8 1.6-7 .8"/>
+            <path class="ln" d="M37 19.5l-.2 4M34 19l-.2 4.5M31 19.6l-.2 3.8"/>
+            <circle class="ln pass" cx="24" cy="25" r="4.4"/>
+          </svg>
+        </div>
+        <span class="cn">03</span>
+        <span class="nm">Licensing</span>
+        <span class="ds">Un cerchio passa da una mano all'altra e ritorna. Il marchio affidato e restituito tra partner.</span>
+      </div>
+
+      <!-- 04 Retail -->
+      <div class="cell">
+        <div class="ico">
+          <svg viewBox="0 0 48 48" role="img" aria-label="Una porta che si apre">
+            <path class="ln" d="M12 41V18c0-4 14-8 24-2.5"/>
+            <path class="ln" d="M36 15.5V41"/>
+            <path class="ln" d="M7 41h34"/>
+            <path class="ln door" d="M14 19l20 1.5v19L14 41c-2.2-7.3-2.2-14.7 0-22z"/>
+          </svg>
+        </div>
+        <span class="cn">04</span>
+        <span class="nm">Strategia retail</span>
+        <span class="ds">Una soglia, e un battente che si apre e si richiude. Il negozio come gesto, non come grafico.</span>
+      </div>
+
+      <!-- 05 Marketing -->
+      <div class="cell">
+        <div class="ico">
+          <svg viewBox="0 0 48 48" role="img" aria-label="Una figura che attraversa un piccolo ponte">
+            <path class="ln" d="M5 37c7 0 9-15 19-15s12 15 19 15"/>
+            <path class="ln" d="M5 37h38"/>
+            <g class="walker">
+              <circle class="ln" cx="0" cy="-8" r="2.2"/>
+              <path class="ln" d="M0 -5.8v6.4M0 -2.4l-3.4 4.6M0 -2.4l3.4 4.6"/>
+            </g>
+          </svg>
+        </div>
+        <span class="cn">05</span>
+        <span class="nm">Marketing — end to end</span>
+        <span class="ds">Una figura attraversa il ponte da una sponda all'altra. Dalla strategia allo scaffale.</span>
+      </div>
+
+      <!-- 06 Riposizionamento -->
+      <div class="cell">
+        <div class="ico">
+          <svg viewBox="0 0 48 48" role="img" aria-label="Una testa pelata su cui ricrescono i capelli">
+            <path class="ln" d="M30 42V31c4.2-2.2 6.6-6.4 6.6-11.4C36.6 12 30.4 6.4 23 6.4S9.4 12 9.4 19.6c0 4.6 2.2 8.6 5.6 10.8"/>
+            <path class="ln hair" pathLength="1" d="M15 11c-1.2-4.4 2-7.6 7-7.6 5.4 0 7.6 4.2 6.2 8.4 3.2-2 6.6.2 6.6 4.4 0 5.4-4.4 8.4-9.6 9.4 4.2 1 6.4 4.2 5 8.4"/>
+          </svg>
+        </div>
+        <span class="cn">06</span>
+        <span class="nm">Riposizionamento</span>
+        <span class="ds">Una testa pelata su cui ricrescono i capelli. Cambia l'aspetto, non la persona.</span>
+      </div>
+    </div>
+    <p class="quiet" style="font-size:12.5px;margin-top:16px">Animazione: lenta, una sola ripetizione su trigger nella versione finale (qui in loop per mostrarle). Easing morbido, mai rimbalzi. <code>prefers-reduced-motion</code> sempre rispettato.</p>
+  </section>
+
+  <section>
+    <div class="head-row"><span class="secnum">05</span><h2>Colore, materia, tipografia · invariati</h2></div>
+    <p>La dicotomia regge: <span style="color:var(--sage-dark);font-weight:500">sage = pensiero</span>, <span style="color:var(--terra-dark);font-weight:500">terracotta = materia</span>. Neutri caldi, mai freddi. Il numero resta terracotta, il nome resta inchiostro. L'unica novità: il filo unico è sempre inchiostro, e i due colori non entrano mai dentro la linea, restano legenda e non riempimento. La regola madre non cambia: <em>il colore marca un pensiero, non decora una frase</em>.</p>
+  </section>
+
+  <section>
+    <div class="head-row"><span class="secnum">06</span><h2>No-go list · v2.0</h2></div>
+    <p>Cosa si apre, e con quali paletti perché il disegno non scivoli nel cartone.</p>
+
+    <div class="cols">
+      <div class="col enter">
+        <h3><span class="dot" style="background:var(--sage)"></span>Ora entra</h3>
+        <ul>
+          <li>Icone a filo unico, una sola linea</li>
+          <li>Micro-scene che recitano il significato</li>
+          <li>Draw-on e micro-animazioni</li>
+          <li>Autoincrocio del tratto</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h3><span class="dot" style="background:var(--terra)"></span>I paletti</h3>
+        <ul>
+          <li>Sempre una linea sola, inchiostro dominante</li>
+          <li>Animazione lenta (fra 600ms e 1,2s), easing morbido, mai rimbalzi o molleggi</li>
+          <li>Si attiva su trigger o una volta sola, mai loop infinito invadente nella nav</li>
+          <li>La scena enuncia un significato; se è solo carina, si taglia</li>
+          <li>Rispetto assoluto di <code>prefers-reduced-motion</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stale">
+      <span class="lbl">Resta no-go (da v1)</span>
+      <ul>
+        <li>Gradienti, anche sottili</li>
+        <li>Glassmorphism / neumorphism</li>
+        <li>Drop shadow decorative</li>
+        <li>Foto stock, in ogni forma</li>
+        <li>Carousel di loghi clienti</li>
+        <li>Counter animati da 0 a N</li>
+        <li>Pop-up newsletter, chatbot, live chat</li>
+        <li>Social feed embed</li>
+        <li>Video con autoplay + audio</li>
+        <li>Timer / urgenza ("2 posti rimasti")</li>
+        <li>Più di due famiglie tipografiche</li>
+        <li>Uppercase italico, testo in degradé</li>
+        <li>Trattino lungo (—) come inciso in prosa</li>
+        <li>Icone stock "amichevoli" già fatte</li>
+        <li>Animazione veloce o ammiccante</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="head-row"><span class="secnum">07</span><h2>Riferimenti · il disegno a una linea</h2></div>
+    <p class="quiet" style="font-size:13px">Si aggiunge un quarto mondo ai tre della v1. Studiare il <em>gesto</em>, mai copiare l'opera.</p>
+    <div class="refs">
+      <div class="world">
+        <div class="wt">Mondo 04 · Il filo unico</div>
+        <div class="names">Pablo Picasso (animali a una linea) · Henri Matisse (disegni di linea) · Jean Cocteau · Saul Steinberg · Egon Schiele (contorno) · Ellsworth Kelly (piante) · Pierre Le-Tan · studi contemporanei di one-line illustration (Quibe, Differantly).</div>
+      </div>
+      <div class="world">
+        <div class="wt">Dai tre mondi v1, ancora validi</div>
+        <div class="names">La pagina svizzera (Norm, Klim, Apartamento) · Aēsop e vicini (Le Labo, Hender Scheme, Frama) · l'Italia colta (Carlo Scarpa, Castiglioni, Cabana, Dimore).</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="head-row"><span class="secnum">08</span><h2>Sintesi del tono · v2.0</h2></div>
+    <div class="synth">
+      <p class="en">A workshop where serious work is done quietly. It leaves a single line.</p>
+      <p class="it">Una bottega dove si fa lavoro serio in silenzio. Resta una linea sola.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="head-row"><span class="secnum">09</span><h2>Checkpoint v2.0</h2></div>
+    <div class="check">
+      <div>
+        <span class="lbl">Deciso</span>
+        <ul>
+          <li><span class="mk">✓</span> Tratto a filo unico, più artistico</li>
+          <li><span class="mk">✓</span> Icone come scene che recitano</li>
+          <li><span class="mk">✓</span> 01 Sviluppo = bandierine (opzione A)</li>
+          <li><span class="mk">✓</span> No-go list aggiornata e con paletti</li>
+          <li><span class="mk">✓</span> Disegno promosso a struttura del concept</li>
+        </ul>
+      </div>
+      <div>
+        <span class="lbl">Prossimo</span>
+        <ul>
+          <li><span class="nx">→</span> Rifinire le 6 icone a misura reale con un illustratore</li>
+          <li><span class="nx">→</span> Decidere se anche il menu (Think/Make/Circle/Visit) diventa scena o resta linea statica</li>
+          <li><span class="nx">→</span> Pacchetto tecnico: sprite SVG o componente React</li>
+          <li><span class="nx">→</span> Font definitiva (la v1 indicava Inter / IBM Plex / Söhne)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>Matteo Martignoni · Moodboard v2.0 · Il filo unico</footer>
+
+</div>
+</body>
+</html>
