@@ -56,3 +56,42 @@ npm run build
 ```
 
 Output in `dist/`. Cloudflare Pages runs this automatically on every push.
+
+## Making changes
+
+`main` is what's live: every push to `main` triggers a Cloudflare rebuild and
+deploy. A push that fails to build means the change never goes live — so always
+build locally first.
+
+Standard loop:
+
+```bash
+git checkout main
+git pull origin main          # always pull first — keeps you in sync
+
+git checkout -b my-change     # work on a branch, not directly on main
+# ...make changes...
+
+npm install                   # only if dependencies changed
+npm run build                 # must end with "[build] Complete!", no errors
+
+git add -A
+git commit -m "Describe the change"
+
+git checkout main
+git merge my-change
+git push origin main          # Cloudflare deploys automatically
+```
+
+For tiny, safe edits (a typo, some copy) you can skip the branch and work
+directly on `main` — but still `pull` first and `build` before pushing.
+
+Two rules that prevent trouble:
+
+- **Always `git pull` before starting.** Skipping it causes the push to be
+  rejected when `main` has moved on (e.g. a file edited on GitHub's website).
+- **Edit in one place — your machine *or* GitHub's web UI, not both at once.**
+  If you do edit on the web, `git pull` before touching anything locally.
+
+If a push is rejected with a "fast-forward" error: `git pull origin main`,
+build again, then push again.
