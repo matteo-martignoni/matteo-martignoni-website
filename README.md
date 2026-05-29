@@ -9,8 +9,7 @@ Personal website. Brand development, premium and luxury. Italy and abroad.
 - **Cloudflare Pages** — hosting and CDN
 
 Hero and project videos are self-hosted MP4s in `public/`, served over the
-Cloudflare CDN. They are heavy (the largest is ~13 MB); compress them or move
-to Cloudflare Stream if delivery performance becomes a concern.
+Cloudflare CDN.
 
 ## Structure
 
