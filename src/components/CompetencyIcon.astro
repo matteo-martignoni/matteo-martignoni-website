@@ -8,8 +8,13 @@
 // animations work. Animation styles + reduced-motion live in styles/icons.css.
 //
 // The icon is decorative — the competency title sits next to it — so it is
-// aria-hidden. Animation is one-shot on entering the viewport (see script);
-// without JS the SVG stays in its readable final state.
+// aria-hidden.
+//
+// TRIGGER (site decision): on page load the icon shows its INITIAL ("before")
+// state and holds still; hovering the competency row plays the scene
+// before→after, then holds the final state, and re-hovering replays it.
+// (The icon set's default trigger is one-shot on viewport entry; we drive it
+// from hover here instead — same canonical animation CSS.)
 import '../styles/icons.css';
 
 interface Props {
@@ -72,22 +77,20 @@ const { number } = Astro.props;
 )}
 
 <script>
-  // One-shot reveal: mark every .icon, then play its animation once it scrolls
-  // into view. Without JS the icon stays in its final (readable) state.
-  // Reduced-motion is handled in CSS. Runs once (Astro bundles module scripts).
+  // On load each icon sits in its INITIAL state (.animate, no motion). Hovering
+  // the competency row plays the scene (.play → before→after, held via forwards);
+  // re-hovering restarts it (drop .play, force a reflow, re-add). Reduced-motion
+  // keeps everything static (handled in CSS). Runs once (Astro bundles scripts).
   const icons = document.querySelectorAll<SVGElement>('.icon');
   icons.forEach((el) => el.classList.add('animate'));
 
-  const io = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) {
-          e.target.classList.add('play');
-          io.unobserve(e.target);
-        }
-      });
-    },
-    { threshold: 0.5 }
-  );
-  icons.forEach((el) => io.observe(el));
+  document.querySelectorAll<HTMLElement>('details.competency summary').forEach((row) => {
+    const icon = row.closest('details.competency')?.querySelector<SVGElement>('.icon');
+    if (!icon) return;
+    row.addEventListener('mouseenter', () => {
+      icon.classList.remove('play');
+      void icon.getBoundingClientRect(); // force reflow so the animation restarts
+      icon.classList.add('play');
+    });
+  });
 </script>
