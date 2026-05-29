@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import cloudflare from '@astrojs/cloudflare';
+import sitemap from '@astrojs/sitemap';
 
 // Astro configuration
 // — Bilingual EN/IT: English at root (/), Italian at /it/
@@ -22,6 +23,14 @@ export default defineConfig({
       prefixDefaultLocale: false,
     },
   },
+  integrations: [
+    sitemap({
+      i18n: {
+        defaultLocale: 'en',
+        locales: { en: 'en', it: 'it' },
+      },
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },
