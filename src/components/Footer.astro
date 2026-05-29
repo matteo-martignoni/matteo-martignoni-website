@@ -10,16 +10,23 @@ const copy = {
     rights: 'All rights reserved.',
     linkedin: 'LinkedIn',
     vcard: 'vCard',
+    cv: 'CV',
   },
   it: {
     rights: 'Tutti i diritti riservati.',
     linkedin: 'LinkedIn',
     vcard: 'vCard',
+    cv: 'CV',
   },
 };
 
 const t = copy[lang];
 const year = new Date().getFullYear();
+
+// CV download — language-aware (EN / IT)
+const cvHref = lang === 'it'
+  ? '/cv/Matteo-Martignoni-CV-IT.pdf'
+  : '/cv/Matteo-Martignoni-CV-EN.pdf';
 ---
 
 <footer class="px-8 md:px-12 py-12 md:py-16 mt-16 border-t border-warm-200">
@@ -70,6 +77,14 @@ const year = new Date().getFullYear();
         class="text-xs text-ink-500 hover:text-terracotta-900 transition-colors duration-200"
       >
         {t.vcard}
+      </a>
+
+      <a
+        href={cvHref}
+        download
+        class="text-xs text-ink-500 hover:text-terracotta-900 transition-colors duration-200"
+      >
+        {t.cv}
       </a>
 
     </div>
