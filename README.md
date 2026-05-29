@@ -7,7 +7,10 @@ Personal website. Brand development, premium and luxury. Italy and abroad.
 - **Astro 5** — static site generator
 - **Tailwind CSS v4** — styling
 - **Cloudflare Pages** — hosting and CDN
-- **Cloudflare Stream** — video delivery
+
+Hero and project videos are self-hosted MP4s in `public/`, served over the
+Cloudflare CDN. They are heavy (the largest is ~13 MB); compress them or move
+to Cloudflare Stream if delivery performance becomes a concern.
 
 ## Structure
 
