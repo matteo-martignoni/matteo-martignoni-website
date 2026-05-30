@@ -11,6 +11,8 @@ interface Props {
   projectLabel?: string;
   linkPrefix?: string;
   isFirst?: boolean;
+  /** Enlarge the portrait by ~50% on mobile only (desktop unchanged) */
+  portraitMobileBoost?: boolean;
 }
 const {
   name,
@@ -20,6 +22,7 @@ const {
   projectLabel,
   linkPrefix = 'A project we worked on',
   isFirst = false,
+  portraitMobileBoost = false,
 } = Astro.props;
 ---
 <details
@@ -62,7 +65,7 @@ const {
 
     <!-- Right: illustrated portrait (optional) -->
     {portrait && (
-      <div class="w-36 md:w-44 shrink-0 self-start">
+      <div class:list={[portraitMobileBoost ? "w-[13.5rem]" : "w-36", "md:w-44 shrink-0 self-start"]}>
         <img
           src={portrait}
           alt=""

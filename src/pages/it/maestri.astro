@@ -39,6 +39,7 @@ const renderedMentors = await Promise.all(
         projectLabel={data.projectLabel}
         linkPrefix="Un progetto su cui abbiamo lavorato"
         isFirst={false}
+        portraitMobileBoost={data.slug === 'dennis-paphitis' || data.slug === 'renzo-rosso'}
       >
         <Content />
       </MaestroCard>
