@@ -46,9 +46,9 @@ const {
 
     <!-- Left: sage line + quote + link -->
     <div class="flex-1 pl-5 border-l-2 border-sage-100 mt-8 md:mt-0">
-      <blockquote class="maestro-quote">
+      <div class="maestro-body">
         <slot />
-      </blockquote>
+      </div>
       {projectHref && projectLabel && (
         <a
           href={projectHref}
@@ -79,14 +79,30 @@ const {
 <style>
   details summary::-webkit-details-marker { display: none; }
   details summary::marker { display: none; }
-  .maestro-quote :global(p) {
+  /* Quotation — markdown blockquote → italic, terracotta, serif */
+  .maestro-body :global(blockquote) {
+    margin: 0 0 1.25rem;
+    padding: 0;
+    border: 0;
+  }
+  .maestro-body :global(blockquote p) {
     font-family: var(--font-serif, Georgia, serif);
     font-style: italic;
     font-size: 1.0625rem;
-    line-height: 1.75;
-    color: var(--color-ink-900, #1A1A1A);
-    margin: 0;
+    line-height: 1.7;
+    color: var(--color-terracotta-700, #A55A3D);
+    margin: 0 0 0.6rem;
   }
+  .maestro-body :global(blockquote p:last-child) { margin-bottom: 0; }
+
+  /* Commentary prose — regular ink */
+  .maestro-body :global(p) {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--color-ink-700, #3D3D3A);
+    margin: 0 0 0.9rem;
+  }
+  .maestro-body :global(p:last-child) { margin-bottom: 0; }
 </style>
 
 <script>

@@ -8,14 +8,22 @@ interface Props {
 const { lang } = Astro.props;
 const homeUrl = lang === 'it' ? '/it/' : '/';
 
-// Language switcher — smart mapping to equivalent page in other language
+// Language switcher — map to the equivalent page in the other language.
+// Section slugs are localised (Think↔Pensiero, Circle↔Maestri, etc.), so a
+// naive /it prefix swap produces non-existent URLs (404). Use an explicit map.
+const routeMap = [
+  { en: '/',       it: '/it/'          },
+  { en: '/think',  it: '/it/pensiero'  },
+  { en: '/make',   it: '/it/manualita' },
+  { en: '/circle', it: '/it/maestri'   },
+  { en: '/visit',  it: '/it/bottega'   },
+];
 const path = Astro.url.pathname;
-const enUrl = path.startsWith('/it')
-  ? path.replace(/^\/it/, '') || '/'
-  : path;
-const itUrl = path.startsWith('/it')
-  ? path
-  : '/it' + (path === '/' ? '/' : path);
+const norm = (p: string) => (p !== '/' && p.endsWith('/') ? p.slice(0, -1) : p);
+const here = norm(path);
+const pair = routeMap.find((r) => norm(r.en) === here || norm(r.it) === here);
+const enUrl = pair ? pair.en : '/';
+const itUrl = pair ? pair.it : '/it/';
 
 // Active page helper for mobile nav
 function isActive(href: string): boolean {

@@ -10,4 +10,4 @@ projectSlug: "diesel"
 projectLabel: "Diesel, 2001 — 2007"
 ---
 
-Un marchio globale si costruisce dal niente. Le origini umili non sono un limite. Sono la condizione di partenza.
+> Un marchio globale si costruisce dal niente. Le origini umili non sono un limite. Sono la condizione di partenza.
