@@ -7,9 +7,11 @@ interface Props {
   title: string;
   tagline: string;
   intro: string;
+  quote?: string;
+  quoteAuthor?: string;
 }
 
-const { number, title, tagline, intro } = Astro.props;
+const { number, title, tagline, intro, quote, quoteAuthor } = Astro.props;
 ---
 
 <section class="max-w-3xl py-8 md:py-12">
@@ -32,5 +34,23 @@ const { number, title, tagline, intro } = Astro.props;
   <p class="text-ink-700 leading-relaxed">
     {intro}
   </p>
+
+  {quote && (
+    <figure class="mt-8 md:mt-10">
+      <blockquote>
+        <p
+          class="italic text-terracotta-700 text-lg md:text-xl leading-relaxed"
+          style="font-family: var(--font-serif, Georgia, serif);"
+        >
+          {quote}
+        </p>
+      </blockquote>
+      {quoteAuthor && (
+        <figcaption class="mt-3 text-xs uppercase tracking-widest text-ink-500">
+          {quoteAuthor}
+        </figcaption>
+      )}
+    </figure>
+  )}
 
 </section>
