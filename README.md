@@ -95,3 +95,53 @@ Two rules that prevent trouble:
 
 If a push is rejected with a "fast-forward" error: `git pull origin main`,
 build again, then push again.
+
+## OdE microsite (`/OdE`)
+
+An isolated, investor-facing microsite for **Officina degli Estratti** lives
+under `/OdE`. It is built inside this repo but is **not** part of the personal
+site: it has its own layout, its own brand system (Roboto + mint palette), and
+is reachable only via direct URL.
+
+### Structure
+
+```
+src/pages/OdE/         IT default (/OdE) + EN mirror under /OdE/en
+src/layouts/OdeLayout.astro   isolated layout (own header/footer/nav)
+src/components/ode/     OdE-only components
+src/styles/ode-theme.css      OdE brand tokens, scoped under .ode
+src/i18n/ode.ts        OdE UI strings + route map
+src/lib/ode/           AMSA LIVE simulation engine (ported + extended)
+docs/ode/PLAN.md        build plan and content gaps
+```
+
+Pages: home, three content pillars (`amsa`, `mercato`, `visione`) and the
+interactive dashboard (`amsa-live`).
+
+### Isolation (how it stays hidden)
+
+Four independent mechanisms keep `/OdE` off the personal site:
+
+1. **Separate layout** — `OdeLayout` renders its own header/footer; the host
+   `Header.astro` / `Navigation.astro` are never used, so no menu entry appears.
+2. **No inbound links** — nothing in the host pages links to `/OdE`.
+3. **`noindex, nofollow`** — every OdE page carries the robots meta tag.
+4. **Sitemap exclusion** — `astro.config.mjs` filters `/OdE` out of the sitemap.
+
+Local dev and deploy are the same as the rest of the site (`npm run dev`,
+push to `main`). The dashboard is fully client-side (no backend).
+
+### Enabling the navigation link later
+
+When OdE should become visible from the personal site, add an entry to the
+`nav` arrays in `src/components/Navigation.astro` **and** `src/components/Header.astro`
+(both the desktop `navItems` and the mobile menu), pointing to `/OdE`. Then
+remove the `noindex` meta in `src/layouts/OdeLayout.astro` and drop the
+`filter` line in `astro.config.mjs` so the pages re-enter the sitemap. No other
+change is required.
+
+### Data honesty
+
+The AMSA LIVE dashboard is a **demonstration simulation**, labelled as such in
+the UI; band assignments are real, intensities and scores are heuristics. Market
+figures carry `[FONTE]` / `[STIMA]` / `[BENCHMARK]` tags per the OdE brand rules.

@@ -1,0 +1,189 @@
+---
+import OdeLayout from '../../layouts/OdeLayout.astro';
+
+const lang = 'it' as const;
+const title = 'AMSA Live — Officina degli Estratti';
+const description =
+  "Dashboard interattiva che simula l'attività di AMSA: dalla materia prima all'acquisizione spettrale, dal profilo lipidico al Passaporto Lipidico Digitale.";
+---
+<OdeLayout title={title} description={description} lang={lang} active="live">
+  <header class="hero">
+    <p class="ode-eyebrow">Pilastro 04 · Il cuore dimostrativo</p>
+    <h1>AMSA Live</h1>
+    <p class="lede">
+      Manipola la materia prima e osserva, in tempo reale, come AMSA acquisisce lo spettro, ne ricava
+      il profilo lipidico, ne stima il rischio ossidativo e genera il Passaporto Lipidico Digitale.
+    </p>
+    <p class="ode-sim-badge">Simulazione dimostrativa</p>
+    <p class="notice">
+      Tutti i valori sono una simulazione dimostrativa a fini illustrativi, non misure di laboratorio
+      reali. Le assegnazioni delle bande spettrali sono corrette; le intensità e i punteggi sono
+      euristiche calibrate solo per chiarezza.
+    </p>
+  </header>
+
+  <!-- STEP 1 — INPUT -->
+  <section class="step step--input">
+    <div class="step-head"><span class="step-n">1</span><h2>Materia prima</h2></div>
+    <div class="controls">
+      <label>Grasso<select id="ode-fat"></select></label>
+      <label>Dieta / origine<select id="ode-diet"></select></label>
+      <label>Rendering<select id="ode-render"></select></label>
+    </div>
+  </section>
+
+  <!-- STEP 2 — ACTIVE CONTROL LOOP -->
+  <section class="step step--ai">
+    <div class="step-head"><span class="step-n">2</span><h2>Acquisizione spettrale · Active Control Loop</h2></div>
+    <p class="step-intro">L'agente regola i parametri del sensore a ogni iterazione, finché il quality control supera la soglia.</p>
+    <ol id="ode-acq" class="acq"></ol>
+  </section>
+
+  <!-- STEP 3 — SPECTRUM + PROFILE -->
+  <section class="step step--ai">
+    <div class="step-head"><span class="step-n">3</span><h2>Spettro e profilo lipidico</h2></div>
+    <div class="cols">
+      <div class="col">
+        <p class="step-intro">Spettro NIR/Raman simulato (intensità relativa vs numero d'onda, cm⁻¹).</p>
+        <div id="ode-spectrum" class="spectrum"></div>
+        <ul id="ode-bands" class="bands"></ul>
+      </div>
+      <div class="col">
+        <p class="step-intro">Profilo acidi grassi e parametri chiave.</p>
+        <div id="ode-fabars" class="fabars"></div>
+        <div id="ode-metrics" class="metrics"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 4 — RISK + PASSPORT -->
+  <section class="step step--out">
+    <div class="step-head"><span class="step-n">4</span><h2>Rischio ossidativo e Passaporto</h2></div>
+    <div class="cols">
+      <div class="col">
+        <div id="ode-risk" class="risk"></div>
+      </div>
+      <div class="col">
+        <div id="ode-passport" class="passport-out"></div>
+      </div>
+    </div>
+  </section>
+</OdeLayout>
+
+<script>
+  import { initDashboard } from '../../lib/ode/dashboard-ui';
+  initDashboard({
+    lang: 'it',
+    fatNames: { beef_tallow: 'Sego bovino', pork_lard: 'Grasso suino' },
+    fatLabel: 'Grasso', dietLabel: 'Dieta', renderLabel: 'Rendering',
+    acqTitle: 'Acquisizione', acqIntro: '', qcOk: 'QC ok', snr: 'SNR',
+    spectrumTitle: 'Spettro simulato', spectrumIntro: '', wavenumber: "Numero d'onda (cm⁻¹)",
+    profileTitle: 'Profilo', iodine: 'Iodine value', slip: 'Slip point', stability: 'Stabilità ossidativa',
+    riskTitle: 'Rischio', pv: 'Peroxide value (PV)', totox: 'TOTOX', codexOk: 'Entro specifica', codexOut: 'Fuori specifica',
+    shelfLife: 'Shelf-life prevista', days: 'giorni',
+    riskBands: { basso: 'Rischio basso', moderato: 'Rischio moderato', alto: 'Rischio alto' },
+    passportTitle: 'Passaporto', decision: 'Decisione industriale',
+  });
+</script>
+
+<style>
+  .hero { max-width: 46rem; padding: 0.5rem 0 0.5rem; }
+  .hero h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); margin: 0.4rem 0 1rem; }
+  .lede { font-size: 1.1rem; line-height: 1.6; color: var(--body); }
+  .notice { font-size: 0.82rem; color: var(--muted); line-height: 1.5; max-width: 44rem; margin-top: 0.7rem; }
+  .ode-sim-badge { margin-top: 1rem; }
+
+  .step { margin: 1.6rem 0; border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.4rem 1.5rem; }
+  .step--input { background: rgba(255, 195, 255, 0.16); border-color: var(--pink); }
+  .step--ai { background: rgba(179, 179, 249, 0.12); border-color: var(--lav-border); }
+  .step--out { background: rgba(199, 235, 210, 0.4); border-color: var(--green-border); }
+  .step-head { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.5rem; }
+  .step-n {
+    display: flex; align-items: center; justify-content: center;
+    width: 1.9rem; height: 1.9rem; border-radius: 999px;
+    font-family: var(--ode-font-mono); font-size: 0.85rem; color: #fff; background: var(--accent);
+  }
+  .step--input .step-n { background: var(--pink-ink); }
+  .step--ai .step-n { background: var(--lav-ink); }
+  .step--out .step-n { background: var(--green); }
+  .step h2 { font-size: 1.15rem; font-weight: 500; }
+  .step-intro { font-size: 0.88rem; color: var(--muted); margin: 0.2rem 0 0.9rem; }
+
+  .controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: 1rem; margin-top: 0.6rem; }
+  .controls label { display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.82rem; color: var(--accent); font-family: var(--ode-font-mono); }
+  .controls select {
+    font-family: var(--ode-font-sans); font-size: 0.92rem; color: var(--ink);
+    background: #fff; border: 1px solid var(--rule); border-radius: var(--ode-radius-sm);
+    padding: 0.5rem 0.6rem; cursor: pointer;
+  }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; }
+  @media (max-width: 760px) { .cols { grid-template-columns: 1fr; } }
+
+  /* Acquisition loop */
+  .acq { list-style: none; padding: 0; margin: 0.5rem 0 0; display: flex; flex-direction: column; gap: 0.5rem; }
+  .acq-step { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 0.6rem; background: #fff; border: 1px solid var(--rule); border-radius: var(--ode-radius-sm); padding: 0.55rem 0.8rem; position: relative; }
+  .acq-step.is-ok { border-color: var(--green-border); background: var(--green-soft); }
+  .acq-action { font-size: 0.88rem; color: var(--ink); }
+  .acq-meta { font-family: var(--ode-font-mono); font-size: 0.72rem; color: var(--muted); }
+  .acq-ok { font-family: var(--ode-font-mono); font-size: 0.68rem; color: var(--green); text-transform: uppercase; }
+  .acq-bar { grid-column: 1 / -1; height: 3px; background: var(--rule); border-radius: 2px; overflow: hidden; }
+  .acq-bar > span { display: block; height: 100%; background: var(--lav-border); transition: width 500ms ease; }
+  .acq-step.is-ok .acq-bar > span { background: var(--green-border); }
+
+  /* Spectrum */
+  .spectrum { background: #fff; border: 1px solid var(--rule); border-radius: var(--ode-radius-sm); padding: 0.4rem; }
+  .spectrum svg { width: 100%; height: auto; display: block; }
+  :global(.spec-area) { fill: rgba(154, 147, 232, 0.18); }
+  :global(.spec-line) { fill: none; stroke: var(--lav-ink); stroke-width: 1.5; }
+  :global(.spec-mark) { stroke: var(--pink-ink); stroke-width: 1; stroke-dasharray: 3 3; opacity: 0.55; }
+  :global(.spec-mark-lbl) { fill: var(--pink-ink); font-family: 'Roboto Mono', monospace; font-size: 9px; text-anchor: middle; }
+  :global(.spec-axis) { stroke: var(--rule); stroke-width: 1; }
+  :global(.spec-tick) { fill: var(--muted); font-family: 'Roboto Mono', monospace; font-size: 9px; text-anchor: middle; }
+  .bands { list-style: none; padding: 0; margin: 0.7rem 0 0; display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.78rem; color: var(--body); }
+  .bands li { display: flex; align-items: center; gap: 0.45rem; }
+  .band-dot { width: 0.55rem; height: 0.55rem; border-radius: 999px; background: var(--lav); border: 1px solid var(--lav-border); flex: none; }
+
+  /* FA bars */
+  .fabars { display: flex; flex-direction: column; gap: 0.4rem; }
+  .fa-row { display: grid; grid-template-columns: 3.2rem 1fr 3rem; align-items: center; gap: 0.5rem; }
+  .fa-lbl { font-family: var(--ode-font-mono); font-size: 0.78rem; color: var(--accent); }
+  .fa-track { height: 0.9rem; background: rgba(255, 255, 255, 0.5); border-radius: 3px; overflow: hidden; }
+  .fa-bar { display: block; height: 100%; background: var(--accent); border-radius: 3px; transition: width 450ms ease; }
+  .fa-val { font-family: var(--ode-font-mono); font-size: 0.76rem; color: var(--ink); text-align: right; }
+
+  /* Metrics */
+  .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-top: 1rem; }
+  .metric { background: #fff; border: 1px solid var(--rule); border-radius: var(--ode-radius-sm); padding: 0.6rem 0.7rem; }
+  .metric-v { display: block; font-size: 1.1rem; color: var(--ink); font-weight: 500; }
+  .metric-l { font-family: var(--ode-font-mono); font-size: 0.68rem; color: var(--muted); }
+
+  /* Risk gauge */
+  .gauge { background: #fff; border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1rem 1.2rem; }
+  .gauge-score { font-size: 2.6rem; font-weight: 300; color: var(--ink); line-height: 1; }
+  .gauge-score span { font-size: 1rem; color: var(--muted); }
+  .gauge-band { font-family: var(--ode-font-mono); font-size: 0.78rem; margin: 0.3rem 0 0.7rem; }
+  .gauge--basso .gauge-band { color: var(--green); }
+  .gauge--moderato .gauge-band { color: var(--lav-ink); }
+  .gauge--alto .gauge-band { color: var(--pink-ink); }
+  .gauge-track { height: 7px; background: var(--rule); border-radius: 4px; overflow: hidden; }
+  .gauge-track > span { display: block; height: 100%; transition: width 500ms ease; }
+  .gauge--basso .gauge-track > span { background: var(--green-border); }
+  .gauge--moderato .gauge-track > span { background: var(--lav-border); }
+  .gauge--alto .gauge-track > span { background: var(--pink-ink); }
+  .ox { margin-top: 0.9rem; display: flex; flex-direction: column; gap: 0.35rem; }
+  .ox-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--body); padding: 0.3rem 0; border-bottom: 1px solid var(--rule); }
+  .codex { font-family: var(--ode-font-mono); font-size: 0.7rem; padding: 0.12rem 0.45rem; border-radius: 3px; }
+  .codex--ok { background: var(--green-soft); color: var(--green); }
+  .codex--out { background: #ffe7fb; color: var(--pink-ink); }
+
+  /* Passport output */
+  .pp-decision { background: #fff; border: 1px solid var(--green-border); border-radius: var(--ode-radius); padding: 1rem 1.2rem; }
+  .pp-label { font-family: var(--ode-font-mono); font-size: 0.7rem; color: var(--green); text-transform: uppercase; letter-spacing: 0.04em; }
+  .pp-action { display: block; font-size: 1.4rem; font-weight: 500; color: var(--ink); margin: 0.2rem 0 0.5rem; }
+  .pp-rationale { font-size: 0.88rem; color: var(--body); margin: 0; line-height: 1.5; }
+  .pp-grid { display: grid; grid-template-columns: 1fr; gap: 0.5rem; margin-top: 0.8rem; }
+  .pp-grid > div { display: flex; justify-content: space-between; gap: 1rem; padding: 0.4rem 0; border-bottom: 1px solid var(--rule); }
+  .pp-k { font-family: var(--ode-font-mono); font-size: 0.74rem; color: var(--muted); }
+  .pp-v { font-size: 0.88rem; color: var(--ink); text-align: right; }
+</style>

@@ -1,0 +1,33 @@
+---
+// Numbered content section (brand: "1.", "2."… H1 in --ink). The number is
+// shown as a mono eyebrow; the heading uses a light Roboto weight.
+interface Props {
+  n?: string;       // e.g. "1", "2.1"
+  title: string;
+  id?: string;
+}
+const { n, title, id } = Astro.props;
+---
+<section class="sec" id={id}>
+  <header class="sec-head">
+    {n && <span class="sec-n">{n}</span>}
+    <h2>{title}</h2>
+  </header>
+  <div class="sec-body">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .sec { margin: 3rem 0; }
+  .sec-head { display: flex; align-items: baseline; gap: 0.7rem; margin-bottom: 1.1rem; }
+  .sec-n {
+    font-family: var(--ode-font-mono);
+    font-size: 0.95rem;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .sec h2 { font-size: clamp(1.3rem, 2.6vw, 1.7rem); }
+  .sec-body :global(p) { margin: 0 0 0.9rem; max-width: 42rem; }
+  .sec-body :global(p:last-child) { margin-bottom: 0; }
+</style>

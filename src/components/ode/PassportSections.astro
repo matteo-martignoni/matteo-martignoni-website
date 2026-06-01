@@ -1,0 +1,44 @@
+---
+// The nine sections of the Digital Lipid Passport (AMSA pitch §C).
+// Localised content passed in as `sections`.
+interface PassportSection {
+  n: string;
+  title: string;
+  fields: string;  // comma-listed key fields
+}
+interface Props {
+  sections: PassportSection[];
+}
+const { sections } = Astro.props;
+---
+<div class="passport">
+  {sections.map((s) => (
+    <article class="pcard">
+      <span class="pcard-n">{s.n}</span>
+      <h3 class="pcard-title">{s.title}</h3>
+      <p class="pcard-fields">{s.fields}</p>
+    </article>
+  ))}
+</div>
+
+<style>
+  .passport {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 0.8rem;
+    margin: 1.5rem 0;
+  }
+  .pcard {
+    background: #fff;
+    border: 1px solid var(--green-border);
+    border-radius: var(--ode-radius);
+    padding: 1rem 1.1rem;
+  }
+  .pcard-n {
+    font-family: var(--ode-font-mono);
+    font-size: 0.7rem;
+    color: var(--green);
+  }
+  .pcard-title { font-size: 1rem; color: var(--ink); margin: 0.2rem 0 0.5rem; font-weight: 500; }
+  .pcard-fields { font-family: var(--ode-font-mono); font-size: 0.72rem; line-height: 1.5; color: var(--muted); margin: 0; }
+</style>

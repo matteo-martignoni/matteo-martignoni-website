@@ -29,6 +29,9 @@ export default defineConfig({
         defaultLocale: 'en',
         locales: { en: 'en', it: 'it' },
       },
+      // Isolation: keep the /OdE microsite out of the sitemap so it is not
+      // discoverable from the host site. Reachable only via direct URL.
+      filter: (page) => !page.includes('/OdE'),
     }),
   ],
   vite: {

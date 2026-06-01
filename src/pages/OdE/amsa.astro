@@ -1,0 +1,164 @@
+---
+import OdeLayout from '../../layouts/OdeLayout.astro';
+import Section from '../../components/ode/Section.astro';
+import ControlLoop from '../../components/ode/ControlLoop.astro';
+import PassportSections from '../../components/ode/PassportSections.astro';
+import StatCard from '../../components/ode/StatCard.astro';
+import DataTag from '../../components/ode/DataTag.astro';
+
+const lang = 'it' as const;
+const title = 'AMSA — Officina degli Estratti';
+const description =
+  "AMSA, l'agente spettroscopico multimodale guidato dall'AI: Active Control Loop, Passaporto Lipidico Digitale e il vantaggio tecnologico di OdE.";
+
+const verbs = ['Acquisisce', 'Interpreta', 'Predice', 'Spiega', 'Suggerisce'];
+
+const problems = [
+  'Variano per specie, alimentazione, rendering, età del materiale e stoccaggio.',
+  'Ossidano facilmente: odore, irrancidimento, instabilità.',
+  'Hanno componenti spettralmente sovrapposti (trigliceridi, acidi grassi liberi, cere, steroli, aldeidi, idroperossidi).',
+  'Essendo prevalentemente sature, danno segnali di insaturazione deboli e una fluorescenza che disturba la misura.',
+  'Richiedono analisi esterne costose (GC-FID, GC-MS, NMR, valore di perossidi, p-anisidina).',
+];
+
+const passport = [
+  { n: '01', title: 'Identità', fields: 'sample_id, batch_id, origine, fornitore, rendering, process_history, cosmetic_grade_status' },
+  { n: '02', title: 'Spectral fingerprint', fields: 'NIR raw/preprocessed, Raman raw/corrected, acquisition_temperature, quality_score, OOD_score' },
+  { n: '03', title: 'Profilo acidi grassi', fields: 'saturi / mono / poli, lunghezza catena, omega (opz.), GC-FID confidence' },
+  { n: '04', title: 'Ossidazione e stabilità', fields: 'PV, p-anisidina, TBARS, TOTOX = 2·PV + AnV, acid value, iodine value, Oxidative Risk Score, shelf-life' },
+  { n: '05', title: 'Fisico e formulativo', fields: 'DSC, melting_range, crystallinity_proxy, viscosità, colore, odor_score' },
+  { n: '06', title: 'Biomarcatori', fields: 'unsaturation_index, CH₂/CH₃, carbonyl_index, aldeidi, idroperossidi, cere, steroli' },
+  { n: '07', title: 'Raccomandazione processo', fields: 'accetta / purifica / deodora, adsorbente, blend_with, external_test_required' },
+  { n: '08', title: 'Explainability', fields: 'top_spectral_regions, interpretazione chimica, confidence, test confermativi' },
+  { n: '09', title: 'Governance', fields: 'model_version, calibration_version, operator, timestamp, data_hash' },
+];
+---
+<OdeLayout title={title} description={description} lang={lang} active="amsa">
+  <header class="hero">
+    <p class="ode-eyebrow">Pilastro 01 · La tecnologia</p>
+    <h1>AMSA</h1>
+    <p class="lede">
+      AMSA è l'<strong>AI-driven Multimodal Spectroscopic Agent</strong>: non un modello che predice
+      soltanto, ma un agente operativo. Per ogni lotto acquisisce, interpreta, predice, spiega e
+      suggerisce il processo, e costruisce un Passaporto Lipidico Digitale.
+    </p>
+    <div class="verbs">
+      {verbs.map((v) => <span class="verb">{v}</span>)}
+    </div>
+  </header>
+
+  <Section n="1" title="Il problema: matrici lipidiche difficili">
+    <p>
+      Le matrici lipidiche animali (sego bovino, grasso suino, lanolina, sebo, frazioni cerose e
+      trigliceridiche) sono chimicamente ricche ma industrialmente difficili da standardizzare.
+    </p>
+    <ul class="problems">
+      {problems.map((p) => <li>{p}</li>)}
+    </ul>
+    <p class="quote">
+      La domanda ricorrente del cliente cosmetico: "questo ingrediente è stabile, non irrancidisce,
+      non sviluppa odore, ha texture riproducibile, posso usarlo in una formula leave-on?"
+    </p>
+  </Section>
+
+  <Section n="2" title="Active Control Loop: governare la misura">
+    <p>
+      Il cuore tecnico di AMSA. L'agente non riceve passivamente lo spettro: <strong>regola i parametri
+      del sensore</strong> per ottenere il miglior dato possibile su matrici sporche, semi-solide,
+      fluorescenti o termicamente instabili. È la differenza fra subire la misura e governarla.
+    </p>
+
+    <ControlLoop
+      inputLabel="Campione"
+      loopLabel="itera finché il QC non è accettabile"
+      loopNodes={['Scout scan', 'Quality Assessor', 'Policy Controller', 'Azione hardware']}
+      exitGate="QC ok"
+      predict="Predizione + XAI"
+      outcome="Passaporto Lipidico Digitale"
+    />
+
+    <p>
+      Ogni iterazione sceglie l'azione che riduce di più l'incertezza chimica, al minor costo, senza
+      alterare il campione. La funzione obiettivo:
+    </p>
+    <p class="formula">Reward = InformationGain − α·Time − β·Cost − γ·DegradationRisk</p>
+    <p>
+      Il termine di rischio di degradazione è un budget fisico verificabile, ancorato a parametri
+      misurabili (PV, TBARS) e alla soglia Codex CXS 211-1999: perossidi al massimo 10 meq O₂/kg
+      <DataTag kind="fonte" label="Codex Alimentarius CXS 211-1999" />. L'agente deve inoltre
+      deconvolvere la chimica reale (irreversibile) dall'effetto fisico-strumentale (reversibile),
+      per non scambiare un artefatto per un segnale.
+    </p>
+  </Section>
+
+  <Section n="3" title="Passaporto Lipidico Digitale">
+    <p>
+      Il prodotto informativo centrale di AMSA. Non un certificato statico, ma un dossier dinamico che
+      collega identità, origine, processo, spettri, analisi di riferimento, biomarcatori, modelli,
+      spiegazioni e decisione industriale del lotto.
+    </p>
+    <PassportSections sections={passport} />
+    <p>
+      L'output è una <strong>decisione industriale</strong> sul lotto, con spiegazione chimica:
+      accetta, purifica, deodora, miscela, testa esternamente o scarta.
+    </p>
+  </Section>
+
+  <Section n="4" title="Vantaggio tecnologico: il fossato">
+    <p>
+      Il vantaggio competitivo non è la macchina, che chiunque può acquistare, ma la combinazione fra
+      provenienza tracciabile, dati proprietari e modelli interpretabili: un fossato che si approfondisce
+      a ogni lotto analizzato.
+    </p>
+    <div class="stats">
+      <StatCard value="> 0,85" caption="Target R² per l'indice di insaturazione (proxy iodine value); in letteratura Raman fino a 0,97." kind="stima" source="Target di piano; benchmark Beattie et al., 2006" />
+      <StatCard value="> 90%" caption="Target di classificazione conforme/non conforme; benchmark PLS-DA fino al 99,6%." kind="stima" source="Target di piano; benchmark Beattie 2007" />
+      <StatCard value="+20–40%" caption="Premium di prezzo stimato rispetto a un ingrediente lipidico non qualificato." kind="stima" source="Stima di piano OdE" />
+    </div>
+    <p class="quote big">"Un concorrente può comprare uno spettrometro, non questa base."</p>
+  </Section>
+</OdeLayout>
+
+<style>
+  .hero { max-width: 44rem; padding: 0.5rem 0 1rem; }
+  .hero h1 { font-size: clamp(2.4rem, 6vw, 3.4rem); margin: 0.4rem 0 1rem; }
+  .lede { font-size: 1.1rem; line-height: 1.6; color: var(--body); }
+  .verbs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.4rem; }
+  .verb {
+    font-family: var(--ode-font-mono);
+    font-size: 0.78rem;
+    color: var(--accent);
+    background: var(--pill);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 0.3rem 0.8rem;
+  }
+  .problems { padding-left: 1.2rem; line-height: 1.7; max-width: 42rem; }
+  .problems li { margin-bottom: 0.4rem; }
+  .problems li::marker { color: var(--accent); }
+  .quote {
+    border-left: 3px solid var(--lav-border);
+    padding: 0.4rem 0 0.4rem 1rem;
+    color: var(--body);
+    font-style: italic;
+    background: rgba(255, 255, 255, 0.28);
+    border-radius: 0 var(--ode-radius) var(--ode-radius) 0;
+  }
+  .quote.big { font-size: 1.2rem; font-style: italic; }
+  .formula {
+    font-family: var(--ode-font-mono);
+    font-size: 0.9rem;
+    color: var(--ink);
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: var(--ode-radius);
+    padding: 0.9rem 1.1rem;
+    overflow-x: auto;
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 0.8rem;
+    margin: 1.4rem 0;
+  }
+</style>

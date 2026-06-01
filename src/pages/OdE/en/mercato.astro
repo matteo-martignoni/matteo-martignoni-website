@@ -1,0 +1,132 @@
+---
+import OdeLayout from '../../../layouts/OdeLayout.astro';
+import Section from '../../../components/ode/Section.astro';
+import BarChart from '../../../components/ode/BarChart.astro';
+import StatCard from '../../../components/ode/StatCard.astro';
+import DataTag from '../../../components/ode/DataTag.astro';
+
+const lang = 'en' as const;
+const title = 'Market — Officina degli Estratti';
+const description =
+  'OdE market validation: growth of reference markets, willingness to pay, three-axis competition and the Digital Product Passport regulatory window.';
+
+const cagr = [
+  { label: 'Cosmetic emollients', value: 5.5, display: '≈ 5.5%' },
+  { label: 'Natural cosmetics (EU)', value: 6.4, display: '6.4%' },
+  { label: 'Upcycled ingredients', value: 6.7, display: '6.7%' },
+  { label: 'Specialty oleochemistry', value: 6.73, display: '6.73%' },
+  { label: 'Clean beauty (EU)', value: 13.81, display: '13.81%', highlight: true },
+];
+
+const competitors = [
+  { axis: 'Raw material', who: 'SARIA, Darling Ingredients', pos: 'Large renderers (scale rendering, biodiesel, collagen)', gap: 'Volume, not traceable cosmetic qualification' },
+  { axis: 'Finished product', who: 'Stéarinerie Dubois, Gattefossé, Croda', pos: 'Cosmetic esters, strong plant-based push', gap: 'Plant origin: traceable circular animal lipids are uncovered' },
+  { axis: 'Technology', who: 'Bruker, Thermo Fisher, Agilent', pos: 'Spectroscopic instrumentation', gap: 'They sell the machine, not the passport or supply-chain data' },
+];
+
+const timeline = [
+  { date: '18 Jul 2024', label: 'ESPR in force', note: 'EU Reg. 2024/1781 (Ecodesign for Sustainable Products).' },
+  { date: 'Apr 2025', label: 'First working plan', note: 'ESPR working plan published.' },
+  { date: 'from 2027', label: 'DPP mandatory', note: 'Digital Product Passport rolling out: the Lipid Passport anticipates the obligation.' },
+];
+---
+<OdeLayout title={title} description={description} lang={lang} active="mercato">
+  <header class="hero">
+    <p class="ode-eyebrow">Pillar 02 · The validation</p>
+    <h1>Market validation</h1>
+    <p class="lede">
+      Demand for upcycled, traceable cosmetic ingredients is growing fast, and the intersection of
+      circular animal lipids with AI-driven quality control is a still-uncontested niche.
+    </p>
+  </header>
+
+  <Section n="1" title="Reference markets grow where it matters">
+    <p>
+      OdE sits at the intersection of several segments, all in structural growth. European clean beauty
+      is the fastest — double-digit.
+    </p>
+    <BarChart
+      bars={cagr}
+      caption="Compound annual growth rates (CAGR) of the reference markets. Sources: Emergen Research, SNS Insider, Future Market Insights, Market Data Forecast (2023–2026). Values [FONTE]."
+    />
+    <p class="note">
+      <DataTag kind="bench" /> There is no official market figure for the exact niche (traceable
+      circular animal lipids for cosmetics): the sizing is a triangulation across adjacent markets, not
+      a consolidated TAM.
+    </p>
+  </Section>
+
+  <Section n="2" title="Demand and willingness to pay">
+    <div class="stats">
+      <StatCard value="+196%" caption="Growth in personal-care launches with upcycled ingredients (Apr 2020 – Mar 2025)." kind="fonte" source="Innova Market Insights, 2025" />
+      <StatCard value="46%" caption="Consumers willing to pay more for sustainability (52% always consider it)." kind="fonte" source="Innova Market Insights, 2025" />
+      <StatCard value="+20–50%" caption="Price premium of natural cosmetics over mass-market." kind="fonte" source="MarkSpark Solutions, 2024" />
+      <StatCard value="€3.32bn" caption="Italian natural & sustainable cosmetics market end-2024, 24.8% of the total." kind="fonte" source="Cosmetica Italia, Mar 2025" />
+    </div>
+  </Section>
+
+  <Section n="3" title="Competition across three axes">
+    <p>
+      No player offers the integrated package “ingredient + digital passport + AI-driven QC”. OdE lives
+      at the intersection of the three axes, where traceable provenance is the distinctive factor.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Axis</th><th>Who</th><th>Positioning</th><th>Uncovered space</th></tr>
+        </thead>
+        <tbody>
+          {competitors.map((c) => (
+            <tr><td class="td-axis">{c.axis}</td><td>{c.who}</td><td>{c.pos}</td><td>{c.gap}</td></tr>
+          ))}
+          <tr class="td-ode">
+            <td class="td-axis">OdE</td>
+            <td>Officina degli Estratti</td>
+            <td>Traceable circular animal lipid (Parmigiano Reggiano chain) + AMSA</td>
+            <td>Occupies the intersection: ingredient, passport and AI QC in one player</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </Section>
+
+  <Section n="4" title="The regulatory clock: Digital Product Passport">
+    <p>
+      A Digital Lipid Passport is not only a commercial differentiator: it anticipates an upcoming
+      regulatory obligation, turning a compliance cost into a sellable product.
+    </p>
+    <ol class="timeline">
+      {timeline.map((t) => (
+        <li>
+          <span class="tl-date">{t.date}</span>
+          <span class="tl-label">{t.label}</span>
+          <span class="tl-note">{t.note}</span>
+        </li>
+      ))}
+    </ol>
+    <p class="note"><DataTag kind="fonte" label="European Commission, ESPR 2024/1781" /> EU Regulation 2024/1781 and ESPR working plan.</p>
+  </Section>
+</OdeLayout>
+
+<style>
+  .hero { max-width: 44rem; padding: 0.5rem 0 1rem; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0.4rem 0 1rem; }
+  .lede { font-size: 1.1rem; line-height: 1.6; color: var(--body); }
+  .note { font-size: 0.85rem; color: var(--muted); line-height: 1.5; max-width: 42rem; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 0.8rem; }
+  .table-wrap { overflow-x: auto; margin: 1.2rem 0; }
+  table { border-collapse: collapse; width: 100%; min-width: 36rem; }
+  th, td { border: 0; padding: 0.7rem 0.9rem; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 500; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 1px solid var(--rule); }
+  td { color: var(--body); font-size: 0.9rem; border-bottom: 1px solid var(--rule); }
+  .td-axis { font-weight: 500; color: var(--ink); white-space: nowrap; }
+  .td-ode td { background: var(--green-soft); }
+  .td-ode .td-axis { color: var(--green); }
+  .timeline { list-style: none; padding: 0; margin: 1.2rem 0; }
+  .timeline li { display: grid; grid-template-columns: 7rem 1fr; grid-template-areas: 'date label' 'date note'; gap: 0.1rem 1.2rem; padding: 0.9rem 0 0.9rem 1.2rem; border-left: 2px solid var(--green-border); position: relative; }
+  .timeline li::before { content: ''; position: absolute; left: -0.45rem; top: 1.1rem; width: 0.8rem; height: 0.8rem; border-radius: 999px; background: var(--bg); border: 2px solid var(--green-border); }
+  .tl-date { grid-area: date; font-family: var(--ode-font-mono); font-size: 0.8rem; color: var(--accent); }
+  .tl-label { grid-area: label; font-weight: 500; color: var(--ink); }
+  .tl-note { grid-area: note; font-size: 0.88rem; color: var(--body); }
+  @media (max-width: 520px) { .timeline li { grid-template-columns: 1fr; grid-template-areas: 'date' 'label' 'note'; } }
+</style>
