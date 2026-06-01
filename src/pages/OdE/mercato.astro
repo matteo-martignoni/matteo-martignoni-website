@@ -1,22 +1,148 @@
 ---
 import OdeLayout from '../../layouts/OdeLayout.astro';
-import SectionStub from '../../components/ode/SectionStub.astro';
-import { odeMeta } from '../../i18n/ode';
+import Section from '../../components/ode/Section.astro';
+import BarChart from '../../components/ode/BarChart.astro';
+import StatCard from '../../components/ode/StatCard.astro';
+import DataTag from '../../components/ode/DataTag.astro';
+
 const lang = 'it' as const;
-const m = odeMeta[lang].mercato;
+const title = 'Mercato — Officina degli Estratti';
+const description =
+  'Validazione di mercato di OdE: crescita dei mercati di riferimento, disponibilità a pagare, competizione su tre assi e la finestra normativa del Digital Product Passport.';
+
+const cagr = [
+  { label: 'Emollienti cosmetici', value: 5.5, display: '≈ 5,5%' },
+  { label: 'Cosmetici naturali (UE)', value: 6.4, display: '6,4%' },
+  { label: 'Ingredienti upcycled', value: 6.7, display: '6,7%' },
+  { label: 'Oleochimica specialistica', value: 6.73, display: '6,73%' },
+  { label: 'Clean beauty (UE)', value: 13.81, display: '13,81%', highlight: true },
+];
+
+const competitors = [
+  { axis: 'Materia prima', who: 'SARIA, Darling Ingredients', pos: 'Grandi renderer (rendering di scala, biodiesel, collagene)', gap: 'Volume, non qualificazione cosmetica tracciata' },
+  { axis: 'Prodotto finito', who: 'Stéarinerie Dubois, Gattefossé, Croda', pos: 'Esteri cosmetici, forte spinta plant-based', gap: 'Origine vegetale: l’animale circolare tracciato è scoperto' },
+  { axis: 'Tecnologia', who: 'Bruker, Thermo Fisher, Agilent', pos: 'Strumentazione spettroscopica', gap: 'Vendono la macchina, non il passaporto né i dati di filiera' },
+];
+
+const timeline = [
+  { date: '18 lug 2024', label: 'ESPR in vigore', note: 'Reg. UE 2024/1781 (Ecodesign for Sustainable Products).' },
+  { date: 'apr 2025', label: 'Primo working plan', note: 'Pubblicato il piano di lavoro ESPR.' },
+  { date: 'dal 2027', label: 'DPP obbligatorio', note: 'Digital Product Passport in roll-out: il Passaporto Lipidico anticipa l’obbligo.' },
+];
 ---
-<OdeLayout title={m.title} description={m.description} lang={lang} active="mercato">
-  <SectionStub
-    lang={lang}
-    n="02"
-    title="Validazione di mercato"
-    summary="La domanda di ingredienti cosmetici upcycled e tracciabili è in forte crescita, e l'incrocio fra lipide animale circolare e controllo qualità AI-driven è una nicchia ancora poco presidiata."
-    willContain={[
-      'Dimensione dei mercati di riferimento e tassi di crescita (CAGR)',
-      'Trend e driver: upcycling cosmetico, disponibilità a pagare, premium di prezzo',
-      'Competizione su tre assi (materia prima, prodotto finito, tecnologia)',
-      'Orologio normativo: Digital Product Passport obbligatorio dal 2027',
-      'Visualizzazioni: grafici di crescita, tabella comparativa competitor',
-    ]}
-  />
+<OdeLayout title={title} description={description} lang={lang} active="mercato">
+  <header class="hero">
+    <p class="ode-eyebrow">Pilastro 02 · La validazione</p>
+    <h1>Validazione di mercato</h1>
+    <p class="lede">
+      La domanda di ingredienti cosmetici upcycled e tracciabili cresce in fretta, e l'incrocio fra
+      lipide animale circolare e controllo qualità AI-driven è una nicchia ancora poco presidiata.
+    </p>
+  </header>
+
+  <Section n="1" title="I mercati di riferimento crescono dove serve">
+    <p>
+      OdE si posiziona all'intersezione di più segmenti, tutti in crescita strutturale. Il clean beauty
+      europeo è il più rapido, a doppia cifra.
+    </p>
+    <BarChart
+      bars={cagr}
+      caption="Tassi di crescita annui composti (CAGR) dei mercati di riferimento. Fonti: Emergen Research, SNS Insider, Future Market Insights, Market Data Forecast (2023–2026). Valori [FONTE]."
+    />
+    <p class="note">
+      <DataTag kind="bench" /> Non esiste una cifra di mercato ufficiale per la nicchia esatta
+      (lipide animale circolare tracciato per cosmetica): il dimensionamento è una triangolazione fra
+      mercati adiacenti, non un TAM consolidato.
+    </p>
+  </Section>
+
+  <Section n="2" title="Domanda e disponibilità a pagare">
+    <div class="stats">
+      <StatCard value="+196%" caption="Crescita dei lanci di prodotti personal care con ingredienti upcycled (apr 2020 – mar 2025)." kind="fonte" source="Innova Market Insights, 2025" />
+      <StatCard value="46%" caption="Consumatori disposti a pagare di più per la sostenibilità (52% la considera sempre)." kind="fonte" source="Innova Market Insights, 2025" />
+      <StatCard value="+20–50%" caption="Premium di prezzo dei cosmetici naturali sui mass-market." kind="fonte" source="MarkSpark Solutions, 2024" />
+      <StatCard value="3,32 mld €" caption="Mercato italiano dei cosmetici naturali e sostenibili a fine 2024, pari al 24,8% del totale." kind="fonte" source="Cosmetica Italia, mar 2025" />
+    </div>
+  </Section>
+
+  <Section n="3" title="Competizione su tre assi">
+    <p>
+      Nessun attore offre il pacchetto integrato "ingrediente + passaporto digitale + QC AI-driven".
+      OdE vive sull'incrocio dei tre assi, dove la provenienza tracciata è il fattore distintivo.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Asse</th><th>Chi</th><th>Posizionamento</th><th>Spazio scoperto</th></tr>
+        </thead>
+        <tbody>
+          {competitors.map((c) => (
+            <tr><td class="td-axis">{c.axis}</td><td>{c.who}</td><td>{c.pos}</td><td>{c.gap}</td></tr>
+          ))}
+          <tr class="td-ode">
+            <td class="td-axis">OdE</td>
+            <td>Officina degli Estratti</td>
+            <td>Lipide animale circolare tracciato (filiera Parmigiano Reggiano) + AMSA</td>
+            <td>Occupa l'incrocio: ingrediente, passaporto e QC AI in un solo attore</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </Section>
+
+  <Section n="4" title="L'orologio normativo: Digital Product Passport">
+    <p>
+      Un Passaporto Lipidico Digitale non è solo un differenziatore commerciale: anticipa un obbligo
+      normativo in arrivo, trasformando un costo di conformità in prodotto vendibile.
+    </p>
+    <ol class="timeline">
+      {timeline.map((t) => (
+        <li>
+          <span class="tl-date">{t.date}</span>
+          <span class="tl-label">{t.label}</span>
+          <span class="tl-note">{t.note}</span>
+        </li>
+      ))}
+    </ol>
+    <p class="note"><DataTag kind="fonte" label="Commissione UE, ESPR 2024/1781" /> Regolamento UE 2024/1781 e working plan ESPR.</p>
+  </Section>
 </OdeLayout>
+
+<style>
+  .hero { max-width: 44rem; padding: 0.5rem 0 1rem; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0.4rem 0 1rem; }
+  .lede { font-size: 1.1rem; line-height: 1.6; color: var(--body); }
+  .note { font-size: 0.85rem; color: var(--muted); line-height: 1.5; max-width: 42rem; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 0.8rem; }
+
+  .table-wrap { overflow-x: auto; margin: 1.2rem 0; }
+  table { border-collapse: collapse; width: 100%; min-width: 36rem; }
+  th, td { border: 0; padding: 0.7rem 0.9rem; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-weight: 500; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 1px solid var(--rule); }
+  td { color: var(--body); font-size: 0.9rem; border-bottom: 1px solid var(--rule); }
+  .td-axis { font-weight: 500; color: var(--ink); white-space: nowrap; }
+  .td-ode td { background: var(--green-soft); }
+  .td-ode .td-axis { color: var(--green); }
+
+  .timeline { list-style: none; padding: 0; margin: 1.2rem 0; display: flex; flex-direction: column; gap: 0; }
+  .timeline li {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    grid-template-areas: 'date label' 'date note';
+    gap: 0.1rem 1.2rem;
+    padding: 0.9rem 0 0.9rem 1.2rem;
+    border-left: 2px solid var(--green-border);
+    position: relative;
+  }
+  .timeline li::before {
+    content: ''; position: absolute; left: -0.45rem; top: 1.1rem;
+    width: 0.8rem; height: 0.8rem; border-radius: 999px;
+    background: var(--bg); border: 2px solid var(--green-border);
+  }
+  .tl-date { grid-area: date; font-family: var(--ode-font-mono); font-size: 0.8rem; color: var(--accent); }
+  .tl-label { grid-area: label; font-weight: 500; color: var(--ink); }
+  .tl-note { grid-area: note; font-size: 0.88rem; color: var(--body); }
+  @media (max-width: 520px) {
+    .timeline li { grid-template-columns: 1fr; grid-template-areas: 'date' 'label' 'note'; }
+  }
+</style>

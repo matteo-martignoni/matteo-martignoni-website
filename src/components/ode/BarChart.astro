@@ -1,0 +1,54 @@
+---
+// Native horizontal bar chart (no JS, no chart lib). Bars are sized as a
+// percentage of the max value. Used for market comparisons (e.g. CAGR).
+interface Bar {
+  label: string;
+  value: number;     // numeric value for sizing
+  display?: string;  // text shown on the bar (defaults to value)
+  highlight?: boolean; // emphasise (e.g. OdE's segment)
+}
+interface Props {
+  bars: Bar[];
+  unit?: string;     // appended to display when display not given
+  caption?: string;
+}
+const { bars, unit = '', caption } = Astro.props;
+const max = Math.max(...bars.map((b) => b.value));
+---
+<figure class="chart">
+  <div class="rows" role="img" aria-label={caption ?? 'Grafico a barre'}>
+    {bars.map((b) => (
+      <div class:list={['row', b.highlight && 'is-hl']}>
+        <span class="row-label">{b.label}</span>
+        <div class="track">
+          <div class="bar" style={`width:${Math.max(4, (b.value / max) * 100)}%`}></div>
+          <span class="row-value">{b.display ?? `${b.value}${unit}`}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .chart { margin: 1.5rem 0; }
+  .rows { display: flex; flex-direction: column; gap: 0.7rem; }
+  .row { display: grid; grid-template-columns: minmax(8rem, 14rem) 1fr; align-items: center; gap: 0.9rem; }
+  .row-label { font-size: 0.85rem; color: var(--body); text-align: right; }
+  .track { position: relative; display: flex; align-items: center; gap: 0.6rem; }
+  .bar {
+    height: 1.5rem;
+    background: var(--accent);
+    border-radius: var(--ode-radius-sm);
+    min-width: 2px;
+    transition: width 600ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .is-hl .bar { background: var(--green); box-shadow: 0 0 0 2px var(--green-border); }
+  .row-value { font-family: var(--ode-font-mono); font-size: 0.8rem; color: var(--ink); white-space: nowrap; }
+  .is-hl .row-label { font-weight: 500; color: var(--ink); }
+  figcaption { font-size: 0.78rem; color: var(--muted); margin-top: 0.8rem; }
+  @media (max-width: 560px) {
+    .row { grid-template-columns: 1fr; gap: 0.25rem; }
+    .row-label { text-align: left; }
+  }
+</style>

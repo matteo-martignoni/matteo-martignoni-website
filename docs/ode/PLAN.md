@@ -61,20 +61,24 @@ Banner permanente "Simulazione dimostrativa" (vincolo). Grafici nativi CSS/SVG.
 - Da OdE: palette, tipografia, tono (token in `src/styles/ode-theme.css`, scoped
   `.ode`, isolati dal tema host).
 
-## ⚠️ Gap aperti (input committente)
+## Brand system (ricevuto e implementato)
 
-- **`OdE_Brand_System` mancante.** Non presente su Drive/Notion. I token attuali
-  in `ode-theme.css` sono **placeholder neutri** marcati `TODO brand`. In attesa
-  del file ufficiale per implementare palette/tipografia esatte.
-- **TAM/SAM/SOM**: nessuna cifra ufficiale per la nicchia; usare la forbice dei
-  mercati adiacenti, non un dato consolidato.
+`OdE_Brand_System` fornito dal committente e implementato in `ode-theme.css`
+(token esatti, scoped `.ode`): menta `#afdfc7`, inchiostro `#1c2620`, accento
+verde `#2f5a44`, accenti diagramma lavanda/rosa/verde, Roboto + Roboto Mono,
+pesi leggeri, niente gradienti.
+
+## ⚠️ Gap di dato (segnalati nel sito con tag)
+
+- **TAM/SAM/SOM**: nessuna cifra ufficiale per la nicchia; in pagina è una
+  forbice di mercati adiacenti marcata `[BENCHMARK]`, non un dato consolidato.
 - **Roadmap visione**: nessuna data di calendario (logica, non temporale).
-- Margini pharma "10–100x": etichetta SCOMMESSA, usare con prudenza.
+- Margini pharma "10–100x": etichetta `[SCOMMESSA]`, usati con prudenza.
 
 ## Stato
 
 - [x] Fase 1 — Ispezione e piano
 - [x] Fase 2 — Scaffolding (branch, routing, isolamento, port motore, layout)
-- [ ] Fase 3 — Contenuti dei tre pilastri (attende brand system)
-- [ ] Fase 4 — Dashboard interattiva
-- [ ] Fase 5 — QA, README, PR
+- [x] Fase 3 — Contenuti dei tre pilastri (IT + EN) con visualizzazioni
+- [x] Fase 4 — Dashboard interattiva "AMSA LIVE" (engine + spectrum + passport)
+- [x] Fase 5 — QA (responsive, isolamento, build), README, PR

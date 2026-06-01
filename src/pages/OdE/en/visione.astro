@@ -1,21 +1,126 @@
 ---
 import OdeLayout from '../../../layouts/OdeLayout.astro';
-import SectionStub from '../../../components/ode/SectionStub.astro';
-import { odeMeta } from '../../../i18n/ode';
+import Section from '../../../components/ode/Section.astro';
+import DataTag from '../../../components/ode/DataTag.astro';
+
 const lang = 'en' as const;
-const m = odeMeta[lang].visione;
+const title = 'Vision — Officina degli Estratti';
+const description =
+  'OdE’s future vision: from niche producer to multi-market qualification supplier. AMSA’s three blue oceans and a four-phase roadmap.';
+
+const oceans = [
+  {
+    n: '01', tag: 'stima' as const, tagLabel: 'PLAUSIBLE — most defensible candidate',
+    title: 'Circular feedstock for biofuels',
+    body: 'Qualifying waste fats for advanced biofuels (HVO/SAF) and circular oleochemistry. Same matrix class: dirty, oxidised fats.',
+    wedge: 'Wedge: used-oil aggregators and HVO plants that must authenticate origin and grade of incoming loads. The Passport maps almost 1:1 onto the ISCC chain-of-custody dossier.',
+  },
+  {
+    n: '02', tag: 'stima' as const, tagLabel: 'PLAUSIBLE — asymmetric local advantage',
+    title: 'PDO provenance authentication',
+    body: 'Species and origin authentication from spectra (PLS-DA) plus traceable passport, for PDO supply chains and premium agri-food.',
+    wedge: 'Wedge: a PDO Consortium wanting tamper-proof batch authentication. OdE is already inside the Parmigiano Reggiano and Prosciutto di Parma ecosystem.',
+  },
+  {
+    n: '03', tag: 'bench' as const, tagLabel: 'BET — horizon, not next move',
+    title: 'Pharma & nanoparticle (LNP) lipids',
+    body: 'QC of lipid excipients and lipids for pharmaceutical nanoparticles. Same molecular class, potentially 10–100x margins.',
+    wedge: 'Wedge: a CDMO or excipient supplier wanting to speed up incoming-lipid release. Real regulatory barrier: long time horizon.',
+  },
+];
+
+const phases = [
+  { ph: 'Phase 0–1', title: 'Niche producer (today)', note: 'Traceable cosmetic tallow. AMSA is internal QC and the Passport engine. The provenance dataset accumulates — the one asset that cannot be replicated quickly.' },
+  { ph: 'Phase 2', title: 'Low-risk adjacency', note: 'Extension to contiguous matrices: circular feedstock and PDO authentication. AMSA leaves cosmetics-only, staying product and service.' },
+  { ph: 'Phase 3', title: 'Framework licensing', note: 'Licensing the framework on high-value matrices (pharma) and selling datasets and software modules. Consistent with the Articles of Association (Art. 4 and 13).' },
+  { ph: 'Phase 4', title: 'Multi-matrix platform', note: 'IP and software licensing as the centre of gravity; ingredient production becomes showcase and data source.' },
+];
 ---
-<OdeLayout title={m.title} description={m.description} lang={lang} active="visione">
-  <SectionStub
-    lang={lang}
-    n="03"
-    title="Future vision"
-    summary="Abstractions are agnostic, instances are co-adapted: the AMSA framework can travel beyond cosmetics, turning OdE from a niche producer into a multi-market qualification supplier."
-    willContain={[
-      'Horizontal expansion: from producer to multi-market supplier',
-      'The three blue oceans (circular feedstock, PDO authentication, pharma/LNP lipids)',
-      'Four-phase roadmap and points of no return',
-      'The core risk: the traceable-provenance moat does not travel',
-    ]}
-  />
+<OdeLayout title={title} description={description} lang={lang} active="visione">
+  <header class="hero">
+    <p class="ode-eyebrow">Pillar 03 · The trajectory</p>
+    <h1>Future vision</h1>
+    <p class="lede">
+      Abstractions are agnostic, instances are co-adapted: the AMSA framework can travel beyond
+      cosmetics, turning OdE from a niche producer into a multi-market qualification supplier.
+    </p>
+  </header>
+
+  <Section n="1" title="The framework travels, the moat stays home">
+    <p>
+      The long-term cross-cutting value is not the application to tallow itself, but a methodology
+      sellable as a framework: cold-start, active control and an interpretable passport.
+    </p>
+    <p>
+      The technical “muscle” transfers well: active low-SNR acquisition, fluorescence suppression,
+      multimodal fusion, separation of chemical from physical-instrumental variance. What stays
+      co-adapted to lipids is the degradation kinetics model and the oleochemical toolkit.
+    </p>
+  </Section>
+
+  <Section n="2" title="The three blue oceans">
+    <div class="oceans">
+      {oceans.map((o) => (
+        <article class="ocean">
+          <div class="ocean-head">
+            <span class="ocean-n">{o.n}</span>
+            <DataTag kind={o.tag} label={o.tagLabel} />
+          </div>
+          <h3>{o.title}</h3>
+          <p>{o.body}</p>
+          <p class="wedge">{o.wedge}</p>
+        </article>
+      ))}
+    </div>
+  </Section>
+
+  <Section n="3" title="Roadmap: from producer to supplier">
+    <ol class="roadmap">
+      {phases.map((p, i) => (
+        <li>
+          <span class="rm-n">{String(i + 1)}</span>
+          <div class="rm-body">
+            <span class="rm-ph">{p.ph}</span>
+            <span class="rm-title">{p.title}</span>
+            <span class="rm-note">{p.note}</span>
+          </div>
+        </li>
+      ))}
+    </ol>
+    <p class="note">
+      <DataTag kind="bench" /> The roadmap is logical and sequential, not dated: the vision documents
+      set no calendar dates for Phases 2–4.
+    </p>
+  </Section>
+
+  <Section n="4" title="The core risk">
+    <p class="risk">
+      The real risk is confusing the portability of the framework with the portability of the moat:
+      OdE’s distinctive asset, traceable provenance, is precisely what does not travel. On anonymous
+      feedstock OdE would compete without its advantage, exposed to global instrument makers. This is
+      why expansion starts from adjacencies where traceability matters, not from a claim of universality.
+    </p>
+  </Section>
 </OdeLayout>
+
+<style>
+  .hero { max-width: 44rem; padding: 0.5rem 0 1rem; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0.4rem 0 1rem; }
+  .lede { font-size: 1.1rem; line-height: 1.6; color: var(--body); }
+  .note { font-size: 0.85rem; color: var(--muted); line-height: 1.5; max-width: 42rem; }
+  .oceans { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 0.9rem; }
+  .ocean { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.2rem 1.3rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  .ocean-head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+  .ocean-n { font-family: var(--ode-font-mono); font-size: 0.8rem; color: var(--accent); }
+  .ocean h3 { font-size: 1.1rem; color: var(--ink); font-weight: 500; }
+  .ocean p { font-size: 0.9rem; line-height: 1.5; color: var(--body); margin: 0; }
+  .wedge { color: var(--muted) !important; font-size: 0.83rem !important; }
+  .roadmap { list-style: none; padding: 0; margin: 1.2rem 0; display: flex; flex-direction: column; gap: 0.8rem; }
+  .roadmap li { display: grid; grid-template-columns: 2.4rem 1fr; gap: 1rem; align-items: start; }
+  .rm-n { display: flex; align-items: center; justify-content: center; width: 2.4rem; height: 2.4rem; border-radius: 999px; background: var(--lav); border: 1px solid var(--lav-border); color: var(--lav-ink); font-family: var(--ode-font-mono); font-weight: 500; }
+  .rm-body { display: flex; flex-direction: column; gap: 0.15rem; }
+  .rm-ph { font-family: var(--ode-font-mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em; }
+  .rm-title { font-weight: 500; color: var(--ink); }
+  .rm-note { font-size: 0.9rem; color: var(--body); line-height: 1.5; }
+  .risk { border-left: 3px solid var(--lav-border); padding: 0.4rem 0 0.4rem 1rem; background: rgba(255, 255, 255, 0.28); border-radius: 0 var(--ode-radius) var(--ode-radius) 0; max-width: 44rem; }
+</style>

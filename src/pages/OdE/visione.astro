@@ -1,21 +1,135 @@
 ---
 import OdeLayout from '../../layouts/OdeLayout.astro';
-import SectionStub from '../../components/ode/SectionStub.astro';
-import { odeMeta } from '../../i18n/ode';
+import Section from '../../components/ode/Section.astro';
+import DataTag from '../../components/ode/DataTag.astro';
+
 const lang = 'it' as const;
-const m = odeMeta[lang].visione;
+const title = 'Visione — Officina degli Estratti';
+const description =
+  "La visione futura di OdE: da produttore di nicchia a fornitore di qualificazione multi-mercato. I tre spazi azzurri di AMSA e una roadmap a quattro fasi.";
+
+const oceans = [
+  {
+    n: '01', tag: 'stima' as const, tagLabel: 'PLAUSIBILE — candidato più difendibile',
+    title: 'Feedstock circolari per biocarburanti',
+    body: 'Qualificazione di grassi di scarto per biocarburanti avanzati (HVO/SAF) e oleochimica circolare. Stessa classe di matrice: grassi sporchi e ossidati.',
+    wedge: 'Wedge: aggregatori di oli esausti e impianti HVO che devono autenticare origine e grado dei carichi. Il Passaporto mappa quasi 1:1 sul fascicolo chain-of-custody ISCC.',
+  },
+  {
+    n: '02', tag: 'stima' as const, tagLabel: 'PLAUSIBILE — vantaggio locale asimmetrico',
+    title: 'Autenticazione di provenienza DOP',
+    body: 'Autenticazione di specie e origine da spettro (PLS-DA) più passaporto tracciabile, per filiere DOP e premium agroalimentari.',
+    wedge: 'Wedge: un Consorzio DOP che vuole autenticazione di lotto a prova di manomissione. OdE è già dentro l’ecosistema Parmigiano Reggiano e Prosciutto di Parma.',
+  },
+  {
+    n: '03', tag: 'bench' as const, tagLabel: 'SCOMMESSA — orizzonte, non prossima mossa',
+    title: 'Lipidi pharma e per nanoparticelle (LNP)',
+    body: 'QC di eccipienti lipidici e lipidi per nanoparticelle farmaceutiche. Stessa classe molecolare, margini potenzialmente 10–100x.',
+    wedge: 'Wedge: un CDMO o fornitore di eccipienti che vuole accelerare il rilascio dei lipidi in ingresso. Barriera regolatoria reale: orizzonte temporale lungo.',
+  },
+];
+
+const phases = [
+  { ph: 'Fase 0–1', title: 'Produttore di nicchia (oggi)', note: 'Sego cosmetico tracciabile. AMSA è QC interno e motore del Passaporto. Si accumula il dataset di provenienza, l’unico asset non replicabile in fretta.' },
+  { ph: 'Fase 2', title: 'Adiacenza a basso rischio', note: 'Estensione alle matrici contigue: feedstock circolari e autenticazione DOP. AMSA esce dal solo cosmetico, restando prodotto e servizio.' },
+  { ph: 'Fase 3', title: 'Licensing del framework', note: 'Concessione del framework su matrici ad alto valore (pharma) e vendita di dataset e moduli software. Coerente con lo Statuto (Art. 4 e 13).' },
+  { ph: 'Fase 4', title: 'Piattaforma multi-matrice', note: 'IP e software licensing come baricentro del modello; la produzione di ingredienti diventa vetrina e fonte di dati.' },
+];
 ---
-<OdeLayout title={m.title} description={m.description} lang={lang} active="visione">
-  <SectionStub
-    lang={lang}
-    n="03"
-    title="Visione futura"
-    summary="Le astrazioni sono agnostiche, le istanze sono co-adattate: il framework AMSA può viaggiare oltre la cosmetica, trasformando OdE da produttore di nicchia a fornitore di qualificazione multi-mercato."
-    willContain={[
-      'Espansione orizzontale: da produttore a fornitore multi-mercato',
-      'I tre spazi azzurri (feedstock circolari, autenticazione DOP, lipidi pharma/LNP)',
-      'Roadmap a quattro fasi e punti di non ritorno',
-      'Il rischio cardine: il fossato della provenienza tracciata non viaggia',
-    ]}
-  />
+<OdeLayout title={title} description={description} lang={lang} active="visione">
+  <header class="hero">
+    <p class="ode-eyebrow">Pilastro 03 · Lo sviluppo</p>
+    <h1>Visione futura</h1>
+    <p class="lede">
+      Le astrazioni sono agnostiche, le istanze sono co-adattate: il framework AMSA può viaggiare oltre
+      la cosmetica, trasformando OdE da produttore di nicchia a fornitore di qualificazione multi-mercato.
+    </p>
+  </header>
+
+  <Section n="1" title="Il framework viaggia, il fossato resta a casa">
+    <p>
+      Il valore trasversale di lungo periodo non è l'applicazione al sego in sé, ma una metodologia
+      vendibile come framework: cold-start, controllo attivo e passaporto interpretabile.
+    </p>
+    <p>
+      Si trasferisce bene il "muscolo" tecnico: acquisizione attiva a basso SNR, soppressione della
+      fluorescenza, fusione multimodale, separazione fra varianza chimica e fisico-strumentale. Resta
+      invece co-adattato ai lipidi il modello cinetico di degradazione e il toolkit oleochimico.
+    </p>
+  </Section>
+
+  <Section n="2" title="I tre spazi azzurri">
+    <div class="oceans">
+      {oceans.map((o) => (
+        <article class="ocean">
+          <div class="ocean-head">
+            <span class="ocean-n">{o.n}</span>
+            <DataTag kind={o.tag} label={o.tagLabel} />
+          </div>
+          <h3>{o.title}</h3>
+          <p>{o.body}</p>
+          <p class="wedge">{o.wedge}</p>
+        </article>
+      ))}
+    </div>
+  </Section>
+
+  <Section n="3" title="Roadmap: da produttore a fornitore">
+    <ol class="roadmap">
+      {phases.map((p, i) => (
+        <li>
+          <span class="rm-n">{String(i + 1)}</span>
+          <div class="rm-body">
+            <span class="rm-ph">{p.ph}</span>
+            <span class="rm-title">{p.title}</span>
+            <span class="rm-note">{p.note}</span>
+          </div>
+        </li>
+      ))}
+    </ol>
+    <p class="note">
+      <DataTag kind="bench" /> La roadmap è logica e sequenziale, non datata: i documenti di visione non
+      fissano date di calendario per le Fasi 2–4.
+    </p>
+  </Section>
+
+  <Section n="4" title="Il rischio cardine">
+    <p class="risk">
+      Il vero rischio è confondere la portabilità del framework con la portabilità del fossato:
+      l'asset distintivo di OdE, la provenienza tracciata, è precisamente ciò che non viaggia. Su
+      feedstock anonimo OdE competerebbe senza il suo vantaggio, esposta agli strumentisti globali.
+      Per questo l'espansione parte dalle adiacenze dove la tracciabilità conta, non dalla pretesa di
+      universalità.
+    </p>
+  </Section>
 </OdeLayout>
+
+<style>
+  .hero { max-width: 44rem; padding: 0.5rem 0 1rem; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0.4rem 0 1rem; }
+  .lede { font-size: 1.1rem; line-height: 1.6; color: var(--body); }
+  .note { font-size: 0.85rem; color: var(--muted); line-height: 1.5; max-width: 42rem; }
+
+  .oceans { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 0.9rem; }
+  .ocean { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.2rem 1.3rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  .ocean-head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+  .ocean-n { font-family: var(--ode-font-mono); font-size: 0.8rem; color: var(--accent); }
+  .ocean h3 { font-size: 1.1rem; color: var(--ink); font-weight: 500; }
+  .ocean p { font-size: 0.9rem; line-height: 1.5; color: var(--body); margin: 0; }
+  .wedge { color: var(--muted) !important; font-size: 0.83rem !important; }
+
+  .roadmap { list-style: none; padding: 0; margin: 1.2rem 0; display: flex; flex-direction: column; gap: 0.8rem; }
+  .roadmap li { display: grid; grid-template-columns: 2.4rem 1fr; gap: 1rem; align-items: start; }
+  .rm-n {
+    display: flex; align-items: center; justify-content: center;
+    width: 2.4rem; height: 2.4rem; border-radius: 999px;
+    background: var(--lav); border: 1px solid var(--lav-border); color: var(--lav-ink);
+    font-family: var(--ode-font-mono); font-weight: 500;
+  }
+  .rm-body { display: flex; flex-direction: column; gap: 0.15rem; }
+  .rm-ph { font-family: var(--ode-font-mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em; }
+  .rm-title { font-weight: 500; color: var(--ink); }
+  .rm-note { font-size: 0.9rem; color: var(--body); line-height: 1.5; }
+
+  .risk { border-left: 3px solid var(--lav-border); padding: 0.4rem 0 0.4rem 1rem; background: rgba(255, 255, 255, 0.28); border-radius: 0 var(--ode-radius) var(--ode-radius) 0; max-width: 44rem; }
+</style>

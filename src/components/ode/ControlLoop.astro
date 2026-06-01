@@ -1,0 +1,92 @@
+---
+// Active Control Loop diagram (AMSA). Brand diagram language:
+//   input/special node = pink, process nodes = lavender, positive outcome = green.
+// All labels are passed in (localised by the page).
+interface Props {
+  inputLabel: string;        // "Campione"
+  loopLabel: string;         // "Itera finché il QC non è accettabile"
+  loopNodes: string[];       // Scout scan, Quality Assessor, Policy Controller, Azione hardware
+  exitGate: string;          // "QC ok"
+  predict: string;           // "Predizione + XAI"
+  outcome: string;           // "Passaporto Lipidico Digitale"
+}
+const { inputLabel, loopLabel, loopNodes, exitGate, predict, outcome } = Astro.props;
+---
+<div class="loop" role="img" aria-label={`${inputLabel} → ${loopNodes.join(' → ')} → ${exitGate} → ${predict} → ${outcome}`}>
+  <div class="node node--pink">{inputLabel}</div>
+  <span class="arrow">→</span>
+
+  <div class="cycle">
+    <span class="cycle-tag">↻ {loopLabel}</span>
+    <div class="cycle-nodes">
+      {loopNodes.map((n, i) => (
+        <>
+          <div class="node node--lav">{n}</div>
+          {i < loopNodes.length - 1 && <span class="arrow arrow--sm">→</span>}
+        </>
+      ))}
+    </div>
+  </div>
+
+  <span class="arrow">→</span>
+  <div class="node node--gate">{exitGate}</div>
+  <span class="arrow">→</span>
+  <div class="node node--lav">{predict}</div>
+  <span class="arrow">→</span>
+  <div class="node node--green">{outcome}</div>
+</div>
+
+<style>
+  .loop {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: var(--ode-radius);
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+  }
+  .node {
+    font-size: 0.85rem;
+    line-height: 1.25;
+    padding: 0.6rem 0.85rem;
+    border-radius: var(--ode-radius);
+    border: 1px solid;
+    text-align: center;
+  }
+  .node--lav { background: var(--lav); border-color: var(--lav-border); color: var(--lav-ink); }
+  .node--pink { background: var(--pink); border-color: var(--pink-ink); color: var(--pink-ink); font-weight: 500; }
+  .node--green { background: #fff; border-color: var(--green-border); color: var(--green); font-weight: 500; }
+  .node--gate {
+    background: transparent; border-color: var(--accent); color: var(--accent);
+    font-family: var(--ode-font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .arrow { color: var(--muted); font-size: 1.1rem; }
+  .arrow--sm { font-size: 0.9rem; }
+  .cycle {
+    position: relative;
+    border: 1px dashed var(--lav-border);
+    border-radius: var(--ode-radius);
+    padding: 1.4rem 0.9rem 0.9rem;
+  }
+  .cycle-tag {
+    position: absolute;
+    top: -0.7rem; left: 0.8rem;
+    background: var(--bg);
+    padding: 0 0.45rem;
+    font-family: var(--ode-font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.03em;
+    color: var(--lav-ink);
+  }
+  .cycle-nodes { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+  @media (max-width: 600px) {
+    .loop { flex-direction: column; align-items: stretch; }
+    .loop > .arrow { align-self: center; transform: rotate(90deg); }
+    .cycle-nodes { flex-direction: column; align-items: stretch; }
+    .cycle-nodes .arrow { align-self: center; transform: rotate(90deg); }
+    .node { text-align: left; }
+  }
+</style>

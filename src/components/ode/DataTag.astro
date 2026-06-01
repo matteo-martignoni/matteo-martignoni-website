@@ -1,0 +1,11 @@
+---
+// Data-classification tag — OdE tone rule: every quantitative datum is
+// labelled [FONTE] (verified), [STIMA] (own estimate) or [BENCHMARK] (proxy).
+interface Props {
+  kind: 'fonte' | 'stima' | 'bench';
+  label?: string; // optional source note shown in title
+}
+const { kind, label } = Astro.props;
+const text = { fonte: 'Fonte', stima: 'Stima', bench: 'Benchmark' }[kind];
+---
+<span class={`ode-tag ode-tag--${kind}`} title={label ?? text}>{text}</span>

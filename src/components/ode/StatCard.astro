@@ -1,0 +1,37 @@
+---
+// Key-figure card: large number + caption + data-classification tag.
+import DataTag from './DataTag.astro';
+interface Props {
+  value: string;        // e.g. "+196%", "16,55 mld €"
+  caption: string;      // what the number means
+  kind?: 'fonte' | 'stima' | 'bench';
+  source?: string;      // tooltip source note
+}
+const { value, caption, kind = 'fonte', source } = Astro.props;
+---
+<div class="stat">
+  <div class="stat-value">{value}</div>
+  <p class="stat-caption">{caption}</p>
+  <DataTag kind={kind} label={source} />
+</div>
+
+<style>
+  .stat {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: var(--ode-radius);
+    padding: 1.25rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .stat-value {
+    font-size: clamp(1.6rem, 3.5vw, 2.3rem);
+    font-weight: 300;
+    color: var(--ink);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+  .stat-caption { font-size: 0.9rem; line-height: 1.45; color: var(--body); margin: 0; }
+  .stat .ode-tag { align-self: flex-start; margin-top: auto; }
+</style>

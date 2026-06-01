@@ -1,21 +1,135 @@
 ---
 import OdeLayout from '../../../layouts/OdeLayout.astro';
-import SectionStub from '../../../components/ode/SectionStub.astro';
-import { odeMeta } from '../../../i18n/ode';
+import Section from '../../../components/ode/Section.astro';
+import ControlLoop from '../../../components/ode/ControlLoop.astro';
+import PassportSections from '../../../components/ode/PassportSections.astro';
+import StatCard from '../../../components/ode/StatCard.astro';
+import DataTag from '../../../components/ode/DataTag.astro';
+
 const lang = 'en' as const;
-const m = odeMeta[lang].amsa;
+const title = 'AMSA — Officina degli Estratti';
+const description =
+  'AMSA, the AI-driven multimodal spectroscopic agent: Active Control Loop, Digital Lipid Passport and OdE’s technological advantage.';
+
+const verbs = ['Acquires', 'Interprets', 'Predicts', 'Explains', 'Recommends'];
+
+const problems = [
+  'They vary by species, diet, rendering, material age and storage.',
+  'They oxidise easily: odour, rancidity, instability.',
+  'They contain spectrally overlapping components (triglycerides, free fatty acids, waxes, sterols, aldehydes, hydroperoxides).',
+  'Being mostly saturated, they give weak unsaturation signals and a fluorescence that disturbs the measurement.',
+  'They require costly external analyses (GC-FID, GC-MS, NMR, peroxide value, p-anisidine).',
+];
+
+const passport = [
+  { n: '01', title: 'Identity', fields: 'sample_id, batch_id, origin, supplier, rendering, process_history, cosmetic_grade_status' },
+  { n: '02', title: 'Spectral fingerprint', fields: 'NIR raw/preprocessed, Raman raw/corrected, acquisition_temperature, quality_score, OOD_score' },
+  { n: '03', title: 'Fatty acid profile', fields: 'saturated / mono / poly, chain length, omega (opt.), GC-FID confidence' },
+  { n: '04', title: 'Oxidation & stability', fields: 'PV, p-anisidine, TBARS, TOTOX = 2·PV + AnV, acid value, iodine value, Oxidative Risk Score, shelf-life' },
+  { n: '05', title: 'Physical & formulation', fields: 'DSC, melting_range, crystallinity_proxy, viscosity, colour, odor_score' },
+  { n: '06', title: 'Biomarkers', fields: 'unsaturation_index, CH₂/CH₃, carbonyl_index, aldehydes, hydroperoxides, waxes, sterols' },
+  { n: '07', title: 'Process recommendation', fields: 'accept / purify / deodorise, adsorbent, blend_with, external_test_required' },
+  { n: '08', title: 'Explainability', fields: 'top_spectral_regions, chemical interpretation, confidence, confirmatory tests' },
+  { n: '09', title: 'Governance', fields: 'model_version, calibration_version, operator, timestamp, data_hash' },
+];
 ---
-<OdeLayout title={m.title} description={m.description} lang={lang} active="amsa">
-  <SectionStub
-    lang={lang}
-    n="01"
-    title="AMSA"
-    summary="The AI-driven multimodal spectroscopic agent: not a model that only predicts, but an agent that acquires, interprets, predicts, explains and recommends the process, building a Digital Lipid Passport for every batch."
-    willContain={[
-      'What AMSA is and the challenge of animal lipid matrices',
-      'Active Control Loop: actively governing the measurement (animated visual)',
-      'Digital Lipid Passport: the nine sections of the batch dossier',
-      'Technological advantage and defensible moat',
-    ]}
-  />
+<OdeLayout title={title} description={description} lang={lang} active="amsa">
+  <header class="hero">
+    <p class="ode-eyebrow">Pillar 01 · The technology</p>
+    <h1>AMSA</h1>
+    <p class="lede">
+      AMSA is the <strong>AI-driven Multimodal Spectroscopic Agent</strong> — not a model that only
+      predicts, but an operational agent. For every batch it acquires, interprets, predicts, explains
+      and recommends the process, and builds a Digital Lipid Passport.
+    </p>
+    <div class="verbs">
+      {verbs.map((v) => <span class="verb">{v}</span>)}
+    </div>
+  </header>
+
+  <Section n="1" title="The problem: difficult lipid matrices">
+    <p>
+      Animal lipid matrices (beef tallow, pork fat, lanolin, sebum, waxy and triglyceride fractions)
+      are chemically rich but industrially hard to standardise.
+    </p>
+    <ul class="problems">
+      {problems.map((p) => <li>{p}</li>)}
+    </ul>
+    <p class="quote">
+      The recurring question from the cosmetic client: “is this ingredient stable, does it resist
+      rancidity and odour, does it have reproducible texture, can I use it in a leave-on formula?”
+    </p>
+  </Section>
+
+  <Section n="2" title="Active Control Loop: governing the measurement">
+    <p>
+      AMSA’s technical core. The agent does not passively receive the spectrum: it <strong>adjusts the
+      sensor parameters</strong> to obtain the best possible data on dirty, semi-solid, fluorescent or
+      thermally unstable matrices. It is the difference between enduring a measurement and governing it.
+    </p>
+
+    <ControlLoop
+      inputLabel="Sample"
+      loopLabel="iterate until QC is acceptable"
+      loopNodes={['Scout scan', 'Quality Assessor', 'Policy Controller', 'Hardware action']}
+      exitGate="QC ok"
+      predict="Prediction + XAI"
+      outcome="Digital Lipid Passport"
+    />
+
+    <p>
+      Each iteration picks the action that most reduces chemical uncertainty, at the lowest cost,
+      without altering the sample. The objective function:
+    </p>
+    <p class="formula">Reward = InformationGain − α·Time − β·Cost − γ·DegradationRisk</p>
+    <p>
+      The degradation-risk term is a verifiable physical budget, anchored to measurable parameters
+      (PV, TBARS) and to the Codex CXS 211-1999 threshold: peroxides at most 10 meq O₂/kg
+      <DataTag kind="fonte" label="Codex Alimentarius CXS 211-1999" />. The agent must also deconvolve
+      real chemistry (irreversible) from the physical-instrumental effect (reversible), so as not to
+      mistake an artefact for a signal.
+    </p>
+  </Section>
+
+  <Section n="3" title="Digital Lipid Passport">
+    <p>
+      AMSA’s central information product. Not a static certificate, but a dynamic dossier linking
+      identity, origin, process, spectra, reference analyses, biomarkers, models, explanations and the
+      batch’s industrial decision.
+    </p>
+    <PassportSections sections={passport} />
+    <p>
+      The output is an <strong>industrial decision</strong> on the batch, with a chemical explanation:
+      accept, purify, deodorise, blend, test externally or reject.
+    </p>
+  </Section>
+
+  <Section n="4" title="Technological advantage: the moat">
+    <p>
+      The competitive advantage is not the machine, which anyone can buy, but the combination of
+      traceable provenance, proprietary data and interpretable models — a moat that deepens with every
+      batch analysed.
+    </p>
+    <div class="stats">
+      <StatCard value="> 0.85" caption="Target R² for the unsaturation index (iodine-value proxy); Raman literature reaches 0.97." kind="stima" source="Plan target; benchmark Beattie et al., 2006" />
+      <StatCard value="> 90%" caption="Target conforming/non-conforming classification; PLS-DA benchmark up to 99.6%." kind="stima" source="Plan target; benchmark Beattie 2007" />
+      <StatCard value="+20–40%" caption="Estimated price premium over a non-qualified lipid ingredient." kind="stima" source="OdE plan estimate" />
+    </div>
+    <p class="quote big">“A competitor can buy a spectrometer, not this base.”</p>
+  </Section>
 </OdeLayout>
+
+<style>
+  .hero { max-width: 44rem; padding: 0.5rem 0 1rem; }
+  .hero h1 { font-size: clamp(2.4rem, 6vw, 3.4rem); margin: 0.4rem 0 1rem; }
+  .lede { font-size: 1.1rem; line-height: 1.6; color: var(--body); }
+  .verbs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.4rem; }
+  .verb { font-family: var(--ode-font-mono); font-size: 0.78rem; color: var(--accent); background: var(--pill); border: 1px solid var(--rule); border-radius: 999px; padding: 0.3rem 0.8rem; }
+  .problems { padding-left: 1.2rem; line-height: 1.7; max-width: 42rem; }
+  .problems li { margin-bottom: 0.4rem; }
+  .problems li::marker { color: var(--accent); }
+  .quote { border-left: 3px solid var(--lav-border); padding: 0.4rem 0 0.4rem 1rem; color: var(--body); font-style: italic; background: rgba(255, 255, 255, 0.28); border-radius: 0 var(--ode-radius) var(--ode-radius) 0; }
+  .quote.big { font-size: 1.2rem; }
+  .formula { font-family: var(--ode-font-mono); font-size: 0.9rem; color: var(--ink); background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 0.9rem 1.1rem; overflow-x: auto; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0.8rem; margin: 1.4rem 0; }
+</style>
