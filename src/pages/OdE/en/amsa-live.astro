@@ -1,0 +1,49 @@
+---
+import OdeLayout from '../../../layouts/OdeLayout.astro';
+import { odeMeta, odeUI } from '../../../i18n/ode';
+const lang = 'en' as const;
+const m = odeMeta[lang].live;
+const t = odeUI[lang];
+---
+<OdeLayout title={m.title} description={m.description} lang={lang} active="live">
+  <section class="live">
+    <p class="live-n">04</p>
+    <h1>AMSA Live</h1>
+    <p class="live-summary">
+      The interactive dashboard simulating AMSA at work: from raw material to spectral acquisition,
+      from lipid profile to the generated Digital Lipid Passport.
+    </p>
+
+    <p class="ode-sim-badge">{t.simBadge}</p>
+    <p class="live-notice">{t.simNotice}</p>
+
+    <div class="live-pipeline">
+      <div class="step"><span>1</span> Raw material input</div>
+      <div class="arrow">→</div>
+      <div class="step"><span>2</span> Simulated spectral acquisition</div>
+      <div class="arrow">→</div>
+      <div class="step"><span>3</span> Lipid profile + Oxidative Risk Score</div>
+      <div class="arrow">→</div>
+      <div class="step"><span>4</span> Digital Lipid Passport</div>
+    </div>
+
+    <p class="live-flag">
+      Compute engine ported and working (src/lib/ode). Interactivity, real-time charts and passport
+      generation: Phase 4.
+    </p>
+  </section>
+</OdeLayout>
+
+<style>
+  .live { max-width: 52rem; }
+  .live-n { font-family: var(--ode-font-mono); font-size: 0.8rem; color: var(--ode-muted); margin: 0 0 0.5rem; }
+  .live h1 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); }
+  .live-summary { font-size: 1.05rem; line-height: 1.6; margin: 1rem 0 1.5rem; color: var(--ode-body); }
+  .live-notice { font-size: 0.85rem; color: var(--ode-muted); margin: 0.6rem 0 2rem; }
+  .live-pipeline { display: flex; flex-wrap: wrap; align-items: stretch; gap: 0.6rem; background: var(--ode-surface-alt); border: 1px dashed var(--ode-rule); border-radius: var(--ode-radius); padding: 1.25rem; }
+  .step { flex: 1 1 9rem; background: var(--ode-surface); border: 1px solid var(--ode-rule); border-radius: var(--ode-radius-sm); padding: 0.8rem; font-size: 0.85rem; color: var(--ode-body); }
+  .step span { display: inline-flex; align-items: center; justify-content: center; width: 1.4rem; height: 1.4rem; margin-right: 0.4rem; border-radius: 999px; background: var(--ode-accent); color: var(--ode-accent-ink); font-family: var(--ode-font-mono); font-size: 0.75rem; }
+  .arrow { display: flex; align-items: center; color: var(--ode-muted); }
+  .live-flag { font-size: 0.82rem; color: var(--ode-muted); margin-top: 1.5rem; font-style: italic; }
+  @media (max-width: 640px) { .arrow { display: none; } }
+</style>

@@ -1,0 +1,21 @@
+---
+import OdeLayout from '../../../layouts/OdeLayout.astro';
+import SectionStub from '../../../components/ode/SectionStub.astro';
+import { odeMeta } from '../../../i18n/ode';
+const lang = 'en' as const;
+const m = odeMeta[lang].amsa;
+---
+<OdeLayout title={m.title} description={m.description} lang={lang} active="amsa">
+  <SectionStub
+    lang={lang}
+    n="01"
+    title="AMSA"
+    summary="The AI-driven multimodal spectroscopic agent: not a model that only predicts, but an agent that acquires, interprets, predicts, explains and recommends the process, building a Digital Lipid Passport for every batch."
+    willContain={[
+      'What AMSA is and the challenge of animal lipid matrices',
+      'Active Control Loop: actively governing the measurement (animated visual)',
+      'Digital Lipid Passport: the nine sections of the batch dossier',
+      'Technological advantage and defensible moat',
+    ]}
+  />
+</OdeLayout>

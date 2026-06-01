@@ -1,0 +1,21 @@
+---
+import OdeLayout from '../../layouts/OdeLayout.astro';
+import SectionStub from '../../components/ode/SectionStub.astro';
+import { odeMeta } from '../../i18n/ode';
+const lang = 'it' as const;
+const m = odeMeta[lang].amsa;
+---
+<OdeLayout title={m.title} description={m.description} lang={lang} active="amsa">
+  <SectionStub
+    lang={lang}
+    n="01"
+    title="AMSA"
+    summary="L'agente spettroscopico multimodale guidato dall'AI: non un modello che predice soltanto, ma un agente che acquisisce, interpreta, predice, spiega e suggerisce il processo, costruendo un Passaporto Lipidico Digitale per ogni lotto."
+    willContain={[
+      'Cos’è AMSA e il problema delle matrici lipidiche animali',
+      'Active Control Loop: il ciclo di controllo attivo della misura (visualizzazione animata)',
+      'Passaporto Lipidico Digitale: le nove sezioni del dossier di lotto',
+      'Vantaggio tecnologico e fossato difendibile',
+    ]}
+  />
+</OdeLayout>

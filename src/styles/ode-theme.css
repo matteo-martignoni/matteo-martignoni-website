@@ -1,0 +1,77 @@
+/* ──────────────────────────────────────────────────────────────
+   OdE theme — design tokens for the /OdE microsite
+   ──────────────────────────────────────────────────────────────
+   Scoped under .ode so it NEVER bleeds into the host site (Matteo's
+   bottega palette lives in global.css and stays untouched).
+
+   ⚠️  PLACEHOLDER TOKENS — pending the official `OdE_Brand_System`.
+   These neutral values exist only so the scaffold builds and renders.
+   When the brand system arrives, replace the values below with the
+   exact OdE tokens (palette, type scale, radii). The variable NAMES
+   are the contract the components rely on, so keep them stable.
+   ────────────────────────────────────────────────────────────── */
+
+.ode {
+  /* Surfaces */
+  --ode-bg: #f6f6f4;          /* page background        — TODO brand */
+  --ode-surface: #ffffff;     /* cards / panels          — TODO brand */
+  --ode-surface-alt: #eeeeec; /* alt blocks              — TODO brand */
+
+  /* Ink */
+  --ode-ink: #1b1b1a;         /* headings                — TODO brand */
+  --ode-body: #333331;        /* body text               — TODO brand */
+  --ode-muted: #6b6b67;       /* secondary text          — TODO brand */
+  --ode-rule: rgba(27, 27, 26, 0.14); /* hairlines       — TODO brand */
+
+  /* Accent — single neutral accent for the placeholder phase.
+     The dashboard's semantic colour coding (input / AI / output)
+     will be defined by the real brand system. */
+  --ode-accent: #4a4a47;      /* TODO brand */
+  --ode-accent-ink: #ffffff;
+
+  /* Typography — system stack placeholder; brand fonts TBD */
+  --ode-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --ode-font-mono: ui-monospace, "SF Mono", "Roboto Mono", Menlo, monospace;
+
+  /* Shape */
+  --ode-radius: 8px;          /* TODO brand */
+  --ode-radius-sm: 4px;
+
+  /* Layout rhythm (inherited convention from host site) */
+  --ode-maxw: 72rem;
+
+  background-color: var(--ode-bg);
+  color: var(--ode-body);
+  font-family: var(--ode-font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ode h1, .ode h2, .ode h3 {
+  color: var(--ode-ink);
+  font-weight: 600;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.ode a { color: inherit; }
+
+.ode ::selection {
+  background-color: var(--ode-accent);
+  color: var(--ode-accent-ink);
+}
+
+/* "Simulazione dimostrativa" badge — reusable across the dashboard */
+.ode-sim-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--ode-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ode-muted);
+  border: 1px solid var(--ode-rule);
+  border-radius: var(--ode-radius-sm);
+  padding: 0.2rem 0.5rem;
+}

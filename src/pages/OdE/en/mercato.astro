@@ -1,0 +1,22 @@
+---
+import OdeLayout from '../../../layouts/OdeLayout.astro';
+import SectionStub from '../../../components/ode/SectionStub.astro';
+import { odeMeta } from '../../../i18n/ode';
+const lang = 'en' as const;
+const m = odeMeta[lang].mercato;
+---
+<OdeLayout title={m.title} description={m.description} lang={lang} active="mercato">
+  <SectionStub
+    lang={lang}
+    n="02"
+    title="Market validation"
+    summary="Demand for upcycled, traceable cosmetic ingredients is growing fast, and the intersection of circular animal lipids with AI-driven quality control is a still-uncontested niche."
+    willContain={[
+      'Reference market sizes and growth rates (CAGR)',
+      'Trends and drivers: cosmetic upcycling, willingness to pay, price premium',
+      'Competition across three axes (raw material, finished product, technology)',
+      'Regulatory clock: Digital Product Passport mandatory from 2027',
+      'Visualisations: growth charts, competitor comparison table',
+    ]}
+  />
+</OdeLayout>

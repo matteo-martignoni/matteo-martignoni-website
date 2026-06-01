@@ -1,0 +1,52 @@
+---
+import OdeLayout from '../../../layouts/OdeLayout.astro';
+import { odeMeta, odeUI, odeRoutes } from '../../../i18n/ode';
+
+const lang = 'en' as const;
+const m = odeMeta[lang].home;
+const t = odeUI[lang];
+const r = odeRoutes[lang];
+
+const pillars = [
+  { href: r.amsa, n: '01', title: 'AMSA', desc: 'The technology: AI-driven multimodal spectroscopic agent, Active Control Loop, Digital Lipid Passport.' },
+  { href: r.mercato, n: '02', title: 'Market', desc: 'The validation: size, trends, competition and the Digital Product Passport regulatory window.' },
+  { href: r.visione, n: '03', title: 'Vision', desc: 'The trajectory: from producer to multi-market supplier, AMSA’s three blue oceans.' },
+];
+---
+<OdeLayout title={m.title} description={m.description} lang={lang}>
+  <section class="hero">
+    <p class="kicker">{t.tagline}</p>
+    <h1>We standardise cosmetic animal lipid ingredients, from a traceable raw material.</h1>
+    <p class="lede">
+      Officina degli Estratti upcycles animal fats and by-products from the Parmigiano Reggiano supply
+      chain into ultra-pure lipid ingredients for B2B cosmetics, through artificial intelligence,
+      multimodal spectroscopy and a Digital Lipid Passport that certifies stability, quality and process
+      for every single batch.
+    </p>
+    <a class="cta" href={r.live}>{t.cta.explore} →</a>
+  </section>
+
+  <nav class="pillars" aria-label="Sections">
+    {pillars.map((p) => (
+      <a class="pillar" href={p.href}>
+        <span class="pillar-n">{p.n}</span>
+        <span class="pillar-title">{p.title}</span>
+        <span class="pillar-desc">{p.desc}</span>
+      </a>
+    ))}
+  </nav>
+</OdeLayout>
+
+<style>
+  .hero { max-width: 48rem; padding: 1rem 0 2.5rem; }
+  .kicker { font-family: var(--ode-font-mono); font-size: 0.78rem; letter-spacing: 0.04em; color: var(--ode-muted); margin: 0 0 1rem; }
+  .hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); letter-spacing: -0.01em; }
+  .lede { font-size: 1.05rem; line-height: 1.6; color: var(--ode-body); margin: 1.25rem 0 1.75rem; }
+  .cta { display: inline-block; text-decoration: none; background: var(--ode-accent); color: var(--ode-accent-ink); padding: 0.7rem 1.2rem; border-radius: var(--ode-radius); font-size: 0.9rem; }
+  .pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; }
+  .pillar { display: flex; flex-direction: column; gap: 0.5rem; text-decoration: none; background: var(--ode-surface); border: 1px solid var(--ode-rule); border-radius: var(--ode-radius); padding: 1.5rem; transition: border-color 160ms ease, transform 160ms ease; }
+  .pillar:hover { border-color: var(--ode-accent); transform: translateY(-2px); }
+  .pillar-n { font-family: var(--ode-font-mono); font-size: 0.8rem; color: var(--ode-muted); }
+  .pillar-title { font-size: 1.3rem; font-weight: 600; color: var(--ode-ink); }
+  .pillar-desc { font-size: 0.9rem; line-height: 1.5; color: var(--ode-body); }
+</style>

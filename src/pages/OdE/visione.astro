@@ -1,0 +1,21 @@
+---
+import OdeLayout from '../../layouts/OdeLayout.astro';
+import SectionStub from '../../components/ode/SectionStub.astro';
+import { odeMeta } from '../../i18n/ode';
+const lang = 'it' as const;
+const m = odeMeta[lang].visione;
+---
+<OdeLayout title={m.title} description={m.description} lang={lang} active="visione">
+  <SectionStub
+    lang={lang}
+    n="03"
+    title="Visione futura"
+    summary="Le astrazioni sono agnostiche, le istanze sono co-adattate: il framework AMSA può viaggiare oltre la cosmetica, trasformando OdE da produttore di nicchia a fornitore di qualificazione multi-mercato."
+    willContain={[
+      'Espansione orizzontale: da produttore a fornitore multi-mercato',
+      'I tre spazi azzurri (feedstock circolari, autenticazione DOP, lipidi pharma/LNP)',
+      'Roadmap a quattro fasi e punti di non ritorno',
+      'Il rischio cardine: il fossato della provenienza tracciata non viaggia',
+    ]}
+  />
+</OdeLayout>
