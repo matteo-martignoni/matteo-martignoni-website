@@ -1,0 +1,113 @@
+---
+import OdeLayout from '../../layouts/OdeLayout.astro';
+import { odeMeta } from '../../i18n/ode';
+
+const lang = 'it' as const;
+const m = odeMeta[lang].glossario;
+
+// Grouped glossary. `id` is the inline-link anchor target. Definitions are
+// brief and anchored to the knowledge base. No em-dash in Italian copy.
+const groups = [
+  {
+    group: 'Materia prima e chimica lipidica',
+    terms: [
+      { id: 'sego', t: 'Sego (tallow)', d: 'Grasso bovino (o ovino) fuso e raffinato. È la matrice principale di OdE: abbondante, oggi sottovalutata, e nella filiera Parmigiano Reggiano tracciabile fin dalla stalla.' },
+      { id: 'rendering', t: 'Rendering', d: 'Processo termico di estrazione del grasso dai sottoprodotti animali. Specie, alimentazione e condizioni di rendering influenzano la chimica del grasso finale.' },
+      { id: 'profilo-lipidico', t: 'Profilo lipidico (acidi grassi)', d: 'La composizione in acidi grassi saturi, monoinsaturi e polinsaturi di un grasso. Determina texture, stabilità e comportamento in formula.' },
+      { id: 'saturi-insaturi', t: 'Saturi e insaturi', d: 'Gli acidi grassi senza (saturi) o con (insaturi) doppi legami C=C. I grassi animali sono prevalentemente saturi: danno segnali spettrali di insaturazione deboli.' },
+      { id: 'biomarcatori', t: 'Biomarcatori lipidici', d: 'Indicatori chimici letti dallo spettro: indice di insaturazione, rapporto CH₂/CH₃, indice carbonilico, aldeidi, idroperossidi, cere, steroli.' },
+      { id: 'lnp', t: 'SLN, NLC, LNP', d: 'Nanoparticelle lipidiche solide, vettori lipidici nanostrutturati e nanoparticelle lipidiche. Forme avanzate in cui un lipide diventa vettore funzionale, non solo emolliente.' },
+    ],
+  },
+  {
+    group: 'Ossidazione e stabilità',
+    terms: [
+      { id: 'perossidi', t: 'Numero di perossidi (PV)', d: 'Misura dell’ossidazione primaria di un grasso, in meq O₂/kg. La soglia di riferimento Codex CXS 211-1999 è 10 meq O₂/kg: oltre, fuori specifica.' },
+      { id: 'totox', t: 'TOTOX', d: 'Valore di ossidazione totale, TOTOX = 2·PV + valore di p-anisidina. Combina ossidazione primaria e secondaria in un solo numero.' },
+      { id: 'oxidative-risk-score', t: 'Oxidative Risk Score', d: 'Punteggio sintetico 0-100 di AMSA che stima rischio di ossidazione e shelf-life da spettro e marcatori di riferimento, ancorato a metodi e soglie riconosciute.' },
+      { id: 'shelf-life', t: 'Shelf-life', d: 'La durata entro cui un ingrediente resta stabile e usabile. Per OdE è una previsione, oggi etichettata come capacità emergente da validare.' },
+    ],
+  },
+  {
+    group: 'Spettroscopia e analisi',
+    terms: [
+      { id: 'spettroscopia', t: 'Spettroscopia', d: 'Studio di come la materia interagisce con la luce. Lo spettro è un’impronta molecolare da cui si deducono composizione e stato chimico.' },
+      { id: 'nir', t: 'NIR (vicino infrarosso)', d: 'Spettroscopia nel vicino infrarosso, rapida e at-line. Sensibile a legami C-H, utile per stimare composizione e ossidazione.' },
+      { id: 'raman', t: 'Raman', d: 'Spettroscopia che misura l’impronta vibrazionale molecolare. Su matrici animali è disturbata da fluorescenza, da qui il controllo attivo dell’acquisizione.' },
+      { id: 'gc', t: 'GC-FID, GC-MS', d: 'Gascromatografia: con rivelatore a ionizzazione di fiamma (FID) quantifica il profilo acidi grassi, con spettrometria di massa (MS) conferma la struttura.' },
+      { id: 'nmr', t: 'NMR', d: 'Risonanza magnetica nucleare, usata come metodo di riferimento per la conferma strutturale dei lipidi.' },
+    ],
+  },
+  {
+    group: 'Chemiometria e intelligenza artificiale',
+    terms: [
+      { id: 'amsa', t: 'AMSA', d: 'AI-driven Multimodal Spectroscopic Agent: il cuore tecnologico di OdE. Non un modello che predice soltanto, ma un agente che misura, interpreta, predice, spiega e suggerisce il processo.' },
+      { id: 'passaporto', t: 'Passaporto Lipidico Digitale', d: 'Il prodotto informativo centrale di AMSA: un dossier dinamico in nove sezioni che lega identità, origine, spettri, analisi, modelli, spiegazioni e decisione industriale del lotto.' },
+      { id: 'chemiometria', t: 'Chemiometria', d: 'Insieme di metodi statistici per estrarre informazione chimica dagli spettri (PCA, PLS, PLS-DA). È la base matura e validata su cui poggia AMSA.' },
+      { id: 'few-shot', t: 'Few-shot learning', d: 'Apprendimento da pochissimi esempi. Invece di chiedere "che classe è?", AMSA chiede "quanto è simile a lotti idonei, ossidati o instabili?" in uno spazio di embedding.' },
+      { id: 'xai', t: 'XAI (Explainable AI)', d: 'Intelligenza artificiale spiegabile: ogni predizione di AMSA indica le regioni spettrali e l’interpretazione chimica che la motivano. Niente black box.' },
+      { id: 'rag', t: 'RAG e Knowledge Graph', d: 'Recupero documentale aumentato (RAG) e grafo della conoscenza lipidica: lo strato che collega dati, letteratura e storico per dare contesto alle predizioni.' },
+      { id: 'ood', t: 'OOD (out-of-distribution)', d: 'Punteggio che segnala quando un campione è lontano da ciò che il modello conosce. Innesca cautela, repliche o escalation a test esterno.' },
+    ],
+  },
+  {
+    group: 'Controllo, governance e normativa',
+    terms: [
+      { id: 'active-control-loop', t: 'Active Control Loop', d: 'Il controllo attivo sull’acquisizione: AMSA regola i parametri del sensore per ottenere il miglior dato possibile da matrici difficili. La differenza fra subire la misura e governarla.' },
+      { id: 'soa', t: 'SOA (sottoprodotti di origine animale)', d: 'Materiali animali non destinati al consumo umano, regolati dal Reg. (CE) 1069/2009. Il sego cosmetico deve essere di Categoria 3 (basso rischio).' },
+      { id: 'codex', t: 'Codex CXS 211-1999', d: 'Standard del Codex Alimentarius su oli e grassi, usato come riferimento di specifica: numero di perossidi al massimo 10 meq O₂/kg.' },
+      { id: 'gmp', t: 'GMP (ISO 22716, EFfCI)', d: 'Buone pratiche di fabbricazione cosmetica. Richiedono tracciabilità di lotto: una chiave d’accesso al cliente professionale, non solo un costo.' },
+      { id: 'espr', t: 'ESPR', d: 'Ecodesign for Sustainable Products Regulation, Reg. (UE) 2024/1781. Introduce il Digital Product Passport obbligatorio per gruppi di prodotto.' },
+      { id: 'dpp', t: 'DPP (Digital Product Passport)', d: 'Passaporto digitale di prodotto previsto dall’ESPR, in roll-out dal 2027. Il Passaporto Lipidico di OdE ne anticipa l’obbligo.' },
+      { id: 'iscc', t: 'ISCC', d: 'Schema di certificazione chain-of-custody per i feedstock dei biocarburanti. Il Passaporto Lipidico vi mappa quasi uno a uno, base dell’adiacenza HVO/SAF.' },
+    ],
+  },
+];
+---
+<OdeLayout title={m.title} description={m.description} lang={lang}>
+  <header class="hero">
+    <p class="ode-eyebrow">Glossario</p>
+    <h1>I termini, spiegati</h1>
+    <p class="lede">
+      Il vocabolario di OdE e AMSA, dalla chimica del grasso all’intelligenza artificiale alla
+      normativa. Le altre pagine rimandano qui con link inline.
+    </p>
+  </header>
+
+  <nav class="toc" aria-label="Indice del glossario">
+    {groups.map((grp) => <a href={`#${grp.terms[0].id}`}>{grp.group}</a>)}
+  </nav>
+
+  {groups.map((grp) => (
+    <section class="grp">
+      <h2 class="grp-title">{grp.group}</h2>
+      <dl class="terms">
+        {grp.terms.map((term) => (
+          <div class="term" id={term.id}>
+            <dt>{term.t}</dt>
+            <dd>{term.d}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  ))}
+</OdeLayout>
+
+<style>
+  .hero { max-width: 44rem; padding: 0.5rem 0 1rem; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0.4rem 0 1rem; }
+  .lede { font-size: 1.1rem; line-height: 1.6; color: var(--body); }
+
+  .toc { display: flex; flex-wrap: wrap; gap: 0.5rem 1.2rem; margin: 1.5rem 0 2.5rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--rule); }
+  .toc a { font-size: 0.85rem; color: var(--accent); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+
+  .grp { margin: 2.5rem 0; }
+  .grp-title { font-size: 1.15rem; font-weight: 500; color: var(--ink); margin: 0 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--rule); }
+  .terms { margin: 0; display: grid; gap: 1.1rem; }
+  .term { scroll-margin-top: 1.5rem; }
+  .term dt { font-weight: 500; color: var(--ink); margin-bottom: 0.2rem; }
+  .term dd { margin: 0; font-size: 0.93rem; line-height: 1.55; color: var(--body); max-width: 46rem; }
+  .term:target dt { color: var(--accent); }
+  .term:target { border-left: 3px solid var(--green-border); padding-left: 0.9rem; margin-left: -1.2rem; }
+</style>

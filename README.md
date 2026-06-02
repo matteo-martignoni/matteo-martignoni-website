@@ -108,15 +108,20 @@ is reachable only via direct URL.
 ```
 src/pages/OdE/         IT default (/OdE) + EN mirror under /OdE/en
 src/layouts/OdeLayout.astro   isolated layout (own header/footer/nav)
-src/components/ode/     OdE-only components
+src/components/ode/     OdE-only components (incl. NormCard for the regulatory page)
 src/styles/ode-theme.css      OdE brand tokens, scoped under .ode
 src/i18n/ode.ts        OdE UI strings + route map
 src/lib/ode/           AMSA LIVE simulation engine (ported + extended)
-docs/ode/PLAN.md        build plan and content gaps
+public/images/ode/     OdE-only assets (the cow/pig single-line hero illustration)
+docs/ode/PLAN.md        original build plan and content gaps
+docs/ode/AUDIT_PLAN.md  audit + expansion plan (second pass)
 ```
 
-Pages: home, three content pillars (`amsa`, `mercato`, `visione`) and the
-interactive dashboard (`amsa-live`).
+Pages: a vision-led home (with the cow/pig illustration), three content pillars
+(`amsa`, `mercato`, `visione`), a technical deep-dive (`amsa/tecnica`), the
+regulatory clock (`normativa`), the investor page (`investitori`), a linkable
+glossary (`glossario`) and the interactive dashboard (`amsa-live`). Every page
+has an EN mirror under `/OdE/en`.
 
 ### Isolation (how it stays hidden)
 

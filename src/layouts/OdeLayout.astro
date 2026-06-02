@@ -31,8 +31,9 @@ const otherHome = odeRoutes[other].home;
 const navItems: { key: OdeRouteKey; label: string; href: string }[] = [
   { key: 'amsa', label: t.nav.amsa, href: r.amsa },
   { key: 'mercato', label: t.nav.mercato, href: r.mercato },
+  { key: 'normativa', label: t.nav.normativa, href: r.normativa },
   { key: 'visione', label: t.nav.visione, href: r.visione },
-  { key: 'live', label: t.nav.live, href: r.live },
+  { key: 'investitori', label: t.nav.investitori, href: r.investitori },
 ];
 ---
 <!DOCTYPE html>
@@ -79,6 +80,10 @@ const navItems: { key: OdeRouteKey; label: string; href: string }[] = [
 
     <footer class="ode-footer">
       <span>© {new Date().getFullYear()} {t.brand}</span>
+      <nav class="ode-foot-links" aria-label="OdE utility">
+        <a href={r.glossario}>{t.footer.glossario}</a>
+        <a href={r.live}>{t.footer.live}</a>
+      </nav>
       <span class="ode-sim-badge">{t.simBadge}</span>
     </footer>
 
@@ -134,7 +139,15 @@ const navItems: { key: OdeRouteKey; label: string; href: string }[] = [
         gap: 1rem;
         font-size: 0.75rem;
         color: var(--ode-muted);
+        flex-wrap: wrap;
       }
+      .ode-foot-links { display: flex; gap: 1rem; }
+      .ode-foot-links a {
+        color: var(--ode-muted);
+        text-decoration: none;
+        transition: color 160ms ease;
+      }
+      .ode-foot-links a:hover { color: var(--ode-ink); }
     </style>
   </body>
 </html>

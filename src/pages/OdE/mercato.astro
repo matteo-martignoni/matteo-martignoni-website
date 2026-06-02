@@ -4,8 +4,10 @@ import Section from '../../components/ode/Section.astro';
 import BarChart from '../../components/ode/BarChart.astro';
 import StatCard from '../../components/ode/StatCard.astro';
 import DataTag from '../../components/ode/DataTag.astro';
+import { odeRoutes } from '../../i18n/ode';
 
 const lang = 'it' as const;
+const r = odeRoutes[lang];
 const title = 'Mercato — Officina degli Estratti';
 const description =
   'Validazione di mercato di OdE: crescita dei mercati di riferimento, disponibilità a pagare, competizione su tre assi e la finestra normativa del Digital Product Passport.';
@@ -65,7 +67,25 @@ const timeline = [
     </div>
   </Section>
 
-  <Section n="3" title="Competizione su tre assi">
+  <Section n="3" title="Da dove arriva la materia prima">
+    <p>
+      Il vantaggio nasce a monte, nel bacino di filiera attorno a Langhirano e Parma. Non un grasso
+      anonimo, ma un sottoprodotto abbondante e oggi largamente sottovalutato, tracciabile fin dalla
+      stalla.
+    </p>
+    <div class="stats">
+      <StatCard value="7,5 mln" caption="Prosciutti di Parma DOP marchiati nel 2023, da una filiera di circa 3.600 allevamenti e 78 macelli." kind="fonte" source="Consorzio del Prosciutto di Parma, 2024" />
+      <StatCard value="850 mln €" caption="Valore del comparto Prosciutto di Parma DOP alla produzione (1,7 mld al consumo)." kind="fonte" source="Consorzio del Prosciutto di Parma, 2024" />
+      <StatCard value="≈ 20%" caption="Quota di animali avviata ad altre lavorazioni: il sottoprodotto da cui parte OdE." kind="fonte" source="Il Fatto Alimentare" />
+    </div>
+    <p class="note">
+      A questo si somma la filiera del Parmigiano Reggiano, da cui proviene il sego bovino di vacche da
+      latte ipercertificate: storia, movimenti e alimentazione note, quindi chimica del grasso
+      prevedibile e standardizzabile.
+    </p>
+  </Section>
+
+  <Section n="4" title="Competizione su tre assi">
     <p>
       Nessun attore offre il pacchetto integrato "ingrediente + passaporto digitale + QC AI-driven".
       OdE vive sull'incrocio dei tre assi, dove la provenienza tracciata è il fattore distintivo.
@@ -90,7 +110,7 @@ const timeline = [
     </div>
   </Section>
 
-  <Section n="4" title="L'orologio normativo: Digital Product Passport">
+  <Section n="5" title="L'orologio normativo: Digital Product Passport">
     <p>
       Un Passaporto Lipidico Digitale non è solo un differenziatore commerciale: anticipa un obbligo
       normativo in arrivo, trasformando un costo di conformità in prodotto vendibile.
@@ -105,6 +125,10 @@ const timeline = [
       ))}
     </ol>
     <p class="note"><DataTag kind="fonte" label="Commissione UE, ESPR 2024/1781" /> Regolamento UE 2024/1781 e working plan ESPR.</p>
+    <p class="note">
+      Il tema regolatorio merita una lettura a sé: norme vigenti e in arrivo, chi perde e perché OdE
+      vince, nell'<a href={r.normativa}>Orologio Normativo</a>.
+    </p>
   </Section>
 </OdeLayout>
 
@@ -113,6 +137,7 @@ const timeline = [
   .hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0.4rem 0 1rem; }
   .lede { font-size: 1.1rem; line-height: 1.6; color: var(--body); }
   .note { font-size: 0.85rem; color: var(--muted); line-height: 1.5; max-width: 42rem; }
+  .note a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
   .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 0.8rem; }
 
   .table-wrap { overflow-x: auto; margin: 1.2rem 0; }

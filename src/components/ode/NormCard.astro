@@ -1,0 +1,78 @@
+---
+// Regulatory card for the Orologio Normativo page. Frames each rule as a
+// thesis, not a list entry: what it requires, who it strains, why OdE wins.
+// Labels (cosa/perde/vince) are passed in so the component stays bilingual.
+interface Props {
+  code: string;          // e.g. "Reg. (CE) 1069/2009"
+  title: string;         // short human name
+  status: 'vigente' | 'arrivo';
+  statusLabel: string;   // localized status chip text
+  requisito: string;     // what it requires
+  vince: string;         // why OdE benefits
+  perde?: string;        // who it strains (optional)
+  labelRequisito: string;
+  labelPerde: string;
+  labelVince: string;
+}
+const {
+  code, title, status, statusLabel,
+  requisito, vince, perde,
+  labelRequisito, labelPerde, labelVince,
+} = Astro.props;
+---
+<article class={`norm norm--${status}`}>
+  <header class="norm-head">
+    <span class="norm-code">{code}</span>
+    <span class={`norm-status norm-status--${status}`}>{statusLabel}</span>
+  </header>
+  <h3>{title}</h3>
+  <dl class="norm-grid">
+    <dt>{labelRequisito}</dt>
+    <dd>{requisito}</dd>
+    {perde && (<><dt class="dt-perde">{labelPerde}</dt><dd>{perde}</dd></>)}
+    <dt class="dt-vince">{labelVince}</dt>
+    <dd>{vince}</dd>
+  </dl>
+</article>
+
+<style>
+  .norm {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--rule);
+    border-radius: var(--ode-radius);
+    padding: 1.2rem 1.3rem;
+  }
+  .norm--arrivo { border-left-color: var(--green-border); }
+  .norm--vigente { border-left-color: var(--lav-border); }
+  .norm-head { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; margin-bottom: 0.4rem; flex-wrap: wrap; }
+  .norm-code { font-family: var(--ode-font-mono); font-size: 0.78rem; color: var(--accent); }
+  .norm-status {
+    font-family: var(--ode-font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.1em 0.45em;
+    border-radius: 3px;
+  }
+  .norm-status--vigente { background: #ece9fb; color: var(--lav-ink); }
+  .norm-status--arrivo { background: var(--green-soft); color: var(--accent); }
+  .norm h3 { font-size: 1.1rem; font-weight: 500; color: var(--ink); margin: 0 0 0.7rem; }
+  .norm-grid { display: grid; grid-template-columns: auto 1fr; gap: 0.35rem 0.9rem; margin: 0; }
+  .norm-grid dt {
+    font-family: var(--ode-font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-top: 0.12rem;
+    white-space: nowrap;
+  }
+  .dt-vince { color: var(--accent); }
+  .dt-perde { color: var(--pink-ink); }
+  .norm-grid dd { margin: 0; font-size: 0.9rem; line-height: 1.5; color: var(--body); }
+  @media (max-width: 560px) {
+    .norm-grid { grid-template-columns: 1fr; gap: 0.15rem 0; }
+    .norm-grid dd { margin-bottom: 0.6rem; }
+  }
+</style>

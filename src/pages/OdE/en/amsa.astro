@@ -117,6 +117,12 @@ const passport = [
     </div>
     <p class="quote big">“A competitor can buy a spectrometer, not this base.”</p>
   </Section>
+
+  <a class="deepdive" href="/OdE/en/amsa/tecnica">
+    <span class="dd-k">Technical deep dive</span>
+    <span class="dd-t">Under AMSA’s hood →</span>
+    <span class="dd-d">Data ladder, model stack, few-shot and the open hypotheses of the Active Control Loop. For scientists and R&D.</span>
+  </a>
 </OdeLayout>
 
 <style>
@@ -132,4 +138,9 @@ const passport = [
   .quote.big { font-size: 1.2rem; }
   .formula { font-family: var(--ode-font-mono); font-size: 0.9rem; color: var(--ink); background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 0.9rem 1.1rem; overflow-x: auto; }
   .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0.8rem; margin: 1.4rem 0; }
+  .deepdive { display: block; text-decoration: none; background: var(--green-soft); border: 1px solid var(--green-border); border-radius: var(--ode-radius); padding: 1.3rem 1.5rem; margin-top: 1rem; transition: transform 160ms ease; }
+  .deepdive:hover { transform: translateY(-2px); }
+  .dd-k { display: block; font-family: var(--ode-font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); }
+  .dd-t { display: block; font-size: 1.2rem; color: var(--ink); margin: 0.3rem 0; }
+  .dd-d { display: block; font-size: 0.9rem; line-height: 1.5; color: var(--body); max-width: 40rem; }
 </style>

@@ -4,8 +4,10 @@ import Section from '../../../components/ode/Section.astro';
 import BarChart from '../../../components/ode/BarChart.astro';
 import StatCard from '../../../components/ode/StatCard.astro';
 import DataTag from '../../../components/ode/DataTag.astro';
+import { odeRoutes } from '../../../i18n/ode';
 
 const lang = 'en' as const;
+const r = odeRoutes[lang];
 const title = 'Market — Officina degli Estratti';
 const description =
   'OdE market validation: growth of reference markets, willingness to pay, three-axis competition and the Digital Product Passport regulatory window.';
@@ -65,7 +67,23 @@ const timeline = [
     </div>
   </Section>
 
-  <Section n="3" title="Competition across three axes">
+  <Section n="3" title="Where the raw material comes from">
+    <p>
+      The advantage starts upstream, in the supply-chain basin around Langhirano and Parma. Not an
+      anonymous fat, but an abundant and today largely undervalued by-product, traceable from the barn.
+    </p>
+    <div class="stats">
+      <StatCard value="7.5m" caption="Parma DOP hams marked in 2023, from a chain of about 3,600 farms and 78 abattoirs." kind="fonte" source="Consorzio del Prosciutto di Parma, 2024" />
+      <StatCard value="€850m" caption="Value of the Parma DOP ham segment at production (€1.7bn at consumption)." kind="fonte" source="Consorzio del Prosciutto di Parma, 2024" />
+      <StatCard value="≈ 20%" caption="Share of animals routed to other processing: the by-product OdE starts from." kind="fonte" source="Il Fatto Alimentare" />
+    </div>
+    <p class="note">
+      Add to this the Parmigiano Reggiano chain, source of beef tallow from hyper-certified dairy cows:
+      history, movements and feeding are known, so the fat chemistry is predictable and standardisable.
+    </p>
+  </Section>
+
+  <Section n="4" title="Competition across three axes">
     <p>
       No player offers the integrated package “ingredient + digital passport + AI-driven QC”. OdE lives
       at the intersection of the three axes, where traceable provenance is the distinctive factor.
@@ -90,7 +108,7 @@ const timeline = [
     </div>
   </Section>
 
-  <Section n="4" title="The regulatory clock: Digital Product Passport">
+  <Section n="5" title="The regulatory clock: Digital Product Passport">
     <p>
       A Digital Lipid Passport is not only a commercial differentiator: it anticipates an upcoming
       regulatory obligation, turning a compliance cost into a sellable product.
@@ -105,6 +123,10 @@ const timeline = [
       ))}
     </ol>
     <p class="note"><DataTag kind="fonte" label="European Commission, ESPR 2024/1781" /> EU Regulation 2024/1781 and ESPR working plan.</p>
+    <p class="note">
+      The regulatory theme deserves its own reading: rules in force and incoming, who loses and why OdE
+      wins, in the <a href={r.normativa}>Regulatory Clock</a>.
+    </p>
   </Section>
 </OdeLayout>
 
@@ -113,6 +135,7 @@ const timeline = [
   .hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0.4rem 0 1rem; }
   .lede { font-size: 1.1rem; line-height: 1.6; color: var(--body); }
   .note { font-size: 0.85rem; color: var(--muted); line-height: 1.5; max-width: 42rem; }
+  .note a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
   .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 0.8rem; }
   .table-wrap { overflow-x: auto; margin: 1.2rem 0; }
   table { border-collapse: collapse; width: 100%; min-width: 36rem; }

@@ -1,0 +1,111 @@
+---
+import OdeLayout from '../../../layouts/OdeLayout.astro';
+import { odeMeta } from '../../../i18n/ode';
+
+const lang = 'en' as const;
+const m = odeMeta[lang].glossario;
+
+const groups = [
+  {
+    group: 'Raw material and lipid chemistry',
+    terms: [
+      { id: 'sego', t: 'Tallow (sego)', d: 'Rendered, refined beef (or mutton) fat. OdE’s primary matrix: abundant, today undervalued, and within the Parmigiano Reggiano chain traceable from the barn.' },
+      { id: 'rendering', t: 'Rendering', d: 'The thermal process that extracts fat from animal by-products. Species, feeding and rendering conditions all shape the chemistry of the final fat.' },
+      { id: 'profilo-lipidico', t: 'Lipid (fatty-acid) profile', d: 'The split of a fat into saturated, monounsaturated and polyunsaturated fatty acids. It governs texture, stability and behaviour in formulation.' },
+      { id: 'saturi-insaturi', t: 'Saturated and unsaturated', d: 'Fatty acids without (saturated) or with (unsaturated) C=C double bonds. Animal fats are predominantly saturated: they return weak spectral unsaturation signals.' },
+      { id: 'biomarcatori', t: 'Lipid biomarkers', d: 'Chemical indicators read from the spectrum: unsaturation index, CH₂/CH₃ ratio, carbonyl index, aldehydes, hydroperoxides, waxes, sterols.' },
+      { id: 'lnp', t: 'SLN, NLC, LNP', d: 'Solid lipid nanoparticles, nanostructured lipid carriers and lipid nanoparticles. Advanced forms in which a lipid becomes a functional carrier, not just an emollient.' },
+    ],
+  },
+  {
+    group: 'Oxidation and stability',
+    terms: [
+      { id: 'perossidi', t: 'Peroxide value (PV)', d: 'A measure of a fat’s primary oxidation, in meq O₂/kg. The Codex CXS 211-1999 reference threshold is 10 meq O₂/kg: beyond it, out of specification.' },
+      { id: 'totox', t: 'TOTOX', d: 'Total oxidation value, TOTOX = 2·PV + p-anisidine value. Combines primary and secondary oxidation into a single number.' },
+      { id: 'oxidative-risk-score', t: 'Oxidative Risk Score', d: 'AMSA’s synthetic 0-100 score estimating oxidation risk and shelf-life from spectra and reference markers, anchored to recognised methods and thresholds.' },
+      { id: 'shelf-life', t: 'Shelf-life', d: 'How long an ingredient stays stable and usable. For OdE it is a prediction, currently labelled an emerging capability still to be validated.' },
+    ],
+  },
+  {
+    group: 'Spectroscopy and analysis',
+    terms: [
+      { id: 'spettroscopia', t: 'Spectroscopy', d: 'The study of how matter interacts with light. The spectrum is a molecular fingerprint from which composition and chemical state are inferred.' },
+      { id: 'nir', t: 'NIR (near-infrared)', d: 'Near-infrared spectroscopy, fast and at-line. Sensitive to C-H bonds, useful to estimate composition and oxidation.' },
+      { id: 'raman', t: 'Raman', d: 'Spectroscopy measuring the molecular vibrational fingerprint. On animal matrices it is disturbed by fluorescence, hence the active control of acquisition.' },
+      { id: 'gc', t: 'GC-FID, GC-MS', d: 'Gas chromatography: with a flame ionisation detector (FID) it quantifies the fatty-acid profile, with mass spectrometry (MS) it confirms structure.' },
+      { id: 'nmr', t: 'NMR', d: 'Nuclear magnetic resonance, used as a reference method for the structural confirmation of lipids.' },
+    ],
+  },
+  {
+    group: 'Chemometrics and artificial intelligence',
+    terms: [
+      { id: 'amsa', t: 'AMSA', d: 'AI-driven Multimodal Spectroscopic Agent: OdE’s technological core. Not a model that only predicts, but an agent that measures, interprets, predicts, explains and recommends the process.' },
+      { id: 'passaporto', t: 'Digital Lipid Passport', d: 'AMSA’s central information product: a dynamic nine-section dossier linking identity, origin, spectra, analyses, models, explanations and the batch’s industrial decision.' },
+      { id: 'chemiometria', t: 'Chemometrics', d: 'Statistical methods to extract chemical information from spectra (PCA, PLS, PLS-DA). The mature, validated base AMSA rests on.' },
+      { id: 'few-shot', t: 'Few-shot learning', d: 'Learning from very few examples. Instead of asking "what class is it?", AMSA asks "how similar is it to suitable, oxidised or unstable batches?" in an embedding space.' },
+      { id: 'xai', t: 'XAI (Explainable AI)', d: 'Explainable artificial intelligence: every AMSA prediction names the spectral regions and chemical interpretation behind it. No black box.' },
+      { id: 'rag', t: 'RAG and Knowledge Graph', d: 'Retrieval-augmented generation (RAG) and a lipid knowledge graph: the layer linking data, literature and history to give predictions context.' },
+      { id: 'ood', t: 'OOD (out-of-distribution)', d: 'A score flagging when a sample is far from what the model knows. It triggers caution, replicas or escalation to an external test.' },
+    ],
+  },
+  {
+    group: 'Control, governance and regulation',
+    terms: [
+      { id: 'active-control-loop', t: 'Active Control Loop', d: 'Active control over acquisition: AMSA tunes the sensor parameters to get the best possible data from difficult matrices. The difference between enduring the measurement and governing it.' },
+      { id: 'soa', t: 'ABP (animal by-products)', d: 'Animal materials not destined for human consumption, regulated by Reg. (EC) 1069/2009. Cosmetic tallow must be Category 3 (low risk).' },
+      { id: 'codex', t: 'Codex CXS 211-1999', d: 'The Codex Alimentarius standard for oils and fats, used as a specification reference: peroxide value at most 10 meq O₂/kg.' },
+      { id: 'gmp', t: 'GMP (ISO 22716, EFfCI)', d: 'Cosmetic good manufacturing practice. It requires batch traceability: an access key to the professional customer, not just a cost.' },
+      { id: 'espr', t: 'ESPR', d: 'Ecodesign for Sustainable Products Regulation, Reg. (EU) 2024/1781. It introduces the mandatory Digital Product Passport by product group.' },
+      { id: 'dpp', t: 'DPP (Digital Product Passport)', d: 'The product digital passport mandated by ESPR, rolling out from 2027. OdE’s Lipid Passport anticipates the obligation.' },
+      { id: 'iscc', t: 'ISCC', d: 'A chain-of-custody certification scheme for biofuel feedstocks. The Lipid Passport maps onto it almost one to one, the basis of the HVO/SAF adjacency.' },
+    ],
+  },
+];
+---
+<OdeLayout title={m.title} description={m.description} lang={lang}>
+  <header class="hero">
+    <p class="ode-eyebrow">Glossary</p>
+    <h1>The terms, explained</h1>
+    <p class="lede">
+      The vocabulary of OdE and AMSA, from fat chemistry to artificial intelligence to regulation. The
+      other pages link here inline.
+    </p>
+  </header>
+
+  <nav class="toc" aria-label="Glossary index">
+    {groups.map((grp) => <a href={`#${grp.terms[0].id}`}>{grp.group}</a>)}
+  </nav>
+
+  {groups.map((grp) => (
+    <section class="grp">
+      <h2 class="grp-title">{grp.group}</h2>
+      <dl class="terms">
+        {grp.terms.map((term) => (
+          <div class="term" id={term.id}>
+            <dt>{term.t}</dt>
+            <dd>{term.d}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  ))}
+</OdeLayout>
+
+<style>
+  .hero { max-width: 44rem; padding: 0.5rem 0 1rem; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0.4rem 0 1rem; }
+  .lede { font-size: 1.1rem; line-height: 1.6; color: var(--body); }
+
+  .toc { display: flex; flex-wrap: wrap; gap: 0.5rem 1.2rem; margin: 1.5rem 0 2.5rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--rule); }
+  .toc a { font-size: 0.85rem; color: var(--accent); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+
+  .grp { margin: 2.5rem 0; }
+  .grp-title { font-size: 1.15rem; font-weight: 500; color: var(--ink); margin: 0 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--rule); }
+  .terms { margin: 0; display: grid; gap: 1.1rem; }
+  .term { scroll-margin-top: 1.5rem; }
+  .term dt { font-weight: 500; color: var(--ink); margin-bottom: 0.2rem; }
+  .term dd { margin: 0; font-size: 0.93rem; line-height: 1.55; color: var(--body); max-width: 46rem; }
+  .term:target dt { color: var(--accent); }
+  .term:target { border-left: 3px solid var(--green-border); padding-left: 0.9rem; margin-left: -1.2rem; }
+</style>

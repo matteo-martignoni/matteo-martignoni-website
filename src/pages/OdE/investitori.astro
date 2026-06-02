@@ -1,0 +1,146 @@
+---
+import OdeLayout from '../../layouts/OdeLayout.astro';
+import Section from '../../components/ode/Section.astro';
+import DataTag from '../../components/ode/DataTag.astro';
+import { odeMeta, odeRoutes } from '../../i18n/ode';
+
+const lang = 'it' as const;
+const m = odeMeta[lang].investitori;
+const r = odeRoutes[lang];
+
+// Investment thesis (from knowledge base).
+const thesis = [
+  { t: 'Un fossato che nessuno può comprare', d: 'La provenienza tracciata dalle filiere Parmigiano Reggiano è la base non replicabile: un concorrente può comprare uno spettrometro, non questi dati di filiera.' },
+  { t: 'Il timing normativo', d: 'Il Digital Product Passport diventa obbligatorio dal 2027. OdE arriva con lo strumento già pronto e converte un costo di conformità del settore in prodotto vendibile.' },
+  { t: 'Uno spazio bianco', d: 'L’AI applicata all’ottimizzazione dei processi sui grassi animali è una lacuna di letteratura quasi non presidiata: spazio per creare IP difendibile.' },
+  { t: 'Asset-light, scalabile', d: 'Investimento iniziale indicativo di circa 300.000 euro, team snello, e una visione di espansione da produttore a fornitore di qualificazione multi-mercato.' },
+];
+
+// Tax incentives (web-verified, June 2026).
+const incentivi = [
+  { v: '30%', k: 'Detrazione IRPEF ordinaria', d: 'Per le persone fisiche, su un massimo investibile di 1.000.000 euro l’anno, con detenzione minima di 3 anni.' },
+  { v: '65%', k: 'Detrazione IRPEF in regime de minimis', d: 'Aliquota innalzata dal 2025 (L. 193/2024), su un massimo di 100.000 euro l’anno. Alternativa, non cumulabile, alla detrazione ordinaria del 30%.' },
+  { v: '30%', k: 'Deduzione IRES', d: 'Per i soggetti IRES che investono nel capitale, su un massimo di 1.800.000 euro l’anno.' },
+];
+
+// Investor Visa routes (web-verified, June 2026).
+const visa = [
+  { v: '250.000 €', k: 'Startup innovativa', d: 'Investimento in una startup innovativa italiana.' },
+  { v: '500.000 €', k: 'Società di capitali', d: 'Investimento in una società di capitali italiana (250.000 euro se a vocazione sociale).' },
+  { v: '1.000.000 €', k: 'Donazione filantropica', d: 'In cultura, istruzione, ricerca o tutela del patrimonio.' },
+  { v: '2.000.000 €', k: 'Titoli di Stato', d: 'Investimento in titoli di Stato italiani.' },
+];
+---
+<OdeLayout title={m.title} description={m.description} lang={lang} active="investitori">
+  <header class="hero">
+    <p class="ode-eyebrow">Investitori</p>
+    <h1>Perché investire in OdE, e perché ora</h1>
+    <p class="lede">
+      Per gli investitori la credibilità batte l’entusiasmo: un dato verificato vale più di dieci
+      aggettivi. Qui la tesi in sintesi, gli incentivi per chi investe in startup innovative in Italia e
+      i percorsi aperti agli investitori extra-UE.
+    </p>
+  </header>
+
+  <Section n="1" title="La tesi in sintesi">
+    <div class="thesis">
+      {thesis.map((x) => (
+        <article class="th">
+          <h3>{x.t}</h3>
+          <p>{x.d}</p>
+        </article>
+      ))}
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Piano investimenti OdE" />
+      La cifra di investimento è indicativa e da confermare con il piano economico. Approfondisci la
+      <a href={r.visione}>visione di espansione</a> e l’<a href={r.normativa}>Orologio Normativo</a>.
+    </p>
+  </Section>
+
+  <Section n="2" title="Investire in una startup innovativa: gli incentivi">
+    <p>
+      L’Italia incentiva l’investimento nel capitale delle startup innovative con agevolazioni fiscali
+      significative. Le aliquote e i massimali in vigore:
+    </p>
+    <div class="cards">
+      {incentivi.map((x) => (
+        <div class="card">
+          <span class="card-v">{x.v}</span>
+          <span class="card-k">{x.k}</span>
+          <p>{x.d}</p>
+        </div>
+      ))}
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Agenzia delle Entrate; MIMIT; Legge 193/2024" />
+      Dati verificati a giugno 2026 (DL 179/2012 art. 29 e 29-bis; L. 193/2024). La detenzione minima
+      è di 3 anni: la cessione anticipata comporta la decadenza del beneficio.
+    </p>
+  </Section>
+
+  <Section n="3" title="Per investitori extra-UE: l’Investor Visa for Italy">
+    <p>
+      I cittadini non UE possono ottenere un visto e un permesso di soggiorno per investitori scegliendo
+      una delle quattro vie d’ingresso. Investire in una startup innovativa è la soglia più accessibile.
+    </p>
+    <div class="cards">
+      {visa.map((x) => (
+        <div class="card card--visa">
+          <span class="card-v">{x.v}</span>
+          <span class="card-k">{x.k}</span>
+          <p>{x.d}</p>
+        </div>
+      ))}
+    </div>
+    <ul class="visa-notes">
+      <li>Permesso di soggiorno di 2 anni, rinnovabile per altri 3.</li>
+      <li>Non serve trasferire il capitale per presentare domanda: l’investimento va completato entro 3 mesi dall’ingresso in Italia.</li>
+      <li>Possibile il ricongiungimento familiare.</li>
+    </ul>
+    <p class="note">
+      <DataTag kind="fonte" label="Investor Visa for Italy, MIMIT (art. 26-bis TU Immigrazione, DL 50/2017)" />
+      Dati verificati a giugno 2026 sul portale ufficiale Investor Visa for Italy.
+    </p>
+  </Section>
+
+  <Section n="4" title="Nota">
+    <p class="disclaimer">
+      Questa pagina ha scopo informativo e non costituisce consulenza legale, fiscale o finanziaria. I
+      dati fiscali e normativi sono verificati a giugno 2026 e possono cambiare: vanno confermati con un
+      professionista abilitato e con le fonti ufficiali prima di qualsiasi decisione di investimento.
+    </p>
+  </Section>
+</OdeLayout>
+
+<style>
+  .hero { max-width: 44rem; padding: 0.5rem 0 1rem; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0.4rem 0 1rem; }
+  .lede { font-size: 1.1rem; line-height: 1.6; color: var(--body); }
+  .note { font-size: 0.85rem; color: var(--muted); line-height: 1.5; max-width: 44rem; }
+  .note a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+
+  .thesis { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+  .th { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.1rem 1.2rem; }
+  .th h3 { font-size: 1rem; font-weight: 500; color: var(--ink); margin: 0 0 0.4rem; }
+  .th p { margin: 0; font-size: 0.9rem; line-height: 1.5; color: var(--body); }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 0.9rem; margin: 1rem 0; }
+  .card { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.2rem 1.3rem; display: flex; flex-direction: column; gap: 0.3rem; }
+  .card--visa { border-left: 3px solid var(--green-border); }
+  .card-v { font-size: clamp(1.5rem, 3.2vw, 2rem); font-weight: 300; color: var(--ink); letter-spacing: -0.01em; line-height: 1.1; }
+  .card-k { font-weight: 500; color: var(--accent); font-size: 0.95rem; }
+  .card p { margin: 0.2rem 0 0; font-size: 0.88rem; line-height: 1.45; color: var(--body); }
+
+  .visa-notes { padding-left: 1.2rem; line-height: 1.6; max-width: 42rem; margin: 0.5rem 0 0.8rem; }
+  .visa-notes li { margin-bottom: 0.3rem; font-size: 0.92rem; color: var(--body); }
+  .visa-notes li::marker { color: var(--accent); }
+
+  .disclaimer {
+    border-left: 3px solid var(--lav-border);
+    padding: 0.6rem 0 0.6rem 1rem;
+    background: #ece9fb;
+    border-radius: 0 var(--ode-radius) var(--ode-radius) 0;
+    font-size: 0.9rem; line-height: 1.55; color: var(--lav-ink); max-width: 44rem;
+  }
+</style>
