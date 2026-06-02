@@ -23,7 +23,13 @@ src/
 └── i18n/           UI translation strings
 
 public/             Static assets (images, fonts, favicon)
+_trash/             Local recycle bin — content removed from the site (git-ignored)
 ```
+
+`_trash/` is a holding area for content pulled from the site. It lives outside
+`src/` (so Astro never builds it) and is git-ignored (so it stays out of the repo
+and deploys). See `_trash/README.md`. To restore an item, move it back into the
+matching `src/` or `public/` location and re-add it to git.
 
 ## Languages
 
@@ -108,7 +114,8 @@ is reachable only via direct URL.
 ```
 src/pages/OdE/         IT default (/OdE) + EN mirror under /OdE/en
 src/layouts/OdeLayout.astro   isolated layout (own header/footer/nav)
-src/components/ode/     OdE-only components (incl. NormCard for the regulatory page)
+src/components/ode/     OdE-only components (NormCard for the regulatory page;
+                        LifecycleFlow + CowGlyph for the traceability infographic)
 src/styles/ode-theme.css      OdE brand tokens, scoped under .ode
 src/i18n/ode.ts        OdE UI strings + route map
 src/lib/ode/           AMSA LIVE simulation engine (ported + extended)
@@ -119,9 +126,10 @@ docs/ode/AUDIT_PLAN.md  audit + expansion plan (second pass)
 
 Pages: a vision-led home (with the cow/pig illustration), three content pillars
 (`amsa`, `mercato`, `visione`), a technical deep-dive (`amsa/tecnica`), the
-regulatory clock (`normativa`), the investor page (`investitori`), a linkable
-glossary (`glossario`) and the interactive dashboard (`amsa-live`). Every page
-has an EN mirror under `/OdE/en`.
+regulatory clock (`normativa`), the traceability page (`tracciabilita`, with the
+birth-to-slaughter lifecycle infographic), the investor page (`investitori`), a
+linkable glossary (`glossario`) and the interactive dashboard (`amsa-live`).
+Every page has an EN mirror under `/OdE/en`.
 
 ### Isolation (how it stays hidden)
 
