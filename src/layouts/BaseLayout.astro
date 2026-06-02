@@ -7,7 +7,7 @@ interface Props {
   title: string;
   description?: string;
   lang?: 'en' | 'it';
-  /** Optional absolute or root-relative OG image (1200×630). Omitted if unset. */
+  /** Absolute or root-relative OG image (1200×630). Defaults to the brand card. */
   ogImage?: string;
 }
 
@@ -15,7 +15,7 @@ const {
   title,
   description = 'Matteo Martignoni — Brand strategist. Workshop of brands.',
   lang = 'en',
-  ogImage,
+  ogImage = '/og-image.png',
 } = Astro.props;
 
 // Canonical + language alternates, derived from the current path.
@@ -29,6 +29,43 @@ const enHref = new URL(enPath, Astro.site).href;
 const itHref = new URL(itPath, Astro.site).href;
 const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).href : undefined;
 const ogLocale = lang === 'it' ? 'it_IT' : 'en_US';
+
+// Structured data (JSON-LD): Person + WebSite, emitted on every page.
+const site = (Astro.site?.href ?? 'https://matteomartignoni.com/').replace(/\/$/, '');
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': `${site}/#person`,
+      name: 'Matteo Martignoni',
+      url: `${site}/`,
+      jobTitle: lang === 'it' ? 'Stratega di marca' : 'Brand strategist',
+      description:
+        lang === 'it'
+          ? "Stratega di marca specializzato in marchi premium e di lusso: strategia, riposizionamento, sviluppo di categoria e retail, in Italia e all'estero."
+          : 'Brand strategist specialising in premium and luxury brands: strategy, repositioning, category development, and retail, in Italy and abroad.',
+      sameAs: ['https://www.linkedin.com/in/matteomartignoni/'],
+      knowsAbout: [
+        'Brand strategy',
+        'Brand repositioning',
+        'Retail strategy',
+        'Licensing',
+        'Premium and luxury brands',
+        'International market entry',
+      ],
+      address: { '@type': 'PostalAddress', addressLocality: 'Milan', addressCountry: 'IT' },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${site}/#website`,
+      url: `${site}/`,
+      name: 'Matteo Martignoni',
+      inLanguage: ['en', 'it'],
+      publisher: { '@id': `${site}/#person` },
+    },
+  ],
+};
 ---
 <!DOCTYPE html>
 <html lang={lang}>
@@ -37,6 +74,9 @@ const ogLocale = lang === 'it' ? 'it_IT' : 'en_US';
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#FAFAF8" />
 
     <!-- Canonical + bilingual alternates (helps Google serve the right language) -->
     <link rel="canonical" href={canonical} />
@@ -52,12 +92,16 @@ const ogLocale = lang === 'it' ? 'it_IT' : 'en_US';
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content={ogLocale} />
     {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+    {ogImageUrl && <meta property="og:image:alt" content="Matteo Martignoni" />}
+    {ogImageUrl && <meta property="og:image:width" content="1200" />}
+    {ogImageUrl && <meta property="og:image:height" content="630" />}
 
     <!-- Twitter / X card -->
     <meta name="twitter:card" content={ogImageUrl ? 'summary_large_image' : 'summary'} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
+    {ogImageUrl && <meta name="twitter:image:alt" content="Matteo Martignoni" />}
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -66,6 +110,9 @@ const ogLocale = lang === 'it' ? 'it_IT' : 'en_US';
       rel="stylesheet"
     />
     <title>{title}</title>
+
+    <!-- Structured data -->
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
   </head>
   <body class="min-h-screen flex flex-col bg-warm-50 text-ink-900">
 
