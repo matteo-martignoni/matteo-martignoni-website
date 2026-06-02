@@ -1,0 +1,250 @@
+---
+import OdeLayout from '../../../layouts/OdeLayout.astro';
+import Section from '../../../components/ode/Section.astro';
+import DataTag from '../../../components/ode/DataTag.astro';
+import CowGlyph from '../../../components/ode/CowGlyph.astro';
+import LifecycleFlow from '../../../components/ode/LifecycleFlow.astro';
+import { odeMeta, odeRoutes } from '../../../i18n/ode';
+
+const lang = 'en' as const;
+const m = odeMeta[lang].tracciabilita;
+const r = odeRoutes[lang];
+const g = r.glossario;
+
+const layers = [
+  {
+    k: 'Mandatory layer',
+    glyph: 'calf' as const,
+    title: 'Cattle herd register',
+    body: 'Every animal carries an individual identity: a double ear tag and a 14-character BDN code, unchanged from birth to death. Birth, movements and slaughter are recorded by EU and national law.',
+    refs: 'Reg. EU 2016/429 · Implementing Reg. EU 2021/520 · D.Lgs 134/2022',
+  },
+  {
+    k: 'Voluntary yet binding layer',
+    glyph: 'cow' as const,
+    title: 'DOP specification',
+    body: 'The Parmigiano Reggiano specification binds the animal to a certified territory and diet: local forage, an absolute ban on silage, a district limited to five provinces. A nutritional ID card for the herd.',
+    refs: 'Reg. EU 1151/2012 · Implementing Reg. EU 2025/661 · OCQ PR',
+  },
+];
+
+const gaps = [
+  {
+    n: '01',
+    problema: 'The break between stable and rendering',
+    body: 'The ear tag identifies the single animal up to the abattoir. But at rendering the adipose tissue of many animals merges into lots: individual identity dissolves into the batch. The commercial document traces the lot of rendered fat, no longer the single animal or the DOP farm.',
+    presidio: 'Chain-of-custody agreements with abattoirs and rendering plants that segregate lots by origin and document their geographic provenance.',
+  },
+  {
+    n: '02',
+    problema: 'The specification does not cover tallow',
+    body: 'The DOP covers milk and cheese. No DOP certification extends to the fat: OdE cannot claim the DOP for its tallow, nor imply the fat is DOP-certified.',
+    presidio: 'Communicate provenance from the district, never a DOP certification of the lipid product. Rigour in the claim as a form of credibility.',
+  },
+  {
+    n: '03',
+    problema: 'The cull cow may leave first',
+    body: 'A cow that produced milk can be sold, fed differently and moved out of the district before slaughter, with events still logged in BDN. From a cow that produced milk is not the same as fed to specification until slaughter.',
+    presidio: 'Define the claim precisely (from district cattle) and tie sourcing to animals slaughtered directly from the circuit.',
+  },
+  {
+    n: '04',
+    problema: 'The ABP category must be proven',
+    body: 'Cosmetic tallow must be Category 3 material (low risk, from animals under ante and post-mortem control). Category 3 rendered fats need no chemical marker, which makes documentary separation from Cat. 1 and 2 even more crucial.',
+    presidio: 'Prove Category 3 and physical and documentary separation across transport and processing: batch register, commercial document, plant approval.',
+  },
+  {
+    n: '05',
+    problema: 'A proprietary documentary layer is needed',
+    body: 'No rule automatically links the tallow lot to the DOP origin. The gap between mandatory individual identity and the anonymous batch stays open: it is the exact point where a proprietary system creates value.',
+    presidio: 'The Digital Lipid Passport rests on a contractual and information system built by OdE, voluntarily bridging the gap the law leaves open.',
+  },
+];
+---
+<OdeLayout title={m.title} description={m.description} lang={lang} active="tracciabilita">
+  <header class="hero">
+    <p class="ode-eyebrow">Traceability</p>
+    <h1>Provenance as proof, not as a slogan</h1>
+    <p class="lede">
+      The dairy cows of the Parmigiano Reggiano circuit are among the most documented and regulated
+      cattle in Europe. A double regulatory layer converges on them, making OdE’s feedstock far more
+      traceable than anonymous <a href={`${g}#sego`}>tallow</a> from generic rendering. This is the real
+      asset underpinning the <a href={`${g}#passaporto`}>Digital Lipid Passport</a>.
+    </p>
+  </header>
+
+  <Section n="1" title="The double regulatory layer">
+    <p>
+      Two independent systems overlap on the same animal: a mandatory one fixing its individual identity,
+      and a voluntary yet binding one certifying its territory and diet. Together they build a highly
+      documented and auditable provenance.
+    </p>
+    <div class="layers">
+      {layers.map((l) => (
+        <article class="layer">
+          <div class="layer-head">
+            <CowGlyph variant={l.glyph} size={40} class="layer-glyph" />
+            <span class="layer-k">{l.k}</span>
+          </div>
+          <h3>{l.title}</h3>
+          <p>{l.body}</p>
+          <p class="layer-refs">{l.refs}</p>
+        </article>
+      ))}
+    </div>
+  </Section>
+
+  <Section n="2" title="The life path of a DOP cow">
+    <p>
+      From birth to slaughter traceability is strong and mandatory: every animal has a documented history.
+      Then, between leaving the certified stable and the lot of rendered fat, individual identity weakens
+      and dissolves. It is in that grey area that OdE plugs in.
+    </p>
+    <LifecycleFlow lang={lang} />
+    <p class="note">
+      <DataTag kind="fonte" label="OdE regulatory research on DOP traceability; texts cited on EUR-Lex and Consorzio Parmigiano Reggiano" />
+      BDN herd register, Parmigiano Reggiano specification, Reg. (EC) 1069/2009 and Reg. (EU) 142/2011 on
+      animal by-products. Terms: <a href={`${g}#soa`}>ABP</a>, <a href={`${g}#sego`}>tallow</a>,
+      <a href={`${g}#passaporto`}>Lipid Passport</a>.
+    </p>
+  </Section>
+
+  <Section n="3" title="Where traceability breaks">
+    <p>
+      The grey areas are not an objection to OdE’s thesis: they are its operating agenda. Each has a
+      precise safeguard. Naming them honestly is already part of the rigour a demanding audience rewards.
+    </p>
+    <div class="gaps">
+      {gaps.map((gp) => (
+        <article class="gap">
+          <span class="gap-n">{gp.n}</span>
+          <div class="gap-body">
+            <h3>{gp.problema}</h3>
+            <p>{gp.body}</p>
+            <p class="gap-presidio"><span class="gap-pk">Safeguard</span> {gp.presidio}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </Section>
+
+  <Section n="4" title="What the specification does not cover">
+    <div class="honesty">
+      <p>
+        On end of life (cull cows, the typical source of tallow) the Consorzio prescribes nothing
+        specific: a result verified on the text, not a research gap. The DOP control plan covers farms,
+        dairies, ageing warehouses, grating and portioning, not abattoirs or rendering plants.
+      </p>
+      <p>
+        Two planes must stay distinct. The specification bans <a href={`${g}#sego`}>tallow</a> as an
+        ingredient in the cows’ diet (the input side). It does not regulate tallow as an output product
+        at the animal’s end of life (the output side). OdE sits, clearly, on the second plane.
+      </p>
+    </div>
+  </Section>
+
+  <Section n="5" title="Where OdE plugs in">
+    <p>
+      Since no rule links the fat lot to the DOP origin, that link must be built. OdE builds it with three
+      tools that stitch the grey area back together, turning an already documented provenance into
+      verifiable, sellable proof.
+    </p>
+    <div class="solutions">
+      <article class="sol">
+        <span class="sol-k">Chain of custody</span>
+        <p>Selection of partner abattoirs and rendering plants, lot segregation by origin, collection of
+        geographic provenance and Category 3 evidence.</p>
+      </article>
+      <article class="sol">
+        <span class="sol-k">Digital Lipid Passport</span>
+        <p>The proprietary documentary layer binding identity, origin, spectra and analysis of the lot in
+        one object: register and dossier at once, ready for the incoming <a href={`${g}#dpp`}>Digital
+        Product Passport</a>.</p>
+      </article>
+      <article class="sol">
+        <span class="sol-k">AMSA</span>
+        <p>The <a href={`${g}#amsa`}>spectroscopic agent</a> reads each lot and certifies profile,
+        stability and suitability: the lipid signature becomes an objective check downstream of the chain.</p>
+      </article>
+    </div>
+    <p class="thesis">
+      A mandatory herd register, a feeding specification and a defined geographic area give a highly
+      documented and auditable provenance, against anonymous tallow. OdE builds the Passport on public,
+      verifiable data, with a degree of regulatory robustness rare in the lipid-ingredients market.
+      Provenance is not a story: it is a datum that withstands the audit.
+    </p>
+    <p class="note">
+      For the terms on this page, see the <a href={g}>glossary</a>:
+      <a href={`${g}#bdn`}>BDN register</a>, <a href={`${g}#marca`}>ear tag</a>,
+      <a href={`${g}#riforma`}>cull cow</a>, <a href={`${g}#custodia`}>chain of custody</a>,
+      <a href={`${g}#disciplinare`}>DOP specification</a>, <a href={`${g}#soa`}>ABP Category 3</a>.
+      See also the <a href={r.normativa}>Regulatory Clock</a>.
+    </p>
+    <p class="disclaimer">
+      A documentary review for information and positioning purposes, based on the institutional sources
+      cited. It is not legal advice. For commercial claims, direct verification against official texts
+      and specialised legal counsel in food and ABP law are recommended.
+    </p>
+  </Section>
+</OdeLayout>
+
+<style>
+  .hero { max-width: 46rem; padding: 0.5rem 0 1rem; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0.4rem 0 1rem; }
+  .lede { font-size: 1.1rem; line-height: 1.6; color: var(--body); }
+  .lede a, .note a, .thesis a, .honesty a, .sol a {
+    color: var(--accent); text-decoration: underline; text-underline-offset: 2px;
+  }
+  .note { font-size: 0.85rem; color: var(--muted); line-height: 1.5; max-width: 44rem; }
+
+  .layers { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; margin-top: 1.2rem; }
+  .layer { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.2rem 1.3rem; }
+  .layer-head { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; }
+  .layer-glyph { color: var(--accent); flex: none; }
+  .layer-k { font-family: var(--ode-font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); }
+  .layer h3 { font-size: 1.1rem; font-weight: 500; margin: 0 0 0.4rem; }
+  .layer p { margin: 0 0 0.5rem; font-size: 0.92rem; line-height: 1.5; }
+  .layer-refs { font-family: var(--ode-font-mono); font-size: 0.68rem; color: var(--muted); line-height: 1.4; }
+
+  .gaps { display: grid; gap: 0.9rem; margin-top: 1.2rem; }
+  .gap {
+    display: grid; grid-template-columns: 2.5rem 1fr; gap: 0 0.9rem;
+    background: var(--panel); border: 1px solid var(--rule);
+    border-radius: var(--ode-radius); padding: 1.1rem 1.2rem;
+  }
+  .gap-n { font-family: var(--ode-font-mono); font-size: 1.05rem; color: var(--muted); }
+  .gap-body h3 { font-size: 1.02rem; font-weight: 500; margin: 0 0 0.4rem; }
+  .gap-body p { margin: 0 0 0.5rem; font-size: 0.9rem; line-height: 1.5; max-width: 42rem; }
+  .gap-presidio {
+    background: var(--green-soft); border-radius: var(--ode-radius-sm);
+    padding: 0.5rem 0.7rem; font-size: 0.86rem !important; color: var(--ink); margin-bottom: 0 !important;
+  }
+  .gap-pk {
+    font-family: var(--ode-font-mono); font-size: 0.62rem; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent);
+    margin-right: 0.3rem;
+  }
+
+  .honesty { border-left: 3px solid var(--rule); padding: 0.3rem 0 0.3rem 1.1rem; max-width: 44rem; }
+  .honesty p { font-size: 0.96rem; line-height: 1.6; }
+
+  .solutions { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1rem; margin: 1.2rem 0; }
+  .sol { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.1rem 1.2rem; }
+  .sol-k { display: block; font-weight: 500; color: var(--accent); margin-bottom: 0.4rem; }
+  .sol p { margin: 0; font-size: 0.9rem; line-height: 1.5; }
+
+  .thesis {
+    border-left: 3px solid var(--green-border);
+    padding: 0.7rem 0 0.7rem 1.1rem;
+    background: var(--green-soft);
+    border-radius: 0 var(--ode-radius) var(--ode-radius) 0;
+    font-size: 1.02rem; line-height: 1.6; color: var(--ink); max-width: 46rem;
+    margin: 1.4rem 0;
+  }
+  .disclaimer { font-size: 0.76rem; color: var(--muted); line-height: 1.5; max-width: 44rem; margin-top: 1rem; }
+
+  @media (max-width: 520px) {
+    .gap { grid-template-columns: 1fr; }
+    .gap-n { margin-bottom: 0.3rem; }
+  }
+</style>
