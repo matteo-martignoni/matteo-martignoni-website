@@ -1,10 +1,16 @@
 ---
 // The nine sections of the Digital Lipid Passport (AMSA pitch §C).
 // Localised content passed in as `sections`.
+interface FieldGroup {
+  label?: string;                       // optional chip label (e.g. "Misurato")
+  kind?: 'fonte' | 'stima' | 'bench';   // reuses the data-tag styles
+  fields: string;
+}
 interface PassportSection {
   n: string;
   title: string;
-  fields: string;  // comma-listed key fields
+  fields?: string;        // comma-listed key fields
+  groups?: FieldGroup[];  // or split into measured/predicted groups
 }
 interface Props {
   sections: PassportSection[];
@@ -16,7 +22,14 @@ const { sections } = Astro.props;
     <article class="pcard">
       <span class="pcard-n">{s.n}</span>
       <h3 class="pcard-title">{s.title}</h3>
-      <p class="pcard-fields">{s.fields}</p>
+      {s.groups
+        ? s.groups.map((gr) => (
+            <div class="pcard-group">
+              {gr.label && <span class={`ode-tag ode-tag--${gr.kind ?? 'fonte'}`}>{gr.label}</span>}
+              <p class="pcard-fields">{gr.fields}</p>
+            </div>
+          ))
+        : <p class="pcard-fields">{s.fields}</p>}
     </article>
   ))}
 </div>
@@ -41,4 +54,8 @@ const { sections } = Astro.props;
   }
   .pcard-title { font-size: 1rem; color: var(--ink); margin: 0.2rem 0 0.5rem; font-weight: 500; }
   .pcard-fields { font-family: var(--ode-font-mono); font-size: 0.72rem; line-height: 1.5; color: var(--muted); margin: 0; }
+  .pcard-group { margin-top: 0.5rem; }
+  .pcard-group:first-of-type { margin-top: 0; }
+  .pcard-group .ode-tag { margin-bottom: 0.25rem; }
+  .pcard-group .pcard-fields { margin: 0; }
 </style>
