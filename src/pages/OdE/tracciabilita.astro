@@ -66,12 +66,13 @@ const gaps = [
 <OdeLayout title={m.title} description={m.description} lang={lang} active="tracciabilita">
   <header class="hero">
     <p class="ode-eyebrow">Tracciabilità</p>
-    <h1>La provenienza come prova, non come slogan</h1>
+    <h1>La provenienza come prova verificabile</h1>
     <p class="lede">
       Le vacche da latte del circuito Parmigiano Reggiano sono tra i bovini più documentati e regolati
-      d’Europa. Su di esse converge un doppio strato normativo che rende la materia prima di OdE
-      enormemente più tracciabile del <a href={`${g}#sego`}>sego</a> anonimo da rendering generico. È
-      questo il vero asset su cui poggia il <a href={`${g}#passaporto`}>Passaporto Lipidico Digitale</a>.
+      d’Europa. Su di esse converge un doppio strato normativo che rende il
+      <a href={`${g}#sego`}>sego</a> di OdE tracciabile dalla stalla, capo per capo, lungo tutta la
+      filiera. È questo il vero asset su cui poggia il
+      <a href={`${g}#passaporto`}>Passaporto Lipidico Digitale</a>.
     </p>
   </header>
 
@@ -113,8 +114,8 @@ const gaps = [
 
   <Section n="3" title="Dove la tracciabilità si rompe">
     <p>
-      Le zone grigie non sono un’obiezione alla tesi di OdE: sono la sua agenda operativa. Ognuna ha un
-      presidio preciso. Nominarle con onestà è già parte del rigore che il pubblico esigente premia.
+      Le zone grigie sono l’agenda operativa di OdE, e ognuna ha un presidio preciso. Nominarle con
+      chiarezza è già parte del rigore che il pubblico esigente premia.
     </p>
     <div class="gaps">
       {gaps.map((gp) => (
@@ -130,19 +131,18 @@ const gaps = [
     </div>
   </Section>
 
-  <Section n="4" title="Cosa il disciplinare non copre">
+  <Section n="4" title="I confini del disciplinare">
     <div class="honesty">
       <p>
-        Sul fine vita (vacche da riforma, da cui tipicamente deriva il sego) il Consorzio non prescrive
-        nulla di specifico: è un esito verificato sul testo, non una lacuna di ricerca. Il piano dei
-        controlli DOP copre allevamenti, caseifici, stagionatori, grattugie e porzionatori, non i macelli
-        né gli impianti di rendering.
+        Il disciplinare governa latte e formaggio. Il fine vita dell’animale (vacche da riforma, da cui
+        tipicamente deriva il sego) resta fuori dal suo perimetro: lo verifica il testo stesso, e il piano
+        dei controlli DOP copre allevamenti, caseifici, stagionatori, grattugie e porzionatori, mentre
+        macelli e impianti di rendering ricadono sotto la normativa generale.
       </p>
       <p>
         Due piani vanno tenuti distinti. Il disciplinare vieta il <a href={`${g}#sego`}>sego</a> come
-        ingrediente della dieta delle bovine (il lato input). Non disciplina in alcun modo il sego come
-        prodotto in uscita a fine vita dell’animale (il lato output). OdE si colloca, con chiarezza, sul
-        secondo piano.
+        ingrediente della dieta delle bovine (il lato input), e lascia fuori il sego come prodotto in
+        uscita a fine vita dell’animale (il lato output). OdE si colloca, con chiarezza, sul secondo piano.
       </p>
     </div>
   </Section>
@@ -173,9 +173,9 @@ const gaps = [
     </div>
     <p class="thesis">
       Anagrafe bovina cogente, disciplinare alimentare e zona geografica definita danno una provenienza
-      altamente documentata e auditabile, contro il sego anonimo. OdE costruisce il Passaporto su dati
-      pubblici e verificabili, con un grado di robustezza regolatoria raro nel mercato degli ingredienti
-      lipidici. La provenienza non è un racconto: è un dato che regge l’audit.
+      altamente documentata e auditabile. OdE costruisce il Passaporto su dati pubblici e verificabili,
+      con un grado di robustezza regolatoria raro nel mercato degli ingredienti lipidici. La provenienza
+      è un dato verificabile, che regge l’audit.
     </p>
     <p class="note">
       Per i termini di questa pagina, vedi il <a href={g}>glossario</a>:
@@ -183,11 +183,6 @@ const gaps = [
       <a href={`${g}#riforma`}>vacca da riforma</a>, <a href={`${g}#custodia`}>catena di custodia</a>,
       <a href={`${g}#disciplinare`}>disciplinare DOP</a>, <a href={`${g}#soa`}>SOA Categoria 3</a>.
       Vedi anche l’<a href={r.normativa}>Orologio Normativo</a>.
-    </p>
-    <p class="disclaimer">
-      Ricognizione documentale a fini informativi e di posizionamento, basata sulle fonti istituzionali
-      citate. Non costituisce consulenza legale. Per i claim commerciali si raccomanda verifica diretta
-      sui testi ufficiali e parere legale specializzato in diritto alimentare e SOA.
     </p>
   </Section>
 </OdeLayout>
@@ -252,7 +247,6 @@ const gaps = [
     font-size: 1.02rem; line-height: 1.6; color: var(--ink); max-width: 46rem;
     margin: 1.4rem 0;
   }
-  .disclaimer { font-size: 0.76rem; color: var(--muted); line-height: 1.5; max-width: 44rem; margin-top: 1rem; }
 
   @media (max-width: 520px) {
     .gap { grid-template-columns: 1fr; }
