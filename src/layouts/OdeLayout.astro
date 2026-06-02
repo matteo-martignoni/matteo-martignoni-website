@@ -11,6 +11,7 @@
 // ──────────────────────────────────────────────────────────────
 import '../styles/ode-theme.css';
 import { odeUI, odeRoutes, type OdeLang, type OdeRouteKey } from '../i18n/ode';
+import DropMark from '../components/ode/DropMark.astro';
 
 interface Props {
   title: string;
@@ -59,8 +60,12 @@ const navItems: { key: OdeRouteKey; label: string; href: string }[] = [
   <body class="ode">
     <header class="ode-header">
       <a href={r.home} class="ode-brand" aria-label={t.brand}>
-        <span class="ode-brand-name">{t.brand}</span>
-        <span class="ode-brand-tag">{t.tagline}</span>
+        <span class="ode-logo-mark">OdE</span>
+        <span class="ode-logo-name">
+          <span>Officina</span>
+          <span>degli</span>
+          <span>Estratti</span>
+        </span>
       </a>
 
       <button
@@ -90,7 +95,11 @@ const navItems: { key: OdeRouteKey; label: string; href: string }[] = [
     </main>
 
     <footer class="ode-footer">
-      <span>© {new Date().getFullYear()} {t.brand}</span>
+      <span class="ode-copy">
+        <span>© {new Date().getFullYear()}</span>
+        <DropMark class="ode-foot-drop" />
+        <span>{t.brand}</span>
+      </span>
       <nav class="ode-foot-links" aria-label="OdE utility">
         <a href={r.glossario}>{t.footer.glossario}</a>
         <a href={r.live}>{t.footer.live}</a>
@@ -131,13 +140,15 @@ const navItems: { key: OdeRouteKey; label: string; href: string }[] = [
         flex-wrap: wrap;
         border-bottom: 1px solid var(--ode-rule);
       }
-      .ode-brand { display: flex; flex-direction: column; text-decoration: none; }
-      .ode-brand-name { font-weight: 500; color: var(--ode-ink); letter-spacing: 0.01em; }
-      .ode-brand-tag {
-        font-family: var(--ode-font-mono);
-        font-size: 0.7rem;
-        color: var(--ode-muted);
-        letter-spacing: 0.02em;
+      .ode-brand { display: inline-flex; align-items: center; gap: 0.7rem; text-decoration: none; color: var(--ode-ink); }
+      .ode-logo-mark { font-size: 2.05rem; font-weight: 400; line-height: 1; letter-spacing: -0.005em; color: var(--ode-ink); }
+      .ode-logo-name {
+        display: flex; flex-direction: column; gap: 0.05rem;
+        padding-left: 0.7rem; border-left: 2px solid rgba(28, 38, 32, 0.25);
+      }
+      .ode-logo-name span {
+        font-size: 0.6rem; font-weight: 400; line-height: 1.32;
+        letter-spacing: 0.16em; text-transform: uppercase; color: var(--ode-ink);
       }
       .ode-nav { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
       .ode-nav-link {
@@ -180,6 +191,8 @@ const navItems: { key: OdeRouteKey; label: string; href: string }[] = [
         transition: color 160ms ease;
       }
       .ode-foot-links a:hover { color: var(--ode-ink); }
+      .ode-copy { display: inline-flex; align-items: center; gap: 0.4rem; }
+      .ode-copy :global(.ode-drop) { height: 1.6em; width: auto; color: var(--ode-ink); }
 
       /* Hamburger menu — hidden on desktop, shown at <= 820px */
       .ode-burger { display: none; }
