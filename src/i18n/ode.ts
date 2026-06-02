@@ -105,7 +105,7 @@ export const odeMeta = {
     amsaTecnica: {
       title: 'AMSA, approfondimento tecnico — Officina degli Estratti',
       description:
-        "Data ladder, stack di modelli chemiometrici e deep learning, few-shot learning e le ipotesi aperte dell'Active Control Loop.",
+        "Data ladder, foundation model lipidico, i tre motori predittivi, fiducia quantificata e l'esperimento decisivo provenienza verso stabilità (AMSA v3).",
     },
     mercato: {
       title: 'Mercato — Officina degli Estratti',
@@ -157,7 +157,7 @@ export const odeMeta = {
     amsaTecnica: {
       title: 'AMSA, technical deep dive — Officina degli Estratti',
       description:
-        'Data ladder, the chemometric and deep-learning model stack, few-shot learning and the open hypotheses of the Active Control Loop.',
+        'Data ladder, lipid foundation model, the three predictive engines, quantified trust and the decisive provenance-to-stability experiment (AMSA v3).',
     },
     mercato: {
       title: 'Market — Officina degli Estratti',

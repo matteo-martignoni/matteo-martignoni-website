@@ -9,7 +9,7 @@ import DataTag from '../../../components/ode/DataTag.astro';
 const lang = 'en' as const;
 const title = 'AMSA — Officina degli Estratti';
 const description =
-  'AMSA, the AI-driven multimodal spectroscopic agent: Active Control Loop, Digital Lipid Passport and OdE’s technological advantage.';
+  'AMSA v3, the AI-driven multimodal spectroscopic agent: the causal datum provenance-to-stability, governed acquisition, the Digital Lipid Passport and positioning alongside the accredited method.';
 
 const verbs = ['Acquires', 'Interprets', 'Predicts', 'Explains', 'Recommends'];
 
@@ -21,15 +21,21 @@ const problems = [
   'They require costly external analyses (GC-FID, GC-MS, NMR, peroxide value, p-anisidine).',
 ];
 
+const roles = [
+  { k: 'Triage and pre-screen', d: 'AMSA measures every incoming batch and decides which need the full accredited panel and which pass with the passport: less volume and cost of reference tests, at controlled false negatives.' },
+  { k: 'Provenance layer', d: 'The passport carries verified provenance and the interpretable explanation, information the accredited lab does not usually provide.' },
+  { k: 'Ground-truth generation', d: 'The accredited tests the client runs anyway become ground truth: they train the causal model and over time reduce the number of tests needed.' },
+];
+
 const passport = [
   { n: '01', title: 'Identity', fields: 'sample_id, batch_id, origin, supplier, rendering, process_history, cosmetic_grade_status' },
   { n: '02', title: 'Spectral fingerprint', fields: 'NIR raw/preprocessed, Raman raw/corrected, acquisition_temperature, quality_score, OOD_score' },
   { n: '03', title: 'Fatty acid profile', fields: 'saturated / mono / poly, chain length, omega (opt.), GC-FID confidence' },
-  { n: '04', title: 'Oxidation & stability', fields: 'PV, p-anisidine, TBARS, TOTOX = 2·PV + AnV, acid value, iodine value, Oxidative Risk Score, shelf-life' },
+  { n: '04', title: 'Oxidation & stability', fields: 'PV, p-anisidine, TBARS, TOTOX = 2·PV + AnV, acid value, OSI / induction time, Oxidative Risk Score, shelf-life' },
   { n: '05', title: 'Physical & formulation', fields: 'DSC, melting_range, crystallinity_proxy, viscosity, colour, odor_score' },
   { n: '06', title: 'Biomarkers', fields: 'unsaturation_index, CH₂/CH₃, carbonyl_index, aldehydes, hydroperoxides, waxes, sterols' },
   { n: '07', title: 'Process recommendation', fields: 'accept / purify / deodorise, adsorbent, blend_with, external_test_required' },
-  { n: '08', title: 'Explainability', fields: 'top_spectral_regions, chemical interpretation, confidence, confirmatory tests' },
+  { n: '08', title: 'Explainability', fields: 'top_spectral_regions, chemical interpretation, confidence (guaranteed coverage), confirmatory tests' },
   { n: '09', title: 'Governance', fields: 'model_version, calibration_version, operator, timestamp, data_hash' },
 ];
 ---
@@ -38,9 +44,10 @@ const passport = [
     <p class="ode-eyebrow">Pillar 01 · The technology</p>
     <h1>AMSA</h1>
     <p class="lede">
-      AMSA is the <strong>AI-driven Multimodal Spectroscopic Agent</strong> — not a model that only
-      predicts, but an operational agent. For every batch it acquires, interprets, predicts, explains
-      and recommends the process, and builds a Digital Lipid Passport.
+      AMSA is the <strong>AI-driven Multimodal Spectroscopic Agent</strong>: an operational agent that for
+      every batch acquires, interprets, predicts, explains and recommends the process, and builds a
+      Digital Lipid Passport. The heart of version 3 is the datum that links verified provenance upstream
+      to the fat's stability downstream: a causal datum that grows with every batch.
     </p>
     <div class="verbs">
       {verbs.map((v) => <span class="verb">{v}</span>)}
@@ -49,79 +56,149 @@ const passport = [
 
   <Section n="1" title="The problem: difficult lipid matrices">
     <p>
-      Animal lipid matrices (beef tallow, pork fat, lanolin, sebum, waxy and triglyceride fractions)
-      are chemically rich but industrially hard to standardise.
+      Animal lipid matrices (beef tallow, pig fat, lanolin, sebum, waxy and triglyceride fractions) are
+      chemically rich but industrially hard to standardise.
     </p>
     <ul class="problems">
       {problems.map((p) => <li>{p}</li>)}
     </ul>
     <p class="quote">
-      The recurring question from the cosmetic client: “is this ingredient stable, does it resist
-      rancidity and odour, does it have reproducible texture, can I use it in a leave-on formula?”
+      The cosmetic client's recurring question: "is this ingredient stable, does it resist rancidity and
+      odour, is the texture reproducible, can I use it in a leave-on formula?"
     </p>
   </Section>
 
-  <Section n="2" title="Active Control Loop: governing the measurement">
+  <Section n="2" title="The causal datum: provenance to stability">
     <p>
-      AMSA’s technical core. The agent does not passively receive the spectrum: it <strong>adjusts the
-      sensor parameters</strong> to obtain the best possible data on dirty, semi-solid, fluorescent or
-      thermally unstable matrices. It is the difference between enduring a measurement and governing it.
+      AMSA's value concentrates here. For every batch AMSA builds a <strong>paired triple</strong>: the
+      upstream provenance metadata, the spectral fingerprint, and the stability outcome measured as ground
+      truth. The spectral library becomes a base of causal evidence, able to answer the question that
+      matters: given these origin conditions, how does this fat behave over time?
+    </p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 640 210" role="img" aria-label="Causal-data cycle: provenance and spectrum to measured outcome and passport">
+        <rect x="12" y="28" width="158" height="54" rx="8" fill="#f6cbb3" stroke="#d9a07f"/>
+        <text x="91" y="50" text-anchor="middle" font-family="Roboto" font-weight="500" font-size="11" fill="#8a472a">Provenance</text>
+        <text x="91" y="66" text-anchor="middle" font-family="Roboto" font-size="9" fill="#8a472a">diet · season · rendering</text>
+        <rect x="12" y="110" width="158" height="54" rx="8" fill="#c6cdd9" stroke="#9aa6ba"/>
+        <text x="91" y="132" text-anchor="middle" font-family="Roboto" font-weight="500" font-size="11" fill="#33414c">Spectrum</text>
+        <text x="91" y="148" text-anchor="middle" font-family="Roboto" font-size="9" fill="#33414c">NIR + Raman per batch</text>
+        <rect x="246" y="68" width="172" height="66" rx="10" fill="#ffffff" stroke="#6fc98a" stroke-width="1.8"/>
+        <text x="332" y="92" text-anchor="middle" font-family="Roboto" font-weight="500" font-size="11.5" fill="#436743">Causal datum of batch</text>
+        <text x="332" y="108" text-anchor="middle" font-family="Roboto" font-size="9" fill="#5c6b62">triples: provenance · spectrum · outcome</text>
+        <text x="332" y="121" text-anchor="middle" font-family="Roboto" font-size="9" fill="#5c6b62">grows with every batch</text>
+        <rect x="486" y="28" width="142" height="54" rx="8" fill="#c7ebd2" stroke="#6fc98a"/>
+        <text x="557" y="50" text-anchor="middle" font-family="Roboto" font-weight="500" font-size="11" fill="#436743">Measured outcome</text>
+        <text x="557" y="66" text-anchor="middle" font-family="Roboto" font-size="9" fill="#436743">OSI · Rancimat</text>
+        <rect x="486" y="110" width="142" height="54" rx="8" fill="#ffffff" stroke="#6fc98a"/>
+        <text x="557" y="132" text-anchor="middle" font-family="Roboto" font-weight="500" font-size="11" fill="#436743">Passport</text>
+        <text x="557" y="148" text-anchor="middle" font-family="Roboto" font-size="9" fill="#436743">predicted stability</text>
+        <path d="M170 56 C206 66, 224 80, 246 90" fill="none" stroke="#2f5a44" stroke-width="1.4"/><polygon points="243,86 249,90 242,93" fill="#2f5a44"/>
+        <path d="M170 136 C206 126, 224 112, 246 102" fill="none" stroke="#2f5a44" stroke-width="1.4"/><polygon points="243,105 249,102 242,98" fill="#2f5a44"/>
+        <path d="M418 90 C450 80, 466 66, 486 58" fill="none" stroke="#2f5a44" stroke-width="1.4"/><polygon points="483,54 489,57 482,61" fill="#2f5a44"/>
+        <path d="M418 112 C450 122, 466 128, 486 134" fill="none" stroke="#2f5a44" stroke-width="1.4"/><polygon points="482,130 489,134 481,137" fill="#2f5a44"/>
+        <path d="M557 82 C557 184, 332 196, 332 134" fill="none" stroke="#2f5a44" stroke-width="1.1" stroke-dasharray="4 3"/><polygon points="328.5,138 335.5,138 332,132" fill="#2f5a44"/>
+        <text x="362" y="192" font-family="Roboto" font-style="italic" font-size="8.4" fill="rgba(28,38,32,.55)">the measured outcome trains the model, batch after batch</text>
+      </svg>
+      <figcaption>
+        Accredited methods like Rancimat are not a rival: they are the ground-truth generator that trains
+        the model. Provenance, which no lab owns, enters as an input variable.
+        <DataTag kind="fonte" label="Rancimat / Oxidation Stability Index · ISO 6886, AOCS Cd 12b-92" />
+      </figcaption>
+    </figure>
+
+    <p>
+      The "provenance" arm of the dataset can only be built from inside the certified chain: it takes
+      access and territorial trust, not capital. The measured outcome accumulates with every batch, and
+      the combination grows by network effect as more chain partners join. The prevalent feedstock is
+      <strong>beef tallow from Parmigiano Reggiano dairy cows</strong>, whose diet, movement and history
+      are known; pig fat remains an affine, secondary matrix.
+    </p>
+  </Section>
+
+  <Section n="3" title="Governed acquisition">
+    <p>
+      Lipid matrices are dirty, semi-solid, fluorescent and thermally unstable. AMSA <strong>governs the
+      measurement</strong> to get the best datum rather than enduring it. In version 3 this capability
+      starts in the most solid, verifiable form for the current phase: a rule-based SOP on quality and
+      uncertainty thresholds.
     </p>
 
     <ControlLoop
       inputLabel="Sample"
-      loopLabel="iterate until QC is acceptable"
-      loopNodes={['Scout scan', 'Quality Assessor', 'Policy Controller', 'Hardware action']}
+      loopLabel="iterate until QC is acceptable or the limit is reached"
+      loopNodes={['Scout scan', 'Quality Assessor', 'Threshold rules', 'Safe action']}
       exitGate="QC ok"
       predict="Prediction + XAI"
       outcome="Digital Lipid Passport"
     />
 
     <p>
-      Each iteration picks the action that most reduces chemical uncertainty, at the lowest cost,
-      without altering the sample. The objective function:
+      Some actions, heating first of all, alter the sample's chemical state and are irreversible. They stay
+      governed by hard constraints and a deterministic shielding: no action that could degrade the
+      material beyond threshold is executed, anchored to the Codex CXS 211-1999 limit (peroxide value at
+      most 10 meq O₂/kg) <DataTag kind="fonte" label="Codex Alimentarius CXS 211-1999" />.
     </p>
-    <p class="formula">Reward = InformationGain − α·Time − β·Cost − γ·DegradationRisk</p>
     <p>
-      The degradation-risk term is a verifiable physical budget, anchored to measurable parameters
-      (PV, TBARS) and to the Codex CXS 211-1999 threshold: peroxides at most 10 meq O₂/kg
-      <DataTag kind="fonte" label="Codex Alimentarius CXS 211-1999" />. The agent must also deconvolve
-      real chemistry (irreversible) from the physical-instrumental effect (reversible), so as not to
-      mistake an artefact for a signal.
+      A <strong>learned policy</strong> enters only where a well-designed fixed SOP shows a measurable
+      margin for improvement and the dataset is large enough. Until then the rule-based SOP offers the best
+      ratio of value to complexity, and produces exactly the data that would train the eventual policy.
     </p>
   </Section>
 
-  <Section n="3" title="Digital Lipid Passport">
+  <Section n="4" title="Digital Lipid Passport">
     <p>
-      AMSA’s central information product. Not a static certificate, but a dynamic dossier linking
-      identity, origin, process, spectra, reference analyses, biomarkers, models, explanations and the
-      batch’s industrial decision.
+      AMSA's central information product, in version 3 <strong>predictive and provenance-anchored</strong>.
+      For every batch it links identity, origin, spectra, reference analyses, biomarkers, predicted
+      stability with confidence, process recommendation, interpretable explanation and data governance.
     </p>
     <PassportSections sections={passport} />
-    <p>
-      The output is an <strong>industrial decision</strong> on the batch, with a chemical explanation:
-      accept, purify, deodorise, blend, test externally or reject.
-    </p>
+    <div class="twodir">
+      <article class="dir">
+        <span class="dir-k">Descriptive direction</span>
+        <p>Quality in, passport out: the batch arrives, AMSA measures, predicts, explains and decides
+        (accept, purify, deodorise, blend, test externally or reject).</p>
+      </article>
+      <article class="dir alt">
+        <span class="dir-k">Spec direction</span>
+        <p>Requirement in, sample out: a target performance arrives, AMSA translates it into a stability
+        spec, guides the process to hit it, confirms with an accelerated test and certifies.</p>
+      </article>
+    </div>
   </Section>
 
-  <Section n="4" title="Technological advantage: the moat">
+  <Section n="5" title="Positioning and moat">
     <p>
-      The competitive advantage is not the machine, which anyone can buy, but the combination of
-      traceable provenance, proprietary data and interpretable models — a moat that deepens with every
-      batch analysed.
+      B2B cosmetic buyers and their assessors work inside accredited frameworks (ISO 17025, safety
+      assessment, standard stability testing). AMSA positions itself <strong>alongside the accredited
+      lab</strong>, as an accelerator of the method and a provenance layer, not as its replacement.
+    </p>
+    <div class="roles">
+      {roles.map((rl) => (
+        <article class="role">
+          <span class="role-k">{rl.k}</span>
+          <p>{rl.d}</p>
+        </article>
+      ))}
+    </div>
+    <p>
+      The moat is one of <strong>data and access, not algorithm</strong>. Instruments, methods and the
+      passport container are replicable within months. What stays unassailable is access to the traced
+      chain and the causal dataset it yields: two assets a competitor with anonymous tallow cannot buy.
     </p>
     <div class="stats">
-      <StatCard value="> 0.85" caption="Target R² for the unsaturation index (iodine-value proxy); Raman literature reaches 0.97." kind="stima" source="Plan target; benchmark Beattie et al., 2006" />
-      <StatCard value="> 90%" caption="Target conforming/non-conforming classification; PLS-DA benchmark up to 99.6%." kind="stima" source="Plan target; benchmark Beattie 2007" />
+      <StatCard value="> 0.85" caption="Target R² for the unsaturation index (iodine value proxy); up to 0.97 in Raman literature." kind="stima" source="Plan target; benchmark Beattie et al., 2006" />
+      <StatCard value="≈ 0.73" caption="Expected mean R² on individual fatty acids (limited by biological covariance): detail stays at GC-FID escalation." kind="fonte" source="NIR/Raman fatty-acid literature" />
       <StatCard value="+20–40%" caption="Estimated price premium over a non-qualified lipid ingredient." kind="stima" source="OdE plan estimate" />
     </div>
-    <p class="quote big">“A competitor can buy a spectrometer, not this base.”</p>
+    <p class="quote big">"A competitor can buy a spectrometer, not access to the chain nor the causal datum it yields."</p>
   </Section>
 
   <a class="deepdive" href="/OdE/en/amsa/tecnica">
     <span class="dd-k">Technical deep dive</span>
-    <span class="dd-t">Under AMSA’s hood →</span>
-    <span class="dd-d">Data ladder, model stack, few-shot and the open hypotheses of the Active Control Loop. For scientists and R&D.</span>
+    <span class="dd-t">Under AMSA's hood →</span>
+    <span class="dd-d">Data ladder, lipid foundation model, the three predictive engines, quantified trust and the decisive provenance-to-stability experiment. For scientists and R&D.</span>
   </a>
 </OdeLayout>
 
@@ -130,15 +207,60 @@ const passport = [
   .hero h1 { font-size: clamp(2.4rem, 6vw, 3.4rem); margin: 0.4rem 0 1rem; }
   .lede { font-size: 1.1rem; line-height: 1.6; color: var(--body); }
   .verbs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.4rem; }
-  .verb { font-family: var(--ode-font-mono); font-size: 0.78rem; color: var(--accent); background: var(--pill); border: 1px solid var(--rule); border-radius: 999px; padding: 0.3rem 0.8rem; }
+  .verb {
+    font-family: var(--ode-font-mono);
+    font-size: 0.78rem;
+    color: var(--accent);
+    background: var(--pill);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 0.3rem 0.8rem;
+  }
   .problems { padding-left: 1.2rem; line-height: 1.7; max-width: 42rem; }
   .problems li { margin-bottom: 0.4rem; }
   .problems li::marker { color: var(--accent); }
-  .quote { border-left: 3px solid var(--lav-border); padding: 0.4rem 0 0.4rem 1rem; color: var(--body); font-style: italic; background: rgba(255, 255, 255, 0.28); border-radius: 0 var(--ode-radius) var(--ode-radius) 0; }
-  .quote.big { font-size: 1.2rem; }
-  .formula { font-family: var(--ode-font-mono); font-size: 0.9rem; color: var(--ink); background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 0.9rem 1.1rem; overflow-x: auto; }
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0.8rem; margin: 1.4rem 0; }
-  .deepdive { display: block; text-decoration: none; background: var(--green-soft); border: 1px solid var(--green-border); border-radius: var(--ode-radius); padding: 1.3rem 1.5rem; margin-top: 1rem; transition: transform 160ms ease; }
+  .quote {
+    border-left: 3px solid var(--lav-border);
+    padding: 0.4rem 0 0.4rem 1rem;
+    color: var(--body);
+    font-style: italic;
+    background: rgba(255, 255, 255, 0.28);
+    border-radius: 0 var(--ode-radius) var(--ode-radius) 0;
+  }
+  .quote.big { font-size: 1.2rem; font-style: italic; }
+
+  .diagram { margin: 1.4rem 0; }
+  .diagram svg { width: 100%; height: auto; display: block; }
+  .diagram figcaption { font-size: 0.85rem; color: var(--muted); line-height: 1.5; margin-top: 0.6rem; max-width: 44rem; }
+
+  .twodir { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; margin-top: 1.2rem; }
+  .dir { border-left: 3px solid var(--green-border); padding: 0.2rem 0 0.2rem 1rem; }
+  .dir.alt { border-left-color: var(--pink); }
+  .dir-k { font-family: var(--ode-font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); }
+  .dir.alt .dir-k { color: var(--pink-ink); }
+  .dir p { margin: 0.4rem 0 0; font-size: 0.92rem; line-height: 1.5; color: var(--body); }
+
+  .roles { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; margin: 1.2rem 0; }
+  .role { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.1rem 1.2rem; }
+  .role-k { display: block; font-weight: 500; color: var(--accent); margin-bottom: 0.4rem; }
+  .role p { margin: 0; font-size: 0.9rem; line-height: 1.5; color: var(--body); }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 0.8rem;
+    margin: 1.4rem 0;
+  }
+  .deepdive {
+    display: block;
+    text-decoration: none;
+    background: var(--green-soft);
+    border: 1px solid var(--green-border);
+    border-radius: var(--ode-radius);
+    padding: 1.3rem 1.5rem;
+    margin-top: 1rem;
+    transition: transform 160ms ease;
+  }
   .deepdive:hover { transform: translateY(-2px); }
   .dd-k { display: block; font-family: var(--ode-font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); }
   .dd-t { display: block; font-size: 1.2rem; color: var(--ink); margin: 0.3rem 0; }
