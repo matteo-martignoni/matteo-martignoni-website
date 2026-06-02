@@ -9,7 +9,7 @@ import DataTag from '../../components/ode/DataTag.astro';
 const lang = 'it' as const;
 const title = 'AMSA — Officina degli Estratti';
 const description =
-  "AMSA, l'agente spettroscopico multimodale guidato dall'AI: Active Control Loop, Passaporto Lipidico Digitale e il vantaggio tecnologico di OdE.";
+  "AMSA v3, l'agente spettroscopico multimodale guidato dall'AI: il dato causale provenienza verso stabilità, acquisizione governata, Passaporto Lipidico Digitale e posizionamento accanto al metodo accreditato.";
 
 const verbs = ['Acquisisce', 'Interpreta', 'Predice', 'Spiega', 'Suggerisce'];
 
@@ -21,15 +21,22 @@ const problems = [
   'Richiedono analisi esterne costose (GC-FID, GC-MS, NMR, valore di perossidi, p-anisidina).',
 ];
 
+// Posizionamento accanto al laboratorio accreditato (V3, cap. 11).
+const roles = [
+  { k: 'Triage e pre-screen', d: 'AMSA misura ogni lotto in ingresso e decide quali richiedono il panel accreditato completo e quali passano con il passaporto: meno volume e costo dei test di riferimento, a falsi negativi controllati.' },
+  { k: 'Strato di provenienza', d: 'Il passaporto porta la provenienza verificata e la spiegazione interpretabile, informazione che il laboratorio accreditato di norma non fornisce.' },
+  { k: 'Generazione di verità a terra', d: 'I test accreditati che il cliente comunque esegue diventano ground truth: addestrano il modello causale e nel tempo riducono il numero di test necessari.' },
+];
+
 const passport = [
   { n: '01', title: 'Identità', fields: 'sample_id, batch_id, origine, fornitore, rendering, process_history, cosmetic_grade_status' },
   { n: '02', title: 'Spectral fingerprint', fields: 'NIR raw/preprocessed, Raman raw/corrected, acquisition_temperature, quality_score, OOD_score' },
   { n: '03', title: 'Profilo acidi grassi', fields: 'saturi / mono / poli, lunghezza catena, omega (opz.), GC-FID confidence' },
-  { n: '04', title: 'Ossidazione e stabilità', fields: 'PV, p-anisidina, TBARS, TOTOX = 2·PV + AnV, acid value, iodine value, Oxidative Risk Score, shelf-life' },
+  { n: '04', title: 'Ossidazione e stabilità', fields: 'PV, p-anisidina, TBARS, TOTOX = 2·PV + AnV, acid value, OSI / induction time, Oxidative Risk Score, shelf-life' },
   { n: '05', title: 'Fisico e formulativo', fields: 'DSC, melting_range, crystallinity_proxy, viscosità, colore, odor_score' },
   { n: '06', title: 'Biomarcatori', fields: 'unsaturation_index, CH₂/CH₃, carbonyl_index, aldeidi, idroperossidi, cere, steroli' },
   { n: '07', title: 'Raccomandazione processo', fields: 'accetta / purifica / deodora, adsorbente, blend_with, external_test_required' },
-  { n: '08', title: 'Explainability', fields: 'top_spectral_regions, interpretazione chimica, confidence, test confermativi' },
+  { n: '08', title: 'Explainability', fields: 'top_spectral_regions, interpretazione chimica, confidence (copertura garantita), test confermativi' },
   { n: '09', title: 'Governance', fields: 'model_version, calibration_version, operator, timestamp, data_hash' },
 ];
 ---
@@ -38,9 +45,10 @@ const passport = [
     <p class="ode-eyebrow">Pilastro 01 · La tecnologia</p>
     <h1>AMSA</h1>
     <p class="lede">
-      AMSA è l'<strong>AI-driven Multimodal Spectroscopic Agent</strong>: non un modello che predice
-      soltanto, ma un agente operativo. Per ogni lotto acquisisce, interpreta, predice, spiega e
-      suggerisce il processo, e costruisce un Passaporto Lipidico Digitale.
+      AMSA è l'<strong>AI-driven Multimodal Spectroscopic Agent</strong>: un agente operativo che per
+      ogni lotto acquisisce, interpreta, predice, spiega e suggerisce il processo, e costruisce un
+      Passaporto Lipidico Digitale. Il cuore della versione 3 è il dato che lega la provenienza
+      verificata a monte alla stabilità del grasso a valle: un dato causale che cresce a ogni lotto.
     </p>
     <div class="verbs">
       {verbs.map((v) => <span class="verb">{v}</span>)}
@@ -61,67 +69,149 @@ const passport = [
     </p>
   </Section>
 
-  <Section n="2" title="Active Control Loop: governare la misura">
+  <Section n="2" title="Il dato causale: provenienza verso stabilità">
     <p>
-      Il cuore tecnico di AMSA. L'agente non riceve passivamente lo spettro: <strong>regola i parametri
-      del sensore</strong> per ottenere il miglior dato possibile su matrici sporche, semi-solide,
-      fluorescenti o termicamente instabili. È la differenza fra subire la misura e governarla.
+      Il valore di AMSA si concentra qui. Per ogni lotto AMSA costruisce una <strong>tripla appaiata</strong>:
+      i metadati di provenienza a monte, il fingerprint spettrale, e l'esito di stabilità misurato come
+      verità a terra. La libreria spettrale diventa una base di evidenza causale, capace di rispondere
+      alla domanda che conta: date queste condizioni di origine, come si comporta questo grasso nel tempo?
+    </p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 640 210" role="img" aria-label="Ciclo del dato causale: provenienza e spettro verso esito misurato e passaporto">
+        <!-- provenienza (input · pesca) -->
+        <rect x="12" y="28" width="158" height="54" rx="8" fill="#f6cbb3" stroke="#d9a07f"/>
+        <text x="91" y="50" text-anchor="middle" font-family="Roboto" font-weight="500" font-size="11" fill="#8a472a">Provenienza</text>
+        <text x="91" y="66" text-anchor="middle" font-family="Roboto" font-size="9" fill="#8a472a">dieta · stagione · rendering</text>
+        <!-- spettro (processo · grigio-blu) -->
+        <rect x="12" y="110" width="158" height="54" rx="8" fill="#c6cdd9" stroke="#9aa6ba"/>
+        <text x="91" y="132" text-anchor="middle" font-family="Roboto" font-weight="500" font-size="11" fill="#33414c">Spettro</text>
+        <text x="91" y="148" text-anchor="middle" font-family="Roboto" font-size="9" fill="#33414c">NIR + Raman di lotto</text>
+        <!-- core: dato causale (esito · bianco + bordo verde) -->
+        <rect x="246" y="68" width="172" height="66" rx="10" fill="#ffffff" stroke="#6fc98a" stroke-width="1.8"/>
+        <text x="332" y="92" text-anchor="middle" font-family="Roboto" font-weight="500" font-size="11.5" fill="#436743">Dato causale di lotto</text>
+        <text x="332" y="108" text-anchor="middle" font-family="Roboto" font-size="9" fill="#5c6b62">triple: provenienza · spettro · esito</text>
+        <text x="332" y="121" text-anchor="middle" font-family="Roboto" font-size="9" fill="#5c6b62">cresce a ogni lotto</text>
+        <!-- esito misurato (verde-soft) -->
+        <rect x="486" y="28" width="142" height="54" rx="8" fill="#c7ebd2" stroke="#6fc98a"/>
+        <text x="557" y="50" text-anchor="middle" font-family="Roboto" font-weight="500" font-size="11" fill="#436743">Esito misurato</text>
+        <text x="557" y="66" text-anchor="middle" font-family="Roboto" font-size="9" fill="#436743">OSI · Rancimat</text>
+        <!-- passaporto -->
+        <rect x="486" y="110" width="142" height="54" rx="8" fill="#ffffff" stroke="#6fc98a"/>
+        <text x="557" y="132" text-anchor="middle" font-family="Roboto" font-weight="500" font-size="11" fill="#436743">Passaporto</text>
+        <text x="557" y="148" text-anchor="middle" font-family="Roboto" font-size="9" fill="#436743">stabilità prevista</text>
+        <!-- arrows in -->
+        <path d="M170 56 C206 66, 224 80, 246 90" fill="none" stroke="#2f5a44" stroke-width="1.4"/><polygon points="243,86 249,90 242,93" fill="#2f5a44"/>
+        <path d="M170 136 C206 126, 224 112, 246 102" fill="none" stroke="#2f5a44" stroke-width="1.4"/><polygon points="243,105 249,102 242,98" fill="#2f5a44"/>
+        <!-- arrows out -->
+        <path d="M418 90 C450 80, 466 66, 486 58" fill="none" stroke="#2f5a44" stroke-width="1.4"/><polygon points="483,54 489,57 482,61" fill="#2f5a44"/>
+        <path d="M418 112 C450 122, 466 128, 486 134" fill="none" stroke="#2f5a44" stroke-width="1.4"/><polygon points="482,130 489,134 481,137" fill="#2f5a44"/>
+        <!-- feedback: esito addestra il modello -->
+        <path d="M557 82 C557 184, 332 196, 332 134" fill="none" stroke="#2f5a44" stroke-width="1.1" stroke-dasharray="4 3"/><polygon points="328.5,138 335.5,138 332,132" fill="#2f5a44"/>
+        <text x="362" y="192" font-family="Roboto" font-style="italic" font-size="8.4" fill="rgba(28,38,32,.55)">l'esito misurato addestra il modello, lotto dopo lotto</text>
+      </svg>
+      <figcaption>
+        I metodi accreditati come il Rancimat non sono un rivale: sono il generatore di verità a terra
+        che addestra il modello. La provenienza, che nessun laboratorio possiede, entra come variabile in
+        ingresso. <DataTag kind="fonte" label="Rancimat / Oxidation Stability Index · ISO 6886, AOCS Cd 12b-92" />
+      </figcaption>
+    </figure>
+
+    <p>
+      Il braccio "provenienza" del dataset si costruisce solo restando dentro la filiera certificata:
+      richiede accesso e fiducia territoriale, non capitale. L'esito misurato si accumula a ogni lotto, e
+      la combinazione cresce per effetto rete man mano che altri partner di filiera entrano. La materia
+      prima prevalente è il <strong>sego bovino delle vacche da latte del Parmigiano Reggiano</strong>, di
+      cui dieta, movimento e storia sono noti; il grasso suino resta una matrice affine e secondaria.
+    </p>
+  </Section>
+
+  <Section n="3" title="Acquisizione governata">
+    <p>
+      Le matrici lipidiche sono sporche, semi-solide, fluorescenti e termicamente instabili. AMSA
+      <strong>governa la misura</strong> per ottenere il dato migliore, invece di subirla. Nella versione
+      3 questa capacità parte nella forma più solida e verificabile per la fase attuale: una SOP a regole
+      sulle soglie di qualità e incertezza.
     </p>
 
     <ControlLoop
       inputLabel="Campione"
-      loopLabel="itera finché il QC non è accettabile"
-      loopNodes={['Scout scan', 'Quality Assessor', 'Policy Controller', 'Azione hardware']}
+      loopLabel="itera finché il QC è accettabile o si raggiunge il limite"
+      loopNodes={['Scout scan', 'Quality Assessor', 'Regole su soglie', 'Azione sicura']}
       exitGate="QC ok"
       predict="Predizione + XAI"
       outcome="Passaporto Lipidico Digitale"
     />
 
     <p>
-      Ogni iterazione sceglie l'azione che riduce di più l'incertezza chimica, al minor costo, senza
-      alterare il campione. La funzione obiettivo:
+      Alcune azioni, il riscaldamento in primo luogo, alterano lo stato chimico del campione e sono
+      irreversibili. Restano governate da vincoli rigidi e da uno shielding deterministico: nessuna azione
+      che possa degradare il materiale oltre soglia viene eseguita, ancorata alla soglia Codex CXS
+      211-1999 (perossidi al massimo 10 meq O₂/kg) <DataTag kind="fonte" label="Codex Alimentarius CXS 211-1999" />.
     </p>
-    <p class="formula">Reward = InformationGain − α·Time − β·Cost − γ·DegradationRisk</p>
     <p>
-      Il termine di rischio di degradazione è un budget fisico verificabile, ancorato a parametri
-      misurabili (PV, TBARS) e alla soglia Codex CXS 211-1999: perossidi al massimo 10 meq O₂/kg
-      <DataTag kind="fonte" label="Codex Alimentarius CXS 211-1999" />. L'agente deve inoltre
-      deconvolvere la chimica reale (irreversibile) dall'effetto fisico-strumentale (reversibile),
-      per non scambiare un artefatto per un segnale.
+      Una <strong>politica appresa</strong> entra solo dove una SOP fissa ben disegnata mostra un margine
+      di miglioramento misurabile e il dataset ha dimensione sufficiente. Fino ad allora la SOP a regole
+      offre il miglior rapporto fra valore e complessità, e produce proprio i dati che addestreranno
+      l'eventuale politica.
     </p>
   </Section>
 
-  <Section n="3" title="Passaporto Lipidico Digitale">
+  <Section n="4" title="Passaporto Lipidico Digitale">
     <p>
-      Il prodotto informativo centrale di AMSA. Non un certificato statico, ma un dossier dinamico che
-      collega identità, origine, processo, spettri, analisi di riferimento, biomarcatori, modelli,
-      spiegazioni e decisione industriale del lotto.
+      Il prodotto informativo centrale di AMSA, nella versione 3 <strong>predittivo e ancorato alla
+      provenienza</strong>. Per ogni lotto collega identità, origine, spettri, analisi di riferimento,
+      biomarcatori, stabilità prevista con confidenza, raccomandazione di processo, spiegazione
+      interpretabile e governance del dato.
     </p>
     <PassportSections sections={passport} />
-    <p>
-      L'output è una <strong>decisione industriale</strong> sul lotto, con spiegazione chimica:
-      accetta, purifica, deodora, miscela, testa esternamente o scarta.
-    </p>
+    <div class="twodir">
+      <article class="dir">
+        <span class="dir-k">Direzione descrittiva</span>
+        <p>Qualità in ingresso, passaporto in uscita: il lotto arriva, AMSA misura, predice, spiega e
+        decide (accetta, purifica, deodora, miscela, testa esternamente o scarta).</p>
+      </article>
+      <article class="dir alt">
+        <span class="dir-k">Direzione a specifica</span>
+        <p>Requisito in ingresso, campione in uscita: arriva una tenuta target, AMSA la traduce in una
+        specifica di stabilità, guida il processo per centrarla, conferma con test accelerato e certifica.</p>
+      </article>
+    </div>
   </Section>
 
-  <Section n="4" title="Vantaggio tecnologico: la barriera difendibile">
+  <Section n="5" title="Posizionamento e fossato">
     <p>
-      Il vantaggio competitivo nasce dalla combinazione fra provenienza tracciabile, dati proprietari e
-      modelli interpretabili: lo strumento è alla portata di tutti, questa combinazione resta propria di
-      OdE e si rafforza a ogni lotto analizzato.
+      I compratori cosmetici B2B e i loro valutatori lavorano dentro quadri accreditati (ISO 17025,
+      valutazione di sicurezza, test di stabilità secondo norma). AMSA si posiziona <strong>accanto al
+      laboratorio accreditato</strong>, come acceleratore del metodo e strato di provenienza, non come suo
+      sostituto.
+    </p>
+    <div class="roles">
+      {roles.map((rl) => (
+        <article class="role">
+          <span class="role-k">{rl.k}</span>
+          <p>{rl.d}</p>
+        </article>
+      ))}
+    </div>
+    <p>
+      Il fossato è di <strong>dato e di accesso, non di algoritmo</strong>. Strumenti, metodi e
+      contenitore del passaporto sono replicabili in pochi mesi. Restano inattaccabili l'accesso alla
+      filiera tracciata e il dataset causale che ne deriva: due asset che un concorrente con sego anonimo
+      non può comprare.
     </p>
     <div class="stats">
       <StatCard value="> 0,85" caption="Target R² per l'indice di insaturazione (proxy iodine value); in letteratura Raman fino a 0,97." kind="stima" source="Target di piano; benchmark Beattie et al., 2006" />
-      <StatCard value="> 90%" caption="Target di classificazione conforme/non conforme; benchmark PLS-DA fino al 99,6%." kind="stima" source="Target di piano; benchmark Beattie 2007" />
+      <StatCard value="≈ 0,73" caption="R² medio atteso sui singoli acidi grassi (limite da covarianza biologica): il dettaglio resta all'escalation GC-FID." kind="fonte" source="Letteratura NIR/Raman su acidi grassi" />
       <StatCard value="+20–40%" caption="Premium di prezzo stimato rispetto a un ingrediente lipidico non qualificato." kind="stima" source="Stima di piano OdE" />
     </div>
-    <p class="quote big">"Un concorrente può comprare uno spettrometro, non questa base."</p>
+    <p class="quote big">"Un concorrente può comprare uno spettrometro, non l'accesso alla filiera né il dato causale che ne deriva."</p>
   </Section>
 
   <a class="deepdive" href="/OdE/amsa/tecnica">
     <span class="dd-k">Approfondimento tecnico</span>
     <span class="dd-t">Sotto il cofano di AMSA →</span>
-    <span class="dd-d">Data ladder, stack di modelli, few-shot e le ipotesi aperte dell’Active Control Loop. Per scienziati e R&D.</span>
+    <span class="dd-d">Data ladder, foundation model lipidico, i tre motori predittivi, fiducia quantificata e l'esperimento decisivo provenienza verso stabilità. Per scienziati e R&D.</span>
   </a>
 </OdeLayout>
 
@@ -151,16 +241,23 @@ const passport = [
     border-radius: 0 var(--ode-radius) var(--ode-radius) 0;
   }
   .quote.big { font-size: 1.2rem; font-style: italic; }
-  .formula {
-    font-family: var(--ode-font-mono);
-    font-size: 0.9rem;
-    color: var(--ink);
-    background: var(--panel);
-    border: 1px solid var(--rule);
-    border-radius: var(--ode-radius);
-    padding: 0.9rem 1.1rem;
-    overflow-x: auto;
-  }
+
+  .diagram { margin: 1.4rem 0; }
+  .diagram svg { width: 100%; height: auto; display: block; }
+  .diagram figcaption { font-size: 0.85rem; color: var(--muted); line-height: 1.5; margin-top: 0.6rem; max-width: 44rem; }
+
+  .twodir { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; margin-top: 1.2rem; }
+  .dir { border-left: 3px solid var(--green-border); padding: 0.2rem 0 0.2rem 1rem; }
+  .dir.alt { border-left-color: var(--pink); }
+  .dir-k { font-family: var(--ode-font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); }
+  .dir.alt .dir-k { color: var(--pink-ink); }
+  .dir p { margin: 0.4rem 0 0; font-size: 0.92rem; line-height: 1.5; color: var(--body); }
+
+  .roles { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; margin: 1.2rem 0; }
+  .role { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.1rem 1.2rem; }
+  .role-k { display: block; font-weight: 500; color: var(--accent); margin-bottom: 0.4rem; }
+  .role p { margin: 0; font-size: 0.9rem; line-height: 1.5; color: var(--body); }
+
   .stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));

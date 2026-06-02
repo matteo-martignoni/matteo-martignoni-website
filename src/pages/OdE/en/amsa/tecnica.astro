@@ -10,52 +10,50 @@ const r = odeRoutes[lang];
 const g = r.glossario;
 
 const ladder = [
-  { n: 'L1', t: 'Public foundation', d: 'Public data, spectral libraries, ontologies. A non-defensible but necessary starting base.' },
-  { n: 'L2', t: 'Real external data', d: 'Samples measured by external labs before owning any hardware: it reduces cold-start risk.' },
-  { n: 'L3', t: 'Proprietary dataset', d: '70-90 OdE samples from a traced supply chain, across replicas, temperatures and days. This is where the IP is born.' },
-  { n: 'L4', t: 'Data flywheel', d: 'Real batches, observed shelf-life, B2B feedback. Every passport issued deepens the moat.' },
+  { n: 'L1', t: 'Public foundations', d: 'Public data, spectral libraries, ontologies. A non-defensible but necessary starting base.' },
+  { n: 'L2', t: 'Real external data', d: 'Samples measured by external labs before owning hardware: it reduces cold-start risk.' },
+  { n: 'L3', t: 'Proprietary dataset', d: '30-40 traced batches with full provenance, spectra and measured OSI: the paired triples. This is where the IP is born.' },
+  { n: 'L4', t: 'Data flywheel', d: 'Real batches, observed stability, B2B feedback. Every passport issued strengthens the causal datum and the advantage.' },
 ];
 
 const baseline = [
   ['PCA', 'Exploration, outliers, clustering'],
-  ['PLS', 'Predict PV, acid value, iodine-value proxy'],
-  ['PLS-DA', 'Conform / non-conform classification'],
-  ['Random Forest, SVM', 'Nonlinear benchmark'],
-  ['MCR-ALS, NMF', 'Decompose overlapping components'],
+  ['PLS', 'Prediction of PV, acid value, iodine value proxy'],
+  ['PLS-DA', 'Compliant / non-compliant classification'],
+  ['Random Forest, SVM', 'Non-linear benchmark'],
+  ['MCR-ALS, NMF', 'Decomposition of overlapping components'],
 ];
 const advanced = [
   ['1D-CNN', 'Local patterns in NIR and Raman'],
   ['Autoencoder', 'Denoising and compression'],
-  ['Masked spectral model', 'Pre-training on unannotated spectra'],
+  ['Masked spectral model', 'Pre-training on unlabelled spectra'],
   ['Siamese, prototypical nets', 'Few-shot on new matrices'],
   ['Fusion model', 'NIR + Raman + NMR + reference'],
   ['Chemistry-constrained GAN', 'Synthetic spectra coherent with chemistry'],
 ];
 
-const hyp = [
-  { id: 'P1', t: 'Which algorithm for v1', d: 'With 70-90 samples and degrading actions, online RL is not defensible in v1: the effective sample size is low. Hypothesis: a rules-based controller or decision tree on quality and uncertainty thresholds, then offline RL at data maturity.' },
-  { id: 'P2', t: 'Operationalising the reward', d: 'Information gain is estimable via uncertainty-reduction proxies (BALD, or more simply Mahalanobis distance and Q-residual). Degradation risk is modelled a priori as kinetics (temperature, time, oxygen, initial state), anchored to PV and TBARS.' },
-  { id: 'P3', t: 'Transferability across matrices', d: 'The quality vector is largely matrix-invariant: a fluorescent sample looks fluorescent, be it pork or tallow. Hypothesis: a single policy conditioned by a context vector, not N dedicated policies. Under shock, robustness from conservative fallback and escalation.' },
-  { id: 'P4', t: 'RL versus MPC', d: 'Where a reliable system model exists (thermal dynamics, SNR response), MPC is preferred, interpretable and constraint-respecting by construction. RL only at maturity. Hypothesis: hybrid, MPC on thermal actions plus a learned component for the rest.' },
-  { id: 'P5', t: 'Certifiable safety', d: 'A soft penalty on degradation risk is not enough, a penalty can be bought. Hypothesis: a hard constraint (Constrained MDP) plus a deterministic action-shielding layer between policy and hardware, certifiable by enumeration, with a thermal and laser dose budget as a rigid variable.' },
+const engines = [
+  { n: '1', t: 'Oxidative kinetics surrogate', what: 'the degradation trajectory over time and conditions, not a static number (hybrid physics-data model)', moat: 'requires triples of provenance, spectrum and measured kinetics that only OdE accumulates', test: 'RMSE on the trajectory, with and without provenance' },
+  { n: '2', t: 'Inverse design to spec', what: 'a process and blend recipe compliant with a stability or sensory target, with uncertainty', moat: 'requires the direct model and the proprietary library of oleochemical actions', test: 'fraction of targets hit within K iterations vs the expert baseline' },
+  { n: '3', t: 'Optimal experimental design', what: 'which batches and tests to run to maximise information per euro spent', moat: 'accelerates a flywheel others cannot start without provenance', test: 'accuracy per euro of test vs random sampling' },
 ];
 ---
 <OdeLayout title={m.title} description={m.description} lang={lang} active="amsa">
   <header class="hero">
     <p class="ode-eyebrow"><a href={r.amsa}>AMSA</a> · Technical deep dive</p>
-    <h1>Under AMSA’s hood</h1>
+    <h1>Under AMSA's hood</h1>
     <p class="lede">
-      The level for those who want the detail: how the data is built, which models read it, and the
-      questions still open on the active control of acquisition. This page presents working hypotheses,
-      not established truths.
+      The level for those who want the detail: how the causal datum is built, which models read it, and
+      the experiment that tests its thesis before scaling. Baseline-first discipline: advanced models
+      enter where they add measured value.
     </p>
   </header>
 
-  <Section n="1" title="The Data Ladder: the moat is the data">
+  <Section n="1" title="The Data Ladder: the advantage is the data">
     <p>
       AMSA is built before, during and after the lab opens, accumulating data capital of growing
-      defensibility. No bet on uncertain technology: lipid chemometrics is mature, the advantage lies in
-      the data only this supply chain can generate.
+      defensibility. Lipid chemometrics is mature: the advantage is in the datum that links provenance,
+      spectrum and stability outcome, which only this chain can generate.
     </p>
     <ol class="ladder">
       {ladder.map((step) => (
@@ -69,8 +67,8 @@ const hyp = [
 
   <Section n="2" title="The model stack">
     <p>
-      A mature, mandatory chemometric base, onto which the advanced models graft. Nothing is an end in
-      itself: every layer exists to read a difficult matrix better.
+      A mature, mandatory chemometric base, onto which advanced models graft. Nothing is an end in itself:
+      every level exists to read a difficult matrix better.
     </p>
     <div class="stack">
       <div class="stack-col">
@@ -92,50 +90,121 @@ const hyp = [
     </div>
   </Section>
 
-  <Section n="3" title="Few-shot learning: starting from few samples">
+  <Section n="3" title="The lipid foundation model and few-shot">
     <p>
-      OdE starts from a few dozen real samples, not thousands. So AMSA does not ask "what class is this
-      fat?" but "<a href={`${g}#few-shot`}>how similar is it</a> to suitable, oxidised, deodorised or
-      unstable batches?". A new batch is projected into an embedding space and classified by proximity to
-      prototypes, not by rigid class membership.
+      Self-supervised pre-training (masked spectral modeling) over the entire unlabelled corpus of NIR and
+      Raman spectra, across temperatures and replicas, produces a <strong>proprietary encoder</strong> that
+      yields rich representations. Every downstream task, from composition to oxidation to authentication
+      to process, is then fine-tuned with very few labels. The method is public, the pre-training corpus is
+      not <DataTag kind="fonte" label="Foundation/generalist model for vibrational spectroscopy, 2025-2026 frontier" />.
     </p>
     <p>
-      The GANs that generate synthetic spectra are constrained by chemistry: no chemically incompatible
-      peak, coherence between double bonds and iodine value, between aldehydes and p-anisidine.
+      So AMSA does not ask "what class is this fat?" but "<a href={`${g}#few-shot`}>how similar</a> is it
+      to suitable, oxidised, deodorised or unstable batches?": a new batch is projected into an embedding
+      space and classified by proximity to prototypes. The GANs that generate synthetic spectra are
+      constrained by chemistry: no chemically incompatible peak, coherence between double bonds and iodine
+      value, between aldehydes and p-anisidine.
     </p>
   </Section>
 
-  <Section n="4" title="The open questions of the Active Control Loop">
-    <p class="reserve">
-      <DataTag kind="stima" label="Active Control Loop document: working hypotheses" />
-      What follows is explicitly labelled by the team as working hypotheses developed with advisory
-      support, not the conclusions of a domain expert. It is intellectual honesty, and the level at which
-      a scientist or R&D team can engage on the merits.
+  <Section n="4" title="The three predictive engines">
+    <p>
+      Three engines rest on the substrate, pushing the platform beyond qualification toward prediction and
+      design. Each feeds on the causal datum and builds a proprietary asset.
     </p>
-    <div class="hyp-list">
-      {hyp.map((h) => (
-        <article class="hyp">
-          <span class="hyp-id">{h.id}</span>
-          <div><h3>{h.t}</h3><p>{h.d}</p></div>
-        </article>
-      ))}
+    <div class="etable-wrap">
+      <table class="etable">
+        <thead><tr><th>Engine</th><th>What it predicts or generates</th><th>Why defensible</th><th>First test</th></tr></thead>
+        <tbody>
+          {engines.map((e) => (
+            <tr>
+              <td class="em"><span class="emono">{e.n}</span> {e.t}</td>
+              <td>{e.what}</td>
+              <td>{e.moat}</td>
+              <td>{e.test}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
     <p class="note">
-      The unifying thread: separate two problems that a single reward conflates, reversible sensing
-      (optimisable) and irreversible degradation (physical, to be treated as a hard constraint with
-      certifiable shielding).
+      Engine 2 is the commercial leap: it turns AMSA from a quality-control tool into a design engine for
+      high-margin bespoke batches. Feasibility on few data is plausible, since RL-guided generative
+      approaches converge to the target within a few hundred evaluations
+      <DataTag kind="fonte" label="Generative + RL design, recent literature" />, the regime OdE operates in.
     </p>
   </Section>
 
-  <Section n="5" title="Two directions, one machine">
+  <Section n="5" title="Governed acquisition: the v3 choice">
+    <p class="reserve">
+      <DataTag kind="stima" label="Active Control Loop document: v3 architectural choice" />
+      Version 3 resolves a question earlier versions left open: in the current phase, acquisition control
+      is a <strong>rule-based SOP</strong> on quality and uncertainty thresholds, not a learned policy. It
+      is the most solid, verifiable form for today's numbers.
+    </p>
     <p>
-      The same engine operates two ways. In the <strong>descriptive</strong> direction: "what is this
-      batch and can I use it?", quality in, passport out. In the <strong>to-specification</strong>
-      direction: "give me an ingredient that sustains this claim", requirement in, conforming sample out.
+      Two problems must stay distinct, where a single reward would conflate them: <strong>reversible
+      sensing</strong>, which can be optimised, and <strong>irreversible degradation</strong>, which is
+      physical and must be treated as a hard constraint. Heating and the other acts that alter the sample
+      stay under a hard constraint (Constrained MDP) and a deterministic action-shielding layer between
+      policy and hardware, certifiable by enumeration, with a budget of thermal and laser dose as a hard
+      variable.
+    </p>
+    <p>
+      A learned policy (for example offline batch RL fed by the collected data) earns its place only when
+      the dataset has sufficient sample size and a well-designed fixed SOP shows a measurable margin for
+      improvement. Until then it stays a conditional hypothesis, not a promise, and the SOP produces
+      exactly the data that would train it.
+    </p>
+  </Section>
+
+  <Section n="6" title="Quantified trust and copilot">
+    <p>
+      Two layers make the engines usable in front of a client and an assessor. First, <strong>validated
+      uncertainty</strong>: every prediction comes with a guaranteed-coverage interval (conformal
+      prediction) and an <a href={`${g}#ood`}>out-of-distribution</a> gate that triggers escalation to the
+      accredited test. A predicted shelf-life is not a bare number, it is an estimate with declared
+      coverage, and it is the triage logic that decides when to keep or skip the reference test.
+    </p>
+    <p>
+      Second, a <strong>copilot agent</strong> grounded in the lipid <a href={`${g}#rag`}>Knowledge
+      Graph</a> and the library of batches and SOPs: it generates the chemical explanation, the
+      norm-aligned stability dossier and the confirmatory test plan, and answers client questions on
+      sustainable claims. Retrieval is cited and tied to uncertainty, so the answer stays verifiable.
+    </p>
+  </Section>
+
+  <Section n="7" title="The decisive experiment">
+    <p>
+      The roadmap has a gate: a single pre-registered experiment that tests the central thesis before
+      scaling. The question is sharp.
+    </p>
+    <div class="gate">
+      <p class="gate-q">Does provenance measurably improve the prediction of stability (induction time,
+      OSI) compared with spectrum alone?</p>
+      <ul class="gate-proto">
+        <li>About 30-40 tallow batches with full provenance metadata <DataTag kind="stima" label="Plan sample size" />.</li>
+        <li>AMSA spectral acquisition and OSI measurement as ground truth (Rancimat).</li>
+        <li>Pre-registered comparison between spectrum-only and spectrum-plus-provenance models, RMSE on predicted induction time.</li>
+        <li>Success criterion declared before looking at the data, to avoid convenient confirmations.</li>
+      </ul>
+      <div class="gate-out">
+        <div class="go"><span class="go-k">If yes</span><p>The causal moat is real: scale on the data flywheel (L4) and method IP.</p></div>
+        <div class="go alt"><span class="go-k">If no</span><p>Provenance stays a positioning and service advantage: authentication and chain passport.</p></div>
+      </div>
+    </div>
+    <p class="note">Either way, the experiment turns a bet into an informed decision.</p>
+  </Section>
+
+  <Section n="8" title="Two directions, one engine">
+    <p>
+      The same engine works two ways. In the <strong>descriptive</strong> direction: "what is this batch
+      and can I use it?", quality in, passport out. In the <strong>spec</strong> direction: "give me an
+      ingredient that holds this claim", requirement in, compliant sample out.
     </p>
     <p>
       Three product families follow: Tallow Active Base (purified, deodorised lipid), structured
-      animal-plant lipids (blends), and animal-lipid nanocarriers, the most deep-tech, where the
+      animal-vegetable lipids (blends), and animal lipid nanocarriers, the most deep-tech, where the
       by-product becomes a functional carrier and not just an emollient.
     </p>
     <p class="back"><a href={r.amsa}>← Back to AMSA</a></p>
@@ -168,6 +237,13 @@ const hyp = [
   .stack td { border-bottom: 1px solid var(--rule); padding: 0.5rem 0.6rem 0.5rem 0; font-size: 0.88rem; color: var(--body); vertical-align: top; }
   .stack .mono { font-family: var(--ode-font-mono); font-size: 0.8rem; color: var(--ink); white-space: nowrap; padding-right: 1rem; }
 
+  .etable-wrap { overflow-x: auto; margin: 1.2rem 0; }
+  .etable { border-collapse: collapse; width: 100%; min-width: 40rem; }
+  .etable th { text-align: left; color: var(--accent); font-weight: 500; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 1px solid var(--rule); padding: 0 0.9rem 0.5rem 0; }
+  .etable td { border-bottom: 1px solid var(--rule); padding: 0.7rem 0.9rem 0.7rem 0; font-size: 0.86rem; line-height: 1.45; color: var(--body); vertical-align: top; }
+  .etable td.em { color: var(--ink); font-weight: 500; }
+  .emono { font-family: var(--ode-font-mono); color: var(--accent); margin-right: 0.2rem; }
+
   .reserve {
     border-left: 3px solid var(--lav-border);
     padding: 0.6rem 0 0.6rem 1rem;
@@ -175,9 +251,16 @@ const hyp = [
     border-radius: 0 var(--ode-radius) var(--ode-radius) 0;
     font-size: 0.92rem; line-height: 1.55; color: var(--lav-ink); max-width: 44rem;
   }
-  .hyp-list { display: grid; gap: 0.9rem; margin: 1.2rem 0; }
-  .hyp { display: grid; grid-template-columns: 2.6rem 1fr; gap: 1rem; background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1rem 1.2rem; }
-  .hyp-id { font-family: var(--ode-font-mono); color: var(--accent); font-weight: 500; }
-  .hyp h3 { font-size: 1rem; font-weight: 500; color: var(--ink); margin: 0 0 0.3rem; }
-  .hyp p { margin: 0; font-size: 0.9rem; line-height: 1.5; color: var(--body); }
+
+  .gate { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.2rem 1.4rem; margin: 1.2rem 0; }
+  .gate-q { font-size: 1.05rem; color: var(--ink); font-weight: 500; margin: 0 0 0.8rem; line-height: 1.4; }
+  .gate-proto { padding-left: 1.2rem; margin: 0 0 1rem; line-height: 1.6; }
+  .gate-proto li { margin-bottom: 0.35rem; font-size: 0.9rem; color: var(--body); }
+  .gate-proto li::marker { color: var(--accent); }
+  .gate-out { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1rem; }
+  .go { border-left: 3px solid var(--green-border); padding: 0.2rem 0 0.2rem 0.9rem; }
+  .go.alt { border-left-color: var(--pink); }
+  .go-k { font-family: var(--ode-font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); }
+  .go.alt .go-k { color: var(--pink-ink); }
+  .go p { margin: 0.3rem 0 0; font-size: 0.9rem; line-height: 1.5; color: var(--body); }
 </style>

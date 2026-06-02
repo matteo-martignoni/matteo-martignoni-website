@@ -12,8 +12,8 @@ const g = r.glossario;
 const ladder = [
   { n: 'L1', t: 'Fondamenta pubbliche', d: 'Dati pubblici, librerie spettrali, ontologie. Base di partenza non difendibile, ma necessaria.' },
   { n: 'L2', t: 'Dato esterno reale', d: 'Campioni misurati da laboratori esterni prima ancora di avere hardware proprio: riduce il rischio di cold-start.' },
-  { n: 'L3', t: 'Dataset proprietario', d: '70-90 campioni OdE da filiera tracciata, con repliche, temperature e giorni diversi. È qui che nasce l’IP.' },
-  { n: 'L4', t: 'Data flywheel', d: 'Lotti reali, shelf-life osservata, feedback B2B. Ogni passaporto emesso rafforza il vantaggio competitivo.' },
+  { n: 'L3', t: 'Dataset proprietario', d: '30-40 lotti tracciati con provenienza completa, spettri e OSI misurato: le triple appaiate. È qui che nasce l’IP.' },
+  { n: 'L4', t: 'Data flywheel', d: 'Lotti reali, stabilità osservata, feedback B2B. Ogni passaporto emesso rafforza il dato causale e il vantaggio.' },
 ];
 
 const baseline = [
@@ -32,12 +32,11 @@ const advanced = [
   ['GAN vincolata dalla chimica', 'Spettri sintetici coerenti con la chimica'],
 ];
 
-const hyp = [
-  { id: 'P1', t: 'Quale algoritmo per la v1', d: 'Con 70-90 campioni e azioni che degradano, l’RL online non è difendibile in v1: la dimensione campionaria effettiva è bassa. Ipotesi: controllore a regole o albero di decisione su soglie di qualità e incertezza, poi RL offline a maturità di dati.' },
-  { id: 'P2', t: 'Rendere operativa la reward', d: 'L’information gain è stimabile con proxy di riduzione dell’incertezza (BALD, o più semplicemente distanza di Mahalanobis e Q-residual). Il rischio di degradazione è modellato a priori come cinetica (temperatura, tempo, ossigeno, stato iniziale), ancorato a PV e TBARS.' },
-  { id: 'P3', t: 'Trasferibilità fra matrici', d: 'Il vettore di qualità è in larga parte invariante alla matrice: un campione fluorescente appare tale, sia suino sia sego. Ipotesi: una sola policy condizionata da un vettore di contesto, non N policy dedicate. Sotto shock, robustezza da fallback conservativo ed escalation.' },
-  { id: 'P4', t: 'RL contro MPC', d: 'Dove esiste un modello affidabile del sistema (dinamica termica, risposta del SNR) si preferisce l’MPC, interpretabile e rispettoso dei vincoli per costruzione. RL solo a maturità. Ipotesi: ibrido, MPC sulle azioni termiche più componente appresa per il resto.' },
-  { id: 'P5', t: 'Sicurezza certificabile', d: 'Una penalità soft sul rischio di degradazione non basta, una penalità si può comprare. Ipotesi: vincolo rigido (Constrained MDP) più uno strato deterministico di action shielding fra policy e hardware, certificabile per enumerazione, con un budget di dose termica e laser come variabile rigida.' },
+// I tre motori predittivi (V3, cap. 8).
+const engines = [
+  { n: '1', t: 'Surrogato di cinetica ossidativa', what: 'la traiettoria di degradazione nel tempo e nelle condizioni, non un numero statico (modello ibrido fisica-dati)', moat: 'richiede triple di provenienza, spettro e cinetica misurata che solo OdE accumula', test: 'RMSE sulla traiettoria, con e senza provenienza' },
+  { n: '2', t: 'Inverse design a specifica', what: 'una ricetta di processo e di blend conforme a un target di stabilità o sensoriale, con incertezza', moat: 'richiede il modello diretto e la libreria di azioni oleochimiche proprietarie', test: 'frazione di target centrati entro K iterazioni rispetto al baseline esperto' },
+  { n: '3', t: 'Disegno sperimentale ottimo', what: 'quali lotti e test eseguire per massimizzare l’informazione per euro speso', moat: 'accelera un flywheel che gli altri non possono innescare senza la provenienza', test: 'accuratezza per euro di test rispetto al campionamento casuale' },
 ];
 ---
 <OdeLayout title={m.title} description={m.description} lang={lang} active="amsa">
@@ -45,17 +44,17 @@ const hyp = [
     <p class="ode-eyebrow"><a href={r.amsa}>AMSA</a> · Approfondimento tecnico</p>
     <h1>Sotto il cofano di AMSA</h1>
     <p class="lede">
-      Il livello per chi vuole il dettaglio: come si costruisce il dato, quali modelli lo leggono, e le
-      questioni ancora aperte sul controllo attivo dell’acquisizione. Questa pagina espone ipotesi di
-      lavoro, non verità acquisite.
+      Il livello per chi vuole il dettaglio: come si costruisce il dato causale, quali modelli lo leggono,
+      e l’esperimento che ne mette alla prova la tesi prima di scalare. Disciplina baseline-first: i modelli
+      avanzati entrano dove aggiungono valore misurato.
     </p>
   </header>
 
   <Section n="1" title="La Data Ladder: il vantaggio sono i dati">
     <p>
-      AMSA si costruisce prima, durante e dopo l’apertura del laboratorio, accumulando capitale di dati
-      a difendibilità crescente. Non si scommette su tecnologia incerta: la chemiometria dei lipidi è
-      matura, il vantaggio è nei dati che solo questa filiera può generare.
+      AMSA si costruisce prima, durante e dopo l’apertura del laboratorio, accumulando capitale di dati a
+      difendibilità crescente. La chemiometria dei lipidi è matura: il vantaggio è nel dato che lega
+      provenienza, spettro ed esito di stabilità, e che solo questa filiera può generare.
     </p>
     <ol class="ladder">
       {ladder.map((step) => (
@@ -92,47 +91,120 @@ const hyp = [
     </div>
   </Section>
 
-  <Section n="3" title="Few-shot learning: partire da pochi campioni">
+  <Section n="3" title="Il foundation model lipidico e il few-shot">
     <p>
-      OdE parte da poche decine di campioni reali, non da migliaia. Per questo AMSA non chiede "che
-      classe è questo grasso?" ma "<a href={`${g}#few-shot`}>quanto è simile</a> a lotti idonei,
-      ossidati, deodorati o instabili?". Un nuovo lotto è proiettato in uno spazio di embedding e
-      classificato per vicinanza a prototipi, non per appartenenza rigida a una classe.
+      Un pre-training self-supervised (masked spectral modeling) sull’intero corpus non annotato di spettri
+      NIR e Raman, su più temperature e repliche, produce un <strong>encoder proprietario</strong> che
+      genera rappresentazioni ricche. Ogni task a valle, dalla composizione all’ossidazione
+      all’autenticazione al processo, si fine-tuna poi con pochissime etichette. Il metodo è pubblico, il
+      corpus di pre-training no <DataTag kind="fonte" label="Foundation/generalist model per spettroscopia vibrazionale, frontiera 2025-2026" />.
     </p>
     <p>
-      Le GAN che generano spettri sintetici sono vincolate dalla chimica: nessun picco chimicamente
-      incompatibile, coerenza fra doppi legami e numero di iodio, fra aldeidi e p-anisidina.
+      Per questo AMSA non chiede "che classe è questo grasso?" ma "<a href={`${g}#few-shot`}>quanto è
+      simile</a> a lotti idonei, ossidati, deodorati o instabili?": un nuovo lotto è proiettato in uno
+      spazio di embedding e classificato per vicinanza a prototipi. Le GAN che generano spettri sintetici
+      sono vincolate dalla chimica: nessun picco chimicamente incompatibile, coerenza fra doppi legami e
+      numero di iodio, fra aldeidi e p-anisidina.
     </p>
   </Section>
 
-  <Section n="4" title="Le questioni aperte dell’Active Control Loop">
-    <p class="reserve">
-      <DataTag kind="stima" label="Documento Active Control Loop: ipotesi di lavoro" />
-      Quanto segue è esplicitamente etichettato dal team come ipotesi di lavoro sviluppate con supporto
-      advisory, non conclusioni di un esperto del settore. È onestà intellettuale, ed è il livello a cui
-      uno scienziato o un team R&D può entrare nel merito.
+  <Section n="4" title="I tre motori predittivi">
+    <p>
+      Sul substrato poggiano tre motori che spingono la piattaforma oltre la qualifica, verso la
+      predizione e il design. Ciascuno si nutre del dato causale e costruisce un asset proprietario.
     </p>
-    <div class="hyp-list">
-      {hyp.map((h) => (
-        <article class="hyp">
-          <span class="hyp-id">{h.id}</span>
-          <div><h3>{h.t}</h3><p>{h.d}</p></div>
-        </article>
-      ))}
+    <div class="etable-wrap">
+      <table class="etable">
+        <thead><tr><th>Motore</th><th>Cosa predice o genera</th><th>Perché difendibile</th><th>Primo test</th></tr></thead>
+        <tbody>
+          {engines.map((e) => (
+            <tr>
+              <td class="em"><span class="emono">{e.n}</span> {e.t}</td>
+              <td>{e.what}</td>
+              <td>{e.moat}</td>
+              <td>{e.test}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
     <p class="note">
-      Il filo conduttore: separare due problemi che un’unica reward confonde, il sensing reversibile
-      (ottimizzabile) e la degradazione irreversibile (fisica, da trattare come vincolo rigido con
-      shielding certificabile).
+      Il motore 2 è il salto commerciale: trasforma AMSA da strumento di controllo qualità a motore di
+      design per batch su misura ad alto margine. La fattibilità a pochi dati è plausibile, perché gli
+      approcci generativi guidati da reinforcement learning convergono al target con poche centinaia di
+      valutazioni <DataTag kind="fonte" label="Generative + RL design, letteratura recente" />, il regime
+      in cui OdE opera.
     </p>
   </Section>
 
-  <Section n="5" title="Due direzioni, un solo motore">
+  <Section n="5" title="Acquisizione governata: la scelta della v3">
+    <p class="reserve">
+      <DataTag kind="stima" label="Documento Active Control Loop: scelta architetturale v3" />
+      La v3 risolve una domanda che le versioni precedenti tenevano aperta: in fase attuale il controllo
+      dell’acquisizione è una <strong>SOP a regole</strong> sulle soglie di qualità e incertezza, non una
+      politica appresa. È la forma più solida e verificabile per i numeri di oggi.
+    </p>
     <p>
-      Lo stesso motore opera in due modi. In direzione <strong>descrittiva</strong>: "cos’è questo lotto
-      e posso usarlo?", qualità in ingresso, passaporto in uscita. In direzione
-      <strong>a specifica</strong>: "dammi un ingrediente che regge questa dichiarazione", requisito in
-      ingresso, campione conforme in uscita.
+      Due problemi vanno tenuti distinti, dove un’unica reward li confonderebbe: il <strong>sensing
+      reversibile</strong>, che si può ottimizzare, e la <strong>degradazione irreversibile</strong>, che
+      è fisica e va trattata come vincolo rigido. Il riscaldamento e gli altri atti che alterano il
+      campione restano sotto un vincolo rigido (Constrained MDP) e uno strato di action shielding
+      deterministico fra policy e hardware, certificabile per enumerazione, con un budget di dose termica
+      e laser come variabile rigida.
+    </p>
+    <p>
+      Una politica appresa (per esempio batch RL offline alimentato dai dati raccolti) guadagna il suo
+      posto solo quando il dataset ha dimensione campionaria sufficiente e una SOP fissa ben disegnata
+      mostra un margine di miglioramento misurabile. Fino ad allora resta un’ipotesi condizionata, non una
+      promessa, e la SOP produce proprio i dati che la addestrerebbero.
+    </p>
+  </Section>
+
+  <Section n="6" title="Fiducia quantificata e copilota">
+    <p>
+      Due strati rendono i motori usabili davanti a un cliente e a un valutatore. Primo, l’<strong>incertezza
+      validata</strong>: ogni predizione esce con un intervallo a copertura garantita (conformal
+      prediction) e con un cancello <a href={`${g}#ood`}>out-of-distribution</a> che fa scattare
+      l’escalation al test accreditato. Una shelf-life prevista non è un numero secco, è una stima con
+      copertura dichiarata, ed è la logica di triage che decide quando tenere o saltare il test di
+      riferimento.
+    </p>
+    <p>
+      Secondo, un <strong>agente copilota</strong> ancorato al <a href={`${g}#rag`}>Knowledge Graph</a>
+      lipidico e alla libreria di lotti e SOP: genera la spiegazione chimica, il dossier di stabilità
+      allineato alla norma e il piano di test confermativi, e risponde alle domande del cliente sui claim
+      sostenibili. Il recupero è citato e legato all’incertezza, così la risposta resta verificabile.
+    </p>
+  </Section>
+
+  <Section n="7" title="L’esperimento decisivo">
+    <p>
+      La roadmap ha un cancello: un singolo esperimento pre-registrato che mette alla prova la tesi
+      centrale prima di scalare. La domanda è netta.
+    </p>
+    <div class="gate">
+      <p class="gate-q">La provenienza migliora in modo misurabile la previsione della stabilità
+      (induction time, OSI) rispetto al solo spettro?</p>
+      <ul class="gate-proto">
+        <li>Circa 30-40 lotti di sego con metadati di provenienza completi <DataTag kind="stima" label="Dimensione campione di piano" />.</li>
+        <li>Acquisizione spettrale AMSA e misura dell’OSI come ground truth (Rancimat).</li>
+        <li>Confronto pre-registrato fra modello solo-spettro e modello spettro più provenienza, metrica RMSE sull’induction time previsto.</li>
+        <li>Criterio di successo dichiarato prima di guardare i dati, per evitare conferme di comodo.</li>
+      </ul>
+      <div class="gate-out">
+        <div class="go"><span class="go-k">Se sì</span><p>Il fossato causale è reale: si scala sul data flywheel (L4) e sull’IP di metodo.</p></div>
+        <div class="go alt"><span class="go-k">Se no</span><p>La provenienza resta vantaggio di posizionamento e servizio: autenticazione e passaporto di filiera.</p></div>
+      </div>
+    </div>
+    <p class="note">In entrambi i casi l’esperimento trasforma una scommessa in una decisione informata.</p>
+  </Section>
+
+  <Section n="8" title="Due direzioni, un solo motore">
+    <p>
+      Lo stesso motore opera in due modi. In direzione <strong>descrittiva</strong>: "cos’è questo lotto e
+      posso usarlo?", qualità in ingresso, passaporto in uscita. In direzione <strong>a specifica</strong>:
+      "dammi un ingrediente che regge questa dichiarazione", requisito in ingresso, campione conforme in
+      uscita.
     </p>
     <p>
       Tre famiglie di prodotto ne discendono: Tallow Active Base (lipide purificato e deodorato), lipidi
@@ -169,6 +241,13 @@ const hyp = [
   .stack td { border-bottom: 1px solid var(--rule); padding: 0.5rem 0.6rem 0.5rem 0; font-size: 0.88rem; color: var(--body); vertical-align: top; }
   .stack .mono { font-family: var(--ode-font-mono); font-size: 0.8rem; color: var(--ink); white-space: nowrap; padding-right: 1rem; }
 
+  .etable-wrap { overflow-x: auto; margin: 1.2rem 0; }
+  .etable { border-collapse: collapse; width: 100%; min-width: 40rem; }
+  .etable th { text-align: left; color: var(--accent); font-weight: 500; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 1px solid var(--rule); padding: 0 0.9rem 0.5rem 0; }
+  .etable td { border-bottom: 1px solid var(--rule); padding: 0.7rem 0.9rem 0.7rem 0; font-size: 0.86rem; line-height: 1.45; color: var(--body); vertical-align: top; }
+  .etable td.em { color: var(--ink); font-weight: 500; }
+  .emono { font-family: var(--ode-font-mono); color: var(--accent); margin-right: 0.2rem; }
+
   .reserve {
     border-left: 3px solid var(--lav-border);
     padding: 0.6rem 0 0.6rem 1rem;
@@ -176,9 +255,16 @@ const hyp = [
     border-radius: 0 var(--ode-radius) var(--ode-radius) 0;
     font-size: 0.92rem; line-height: 1.55; color: var(--lav-ink); max-width: 44rem;
   }
-  .hyp-list { display: grid; gap: 0.9rem; margin: 1.2rem 0; }
-  .hyp { display: grid; grid-template-columns: 2.6rem 1fr; gap: 1rem; background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1rem 1.2rem; }
-  .hyp-id { font-family: var(--ode-font-mono); color: var(--accent); font-weight: 500; }
-  .hyp h3 { font-size: 1rem; font-weight: 500; color: var(--ink); margin: 0 0 0.3rem; }
-  .hyp p { margin: 0; font-size: 0.9rem; line-height: 1.5; color: var(--body); }
+
+  .gate { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.2rem 1.4rem; margin: 1.2rem 0; }
+  .gate-q { font-size: 1.05rem; color: var(--ink); font-weight: 500; margin: 0 0 0.8rem; line-height: 1.4; }
+  .gate-proto { padding-left: 1.2rem; margin: 0 0 1rem; line-height: 1.6; }
+  .gate-proto li { margin-bottom: 0.35rem; font-size: 0.9rem; color: var(--body); }
+  .gate-proto li::marker { color: var(--accent); }
+  .gate-out { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1rem; }
+  .go { border-left: 3px solid var(--green-border); padding: 0.2rem 0 0.2rem 0.9rem; }
+  .go.alt { border-left-color: var(--pink); }
+  .go-k { font-family: var(--ode-font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); }
+  .go.alt .go-k { color: var(--pink-ink); }
+  .go p { margin: 0.3rem 0 0; font-size: 0.9rem; line-height: 1.5; color: var(--body); }
 </style>
