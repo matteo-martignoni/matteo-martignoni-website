@@ -12,7 +12,7 @@ const g = r.glossario;
 const ladder = [
   { n: 'L1', t: 'Fondamenta pubbliche', d: 'Dati pubblici, librerie spettrali, ontologie. Base di partenza non difendibile, ma necessaria.' },
   { n: 'L2', t: 'Dato esterno reale', d: 'Campioni misurati da laboratori esterni prima ancora di avere hardware proprio: riduce il rischio di cold-start.' },
-  { n: 'L3', t: 'Dataset proprietario', d: '30-40 lotti tracciati con provenienza completa, spettri e OSI misurato: le triple appaiate. È qui che nasce l’IP.' },
+  { n: 'L3', t: 'Dataset proprietario', d: 'La libreria proprietaria più ampia (circa 70-90 campioni: sego tracciato, matrici affini, benchmark commerciali e vegetali, campioni stressati), di cui circa 30-40 con metadati di provenienza completi, spettri e OSI misurato. Queste triple provenienza-paired sono dove nasce l’IP e alimentano l’esperimento decisivo.' },
   { n: 'L4', t: 'Data flywheel', d: 'Lotti reali, stabilità osservata, feedback B2B. Ogni passaporto emesso rafforza il dato causale e il vantaggio.' },
 ];
 
@@ -34,7 +34,7 @@ const advanced = [
 
 // I tre motori predittivi (V3, cap. 8).
 const engines = [
-  { n: '1', t: 'Surrogato di cinetica ossidativa', what: 'la traiettoria di degradazione nel tempo e nelle condizioni, non un numero statico (modello ibrido fisica-dati)', moat: 'richiede triple di provenienza, spettro e cinetica misurata che solo OdE accumula', test: 'RMSE sulla traiettoria, con e senza provenienza' },
+  { n: '1', t: 'Surrogato di cinetica ossidativa', what: 'la traiettoria di degradazione nel tempo e nelle condizioni (un modello dinamico che va oltre il singolo valore)', moat: 'richiede triple di provenienza, spettro e cinetica misurata che solo OdE accumula', test: 'RMSE sulla traiettoria, con e senza provenienza' },
   { n: '2', t: 'Inverse design a specifica', what: 'una ricetta di processo e di blend conforme a un target di stabilità o sensoriale, con incertezza', moat: 'richiede il modello diretto e la libreria di azioni oleochimiche proprietarie', test: 'frazione di target centrati entro K iterazioni rispetto al baseline esperto' },
   { n: '3', t: 'Disegno sperimentale ottimo', what: 'quali lotti e test eseguire per massimizzare l’informazione per euro speso', moat: 'accelera un flywheel che gli altri non possono innescare senza la provenienza', test: 'accuratezza per euro di test rispetto al campionamento casuale' },
 ];
@@ -140,9 +140,9 @@ const engines = [
   <Section n="5" title="Acquisizione governata: la scelta della v3">
     <p class="reserve">
       <DataTag kind="stima" label="Documento Active Control Loop: scelta architetturale v3" />
-      La v3 risolve una domanda che le versioni precedenti tenevano aperta: in fase attuale il controllo
-      dell’acquisizione è una <strong>SOP a regole</strong> sulle soglie di qualità e incertezza, non una
-      politica appresa. È la forma più solida e verificabile per i numeri di oggi.
+      La v3 risolve una domanda che le versioni precedenti tenevano aperta: il controllo dell’acquisizione
+      è una <strong>SOP a regole</strong> sulle soglie di qualità e incertezza; la politica appresa entra
+      in una fase successiva. È la forma più solida e verificabile per i numeri di oggi.
     </p>
     <p>
       Due problemi vanno tenuti distinti, dove un’unica reward li confonderebbe: il <strong>sensing
@@ -165,16 +165,22 @@ const engines = [
       Due strati rendono i motori usabili davanti a un cliente e a un valutatore. Primo, l’<strong>incertezza
       validata</strong>: ogni predizione esce con un intervallo a copertura garantita (conformal
       prediction) e con un cancello <a href={`${g}#ood`}>out-of-distribution</a> che fa scattare
-      l’escalation al test accreditato. Una shelf-life prevista non è un numero secco, è una stima con
-      copertura dichiarata, ed è la logica di triage che decide quando tenere o saltare il test di
-      riferimento.
+      l’escalation al test accreditato. Una shelf-life prevista è una stima con copertura dichiarata, ed è
+      la logica di triage che decide quando tenere o saltare il test di riferimento.
     </p>
     <p>
-      Secondo, un <strong>agente copilota</strong> ancorato al <a href={`${g}#rag`}>Knowledge Graph</a>
-      lipidico e alla libreria di lotti e SOP: genera la spiegazione chimica, il dossier di stabilità
+      Secondo, un <strong>agente copilota</strong> ancorato al <a href={`${g}#knowledge-graph`}>Knowledge
+      Graph</a> lipidico e alla libreria di lotti e SOP: genera la spiegazione chimica, il dossier di stabilità
       allineato alla norma e il piano di test confermativi, e risponde alle domande del cliente sui claim
       sostenibili. Il recupero è citato e legato all’incertezza, così la risposta resta verificabile.
     </p>
+    <div class="caveat">
+      <span class="caveat-k">Aspettativa calibrata</span>
+      <p>La velocità di ossidazione dipende anche da condizioni esogene (stoccaggio, packaging, luce,
+      ossigeno) che lo spettro non cattura. La provenienza ne riduce una parte a monte, l'esito misurato
+      la calibra a valle, e ogni stabilità prevista è riportata con il suo intervallo di confidenza. Dove
+      serve, il passaporto raccomanda il test confermativo.</p>
+    </div>
   </Section>
 
   <Section n="7" title="L’esperimento decisivo">
@@ -186,7 +192,7 @@ const engines = [
       <p class="gate-q">La provenienza migliora in modo misurabile la previsione della stabilità
       (induction time, OSI) rispetto al solo spettro?</p>
       <ul class="gate-proto">
-        <li>Circa 30-40 lotti di sego con metadati di provenienza completi <DataTag kind="stima" label="Dimensione campione di piano" />.</li>
+        <li>Circa 30-40 lotti di sego con metadati di provenienza completi (il sottoinsieme provenienza-paired di L3) <DataTag kind="stima" label="Dimensione campione di piano" />.</li>
         <li>Acquisizione spettrale AMSA e misura dell’OSI come ground truth (Rancimat).</li>
         <li>Confronto pre-registrato fra modello solo-spettro e modello spettro più provenienza, metrica RMSE sull’induction time previsto.</li>
         <li>Criterio di successo dichiarato prima di guardare i dati, per evitare conferme di comodo.</li>
@@ -209,7 +215,7 @@ const engines = [
     <p>
       Tre famiglie di prodotto ne discendono: Tallow Active Base (lipide purificato e deodorato), lipidi
       animali-vegetali strutturati (blend), e nanocarrier lipidici animali, la più deep-tech, dove il
-      sottoprodotto diventa vettore funzionale e non solo emolliente.
+      sottoprodotto diventa un carrier funzionale, oltre che un emolliente.
     </p>
     <p class="back"><a href={r.amsa}>← Torna ad AMSA</a></p>
   </Section>
@@ -255,6 +261,14 @@ const engines = [
     border-radius: 0 var(--ode-radius) var(--ode-radius) 0;
     font-size: 0.92rem; line-height: 1.55; color: var(--lav-ink); max-width: 44rem;
   }
+  .caveat {
+    background: rgba(255, 255, 255, 0.34);
+    border-left: 3px solid var(--green-border);
+    border-radius: 0 var(--ode-radius) var(--ode-radius) 0;
+    padding: 0.8rem 1rem; margin: 1.2rem 0 0; max-width: 44rem;
+  }
+  .caveat-k { display: block; font-family: var(--ode-font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent); margin-bottom: 0.3rem; }
+  .caveat p { margin: 0; font-size: 0.92rem; line-height: 1.55; color: var(--body); }
 
   .gate { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.2rem 1.4rem; margin: 1.2rem 0; }
   .gate-q { font-size: 1.05rem; color: var(--ink); font-weight: 500; margin: 0 0 0.8rem; line-height: 1.4; }

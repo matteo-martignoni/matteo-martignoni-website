@@ -12,7 +12,7 @@ const g = r.glossario;
 const ladder = [
   { n: 'L1', t: 'Public foundations', d: 'Public data, spectral libraries, ontologies. A non-defensible but necessary starting base.' },
   { n: 'L2', t: 'Real external data', d: 'Samples measured by external labs before owning hardware: it reduces cold-start risk.' },
-  { n: 'L3', t: 'Proprietary dataset', d: '30-40 traced batches with full provenance, spectra and measured OSI: the paired triples. This is where the IP is born.' },
+  { n: 'L3', t: 'Proprietary dataset', d: 'The broader proprietary library (around 70-90 samples: traced tallow, affine matrices, commercial and vegetable benchmarks, stressed samples), of which about 30-40 carry full provenance metadata with spectra and measured OSI. These provenance-paired triples are where the IP is born and they feed the decisive experiment.' },
   { n: 'L4', t: 'Data flywheel', d: 'Real batches, observed stability, B2B feedback. Every passport issued strengthens the causal datum and the advantage.' },
 ];
 
@@ -167,11 +167,18 @@ const engines = [
       coverage, and it is the triage logic that decides when to keep or skip the reference test.
     </p>
     <p>
-      Second, a <strong>copilot agent</strong> grounded in the lipid <a href={`${g}#rag`}>Knowledge
+      Second, a <strong>copilot agent</strong> grounded in the lipid <a href={`${g}#knowledge-graph`}>Knowledge
       Graph</a> and the library of batches and SOPs: it generates the chemical explanation, the
       norm-aligned stability dossier and the confirmatory test plan, and answers client questions on
       sustainable claims. Retrieval is cited and tied to uncertainty, so the answer stays verifiable.
     </p>
+    <div class="caveat">
+      <span class="caveat-k">Calibrated expectation</span>
+      <p>Oxidation rate also depends on exogenous conditions (storage, packaging, light, oxygen) that the
+      spectrum does not capture. Provenance reduces part of this uncertainty upstream, the measured outcome
+      calibrates it downstream, and every predicted stability is reported with its confidence interval.
+      Where it matters, the passport recommends the confirmatory test.</p>
+    </div>
   </Section>
 
   <Section n="7" title="The decisive experiment">
@@ -183,7 +190,7 @@ const engines = [
       <p class="gate-q">Does provenance measurably improve the prediction of stability (induction time,
       OSI) compared with spectrum alone?</p>
       <ul class="gate-proto">
-        <li>About 30-40 tallow batches with full provenance metadata <DataTag kind="stima" label="Plan sample size" />.</li>
+        <li>About 30-40 tallow batches with full provenance metadata (the provenance-paired subset of L3) <DataTag kind="stima" label="Plan sample size" />.</li>
         <li>AMSA spectral acquisition and OSI measurement as ground truth (Rancimat).</li>
         <li>Pre-registered comparison between spectrum-only and spectrum-plus-provenance models, RMSE on predicted induction time.</li>
         <li>Success criterion declared before looking at the data, to avoid convenient confirmations.</li>
@@ -251,6 +258,14 @@ const engines = [
     border-radius: 0 var(--ode-radius) var(--ode-radius) 0;
     font-size: 0.92rem; line-height: 1.55; color: var(--lav-ink); max-width: 44rem;
   }
+  .caveat {
+    background: rgba(255, 255, 255, 0.34);
+    border-left: 3px solid var(--green-border);
+    border-radius: 0 var(--ode-radius) var(--ode-radius) 0;
+    padding: 0.8rem 1rem; margin: 1.2rem 0 0; max-width: 44rem;
+  }
+  .caveat-k { display: block; font-family: var(--ode-font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent); margin-bottom: 0.3rem; }
+  .caveat p { margin: 0; font-size: 0.92rem; line-height: 1.55; color: var(--body); }
 
   .gate { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.2rem 1.4rem; margin: 1.2rem 0; }
   .gate-q { font-size: 1.05rem; color: var(--ink); font-weight: 500; margin: 0 0 0.8rem; line-height: 1.4; }

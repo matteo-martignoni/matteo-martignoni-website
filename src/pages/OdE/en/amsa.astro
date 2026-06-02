@@ -31,8 +31,14 @@ const passport = [
   { n: '01', title: 'Identity', fields: 'sample_id, batch_id, origin, supplier, rendering, process_history, cosmetic_grade_status' },
   { n: '02', title: 'Spectral fingerprint', fields: 'NIR raw/preprocessed, Raman raw/corrected, acquisition_temperature, quality_score, OOD_score' },
   { n: '03', title: 'Fatty acid profile', fields: 'saturated / mono / poly, chain length, omega (opt.), GC-FID confidence' },
-  { n: '04', title: 'Oxidation & stability', fields: 'PV, p-anisidine, TBARS, TOTOX = 2·PV + AnV, acid value, OSI / induction time, Oxidative Risk Score, shelf-life' },
-  { n: '05', title: 'Physical & formulation', fields: 'DSC, melting_range, crystallinity_proxy, viscosity, colour, odor_score' },
+  { n: '04', title: 'Oxidation & stability', groups: [
+    { label: 'Measured', kind: 'fonte', fields: 'PV, p-anisidine, TBARS, TOTOX = 2·PV + AnV, acid value, OSI / induction time' },
+    { label: 'Predicted', kind: 'stima', fields: 'Oxidative Risk Score, shelf-life' },
+  ] },
+  { n: '05', title: 'Physical & formulation', groups: [
+    { fields: 'DSC, melting_range, colour, odor_score' },
+    { label: 'Predicted', kind: 'stima', fields: 'crystallinity_proxy, viscosity (from spectrum)' },
+  ] },
   { n: '06', title: 'Biomarkers', fields: 'unsaturation_index, CH₂/CH₃, carbonyl_index, aldehydes, hydroperoxides, waxes, sterols' },
   { n: '07', title: 'Process recommendation', fields: 'accept / purify / deodorise, adsorbent, blend_with, external_test_required' },
   { n: '08', title: 'Explainability', fields: 'top_spectral_regions, chemical interpretation, confidence (guaranteed coverage), confirmatory tests' },
@@ -154,6 +160,19 @@ const passport = [
       stability with confidence, process recommendation, interpretable explanation and data governance.
     </p>
     <PassportSections sections={passport} />
+    <p class="note legend">
+      <span class="ode-tag ode-tag--fonte">Measured</span>
+      <span class="ode-tag ode-tag--stima">Predicted</span>
+      Each field is tagged measured (reference method) or predicted (model output with guaranteed-coverage
+      interval). Predicted fields improve as the causal model is validated.
+    </p>
+    <div class="caveat">
+      <span class="caveat-k">Calibrated expectation</span>
+      <p>Oxidation rate also depends on exogenous conditions (storage, packaging, light, oxygen) that the
+      spectrum does not capture. Provenance reduces part of this uncertainty upstream, the measured outcome
+      calibrates it downstream, and every predicted stability is reported with its confidence interval.
+      Where it matters, the passport recommends the confirmatory test.</p>
+    </div>
     <div class="twodir">
       <article class="dir">
         <span class="dir-k">Descriptive direction</span>
@@ -190,8 +209,9 @@ const passport = [
     <div class="stats">
       <StatCard value="> 0.85" caption="Target R² for the unsaturation index (iodine value proxy); up to 0.97 in Raman literature." kind="stima" source="Plan target; benchmark Beattie et al., 2006" />
       <StatCard value="≈ 0.73" caption="Expected mean R² on individual fatty acids (limited by biological covariance): detail stays at GC-FID escalation." kind="fonte" source="NIR/Raman fatty-acid literature" />
-      <StatCard value="+20–40%" caption="Estimated price premium over a non-qualified lipid ingredient." kind="stima" source="OdE plan estimate" />
+      <StatCard value="+20–40%" caption="Hypothesised price premium over a non-qualified lipid ingredient, to be validated against market data." kind="stima" source="OdE plan hypothesis, to be validated" />
     </div>
+    <p class="note">The price premium is a plan hypothesis, to be validated against <a href="/OdE/en/mercato">Market</a> data.</p>
     <p class="quote big">"A competitor can buy a spectrometer, not access to the chain nor the causal datum it yields."</p>
   </Section>
 
@@ -228,6 +248,18 @@ const passport = [
     border-radius: 0 var(--ode-radius) var(--ode-radius) 0;
   }
   .quote.big { font-size: 1.2rem; font-style: italic; }
+
+  .note { font-size: 0.85rem; color: var(--muted); line-height: 1.5; max-width: 44rem; }
+  .note a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+  .note .ode-tag { margin-right: 0.3rem; }
+  .caveat {
+    background: rgba(255, 255, 255, 0.34);
+    border-left: 3px solid var(--green-border);
+    border-radius: 0 var(--ode-radius) var(--ode-radius) 0;
+    padding: 0.8rem 1rem; margin: 1rem 0; max-width: 44rem;
+  }
+  .caveat-k { display: block; font-family: var(--ode-font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent); margin-bottom: 0.3rem; }
+  .caveat p { margin: 0; font-size: 0.92rem; line-height: 1.55; color: var(--body); }
 
   .diagram { margin: 1.4rem 0; }
   .diagram svg { width: 100%; height: auto; display: block; }

@@ -32,8 +32,14 @@ const passport = [
   { n: '01', title: 'Identità', fields: 'sample_id, batch_id, origine, fornitore, rendering, process_history, cosmetic_grade_status' },
   { n: '02', title: 'Spectral fingerprint', fields: 'NIR raw/preprocessed, Raman raw/corrected, acquisition_temperature, quality_score, OOD_score' },
   { n: '03', title: 'Profilo acidi grassi', fields: 'saturi / mono / poli, lunghezza catena, omega (opz.), GC-FID confidence' },
-  { n: '04', title: 'Ossidazione e stabilità', fields: 'PV, p-anisidina, TBARS, TOTOX = 2·PV + AnV, acid value, OSI / induction time, Oxidative Risk Score, shelf-life' },
-  { n: '05', title: 'Fisico e formulativo', fields: 'DSC, melting_range, crystallinity_proxy, viscosità, colore, odor_score' },
+  { n: '04', title: 'Ossidazione e stabilità', groups: [
+    { label: 'Misurato', kind: 'fonte', fields: 'PV, p-anisidina, TBARS, TOTOX = 2·PV + AnV, acid value, OSI / induction time' },
+    { label: 'Predetto', kind: 'stima', fields: 'Oxidative Risk Score, shelf-life' },
+  ] },
+  { n: '05', title: 'Fisico e formulativo', groups: [
+    { fields: 'DSC, melting_range, colore, odor_score' },
+    { label: 'Predetto', kind: 'stima', fields: 'crystallinity_proxy, viscosità (da spettro)' },
+  ] },
   { n: '06', title: 'Biomarcatori', fields: 'unsaturation_index, CH₂/CH₃, carbonyl_index, aldeidi, idroperossidi, cere, steroli' },
   { n: '07', title: 'Raccomandazione processo', fields: 'accetta / purifica / deodora, adsorbente, blend_with, external_test_required' },
   { n: '08', title: 'Explainability', fields: 'top_spectral_regions, interpretazione chimica, confidence (copertura garantita), test confermativi' },
@@ -111,9 +117,9 @@ const passport = [
         <text x="362" y="192" font-family="Roboto" font-style="italic" font-size="8.4" fill="rgba(28,38,32,.55)">l'esito misurato addestra il modello, lotto dopo lotto</text>
       </svg>
       <figcaption>
-        I metodi accreditati come il Rancimat non sono un rivale: sono il generatore di verità a terra
-        che addestra il modello. La provenienza, che nessun laboratorio possiede, entra come variabile in
-        ingresso. <DataTag kind="fonte" label="Rancimat / Oxidation Stability Index · ISO 6886, AOCS Cd 12b-92" />
+        I metodi accreditati come il Rancimat agiscono da generatore di ground truth che addestra il
+        modello. La provenienza, che nessun laboratorio possiede, entra come variabile di ingresso.
+        <DataTag kind="fonte" label="Rancimat / Oxidation Stability Index · ISO 6886, AOCS Cd 12b-92" />
       </figcaption>
     </figure>
 
@@ -165,6 +171,19 @@ const passport = [
       interpretabile e governance del dato.
     </p>
     <PassportSections sections={passport} />
+    <p class="note legend">
+      <span class="ode-tag ode-tag--fonte">Misurato</span>
+      <span class="ode-tag ode-tag--stima">Predetto</span>
+      Ogni campo è marcato come misurato (metodo di riferimento) o predetto (output di modello con
+      intervallo a copertura garantita). I campi predetti migliorano con la validazione del modello causale.
+    </p>
+    <div class="caveat">
+      <span class="caveat-k">Aspettativa calibrata</span>
+      <p>La velocità di ossidazione dipende anche da condizioni esogene (stoccaggio, packaging, luce,
+      ossigeno) che lo spettro non cattura. La provenienza ne riduce una parte a monte, l'esito misurato
+      la calibra a valle, e ogni stabilità prevista è riportata con il suo intervallo di confidenza. Dove
+      serve, il passaporto raccomanda il test confermativo.</p>
+    </div>
     <div class="twodir">
       <article class="dir">
         <span class="dir-k">Direzione descrittiva</span>
@@ -182,9 +201,9 @@ const passport = [
   <Section n="5" title="Posizionamento e fossato">
     <p>
       I compratori cosmetici B2B e i loro valutatori lavorano dentro quadri accreditati (ISO 17025,
-      valutazione di sicurezza, test di stabilità secondo norma). AMSA si posiziona <strong>accanto al
-      laboratorio accreditato</strong>, come acceleratore del metodo e strato di provenienza, non come suo
-      sostituto.
+      valutazione di sicurezza, test di stabilità secondo norma). AMSA si colloca <strong>accanto al
+      laboratorio accreditato</strong>, come acceleratore del metodo e strato di provenienza, in
+      complemento al test di riferimento.
     </p>
     <div class="roles">
       {roles.map((rl) => (
@@ -203,8 +222,9 @@ const passport = [
     <div class="stats">
       <StatCard value="> 0,85" caption="Target R² per l'indice di insaturazione (proxy iodine value); in letteratura Raman fino a 0,97." kind="stima" source="Target di piano; benchmark Beattie et al., 2006" />
       <StatCard value="≈ 0,73" caption="R² medio atteso sui singoli acidi grassi (limite da covarianza biologica): il dettaglio resta all'escalation GC-FID." kind="fonte" source="Letteratura NIR/Raman su acidi grassi" />
-      <StatCard value="+20–40%" caption="Premium di prezzo stimato rispetto a un ingrediente lipidico non qualificato." kind="stima" source="Stima di piano OdE" />
+      <StatCard value="+20–40%" caption="Ipotesi di premio di prezzo rispetto a un ingrediente lipidico non qualificato, da validare sui dati di mercato." kind="stima" source="Ipotesi di piano OdE, da validare" />
     </div>
+    <p class="note">Il premio di prezzo è un'ipotesi di piano, da validare sui dati di <a href="/OdE/mercato">Mercato</a>.</p>
     <p class="quote big">"Un concorrente può comprare uno spettrometro, non l'accesso alla filiera né il dato causale che ne deriva."</p>
   </Section>
 
@@ -241,6 +261,18 @@ const passport = [
     border-radius: 0 var(--ode-radius) var(--ode-radius) 0;
   }
   .quote.big { font-size: 1.2rem; font-style: italic; }
+
+  .note { font-size: 0.85rem; color: var(--muted); line-height: 1.5; max-width: 44rem; }
+  .note a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+  .note .ode-tag { margin-right: 0.3rem; }
+  .caveat {
+    background: rgba(255, 255, 255, 0.34);
+    border-left: 3px solid var(--green-border);
+    border-radius: 0 var(--ode-radius) var(--ode-radius) 0;
+    padding: 0.8rem 1rem; margin: 1rem 0; max-width: 44rem;
+  }
+  .caveat-k { display: block; font-family: var(--ode-font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent); margin-bottom: 0.3rem; }
+  .caveat p { margin: 0; font-size: 0.92rem; line-height: 1.55; color: var(--body); }
 
   .diagram { margin: 1.4rem 0; }
   .diagram svg { width: 100%; height: auto; display: block; }
