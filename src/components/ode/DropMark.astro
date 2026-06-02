@@ -1,0 +1,29 @@
+---
+// DropMark — the OdE drop symbol: a line-art teardrop with a circular-economy
+// "c" inside. Inherits text colour (currentColor); size it via CSS height
+// (width follows the aspect ratio). Decorative by default; pass a label for an
+// accessible name.
+interface Props {
+  label?: string;
+  class?: string;
+}
+const { label, class: cls = '' } = Astro.props;
+const a11y = label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': 'true' };
+---
+<svg
+  class:list={['ode-drop', cls]}
+  viewBox="0 0 44 54"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="3"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  {...a11y}
+>
+  <path d="M22 4 C 22 4 8 24 8 34 A 14 14 0 1 0 36 34 C 36 24 22 4 22 4 Z" />
+  <path d="M26 35 A 5 5 0 1 0 26 45" stroke-width="3.4" />
+</svg>
+
+<style>
+  .ode-drop { display: inline-block; color: inherit; height: 1em; width: auto; }
+</style>
