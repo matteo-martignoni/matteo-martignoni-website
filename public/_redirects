@@ -1,0 +1,3 @@
+# Cloudflare edge redirects
+# Conventional sitemap path → the actual Astro-generated sitemap index.
+/sitemap.xml  /sitemap-index.xml  301
