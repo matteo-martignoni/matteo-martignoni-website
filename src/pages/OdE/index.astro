@@ -1,13 +1,12 @@
 ---
 import OdeLayout from '../../layouts/OdeLayout.astro';
-import { odeMeta, odeUI, odeRoutes } from '../../i18n/ode';
+import { odeMeta, odeRoutes } from '../../i18n/ode';
 
 const lang = 'it' as const;
 const m = odeMeta[lang].home;
-const t = odeUI[lang];
 const r = odeRoutes[lang];
 
-// Three inspirational ideas (vision before technicism, brief Fase 2).
+// La visione in tre parole (alta narrazione prima dei tecnicismi).
 const ideas = [
   {
     k: 'Circolarità',
@@ -23,30 +22,22 @@ const ideas = [
   },
 ];
 
-// Primary pillars + secondary doors.
+// I tre pilastri di approfondimento.
 const pillars = [
-  { href: r.amsa, n: '01', title: 'AMSA', desc: 'La tecnologia: agente spettroscopico multimodale, Active Control Loop, Passaporto Lipidico Digitale.' },
-  { href: r.mercato, n: '02', title: 'Mercato', desc: 'La validazione: dimensione, trend, competizione e la finestra normativa del Digital Product Passport.' },
-  { href: r.visione, n: '03', title: 'Visione', desc: 'Lo sviluppo: da produttore a fornitore multi-mercato, i tre spazi azzurri di AMSA.' },
-];
-const secondary = [
-  { href: r.normativa, label: 'Orologio Normativo' },
-  { href: r.tracciabilita, label: 'Tracciabilità' },
-  { href: r.investitori, label: 'Investitori' },
-  { href: r.glossario, label: 'Glossario' },
+  { href: r.amsa, n: 'Pilastro 01', title: 'Tecnologia', desc: 'Agente spettroscopico multimodale, Active Control Loop e Passaporto Lipidico Digitale: il motore tecnologico di OdE.' },
+  { href: r.mercato, n: 'Pilastro 02', title: 'Mercato', desc: 'La validazione: dimensione, trend, competizione e la finestra normativa del Digital Product Passport.' },
+  { href: r.visione, n: 'Pilastro 03', title: 'Visione', desc: 'Lo sviluppo: da produttore a fornitore multi-mercato, i tre spazi azzurri di AMSA.' },
 ];
 ---
 <OdeLayout title={m.title} description={m.description} lang={lang}>
   <section class="hero">
     <div class="hero-text">
-      <p class="kicker">{t.tagline}</p>
       <h1>Dal sottoprodotto animale, un ingrediente cosmetico di precisione.</h1>
       <p class="lede">
         Officina degli Estratti è una startup deep-tech di bioeconomia circolare a Langhirano, Parma.
         Valorizza grassi e sottoprodotti delle filiere animali locali in ingredienti lipidici ultrapuri
         per la cosmetica B2B, con un Passaporto Lipidico Digitale che certifica ogni singolo lotto.
       </p>
-      <a class="cta" href={r.amsa}>Scopri AMSA →</a>
     </div>
     <figure class="hero-art">
       <img
@@ -60,31 +51,30 @@ const secondary = [
     </figure>
   </section>
 
-  <section class="ideas" aria-label="La visione">
-    {ideas.map((idea) => (
-      <article class="idea">
-        <h2>{idea.k}</h2>
-        <p>{idea.body}</p>
-      </article>
-    ))}
+  <section class="block" aria-label="La visione">
+    <p class="ode-eyebrow block-eyebrow">La visione</p>
+    <div class="ideas">
+      {ideas.map((idea) => (
+        <article class="idea">
+          <h2>{idea.k}</h2>
+          <p>{idea.body}</p>
+        </article>
+      ))}
+    </div>
   </section>
 
-  <nav class="pillars" aria-label="Sezioni">
-    {pillars.map((p) => (
-      <a class="pillar" href={p.href}>
-        <span class="pillar-n">{p.n}</span>
-        <span class="pillar-title">{p.title}</span>
-        <span class="pillar-desc">{p.desc}</span>
-      </a>
-    ))}
-  </nav>
-
-  <nav class="secondary" aria-label="Approfondimenti">
-    {secondary.map((s) => (
-      <a class="sec-door" href={s.href}>{s.label} →</a>
-    ))}
-    <a class="sec-door sec-live" href={r.live}>{t.cta.explore} →</a>
-  </nav>
+  <section class="block" aria-label="I pilastri">
+    <p class="ode-eyebrow block-eyebrow">I tre pilastri</p>
+    <nav class="pillars" aria-label="Sezioni del progetto">
+      {pillars.map((p) => (
+        <a class="pillar" href={p.href}>
+          <span class="pillar-n">{p.n}</span>
+          <span class="pillar-title">{p.title}</span>
+          <span class="pillar-desc">{p.desc}</span>
+        </a>
+      ))}
+    </nav>
+  </section>
 </OdeLayout>
 
 <style>
@@ -93,27 +83,11 @@ const secondary = [
     grid-template-columns: 1.1fr 0.9fr;
     gap: 2rem;
     align-items: center;
-    padding: 1rem 0 2.5rem;
+    padding: 1rem 0 2rem;
   }
   .hero-text { max-width: 34rem; }
-  .kicker {
-    font-family: var(--ode-font-mono);
-    font-size: 0.78rem;
-    letter-spacing: 0.04em;
-    color: var(--ode-muted);
-    margin: 0 0 1rem;
-  }
-  .hero h1 { font-size: clamp(1.9rem, 4vw, 2.9rem); letter-spacing: -0.01em; }
-  .lede { font-size: 1.05rem; line-height: 1.6; color: var(--ode-body); margin: 1.25rem 0 1.75rem; }
-  .cta {
-    display: inline-block;
-    text-decoration: none;
-    background: var(--ode-accent);
-    color: var(--ode-accent-ink);
-    padding: 0.7rem 1.2rem;
-    border-radius: var(--ode-radius);
-    font-size: 0.9rem;
-  }
+  .hero h1 { font-size: clamp(2rem, 4.4vw, 3rem); letter-spacing: -0.01em; }
+  .lede { font-size: 1.05rem; line-height: 1.6; color: var(--ode-body); margin: 1.25rem 0 0; }
   .hero-art { margin: 0; }
   .hero-art img {
     width: 100%;
@@ -127,14 +101,13 @@ const secondary = [
     to { opacity: 1; transform: translateY(0); }
   }
 
+  .block { padding: 2.2rem 0; border-top: 1px solid var(--ode-rule); }
+  .block-eyebrow { margin: 0 0 1.3rem; }
+
   .ideas {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
     gap: 1.5rem 2rem;
-    margin: 1rem 0 3rem;
-    padding: 2rem 0;
-    border-top: 1px solid var(--ode-rule);
-    border-bottom: 1px solid var(--ode-rule);
   }
   .idea h2 { font-size: 1.05rem; font-weight: 500; color: var(--ode-accent); margin: 0 0 0.5rem; }
   .idea p { font-size: 0.95rem; line-height: 1.55; color: var(--ode-body); margin: 0; }
@@ -152,19 +125,9 @@ const secondary = [
     transition: border-color 160ms ease, transform 160ms ease;
   }
   .pillar:hover { border-color: var(--ode-accent); transform: translateY(-2px); }
-  .pillar-n { font-family: var(--ode-font-mono); font-size: 0.8rem; color: var(--ode-muted); }
+  .pillar-n { font-family: var(--ode-font-mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ode-muted); }
   .pillar-title { font-size: 1.3rem; font-weight: 600; color: var(--ode-ink); }
   .pillar-desc { font-size: 0.9rem; line-height: 1.5; color: var(--ode-body); }
-
-  .secondary { display: flex; flex-wrap: wrap; gap: 0.6rem 1.4rem; margin-top: 1.5rem; }
-  .sec-door {
-    font-size: 0.85rem;
-    color: var(--ode-muted);
-    text-decoration: none;
-    transition: color 160ms ease;
-  }
-  .sec-door:hover { color: var(--ode-accent); }
-  .sec-live { color: var(--ode-accent); }
 
   @media (max-width: 700px) {
     .hero { grid-template-columns: 1fr; gap: 1rem; }
