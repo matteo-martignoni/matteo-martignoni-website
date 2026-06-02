@@ -1,0 +1,74 @@
+---
+// CowGlyph — stylised single-line muzzle, in the spirit of the home
+// illustration (a continuous, calm line drawing). Two variants:
+//   variant="cow"  → adult cow (small horns, lidded eyes)
+//   variant="calf" → calf (no horns, larger ears, forelock tuft, round eyes)
+// Renders as currentColor stroke, so it inherits text colour. Decorative by
+// default; pass a `label` to expose an accessible name.
+interface Props {
+  variant?: 'cow' | 'calf';
+  size?: number;
+  label?: string;
+  class?: string;
+}
+const { variant = 'cow', size = 48, label, class: cls = '' } = Astro.props;
+const a11y = label
+  ? { role: 'img', 'aria-label': label }
+  : { 'aria-hidden': 'true' };
+---
+<svg
+  class:list={['cow-glyph', `cow-glyph--${variant}`, cls]}
+  width={size}
+  height={size}
+  viewBox="0 0 64 64"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.7"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  {...a11y}
+>
+  {variant === 'cow' ? (
+    <g>
+      {/* horns */}
+      <path d="M24 17 C 20 11, 15 10, 13 13" />
+      <path d="M40 17 C 44 11, 49 10, 51 13" />
+      {/* ears */}
+      <path d="M21 22 C 12 18, 7 22, 11 28 C 14 31, 19 28, 21 25" />
+      <path d="M43 22 C 52 18, 57 22, 53 28 C 50 31, 45 28, 43 25" />
+      {/* head */}
+      <path d="M20 22 C 19 34, 22 44, 32 50 C 42 44, 45 34, 44 22 C 40 18, 24 18, 20 22 Z" />
+      {/* muzzle */}
+      <path d="M24 41 C 24 49, 40 49, 40 41 C 40 37, 24 37, 24 41 Z" />
+      {/* nostrils */}
+      <path d="M28 43 C 27 44, 27 46, 29 46" />
+      <path d="M36 43 C 37 44, 37 46, 35 46" />
+      {/* eyes */}
+      <path d="M26 31 C 27 30, 28 30, 29 31" />
+      <path d="M35 31 C 36 30, 37 30, 38 31" />
+    </g>
+  ) : (
+    <g>
+      {/* forelock tuft */}
+      <path d="M30 22 C 31 16, 33 16, 34 22" />
+      <path d="M32 21 L 32 16" />
+      {/* ears (larger, lower) */}
+      <path d="M22 25 C 11 19, 5 24, 10 31 C 14 35, 20 31, 22 28" />
+      <path d="M42 25 C 53 19, 59 24, 54 31 C 50 35, 44 31, 42 28" />
+      {/* head (rounder) */}
+      <path d="M21 26 C 20 36, 24 45, 32 50 C 40 45, 44 36, 43 26 C 39 22, 25 22, 21 26 Z" />
+      {/* muzzle */}
+      <path d="M25 41 C 25 49, 39 49, 39 41 C 39 37, 25 37, 25 41 Z" />
+      {/* nostrils */}
+      <path d="M29 43 C 28 44, 28 45, 30 45" />
+      <path d="M35 43 C 36 44, 36 45, 34 45" />
+      {/* eyes (round, wide) */}
+      <circle cx="28" cy="33" r="1.7" />
+      <circle cx="36" cy="33" r="1.7" />
+    </g>
+  )}
+</svg>
+
+<style>
+  .cow-glyph { display: block; color: inherit; }
+</style>

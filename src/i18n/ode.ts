@@ -18,6 +18,7 @@ export const odeRoutes = {
     amsaTecnica: '/OdE/amsa/tecnica',
     mercato: '/OdE/mercato',
     normativa: '/OdE/normativa',
+    tracciabilita: '/OdE/tracciabilita',
     visione: '/OdE/visione',
     investitori: '/OdE/investitori',
     glossario: '/OdE/glossario',
@@ -29,6 +30,7 @@ export const odeRoutes = {
     amsaTecnica: '/OdE/en/amsa/tecnica',
     mercato: '/OdE/en/mercato',
     normativa: '/OdE/en/normativa',
+    tracciabilita: '/OdE/en/tracciabilita',
     visione: '/OdE/en/visione',
     investitori: '/OdE/en/investitori',
     glossario: '/OdE/en/glossario',
@@ -46,6 +48,7 @@ export const odeUI = {
       amsa: 'AMSA',
       mercato: 'Mercato',
       normativa: 'Normativa',
+      tracciabilita: 'Tracciabilità',
       visione: 'Visione',
       investitori: 'Investitori',
     },
@@ -68,6 +71,7 @@ export const odeUI = {
       amsa: 'AMSA',
       mercato: 'Market',
       normativa: 'Regulation',
+      tracciabilita: 'Traceability',
       visione: 'Vision',
       investitori: 'Investors',
     },
@@ -112,6 +116,11 @@ export const odeMeta = {
       title: 'Orologio Normativo — Officina degli Estratti',
       description:
         'Le norme che governano i lipidi animali cosmetici, oggi e in arrivo: dal Digital Product Passport alla tracciabilita, e perche OdE e posizionata per vincere.',
+    },
+    tracciabilita: {
+      title: 'Tracciabilità — Officina degli Estratti',
+      description:
+        'Dalla nascita alla macellazione: come la vacca DOP del comprensorio Parmigiano Reggiano è tra i bovini più documentati d’Europa, dove la tracciabilità si rompe e dove OdE si integra con il Passaporto Lipidico Digitale.',
     },
     visione: {
       title: 'Visione — Officina degli Estratti',
@@ -159,6 +168,11 @@ export const odeMeta = {
       title: 'Regulatory Clock — Officina degli Estratti',
       description:
         'The rules governing cosmetic animal lipids, today and incoming: from the Digital Product Passport to traceability, and why OdE is positioned to win.',
+    },
+    tracciabilita: {
+      title: 'Traceability — Officina degli Estratti',
+      description:
+        'From birth to slaughter: how the DOP cow of the Parmigiano Reggiano district is among the most documented cattle in Europe, where traceability breaks, and where OdE plugs in with the Digital Lipid Passport.',
     },
     visione: {
       title: 'Vision — Officina degli Estratti',

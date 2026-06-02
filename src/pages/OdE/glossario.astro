@@ -62,6 +62,17 @@ const groups = [
       { id: 'iscc', t: 'ISCC', d: 'Schema di certificazione chain-of-custody per i feedstock dei biocarburanti. Il Passaporto Lipidico vi mappa quasi uno a uno, base dell’adiacenza HVO/SAF.' },
     ],
   },
+  {
+    group: 'Tracciabilità e filiera DOP',
+    terms: [
+      { id: 'bdn', t: 'Anagrafe BDN', d: 'Banca Dati Nazionale dell’anagrafe zootecnica. Registra per legge nascita, movimentazioni e macellazione di ogni bovino, con un codice identificativo di 14 caratteri invariato per tutta la vita.' },
+      { id: 'marca', t: 'Marca auricolare', d: 'Doppio marchio auricolare con lo stesso codice, applicato entro 20 giorni dalla nascita e prima che l’animale lasci la stalla. È la base fisica dell’identità individuale del capo.' },
+      { id: 'disciplinare', t: 'Disciplinare DOP', d: 'Il regolamento vincolante del Parmigiano Reggiano: zona delimitata a cinque province, alimentazione a foraggi locali, divieto di insilati e di grassi in razione. Riguarda latte e formaggio, non il sego.' },
+      { id: 'riforma', t: 'Vacca da riforma', d: 'Bovina a fine carriera produttiva, tipica origine del sego. Può essere movimentata fuori comprensorio prima della macellazione: per questo il claim di provenienza va definito con precisione.' },
+      { id: 'modello4', t: 'Modello 4', d: 'Documento di provenienza e movimentazione che accompagna i bovini in vita, con le informazioni sulla catena alimentare ai sensi del Reg. (CE) 853/2004.' },
+      { id: 'custodia', t: 'Catena di custodia', d: 'Sistema di accordi e registrazioni che segrega i lotti per origine lungo macello, rendering e trasporto, per documentare la provenienza del grasso quando l’identità individuale si dissolve nel lotto.' },
+    ],
+  },
 ];
 ---
 <OdeLayout title={m.title} description={m.description} lang={lang}>

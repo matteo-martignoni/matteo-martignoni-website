@@ -60,6 +60,17 @@ const groups = [
       { id: 'iscc', t: 'ISCC', d: 'A chain-of-custody certification scheme for biofuel feedstocks. The Lipid Passport maps onto it almost one to one, the basis of the HVO/SAF adjacency.' },
     ],
   },
+  {
+    group: 'Traceability and the DOP chain',
+    terms: [
+      { id: 'bdn', t: 'BDN herd register', d: 'The national livestock register (Banca Dati Nazionale). By law it records birth, movements and slaughter of every bovine, with a 14-character identification code unchanged for the animal’s whole life.' },
+      { id: 'marca', t: 'Ear tag', d: 'A double ear tag bearing the same code, applied within 20 days of birth and before the animal leaves the stable. It is the physical basis of the animal’s individual identity.' },
+      { id: 'disciplinare', t: 'DOP specification', d: 'The binding Parmigiano Reggiano rulebook: a district limited to five provinces, a local-forage diet, a ban on silage and on fats in the ration. It covers milk and cheese, not tallow.' },
+      { id: 'riforma', t: 'Cull cow', d: 'A cow at the end of its productive career, the typical source of tallow. It may be moved out of the district before slaughter: hence the provenance claim must be defined precisely.' },
+      { id: 'modello4', t: 'Model 4', d: 'The provenance and movement document accompanying live cattle, carrying food-chain information under Reg. (EC) 853/2004.' },
+      { id: 'custodia', t: 'Chain of custody', d: 'A system of agreements and records segregating lots by origin across abattoir, rendering and transport, to document the fat’s provenance once individual identity dissolves into the lot.' },
+    ],
+  },
 ];
 ---
 <OdeLayout title={m.title} description={m.description} lang={lang}>

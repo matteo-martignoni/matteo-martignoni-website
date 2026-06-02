@@ -1,0 +1,261 @@
+---
+import OdeLayout from '../../layouts/OdeLayout.astro';
+import Section from '../../components/ode/Section.astro';
+import DataTag from '../../components/ode/DataTag.astro';
+import CowGlyph from '../../components/ode/CowGlyph.astro';
+import LifecycleFlow from '../../components/ode/LifecycleFlow.astro';
+import { odeMeta, odeRoutes } from '../../i18n/ode';
+
+const lang = 'it' as const;
+const m = odeMeta[lang].tracciabilita;
+const r = odeRoutes[lang];
+const g = r.glossario;
+
+// Two regulatory layers that converge on the DOP dairy cow.
+const layers = [
+  {
+    k: 'Strato cogente',
+    glyph: 'calf' as const,
+    title: 'Anagrafe bovina',
+    body: 'Ogni capo ha un’identità individuale: doppia marca auricolare e codice BDN di 14 caratteri, invariato dalla nascita alla morte. Nascita, movimentazioni e macellazione sono registrate per obbligo di legge UE e nazionale.',
+    refs: 'Reg. UE 2016/429 · Reg. di esecuzione UE 2021/520 · D.Lgs 134/2022',
+  },
+  {
+    k: 'Strato volontario ma vincolante',
+    glyph: 'cow' as const,
+    title: 'Disciplinare DOP',
+    body: 'Il disciplinare Parmigiano Reggiano lega l’animale a un territorio e a una dieta certificati: foraggi della zona, divieto assoluto di insilati, zona delimitata a cinque province. Una carta d’identità nutrizionale della mandria.',
+    refs: 'Reg. UE 1151/2012 · Reg. di esecuzione UE 2025/661 · OCQ PR',
+  },
+];
+
+// Grey areas (problema → presidio). Anchored to the research, Cap. 6.
+const gaps = [
+  {
+    n: '01',
+    problema: 'La rottura tra stalla e rendering',
+    body: 'La marca auricolare identifica il singolo capo fino al macello. Ma al rendering i tessuti adiposi di più animali confluiscono in lotti: l’identità individuale si dissolve nella partita. Il documento commerciale traccia il lotto di grasso fuso, non più il singolo animale né l’allevamento DOP.',
+    presidio: 'Accordi di catena di custodia con macelli e impianti di rendering che segregano i lotti per origine e ne documentano la provenienza geografica.',
+  },
+  {
+    n: '02',
+    problema: 'Il disciplinare non copre il sego',
+    body: 'La DOP riguarda latte e formaggio. Nessuna certificazione DOP si estende al grasso: OdE non può fregiarsi della DOP per il sego, né lasciar intendere che il grasso sia certificato DOP.',
+    presidio: 'Comunicare la provenienza dal comprensorio, mai una certificazione DOP del prodotto lipidico. Rigore nel claim come forma di credibilità.',
+  },
+  {
+    n: '03',
+    problema: 'La vacca da riforma può uscire prima',
+    body: 'Una vacca che ha prodotto latte può essere venduta, alimentata diversamente e movimentata fuori comprensorio prima dell’abbattimento, con eventi comunque tracciati in BDN. Da vacca che ha prodotto latte non equivale ad alimentata a disciplinare fino al macello.',
+    presidio: 'Definire il claim con precisione (da bovine del comprensorio) e vincolare l’approvvigionamento ad animali macellati direttamente dal circuito.',
+  },
+  {
+    n: '04',
+    problema: 'La categoria SOA va provata',
+    body: 'Il sego cosmetico deve essere materiale di Categoria 3 (basso rischio, da animali a controllo ante e post-mortem). I grassi fusi di Cat. 3 non richiedono marcatore chimico, il che rende la separazione documentale da Cat. 1 e 2 ancora più cruciale.',
+    presidio: 'Provare documentalmente la Categoria 3 e la separazione fisica e documentale lungo trasporto e lavorazione: registro partite, documento commerciale, riconoscimento dell’impianto.',
+  },
+  {
+    n: '05',
+    problema: 'Serve un layer documentale proprietario',
+    body: 'Nessuna norma collega automaticamente il lotto di sego all’origine DOP. Il vuoto fra l’identità individuale cogente e la partita anonima resta aperto: è il punto esatto in cui un sistema proprietario crea valore.',
+    presidio: 'Il Passaporto Lipidico Digitale poggia su un sistema contrattuale e informativo costruito da OdE, che colma volontariamente il gap lasciato dalla norma.',
+  },
+];
+---
+<OdeLayout title={m.title} description={m.description} lang={lang} active="tracciabilita">
+  <header class="hero">
+    <p class="ode-eyebrow">Tracciabilità</p>
+    <h1>La provenienza come prova, non come slogan</h1>
+    <p class="lede">
+      Le vacche da latte del circuito Parmigiano Reggiano sono tra i bovini più documentati e regolati
+      d’Europa. Su di esse converge un doppio strato normativo che rende la materia prima di OdE
+      enormemente più tracciabile del <a href={`${g}#sego`}>sego</a> anonimo da rendering generico. È
+      questo il vero asset su cui poggia il <a href={`${g}#passaporto`}>Passaporto Lipidico Digitale</a>.
+    </p>
+  </header>
+
+  <Section n="1" title="Il doppio strato normativo">
+    <p>
+      Due sistemi indipendenti si sovrappongono sullo stesso animale: uno cogente, che ne fissa
+      l’identità individuale, e uno volontario ma vincolante, che ne certifica territorio e dieta.
+      Insieme costruiscono una provenienza altamente documentata e auditabile.
+    </p>
+    <div class="layers">
+      {layers.map((l) => (
+        <article class="layer">
+          <div class="layer-head">
+            <CowGlyph variant={l.glyph} size={40} class="layer-glyph" />
+            <span class="layer-k">{l.k}</span>
+          </div>
+          <h3>{l.title}</h3>
+          <p>{l.body}</p>
+          <p class="layer-refs">{l.refs}</p>
+        </article>
+      ))}
+    </div>
+  </Section>
+
+  <Section n="2" title="Il percorso di vita di una vacca DOP">
+    <p>
+      Dalla nascita alla macellazione, la tracciabilità è fortissima e cogente: ogni capo ha una storia
+      documentata. Poi, fra l’uscita dalla stalla certificata e il lotto di grasso fuso, l’identità
+      individuale si indebolisce e si dissolve. È in quella zona grigia che OdE si integra.
+    </p>
+    <LifecycleFlow lang={lang} />
+    <p class="note">
+      <DataTag kind="fonte" label="Ricerca regolatoria OdE su tracciabilità DOP; testi citati su EUR-Lex e Consorzio Parmigiano Reggiano" />
+      Anagrafe BDN, disciplinare Parmigiano Reggiano, Reg. (CE) 1069/2009 e Reg. (UE) 142/2011 sui
+      sottoprodotti. Termini: <a href={`${g}#soa`}>SOA</a>, <a href={`${g}#sego`}>sego</a>,
+      <a href={`${g}#passaporto`}>Passaporto Lipidico</a>.
+    </p>
+  </Section>
+
+  <Section n="3" title="Dove la tracciabilità si rompe">
+    <p>
+      Le zone grigie non sono un’obiezione alla tesi di OdE: sono la sua agenda operativa. Ognuna ha un
+      presidio preciso. Nominarle con onestà è già parte del rigore che il pubblico esigente premia.
+    </p>
+    <div class="gaps">
+      {gaps.map((gp) => (
+        <article class="gap">
+          <span class="gap-n">{gp.n}</span>
+          <div class="gap-body">
+            <h3>{gp.problema}</h3>
+            <p>{gp.body}</p>
+            <p class="gap-presidio"><span class="gap-pk">Presidio</span> {gp.presidio}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </Section>
+
+  <Section n="4" title="Cosa il disciplinare non copre">
+    <div class="honesty">
+      <p>
+        Sul fine vita (vacche da riforma, da cui tipicamente deriva il sego) il Consorzio non prescrive
+        nulla di specifico: è un esito verificato sul testo, non una lacuna di ricerca. Il piano dei
+        controlli DOP copre allevamenti, caseifici, stagionatori, grattugie e porzionatori, non i macelli
+        né gli impianti di rendering.
+      </p>
+      <p>
+        Due piani vanno tenuti distinti. Il disciplinare vieta il <a href={`${g}#sego`}>sego</a> come
+        ingrediente della dieta delle bovine (il lato input). Non disciplina in alcun modo il sego come
+        prodotto in uscita a fine vita dell’animale (il lato output). OdE si colloca, con chiarezza, sul
+        secondo piano.
+      </p>
+    </div>
+  </Section>
+
+  <Section n="5" title="Dove OdE si integra">
+    <p>
+      Poiché nessuna norma lega il lotto di grasso all’origine DOP, quel legame va costruito. OdE lo fa
+      con tre strumenti che ricuciono la zona grigia, trasformando una provenienza già documentata in
+      prova verificabile e vendibile.
+    </p>
+    <div class="solutions">
+      <article class="sol">
+        <span class="sol-k">Catena di custodia</span>
+        <p>Selezione di macelli e impianti di rendering partner, segregazione dei lotti per origine,
+        raccolta delle prove di provenienza geografica e di Categoria 3.</p>
+      </article>
+      <article class="sol">
+        <span class="sol-k">Passaporto Lipidico Digitale</span>
+        <p>Il layer documentale proprietario che lega identità, origine, spettri e analisi del lotto in
+        un unico oggetto: registro e dossier insieme, pronto per il <a href={`${g}#dpp`}>Digital
+        Product Passport</a> in arrivo.</p>
+      </article>
+      <article class="sol">
+        <span class="sol-k">AMSA</span>
+        <p>L’<a href={`${g}#amsa`}>agente spettroscopico</a> legge ogni lotto e ne certifica profilo,
+        stabilità e idoneità: la firma lipidica diventa un controllo oggettivo a valle della filiera.</p>
+      </article>
+    </div>
+    <p class="thesis">
+      Anagrafe bovina cogente, disciplinare alimentare e zona geografica definita danno una provenienza
+      altamente documentata e auditabile, contro il sego anonimo. OdE costruisce il Passaporto su dati
+      pubblici e verificabili, con un grado di robustezza regolatoria raro nel mercato degli ingredienti
+      lipidici. La provenienza non è un racconto: è un dato che regge l’audit.
+    </p>
+    <p class="note">
+      Per i termini di questa pagina, vedi il <a href={g}>glossario</a>:
+      <a href={`${g}#bdn`}>anagrafe BDN</a>, <a href={`${g}#marca`}>marca auricolare</a>,
+      <a href={`${g}#riforma`}>vacca da riforma</a>, <a href={`${g}#custodia`}>catena di custodia</a>,
+      <a href={`${g}#disciplinare`}>disciplinare DOP</a>, <a href={`${g}#soa`}>SOA Categoria 3</a>.
+      Vedi anche l’<a href={r.normativa}>Orologio Normativo</a>.
+    </p>
+    <p class="disclaimer">
+      Ricognizione documentale a fini informativi e di posizionamento, basata sulle fonti istituzionali
+      citate. Non costituisce consulenza legale. Per i claim commerciali si raccomanda verifica diretta
+      sui testi ufficiali e parere legale specializzato in diritto alimentare e SOA.
+    </p>
+  </Section>
+</OdeLayout>
+
+<style>
+  .hero { max-width: 46rem; padding: 0.5rem 0 1rem; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0.4rem 0 1rem; }
+  .lede { font-size: 1.1rem; line-height: 1.6; color: var(--body); }
+  .lede a, .note a, .thesis a, .honesty a, .sol a {
+    color: var(--accent); text-decoration: underline; text-underline-offset: 2px;
+  }
+  .note { font-size: 0.85rem; color: var(--muted); line-height: 1.5; max-width: 44rem; }
+
+  /* two layers */
+  .layers { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; margin-top: 1.2rem; }
+  .layer { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.2rem 1.3rem; }
+  .layer-head { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; }
+  .layer-glyph { color: var(--accent); flex: none; }
+  .layer-k { font-family: var(--ode-font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); }
+  .layer h3 { font-size: 1.1rem; font-weight: 500; margin: 0 0 0.4rem; }
+  .layer p { margin: 0 0 0.5rem; font-size: 0.92rem; line-height: 1.5; }
+  .layer-refs { font-family: var(--ode-font-mono); font-size: 0.68rem; color: var(--muted); line-height: 1.4; }
+
+  /* grey-area cards */
+  .gaps { display: grid; gap: 0.9rem; margin-top: 1.2rem; }
+  .gap {
+    display: grid; grid-template-columns: 2.5rem 1fr; gap: 0 0.9rem;
+    background: var(--panel); border: 1px solid var(--rule);
+    border-radius: var(--ode-radius); padding: 1.1rem 1.2rem;
+  }
+  .gap-n { font-family: var(--ode-font-mono); font-size: 1.05rem; color: var(--muted); }
+  .gap-body h3 { font-size: 1.02rem; font-weight: 500; margin: 0 0 0.4rem; }
+  .gap-body p { margin: 0 0 0.5rem; font-size: 0.9rem; line-height: 1.5; max-width: 42rem; }
+  .gap-presidio {
+    background: var(--green-soft); border-radius: var(--ode-radius-sm);
+    padding: 0.5rem 0.7rem; font-size: 0.86rem !important; color: var(--ink); margin-bottom: 0 !important;
+  }
+  .gap-pk {
+    font-family: var(--ode-font-mono); font-size: 0.62rem; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent);
+    margin-right: 0.3rem;
+  }
+
+  /* honesty box */
+  .honesty {
+    border-left: 3px solid var(--rule); padding: 0.3rem 0 0.3rem 1.1rem;
+    max-width: 44rem;
+  }
+  .honesty p { font-size: 0.96rem; line-height: 1.6; }
+
+  /* solutions + thesis */
+  .solutions { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1rem; margin: 1.2rem 0; }
+  .sol { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.1rem 1.2rem; }
+  .sol-k { display: block; font-weight: 500; color: var(--accent); margin-bottom: 0.4rem; }
+  .sol p { margin: 0; font-size: 0.9rem; line-height: 1.5; }
+
+  .thesis {
+    border-left: 3px solid var(--green-border);
+    padding: 0.7rem 0 0.7rem 1.1rem;
+    background: var(--green-soft);
+    border-radius: 0 var(--ode-radius) var(--ode-radius) 0;
+    font-size: 1.02rem; line-height: 1.6; color: var(--ink); max-width: 46rem;
+    margin: 1.4rem 0;
+  }
+  .disclaimer { font-size: 0.76rem; color: var(--muted); line-height: 1.5; max-width: 44rem; margin-top: 1rem; }
+
+  @media (max-width: 520px) {
+    .gap { grid-template-columns: 1fr; }
+    .gap-n { margin-bottom: 0.3rem; }
+  }
+</style>
