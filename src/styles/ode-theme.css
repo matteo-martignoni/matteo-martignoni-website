@@ -20,12 +20,14 @@
   --accent: #2f5a44;         /* green accent — subtitles, links */
   --muted: rgba(28, 38, 32, 0.52); /* captions, secondary */
   --rule: rgba(28, 38, 32, 0.22);  /* hairlines, dividers */
-  /* Diagram-only accents */
-  --lav: #b3b3f9;
-  --lav-border: #9a93e8;
-  --lav-ink: #2c2856;
-  --pink: #ffc3ff;
-  --pink-ink: #7a2a6e;
+  /* Diagram-only accents (Brand Book 3.2: grigio-blu + pesca) */
+  --lav: #c6cdd9;            /* grigio-blu — volumi/processo nei diagrammi */
+  --lav-border: #9aa6ba;
+  --lav-ink: #33414c;
+  --lav-soft: #e8edf2;       /* tinta chiara grigio-blu per chip/box */
+  --pink: #f6cbb3;           /* pesca — evidenza/input nei diagrammi */
+  --pink-ink: #8a472a;
+  --pink-soft: #fbe8dc;      /* tinta chiara pesca per chip/box */
   --green: #436743;          /* positive outcome / passport */
   --green-border: #6fc98a;
   --green-soft: #c7ebd2;
@@ -64,7 +66,7 @@
 .ode h1, .ode h2, .ode h3 {
   color: var(--ink);
   font-weight: 400;
-  line-height: 1.2;
+  line-height: 1.12; /* Brand Book 4.2: titoli più stretti (1.0-1.1) */
   margin: 0;
 }
 .ode h1 { font-weight: 300; letter-spacing: -0.01em; }
@@ -95,8 +97,8 @@
   white-space: nowrap;
 }
 .ode-tag--fonte { background: var(--green-soft); color: var(--accent); }
-.ode-tag--stima { background: #ece9fb; color: var(--lav-ink); }
-.ode-tag--bench { background: #ffe7fb; color: var(--pink-ink); }
+.ode-tag--stima { background: var(--lav-soft); color: var(--lav-ink); }
+.ode-tag--bench { background: var(--pink-soft); color: var(--pink-ink); }
 
 /* "Simulazione dimostrativa" badge — reusable across the dashboard */
 .ode-sim-badge {
@@ -108,7 +110,7 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--pink-ink);
-  background: #ffe7fb;
+  background: var(--pink-soft);
   border: 1px solid var(--pink);
   border-radius: var(--ode-radius-sm);
   padding: 0.25rem 0.6rem;
