@@ -45,7 +45,7 @@ export const odeUI = {
     brand: 'Officina degli Estratti',
     tagline: 'AI-driven Multimodal Spectroscopic Agent',
     nav: {
-      amsa: 'AMSA',
+      amsa: 'TECH',
       mercato: 'Mercato',
       normativa: 'Normativa',
       tracciabilita: 'Tracciabilità',
@@ -68,7 +68,7 @@ export const odeUI = {
     brand: 'Officina degli Estratti',
     tagline: 'AI-driven Multimodal Spectroscopic Agent',
     nav: {
-      amsa: 'AMSA',
+      amsa: 'TECH',
       mercato: 'Market',
       normativa: 'Regulation',
       tracciabilita: 'Traceability',
