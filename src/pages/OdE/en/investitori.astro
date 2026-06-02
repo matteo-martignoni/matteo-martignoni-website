@@ -1,0 +1,143 @@
+---
+import OdeLayout from '../../../layouts/OdeLayout.astro';
+import Section from '../../../components/ode/Section.astro';
+import DataTag from '../../../components/ode/DataTag.astro';
+import { odeMeta, odeRoutes } from '../../../i18n/ode';
+
+const lang = 'en' as const;
+const m = odeMeta[lang].investitori;
+const r = odeRoutes[lang];
+
+const thesis = [
+  { t: 'A moat no one can buy', d: 'Provenance traced from the Parmigiano Reggiano chains is the non-replicable base: a competitor can buy a spectrometer, not this supply-chain data.' },
+  { t: 'The regulatory timing', d: 'The Digital Product Passport becomes mandatory from 2027. OdE arrives with the tool already in hand and turns a sector compliance cost into a sellable product.' },
+  { t: 'A white space', d: 'AI applied to process optimisation on animal fats is an almost ungarrisoned literature gap: room to build defensible IP.' },
+  { t: 'Asset-light, scalable', d: 'Indicative initial investment of about €300,000, a lean team, and a vision to expand from producer to multi-market qualification supplier.' },
+];
+
+const incentivi = [
+  { v: '30%', k: 'Ordinary IRPEF deduction', d: 'For individuals, on a maximum investable amount of €1,000,000 per year, with a minimum 3-year holding period.' },
+  { v: '65%', k: 'IRPEF deduction, de minimis regime', d: 'Rate raised from 2025 (Law 193/2024), on a maximum of €100,000 per year. An alternative to the ordinary 30%, not cumulable with it.' },
+  { v: '30%', k: 'IRES deduction', d: 'For corporate (IRES) investors in the capital, on a maximum of €1,800,000 per year.' },
+];
+
+const visa = [
+  { v: '€250,000', k: 'Innovative startup', d: 'Investment in an Italian innovative startup.' },
+  { v: '€500,000', k: 'Capital company', d: 'Investment in an Italian capital company (€250,000 if a social-vocation enterprise).' },
+  { v: '€1,000,000', k: 'Philanthropic donation', d: 'In culture, education, research or heritage conservation.' },
+  { v: '€2,000,000', k: 'Government bonds', d: 'Investment in Italian government bonds.' },
+];
+---
+<OdeLayout title={m.title} description={m.description} lang={lang} active="investitori">
+  <header class="hero">
+    <p class="ode-eyebrow">Investors</p>
+    <h1>Why invest in OdE, and why now</h1>
+    <p class="lede">
+      For investors, credibility beats enthusiasm: one verified figure is worth ten adjectives. Here is
+      the thesis in brief, the incentives for investing in innovative startups in Italy and the routes
+      open to non-EU investors.
+    </p>
+  </header>
+
+  <Section n="1" title="The thesis in brief">
+    <div class="thesis">
+      {thesis.map((x) => (
+        <article class="th">
+          <h3>{x.t}</h3>
+          <p>{x.d}</p>
+        </article>
+      ))}
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="OdE investment plan" />
+      The investment figure is indicative and to be confirmed with the economic plan. Explore the
+      <a href={r.visione}>expansion vision</a> and the <a href={r.normativa}>Regulatory Clock</a>.
+    </p>
+  </Section>
+
+  <Section n="2" title="Investing in an innovative startup: the incentives">
+    <p>
+      Italy incentivises investment in the capital of innovative startups with significant tax reliefs.
+      The rates and ceilings in force:
+    </p>
+    <div class="cards">
+      {incentivi.map((x) => (
+        <div class="card">
+          <span class="card-v">{x.v}</span>
+          <span class="card-k">{x.k}</span>
+          <p>{x.d}</p>
+        </div>
+      ))}
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Agenzia delle Entrate; MIMIT; Law 193/2024" />
+      Figures verified in June 2026 (DL 179/2012 art. 29 and 29-bis; Law 193/2024). The minimum holding
+      period is 3 years: early disposal forfeits the benefit.
+    </p>
+  </Section>
+
+  <Section n="3" title="For non-EU investors: the Investor Visa for Italy">
+    <p>
+      Non-EU citizens can obtain an investor visa and residence permit by choosing one of four entry
+      routes. Investing in an innovative startup is the most accessible threshold.
+    </p>
+    <div class="cards">
+      {visa.map((x) => (
+        <div class="card card--visa">
+          <span class="card-v">{x.v}</span>
+          <span class="card-k">{x.k}</span>
+          <p>{x.d}</p>
+        </div>
+      ))}
+    </div>
+    <ul class="visa-notes">
+      <li>Residence permit of 2 years, renewable for a further 3.</li>
+      <li>No need to transfer the capital to apply: the investment must be completed within 3 months of entry into Italy.</li>
+      <li>Family reunification is possible.</li>
+    </ul>
+    <p class="note">
+      <DataTag kind="fonte" label="Investor Visa for Italy, MIMIT (art. 26-bis Immigration Act, DL 50/2017)" />
+      Figures verified in June 2026 on the official Investor Visa for Italy portal.
+    </p>
+  </Section>
+
+  <Section n="4" title="Note">
+    <p class="disclaimer">
+      This page is for information only and does not constitute legal, tax or financial advice. The
+      fiscal and regulatory figures are verified as of June 2026 and may change: they must be confirmed
+      with a qualified professional and the official sources before any investment decision.
+    </p>
+  </Section>
+</OdeLayout>
+
+<style>
+  .hero { max-width: 44rem; padding: 0.5rem 0 1rem; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0.4rem 0 1rem; }
+  .lede { font-size: 1.1rem; line-height: 1.6; color: var(--body); }
+  .note { font-size: 0.85rem; color: var(--muted); line-height: 1.5; max-width: 44rem; }
+  .note a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+
+  .thesis { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+  .th { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.1rem 1.2rem; }
+  .th h3 { font-size: 1rem; font-weight: 500; color: var(--ink); margin: 0 0 0.4rem; }
+  .th p { margin: 0; font-size: 0.9rem; line-height: 1.5; color: var(--body); }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 0.9rem; margin: 1rem 0; }
+  .card { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.2rem 1.3rem; display: flex; flex-direction: column; gap: 0.3rem; }
+  .card--visa { border-left: 3px solid var(--green-border); }
+  .card-v { font-size: clamp(1.5rem, 3.2vw, 2rem); font-weight: 300; color: var(--ink); letter-spacing: -0.01em; line-height: 1.1; }
+  .card-k { font-weight: 500; color: var(--accent); font-size: 0.95rem; }
+  .card p { margin: 0.2rem 0 0; font-size: 0.88rem; line-height: 1.45; color: var(--body); }
+
+  .visa-notes { padding-left: 1.2rem; line-height: 1.6; max-width: 42rem; margin: 0.5rem 0 0.8rem; }
+  .visa-notes li { margin-bottom: 0.3rem; font-size: 0.92rem; color: var(--body); }
+  .visa-notes li::marker { color: var(--accent); }
+
+  .disclaimer {
+    border-left: 3px solid var(--lav-border);
+    padding: 0.6rem 0 0.6rem 1rem;
+    background: #ece9fb;
+    border-radius: 0 var(--ode-radius) var(--ode-radius) 0;
+    font-size: 0.9rem; line-height: 1.55; color: var(--lav-ink); max-width: 44rem;
+  }
+</style>

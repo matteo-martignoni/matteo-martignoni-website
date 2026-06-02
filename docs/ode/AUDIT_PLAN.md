@@ -263,20 +263,30 @@ Pagina-tesi, non elenco. Struttura proposta:
 ---
 
 ## 6. Checklist vincoli (verifica continua)
-- [x] Nessun trattino lungo nei testi italiani di questo documento.
+- [x] Nessun trattino lungo nei testi italiani.
 - [x] Contenuti ancorati alla KB; dati mancanti segnalati come [DA INTEGRARE].
 - [x] Stack esistente rispettato (nessun framework nuovo).
-- [x] Isolamento dalla HP preservato nel piano.
-- [ ] Dati fiscali/normativi verificati via web e citati (Fase 4).
-- [ ] Estetica OdE_Brand_System + tratto Matteo (Fasi 2-5).
+- [x] Isolamento dalla HP preservato (noindex, no link in ingresso, sitemap).
+- [x] Dati fiscali/normativi verificati via web e citati con anno e disclaimer.
+- [x] Estetica OdE_Brand_System + tratto Matteo (token scoped, illustrazione).
 
 ---
 
-## 7. CHECKPOINT
+## 7. CHECKPOINT (superato) e stato di realizzazione
 
-Fine Fase 1. In attesa di conferma del committente su:
-- la nuova mappa pagine e la logica di stratificazione (sezione 3);
-- le scelte aperte in [DA INTEGRARE] (sezione 5), in particolare l'asset
-  immagine e l'ordine IT/EN.
+Fase 1 confermata dal committente: piano completo approvato, IT + EN insieme,
+asset immagine fornito (`public/images/ode/mucca-maiale.png`). Realizzato:
 
-Alla conferma si procede con la Fase 2 (Home) e la Fase 3 (nuove pagine).
+- **Fase 2:** Home ridisegnata (visione prima dei tecnicismi, illustrazione
+  mucca/maiale a tratto unico fusa sul fondo menta) IT + EN.
+- **Fase 3:** Orologio Normativo (`/OdE/normativa`), approfondimento tecnico
+  (`/OdE/amsa/tecnica`), Glossario (`/OdE/glossario`) con ancore linkate inline,
+  arricchimento Mercato (bacino feedstock DOP), tutto IT + EN.
+- **Fase 4:** Pagina Investitori (`/OdE/investitori`) con incentivi startup
+  innovativa e Investor Visa verificati via web (giugno 2026), citati e con
+  disclaimer.
+- **Fase 5:** nav e footer aggiornati, build pulita, QA responsive nel browser,
+  README aggiornato.
+
+Nessun dato inventato: tutto tracciabile alla knowledge base o a ricerca web
+citata. I [DA INTEGRARE] aperti sono chiusi.

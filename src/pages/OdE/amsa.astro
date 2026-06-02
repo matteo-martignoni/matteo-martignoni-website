@@ -117,6 +117,12 @@ const passport = [
     </div>
     <p class="quote big">"Un concorrente può comprare uno spettrometro, non questa base."</p>
   </Section>
+
+  <a class="deepdive" href="/OdE/amsa/tecnica">
+    <span class="dd-k">Approfondimento tecnico</span>
+    <span class="dd-t">Sotto il cofano di AMSA →</span>
+    <span class="dd-d">Data ladder, stack di modelli, few-shot e le ipotesi aperte dell’Active Control Loop. Per scienziati e R&D.</span>
+  </a>
 </OdeLayout>
 
 <style>
@@ -161,4 +167,18 @@ const passport = [
     gap: 0.8rem;
     margin: 1.4rem 0;
   }
+  .deepdive {
+    display: block;
+    text-decoration: none;
+    background: var(--green-soft);
+    border: 1px solid var(--green-border);
+    border-radius: var(--ode-radius);
+    padding: 1.3rem 1.5rem;
+    margin-top: 1rem;
+    transition: transform 160ms ease;
+  }
+  .deepdive:hover { transform: translateY(-2px); }
+  .dd-k { display: block; font-family: var(--ode-font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); }
+  .dd-t { display: block; font-size: 1.2rem; color: var(--ink); margin: 0.3rem 0; }
+  .dd-d { display: block; font-size: 0.9rem; line-height: 1.5; color: var(--body); max-width: 40rem; }
 </style>

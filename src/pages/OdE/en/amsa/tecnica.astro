@@ -1,0 +1,183 @@
+---
+import OdeLayout from '../../../../layouts/OdeLayout.astro';
+import Section from '../../../../components/ode/Section.astro';
+import DataTag from '../../../../components/ode/DataTag.astro';
+import { odeMeta, odeRoutes } from '../../../../i18n/ode';
+
+const lang = 'en' as const;
+const m = odeMeta[lang].amsaTecnica;
+const r = odeRoutes[lang];
+const g = r.glossario;
+
+const ladder = [
+  { n: 'L1', t: 'Public foundation', d: 'Public data, spectral libraries, ontologies. A non-defensible but necessary starting base.' },
+  { n: 'L2', t: 'Real external data', d: 'Samples measured by external labs before owning any hardware: it reduces cold-start risk.' },
+  { n: 'L3', t: 'Proprietary dataset', d: '70-90 OdE samples from a traced supply chain, across replicas, temperatures and days. This is where the IP is born.' },
+  { n: 'L4', t: 'Data flywheel', d: 'Real batches, observed shelf-life, B2B feedback. Every passport issued deepens the moat.' },
+];
+
+const baseline = [
+  ['PCA', 'Exploration, outliers, clustering'],
+  ['PLS', 'Predict PV, acid value, iodine-value proxy'],
+  ['PLS-DA', 'Conform / non-conform classification'],
+  ['Random Forest, SVM', 'Nonlinear benchmark'],
+  ['MCR-ALS, NMF', 'Decompose overlapping components'],
+];
+const advanced = [
+  ['1D-CNN', 'Local patterns in NIR and Raman'],
+  ['Autoencoder', 'Denoising and compression'],
+  ['Masked spectral model', 'Pre-training on unannotated spectra'],
+  ['Siamese, prototypical nets', 'Few-shot on new matrices'],
+  ['Fusion model', 'NIR + Raman + NMR + reference'],
+  ['Chemistry-constrained GAN', 'Synthetic spectra coherent with chemistry'],
+];
+
+const hyp = [
+  { id: 'P1', t: 'Which algorithm for v1', d: 'With 70-90 samples and degrading actions, online RL is not defensible in v1: the effective sample size is low. Hypothesis: a rules-based controller or decision tree on quality and uncertainty thresholds, then offline RL at data maturity.' },
+  { id: 'P2', t: 'Operationalising the reward', d: 'Information gain is estimable via uncertainty-reduction proxies (BALD, or more simply Mahalanobis distance and Q-residual). Degradation risk is modelled a priori as kinetics (temperature, time, oxygen, initial state), anchored to PV and TBARS.' },
+  { id: 'P3', t: 'Transferability across matrices', d: 'The quality vector is largely matrix-invariant: a fluorescent sample looks fluorescent, be it pork or tallow. Hypothesis: a single policy conditioned by a context vector, not N dedicated policies. Under shock, robustness from conservative fallback and escalation.' },
+  { id: 'P4', t: 'RL versus MPC', d: 'Where a reliable system model exists (thermal dynamics, SNR response), MPC is preferred, interpretable and constraint-respecting by construction. RL only at maturity. Hypothesis: hybrid, MPC on thermal actions plus a learned component for the rest.' },
+  { id: 'P5', t: 'Certifiable safety', d: 'A soft penalty on degradation risk is not enough, a penalty can be bought. Hypothesis: a hard constraint (Constrained MDP) plus a deterministic action-shielding layer between policy and hardware, certifiable by enumeration, with a thermal and laser dose budget as a rigid variable.' },
+];
+---
+<OdeLayout title={m.title} description={m.description} lang={lang} active="amsa">
+  <header class="hero">
+    <p class="ode-eyebrow"><a href={r.amsa}>AMSA</a> · Technical deep dive</p>
+    <h1>Under AMSA’s hood</h1>
+    <p class="lede">
+      The level for those who want the detail: how the data is built, which models read it, and the
+      questions still open on the active control of acquisition. This page presents working hypotheses,
+      not established truths.
+    </p>
+  </header>
+
+  <Section n="1" title="The Data Ladder: the moat is the data">
+    <p>
+      AMSA is built before, during and after the lab opens, accumulating data capital of growing
+      defensibility. No bet on uncertain technology: lipid chemometrics is mature, the advantage lies in
+      the data only this supply chain can generate.
+    </p>
+    <ol class="ladder">
+      {ladder.map((step) => (
+        <li>
+          <span class="ladder-n">{step.n}</span>
+          <div><span class="ladder-t">{step.t}</span><p>{step.d}</p></div>
+        </li>
+      ))}
+    </ol>
+  </Section>
+
+  <Section n="2" title="The model stack">
+    <p>
+      A mature, mandatory chemometric base, onto which the advanced models graft. Nothing is an end in
+      itself: every layer exists to read a difficult matrix better.
+    </p>
+    <div class="stack">
+      <div class="stack-col">
+        <h3>Chemometric baseline</h3>
+        <table>
+          <tbody>
+            {baseline.map(([k, v]) => <tr><td class="mono">{k}</td><td>{v}</td></tr>)}
+          </tbody>
+        </table>
+      </div>
+      <div class="stack-col">
+        <h3>Advanced models</h3>
+        <table>
+          <tbody>
+            {advanced.map(([k, v]) => <tr><td class="mono">{k}</td><td>{v}</td></tr>)}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </Section>
+
+  <Section n="3" title="Few-shot learning: starting from few samples">
+    <p>
+      OdE starts from a few dozen real samples, not thousands. So AMSA does not ask "what class is this
+      fat?" but "<a href={`${g}#few-shot`}>how similar is it</a> to suitable, oxidised, deodorised or
+      unstable batches?". A new batch is projected into an embedding space and classified by proximity to
+      prototypes, not by rigid class membership.
+    </p>
+    <p>
+      The GANs that generate synthetic spectra are constrained by chemistry: no chemically incompatible
+      peak, coherence between double bonds and iodine value, between aldehydes and p-anisidine.
+    </p>
+  </Section>
+
+  <Section n="4" title="The open questions of the Active Control Loop">
+    <p class="reserve">
+      <DataTag kind="stima" label="Active Control Loop document: working hypotheses" />
+      What follows is explicitly labelled by the team as working hypotheses developed with advisory
+      support, not the conclusions of a domain expert. It is intellectual honesty, and the level at which
+      a scientist or R&D team can engage on the merits.
+    </p>
+    <div class="hyp-list">
+      {hyp.map((h) => (
+        <article class="hyp">
+          <span class="hyp-id">{h.id}</span>
+          <div><h3>{h.t}</h3><p>{h.d}</p></div>
+        </article>
+      ))}
+    </div>
+    <p class="note">
+      The unifying thread: separate two problems that a single reward conflates, reversible sensing
+      (optimisable) and irreversible degradation (physical, to be treated as a hard constraint with
+      certifiable shielding).
+    </p>
+  </Section>
+
+  <Section n="5" title="Two directions, one machine">
+    <p>
+      The same engine operates two ways. In the <strong>descriptive</strong> direction: "what is this
+      batch and can I use it?", quality in, passport out. In the <strong>to-specification</strong>
+      direction: "give me an ingredient that sustains this claim", requirement in, conforming sample out.
+    </p>
+    <p>
+      Three product families follow: Tallow Active Base (purified, deodorised lipid), structured
+      animal-plant lipids (blends), and animal-lipid nanocarriers, the most deep-tech, where the
+      by-product becomes a functional carrier and not just an emollient.
+    </p>
+    <p class="back"><a href={r.amsa}>← Back to AMSA</a></p>
+  </Section>
+</OdeLayout>
+
+<style>
+  .hero { max-width: 44rem; padding: 0.5rem 0 1rem; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0.4rem 0 1rem; }
+  .ode-eyebrow a { color: var(--accent); text-decoration: none; }
+  .lede { font-size: 1.1rem; line-height: 1.6; color: var(--body); }
+  .note { font-size: 0.85rem; color: var(--muted); line-height: 1.5; max-width: 44rem; }
+  a { color: var(--accent); }
+  .back a { text-decoration: none; font-size: 0.9rem; }
+
+  .ladder { list-style: none; padding: 0; margin: 1.2rem 0; display: grid; gap: 0.8rem; }
+  .ladder li { display: grid; grid-template-columns: 2.6rem 1fr; gap: 1rem; align-items: start; }
+  .ladder-n {
+    display: flex; align-items: center; justify-content: center;
+    width: 2.6rem; height: 2.6rem; border-radius: var(--ode-radius);
+    background: var(--green-soft); color: var(--accent);
+    font-family: var(--ode-font-mono); font-weight: 500; font-size: 0.9rem;
+  }
+  .ladder-t { font-weight: 500; color: var(--ink); }
+  .ladder li p { margin: 0.2rem 0 0; font-size: 0.92rem; line-height: 1.5; color: var(--body); }
+
+  .stack { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+  .stack-col h3 { font-size: 0.95rem; font-weight: 500; color: var(--accent); margin: 0 0 0.6rem; }
+  .stack table { border-collapse: collapse; width: 100%; }
+  .stack td { border-bottom: 1px solid var(--rule); padding: 0.5rem 0.6rem 0.5rem 0; font-size: 0.88rem; color: var(--body); vertical-align: top; }
+  .stack .mono { font-family: var(--ode-font-mono); font-size: 0.8rem; color: var(--ink); white-space: nowrap; padding-right: 1rem; }
+
+  .reserve {
+    border-left: 3px solid var(--lav-border);
+    padding: 0.6rem 0 0.6rem 1rem;
+    background: #ece9fb;
+    border-radius: 0 var(--ode-radius) var(--ode-radius) 0;
+    font-size: 0.92rem; line-height: 1.55; color: var(--lav-ink); max-width: 44rem;
+  }
+  .hyp-list { display: grid; gap: 0.9rem; margin: 1.2rem 0; }
+  .hyp { display: grid; grid-template-columns: 2.6rem 1fr; gap: 1rem; background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1rem 1.2rem; }
+  .hyp-id { font-family: var(--ode-font-mono); color: var(--accent); font-weight: 500; }
+  .hyp h3 { font-size: 1rem; font-weight: 500; color: var(--ink); margin: 0 0 0.3rem; }
+  .hyp p { margin: 0; font-size: 0.9rem; line-height: 1.5; color: var(--body); }
+</style>

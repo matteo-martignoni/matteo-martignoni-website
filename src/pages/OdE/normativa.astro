@@ -1,0 +1,214 @@
+---
+import OdeLayout from '../../layouts/OdeLayout.astro';
+import Section from '../../components/ode/Section.astro';
+import NormCard from '../../components/ode/NormCard.astro';
+import DataTag from '../../components/ode/DataTag.astro';
+import { odeMeta, odeRoutes } from '../../i18n/ode';
+
+const lang = 'it' as const;
+const m = odeMeta[lang].normativa;
+const r = odeRoutes[lang];
+const g = r.glossario;
+
+const L = { req: 'Cosa richiede', perde: 'Chi attrita', vince: 'Perché OdE vince' };
+
+const vigenti = [
+  {
+    code: 'Reg. (CE) 1069/2009', title: 'Sottoprodotti di origine animale (SOA)',
+    status: 'vigente' as const, statusLabel: 'Vigente',
+    requisito: 'Il sego per uso cosmetico deve essere di Categoria 3 (basso rischio). L’articolo 33 fissa l’end point: raggiunto lo stadio cosmetico, il prodotto esce dal regime SOA ed entra sotto il Reg. 1223/2009.',
+    perde: 'Chi non sa documentare il punto esatto in cui il grasso esce dal regime SOA: è il principale collo di bottiglia di conformità, da validare con l’autorità veterinaria (ASL, Regione Emilia-Romagna).',
+    vince: 'La provenienza da filiera Parmigiano Reggiano garantisce la Categoria 3 tracciata, e il Passaporto Lipidico Digitale diventa lo strumento che documenta il passaggio SOA verso cosmetico.',
+  },
+  {
+    code: 'Reg. (UE) 142/2011', title: 'Attuazione e tracciabilità documentale',
+    status: 'vigente' as const, statusLabel: 'Vigente',
+    requisito: 'Regole operative del 1069/2009: usi, trasformazione, documenti commerciali, registri e riconoscimento dello stabilimento presso l’autorità competente.',
+    vince: 'La tracciabilità documentale richiesta coincide con ciò che AMSA produce già per ogni lotto: il passaporto è registro e dossier in un unico oggetto.',
+  },
+  {
+    code: 'Reg. (CE) 1223/2009', title: 'Regolamento cosmetico europeo',
+    status: 'vigente' as const, statusLabel: 'Vigente',
+    requisito: 'Responsabile (Responsible Person), Product Information File, Cosmetic Product Safety Report, conformità INCI e GMP secondo ISO 22716.',
+    vince: 'Una volta raggiunto lo stadio cosmetico l’ingrediente vive in un regime noto e maturo: il dossier di stabilità del passaporto alimenta direttamente PIF e CPSR del cliente.',
+  },
+  {
+    code: 'Codex CXS 211-1999', title: 'Specifica degli oli e grassi',
+    status: 'vigente' as const, statusLabel: 'Riferimento',
+    requisito: 'Soglia di riferimento sull’ossidazione: numero di perossidi al massimo 10 meq O₂/kg per restare in specifica.',
+    vince: 'L’Oxidative Risk Score di AMSA è ancorato a questa soglia e ai metodi ISO 3960 e ISO 660: un punteggio auditabile, non una black box.',
+  },
+  {
+    code: 'ISO 22716 · EFfCI GMP', title: 'Buone pratiche di fabbricazione',
+    status: 'vigente' as const, statusLabel: 'Standard',
+    requisito: 'Good Manufacturing Practice cosmetica (ISO 22716) e GMP per ingredienti cosmetici (EFfCI), con forte enfasi sulla tracciabilità di lotto.',
+    vince: 'Sono chiavi d’accesso al cliente professionale, non solo costi: la tracciabilità di lotto che richiedono è esattamente la proposta di valore di AMSA.',
+  },
+];
+
+const arrivo = [
+  {
+    code: 'Reg. (UE) 2024/1781', title: 'ESPR e Digital Product Passport',
+    status: 'arrivo' as const, statusLabel: 'In arrivo',
+    requisito: 'L’Ecodesign for Sustainable Products Regulation introduce il Digital Product Passport (DPP) obbligatorio, in roll-out progressivo dal 2027 per gruppi di prodotto via atti delegati.',
+    perde: 'Ogni produttore privo di uno strumento di tracciabilità e passaporto pronto: la complessità è una barriera per tutti.',
+    vince: 'Il Passaporto Lipidico Digitale anticipa un obbligo di legge in arrivo: OdE trasforma un costo di conformità futuro in prodotto e servizio vendibile (licensing di AMSA). Chi arriva prima con lo strumento pronto vince.',
+  },
+  {
+    code: 'Direttiva (UE) 2024/825', title: 'Green Claims',
+    status: 'arrivo' as const, statusLabel: 'In arrivo',
+    requisito: 'Le dichiarazioni ambientali dovranno essere verificabili e sostanziate, dando valore alle certificazioni di terza parte e colpendo il greenwashing.',
+    vince: 'La proposta di OdE è verifica, non slogan: una tracciabilità di filiera misurata e documentata regge lo scrutinio che metterà in difficoltà le dichiarazioni generiche.',
+  },
+];
+
+const timeline = [
+  { date: '18 lug 2024', label: 'ESPR in vigore', note: 'Reg. UE 2024/1781 (Ecodesign for Sustainable Products).' },
+  { date: 'apr 2025', label: 'Primo working plan', note: 'Pubblicato il piano di lavoro ESPR con i primi gruppi di prodotto.' },
+  { date: 'dal 2027', label: 'DPP obbligatorio', note: 'Digital Product Passport in roll-out progressivo via atti delegati.' },
+];
+---
+<OdeLayout title={m.title} description={m.description} lang={lang} active="normativa">
+  <header class="hero">
+    <p class="ode-eyebrow">L’orologio normativo</p>
+    <h1>Il vincolo regolatorio, letto come vantaggio</h1>
+    <p class="lede">
+      Le regole che governano i lipidi animali cosmetici stanno cambiando. Per chi le subisce sono un
+      costo, per chi le anticipa sono una leva. La tracciabilità che il mercato dovrà dimostrare per
+      legge è ciò che OdE produce già per ogni lotto.
+    </p>
+  </header>
+
+  <Section n="1" title="I due orologi">
+    <p>
+      Due orologi corrono insieme e indicano la stessa cosa: il vantaggio di chi arriva prima esiste,
+      ma è a tempo.
+    </p>
+    <div class="clocks">
+      <div class="clock">
+        <span class="clock-k">Orologio normativo</span>
+        <p>Il <a href={`${g}#dpp`}>Digital Product Passport</a> diventa obbligatorio dal 2027. Chi
+        possiede già lo strumento di tracciabilità parte avvantaggiato.</p>
+      </div>
+      <div class="clock">
+        <span class="clock-k">Orologio brevettuale</span>
+        <p>Il deep learning applicato alla spettroscopia dei lipidi è ancora poco presidiato: una
+        finestra di 2-3 anni per depositare IP sui componenti distintivi (Oxidative Risk Score,
+        fusione multimodale, knowledge graph lipidico).</p>
+      </div>
+    </div>
+  </Section>
+
+  <Section n="2" title="Le norme che governano OdE oggi">
+    <p>
+      Il percorso da sottoprodotto animale a ingrediente cosmetico attraversa un regime ben definito.
+      Conoscerlo a fondo è già metà del vantaggio.
+    </p>
+    <div class="norm-list">
+      {vigenti.map((nrm) => (
+        <NormCard
+          code={nrm.code} title={nrm.title} status={nrm.status} statusLabel={nrm.statusLabel}
+          requisito={nrm.requisito} perde={nrm.perde} vince={nrm.vince}
+          labelRequisito={L.req} labelPerde={L.perde} labelVince={L.vince}
+        />
+      ))}
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="EUR-Lex, testi consolidati dei regolamenti citati" />
+      Regolamenti (CE) 1069/2009, (UE) 142/2011, (CE) 1223/2009; Codex Alimentarius CXS 211-1999;
+      ISO 22716; EFfCI GMP.
+    </p>
+  </Section>
+
+  <Section n="3" title="Le norme in arrivo">
+    <p>
+      È qui che il vincolo si ribalta in tesi. Il Digital Product Passport non è una minaccia per OdE:
+      è la domanda di mercato che OdE è nata per soddisfare.
+    </p>
+    <ol class="timeline">
+      {timeline.map((tl) => (
+        <li>
+          <span class="tl-date">{tl.date}</span>
+          <span class="tl-label">{tl.label}</span>
+          <span class="tl-note">{tl.note}</span>
+        </li>
+      ))}
+    </ol>
+    <div class="norm-list">
+      {arrivo.map((nrm) => (
+        <NormCard
+          code={nrm.code} title={nrm.title} status={nrm.status} statusLabel={nrm.statusLabel}
+          requisito={nrm.requisito} perde={nrm.perde} vince={nrm.vince}
+          labelRequisito={L.req} labelPerde={L.perde} labelVince={L.vince}
+        />
+      ))}
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Commissione UE; ESPR working plan 2025" />
+      Regolamento (UE) 2024/1781 (ESPR e DPP) e Direttiva (UE) 2024/825 (Green Claims).
+    </p>
+  </Section>
+
+  <Section n="4" title="La tesi: il costo di conformità diventa prodotto">
+    <p class="thesis">
+      La complessità del passaggio da SOA a cosmetico e l’obbligo di passaporto in arrivo sono barriere
+      per tutti. OdE le attraversa per prima e con lo strumento già pronto, e così converte un costo che
+      il settore dovrà sostenere in qualcosa da vendere: un ingrediente qualificato, un passaporto
+      digitale, e domani il framework AMSA in licenza. Il rigore non è un peso: è la forma che prende qui
+      la persuasione.
+    </p>
+    <p class="note">
+      Per i termini tecnici di questa pagina, vedi il <a href={g}>glossario</a>:
+      <a href={`${g}#soa`}>SOA</a>, <a href={`${g}#dpp`}>DPP</a>, <a href={`${g}#espr`}>ESPR</a>,
+      <a href={`${g}#gmp`}>GMP</a>, <a href={`${g}#perossidi`}>numero di perossidi</a>.
+    </p>
+  </Section>
+</OdeLayout>
+
+<style>
+  .hero { max-width: 44rem; padding: 0.5rem 0 1rem; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0.4rem 0 1rem; }
+  .lede { font-size: 1.1rem; line-height: 1.6; color: var(--body); }
+  .note { font-size: 0.85rem; color: var(--muted); line-height: 1.5; max-width: 42rem; }
+  .note a, .thesis a, .clock a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+
+  .clocks { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; margin-top: 1rem; }
+  .clock { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.1rem 1.2rem; }
+  .clock-k { font-family: var(--ode-font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); }
+  .clock p { margin: 0.5rem 0 0; font-size: 0.92rem; line-height: 1.5; color: var(--body); }
+
+  .norm-list { display: grid; gap: 0.9rem; margin: 1.2rem 0; }
+
+  .thesis {
+    border-left: 3px solid var(--green-border);
+    padding: 0.6rem 0 0.6rem 1.1rem;
+    background: var(--green-soft);
+    border-radius: 0 var(--ode-radius) var(--ode-radius) 0;
+    font-size: 1.02rem;
+    line-height: 1.6;
+    color: var(--ink);
+    max-width: 44rem;
+  }
+
+  .timeline { list-style: none; padding: 0; margin: 1.2rem 0; display: flex; flex-direction: column; gap: 0; }
+  .timeline li {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    grid-template-areas: 'date label' 'date note';
+    gap: 0.1rem 1.2rem;
+    padding: 0.9rem 0 0.9rem 1.2rem;
+    border-left: 2px solid var(--green-border);
+    position: relative;
+  }
+  .timeline li::before {
+    content: ''; position: absolute; left: -0.45rem; top: 1.1rem;
+    width: 0.8rem; height: 0.8rem; border-radius: 999px;
+    background: var(--bg); border: 2px solid var(--green-border);
+  }
+  .tl-date { grid-area: date; font-family: var(--ode-font-mono); font-size: 0.8rem; color: var(--accent); }
+  .tl-label { grid-area: label; font-weight: 500; color: var(--ink); }
+  .tl-note { grid-area: note; font-size: 0.88rem; color: var(--body); }
+  @media (max-width: 520px) {
+    .timeline li { grid-template-columns: 1fr; grid-template-areas: 'date' 'label' 'note'; }
+  }
+</style>
