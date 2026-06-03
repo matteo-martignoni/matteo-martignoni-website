@@ -33,14 +33,16 @@ const cvHref = lang === 'it'
 
   <div class="max-w-3xl">
 
-    <!-- MM mark — sage, small, above legal line -->
-    <div class="mb-5">
+    <!-- Single line: MM mark + copyright + links -->
+    <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
+
       <svg
         width="29" height="18"
         viewBox="0 0 64 40"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"
+        class="shrink-0"
       >
         <line x1="2" y1="38" x2="2" y2="2" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
         <line x1="7" y1="38" x2="7" y2="2" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
@@ -53,10 +55,6 @@ const cvHref = lang === 'it'
         <line x1="33" y1="2" x2="45" y2="22" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
         <line x1="57" y1="2" x2="45" y2="22" stroke="#A8D4BC" stroke-width="2" stroke-linecap="round"/>
       </svg>
-    </div>
-
-    <!-- Legal line: copyright + links -->
-    <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
 
       <span class="text-xs text-ink-500">
         &copy; {year} Matteo Martignoni. {t.rights}
