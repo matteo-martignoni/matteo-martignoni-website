@@ -56,6 +56,7 @@ export const odeUI = {
       glossario: 'Glossario',
       live: 'AMSA Live',
     },
+    sourcesTitle: 'Fonti',
     simBadge: 'Simulazione dimostrativa',
     simNotice:
       'I dati di questa dashboard sono una simulazione dimostrativa, non misure di laboratorio reali.',
@@ -79,6 +80,7 @@ export const odeUI = {
       glossario: 'Glossary',
       live: 'AMSA Live',
     },
+    sourcesTitle: 'Sources',
     simBadge: 'Demonstration simulation',
     simNotice:
       'The data in this dashboard is a demonstration simulation, not real laboratory measurements.',

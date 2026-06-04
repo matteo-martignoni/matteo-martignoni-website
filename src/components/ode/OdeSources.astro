@@ -1,0 +1,44 @@
+---
+// Footnotes for the OdE microsite — renders the "Fonti" / "Sources"
+// section at the foot of the page, collecting every source registered
+// by <DataTag /> during this page render (see Astro.locals.odeSources).
+// Must be placed AFTER <slot /> so the registry is fully populated.
+import { odeUI, type OdeLang } from '../../i18n/ode';
+
+interface Props {
+  lang: OdeLang;
+}
+const { lang } = Astro.props;
+
+const list = (((Astro.locals as Record<string, any>).odeSources ?? []) as Array<{
+  kind: 'fonte' | 'stima' | 'bench';
+  label: string;
+  href?: string;
+  n: number;
+}>);
+
+const heading = odeUI[lang].sourcesTitle;
+const kindText = { fonte: 'Fonte', stima: 'Stima', bench: 'Benchmark' };
+---
+{list.length > 0 && (
+  <aside class="ode-sources" aria-label={heading}>
+    <h2 class="ode-sources-title">{heading}</h2>
+    <ol class="ode-sources-list">
+      {list.map((e) => (
+        <li id={`ode-src-${e.n}`} class="ode-sources-item">
+          <a href={`#ode-ref-${e.n}`} class="ode-sources-num" aria-label={`${e.n}`}>{e.n}.</a>
+          <span class={`ode-tag ode-tag--${e.kind}`}>{kindText[e.kind]}</span>
+          <span class="ode-sources-text">{e.label}</span>
+          {e.href && (
+            <a
+              href={e.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="ode-sources-link"
+            >{lang === 'it' ? 'documento' : 'document'} ↗</a>
+          )}
+        </li>
+      ))}
+    </ol>
+  </aside>
+)}

@@ -12,6 +12,7 @@
 import '../styles/ode-theme.css';
 import { odeUI, odeRoutes, type OdeLang, type OdeRouteKey } from '../i18n/ode';
 import DropMark from '../components/ode/DropMark.astro';
+import OdeSources from '../components/ode/OdeSources.astro';
 
 interface Props {
   title: string;
@@ -92,6 +93,7 @@ const navItems: { key: OdeRouteKey; label: string; href: string }[] = [
 
     <main class="ode-main">
       <slot />
+      <OdeSources lang={lang} />
     </main>
 
     <footer class="ode-footer">

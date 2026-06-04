@@ -100,6 +100,75 @@
 .ode-tag--stima { background: var(--lav-soft); color: var(--lav-ink); }
 .ode-tag--bench { background: var(--pink-soft); color: var(--pink-ink); }
 
+/* Clickable footnote badge — links to its entry in the Sources list */
+a.ode-tag--ref { text-decoration: none; transition: filter 160ms ease; }
+a.ode-tag--ref:hover { filter: brightness(0.94); }
+a.ode-tag--ref:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ode-tag-num {
+  font-size: 0.85em;
+  font-weight: 700;
+  margin-left: 0.15em;
+  line-height: 0;
+  vertical-align: super;
+}
+
+/* Footnotes — "Fonti" / "Sources" list at the foot of each page */
+.ode-sources {
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--ode-rule);
+}
+.ode-sources-title {
+  font-family: var(--ode-font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ode-muted);
+  margin: 0 0 1rem;
+}
+.ode-sources-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.ode-sources-item {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--ode-muted);
+  scroll-margin-top: 1.5rem;
+}
+.ode-sources-item:target {
+  background: var(--green-soft);
+  border-radius: var(--ode-radius-sm);
+  margin: -0.3rem -0.5rem;
+  padding: 0.3rem 0.5rem;
+}
+.ode-sources-num {
+  font-family: var(--ode-font-mono);
+  font-weight: 500;
+  color: var(--ode-ink);
+  text-decoration: none;
+  flex: 0 0 auto;
+}
+.ode-sources-num:hover { color: var(--ode-accent); }
+.ode-sources-text { flex: 1 1 14rem; }
+.ode-sources-link {
+  font-family: var(--ode-font-mono);
+  font-size: 0.72rem;
+  color: var(--ode-accent);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.ode-sources-link:hover { text-decoration: underline; }
+
 /* "Simulazione dimostrativa" badge — reusable across the dashboard */
 .ode-sim-badge {
   display: inline-flex;
