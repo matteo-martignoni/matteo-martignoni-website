@@ -118,14 +118,15 @@ a.ode-tag--ref:focus-visible { outline: 2px solid var(--accent); outline-offset:
   padding-top: 1.5rem;
   border-top: 1px solid var(--ode-rule);
 }
-.ode-sources-title {
+/* .ode-sources prefix beats the global `.ode h2` rule (which sets margin:0) */
+.ode-sources .ode-sources-title {
   font-family: var(--ode-font-mono);
   font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ode-muted);
-  margin: 0 0 1.25rem;
+  margin: 0 0 1.5rem;
 }
 .ode-sources-list {
   list-style: none;
