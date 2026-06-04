@@ -10,6 +10,6 @@ projectSlug: "aesop-italia"
 projectLabel: "Aēsop Italia, 2015 — 2016"
 ---
 
-> Descrivendo il processo di selezione degli architetti per progettare un negozio Aesop: “Idealmente, cerchiamo referti medici dettagliati sul benessere mentale di ciascun progettista; in loro assenza, preferiamo prodigi precoci (che sono rari) oppure cinque anni di esperienza residenziale di alto livello post-laurea (solo progettando con successo case confortevoli si possono interpretare e comprendere le nostre esigenze retail più idiosincratiche)”.
+> “Il design è in fondo un processo di eliminazione del superfluo: è completo quando non resta più nulla da togliere, riducendo l'inutile e arrivando a una soluzione sensuale e seducente. È un atto d'amore, più che velocità e tentativi isterici di accontentare tutti.”
 
 Tutto questo descrive una persona che conosce sé stessa, il proprio gusto e il proprio percorso, fatto di avventure, battute d'arresto e influenze culturali figlie degli incontri lungo la strada. Tutto è racchiuso nella sua sensibilità verso lo sforzo umano. Nato a Melbourne in una comunità di matrice greca, quasi estranea alla scena conservatrice dell'Australia degli anni '60 e '70, il rivoluzionario impatto di Aesop sull'industria cosmetica globale rivela il profondo talento del suo creatore.
