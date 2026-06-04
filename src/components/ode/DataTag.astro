@@ -2,10 +2,13 @@
 // Data-classification tag — OdE tone rule: every quantitative datum is
 // labelled [FONTE] (verified), [STIMA] (own estimate) or [BENCHMARK] (proxy).
 //
-// Each tag registers its source into a per-page list (Astro.locals) and
-// renders as a clickable badge with a footnote number; the full source —
-// with an external link where one exists — is listed by <OdeSources /> at
-// the foot of the page (see OdeLayout).
+// With a `label`, the tag registers its source into a per-page list
+// (Astro.locals) and renders as a clickable badge with a footnote number;
+// the full source — with an external link where one exists — is listed by
+// <OdeSources /> at the foot of the page (see OdeLayout).
+//
+// Without a `label` there is nothing to cite (e.g. a bare [BENCHMARK]
+// marker), so the tag stays a plain, non-clickable badge and is NOT footnoted.
 import { resolveSource } from '../../lib/ode/sources';
 
 interface Props {
@@ -15,32 +18,43 @@ interface Props {
 const { kind, label } = Astro.props;
 const text = { fonte: 'Fonte', stima: 'Stima', bench: 'Benchmark' }[kind];
 
-const srcLabel = label ?? text;
-const href = resolveSource(srcLabel);
+const hasSource = Boolean(label && label.trim());
 
-// Per-page footnote registry, shared across all components in this render.
-const locals = Astro.locals as Record<string, any>;
-const list: Array<{ key: string; kind: string; label: string; href?: string; n: number }> =
-  (locals.odeSources ??= []);
-const emitted: Set<string> = (locals.odeRefEmitted ??= new Set());
+let n = 0;
+let emitId = false;
+let srcLabel = '';
+if (hasSource) {
+  srcLabel = label!.trim();
+  const href = resolveSource(srcLabel);
 
-const key = `${kind}|${srcLabel}|${href ?? ''}`;
-let entry = list.find((e) => e.key === key);
-if (!entry) {
-  entry = { key, kind, label: srcLabel, href, n: list.length + 1 };
-  list.push(entry);
+  // Per-page footnote registry, shared across all components in this render.
+  const locals = Astro.locals as Record<string, any>;
+  const list: Array<{ key: string; kind: string; label: string; href?: string; n: number }> =
+    (locals.odeSources ??= []);
+  const emitted: Set<string> = (locals.odeRefEmitted ??= new Set());
+
+  const key = `${kind}|${srcLabel}|${href ?? ''}`;
+  let entry = list.find((e) => e.key === key);
+  if (!entry) {
+    entry = { key, kind, label: srcLabel, href, n: list.length + 1 };
+    list.push(entry);
+  }
+  n = entry.n;
+
+  // Only the first tag for a given source carries the back-reference id,
+  // so the footnote can link back without producing duplicate ids.
+  const refId = `ode-ref-${n}`;
+  emitId = !emitted.has(refId);
+  if (emitId) emitted.add(refId);
 }
-const n = entry.n;
-
-// Only the first tag for a given source carries the back-reference id,
-// so the footnote can link back without producing duplicate ids.
-const refId = `ode-ref-${n}`;
-const emitId = !emitted.has(refId);
-if (emitId) emitted.add(refId);
 ---
-<a
-  class={`ode-tag ode-tag--${kind} ode-tag--ref`}
-  href={`#ode-src-${n}`}
-  id={emitId ? refId : undefined}
-  aria-label={`${text} — ${srcLabel}`}
->{text}<sup class="ode-tag-num">{n}</sup></a>
+{hasSource ? (
+  <a
+    class={`ode-tag ode-tag--${kind} ode-tag--ref`}
+    href={`#ode-src-${n}`}
+    id={emitId ? `ode-ref-${n}` : undefined}
+    aria-label={`${text} — ${srcLabel}`}
+  >{text}<sup class="ode-tag-num">{n}</sup></a>
+) : (
+  <span class={`ode-tag ode-tag--${kind}`}>{text}</span>
+)}

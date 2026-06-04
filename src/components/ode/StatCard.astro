@@ -33,5 +33,8 @@ const { value, caption, kind = 'fonte', source } = Astro.props;
     letter-spacing: -0.01em;
   }
   .stat-caption { font-size: 0.9rem; line-height: 1.45; color: var(--body); margin: 0; }
-  .stat .ode-tag { align-self: flex-start; margin-top: auto; }
+  /* :global() so the rule reaches .ode-tag rendered by the child DataTag
+     component — without it Astro scoping appends this component's id to
+     .ode-tag, which never matches, and the tag isn't pushed to the base. */
+  .stat :global(.ode-tag) { align-self: flex-start; margin-top: auto; }
 </style>
