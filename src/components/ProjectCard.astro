@@ -229,6 +229,12 @@ const hasVideo = !!videoPath;
               (other as HTMLDetailsElement).open = false;
             }
           });
+          // Anchor the opened card's top edge to the top of the viewport, so
+          // collapsing a card above it doesn't push it off the top (mobile).
+          requestAnimationFrame(() => {
+            const top = target.getBoundingClientRect().top + window.scrollY - 12;
+            window.scrollTo({ top, behavior: 'smooth' });
+          });
         }
       });
     });
