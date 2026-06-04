@@ -125,7 +125,7 @@ a.ode-tag--ref:focus-visible { outline: 2px solid var(--accent); outline-offset:
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ode-muted);
-  margin: 0 0 1rem;
+  margin: 0 0 1.25rem;
 }
 .ode-sources-list {
   list-style: none;
@@ -148,7 +148,7 @@ a.ode-tag--ref:focus-visible { outline: 2px solid var(--accent); outline-offset:
 .ode-sources-item:target {
   background: var(--green-soft);
   border-radius: var(--ode-radius-sm);
-  margin: -0.3rem -0.5rem;
+  margin: 0 -0.5rem;
   padding: 0.3rem 0.5rem;
 }
 .ode-sources-num {
