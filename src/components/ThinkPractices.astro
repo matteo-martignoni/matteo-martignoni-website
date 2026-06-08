@@ -1,0 +1,284 @@
+---
+// ThinkPractices — single-open accordion of practices. Each open practice
+// shows a description, a sage hairline, and a row of media slots. Clicking a
+// slot enlarges it into a warm-white overlay (media left, caption right).
+// Ported from the approved reference (think-simulation.html) to site tokens.
+import { thinkPractices, type ThinkLang } from "../data/think";
+
+interface Props {
+  lang: ThinkLang;
+}
+const { lang } = Astro.props;
+const practices = thinkPractices[lang];
+const t =
+  lang === "it"
+    ? { media: "Immagine / video", close: "Chiudi" }
+    : { media: "Image / video", close: "Close" };
+const pad2 = (n: number) => String(n).padStart(2, "0");
+---
+
+<div class="tk-acc">
+  {practices.map((p, i) => (
+    <div class:list={["tk-item", i === 0 && "open"]}>
+      <button class="tk-row" type="button" aria-expanded={i === 0 ? "true" : "false"}>
+        <span class="tk-n">{p.number}</span>
+        <span class="tk-t">{p.title}</span>
+        <span class="tk-sign" aria-hidden="true">{i === 0 ? "−" : "+"}</span>
+      </button>
+      <div class="tk-panel">
+        <div class="tk-pi">
+          <p class="tk-desc">{p.description}</p>
+          <div class="tk-sep" aria-hidden="true"></div>
+          <div class="tk-media">
+            {p.slots.map((s, j) => (
+              <button
+                type="button"
+                class="tk-ph tk-ph--img"
+                style={`background-image:url('${s.src}')`}
+                data-practice={p.title}
+                data-subject={s.subject}
+                data-body={s.caption}
+                data-src={s.src}
+                aria-label={`${s.subject} — ${p.title}`}
+              >
+                <span class="tk-pn">{pad2(j + 1)}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
+<div class="tk-lb" role="dialog" aria-modal="true" aria-label={t.media} hidden>
+  <button class="tk-lb-close" type="button" aria-label={t.close}>&times;</button>
+  <div class="tk-lb-inner">
+    <div class="tk-lb-media">
+      <img class="tk-lb-img" alt="" />
+    </div>
+    <div class="tk-lb-text">
+      <div class="tk-lb-practice"></div>
+      <div class="tk-lb-label"></div>
+      <div class="tk-lb-body"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ── Accordion rows ───────────────────────────────────────── */
+  .tk-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    background: none;
+    border: 0;
+    border-bottom: 0.5px solid #e5e1d8;
+    padding: 16px 12px;
+    cursor: pointer;
+    text-align: left;
+    font: inherit;
+    color: inherit;
+    transition: background 200ms ease-out;
+  }
+  .tk-n { font-size: 12px; color: #b5b2a8; width: 28px; flex: 0 0 28px; font-variant-numeric: tabular-nums; }
+  .tk-t { flex: 1; font-size: 15px; color: #3d3d3a; font-weight: 500; }
+  .tk-sign { font-size: 15px; color: #b5b2a8; width: 16px; text-align: center; }
+  .tk-row:focus-visible { outline: 2px solid #c97b5c; outline-offset: -2px; }
+  .tk-item.open .tk-row { background: rgba(168, 212, 188, 0.15); }
+  .tk-item.open .tk-t { color: #1a1a1a; }
+  .tk-item.open .tk-n { color: #6b6b6b; }
+  .tk-item.open .tk-sign { color: #8b4f35; }
+
+  .tk-panel { max-height: 0; overflow: hidden; transition: max-height 400ms cubic-bezier(0.4, 0, 0.2, 1); }
+  .tk-pi { padding: 20px 12px 32px; }
+  .tk-desc { font-size: 14px; color: #3d3d3a; line-height: 1.65; max-width: 64ch; margin: 0; }
+  .tk-sep { width: 46px; height: 1px; background: #a8d4bc; margin: 18px 0; }
+
+  /* ── Media slots ──────────────────────────────────────────── */
+  .tk-media { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .tk-ph {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    width: 100%;
+    background: #f4f1ea;
+    border: 0.5px solid #e5e1d8;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 0;
+    overflow: hidden;
+    transition: border-color 200ms ease-out;
+    font: inherit;
+  }
+  .tk-ph--img { background-size: cover; background-position: center; }
+  .tk-ph:hover { border-color: #c97b5c; }
+  .tk-ph:focus-visible { outline: 2px solid #c97b5c; outline-offset: 2px; }
+  .tk-pn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 11px;
+    color: #8b4f35;
+    letter-spacing: 0.08em;
+    background: #fafaf8;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── Lightbox overlay ─────────────────────────────────────── */
+  .tk-lb {
+    position: fixed;
+    inset: 0;
+    background: rgba(250, 250, 248, 0.96);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    z-index: 80;
+  }
+  .tk-lb.is-open { display: flex; }
+  .tk-lb-inner {
+    display: flex;
+    width: 100%;
+    max-width: 880px;
+    max-height: 86vh;
+    border: 0.5px solid #e5e1d8;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #fafaf8;
+  }
+  .tk-lb-media {
+    flex: 0 0 58%;
+    min-height: 360px;
+    background: #f4f1ea;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .tk-lb-img { max-width: 100%; max-height: 86vh; object-fit: contain; display: block; }
+  .tk-lb-text {
+    flex: 1;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    background: #fafaf8;
+  }
+  .tk-lb-practice { font-size: 11px; color: #6b6b6b; letter-spacing: 0.1em; text-transform: uppercase; }
+  .tk-lb-label { font-size: 14px; color: #8b4f35; font-weight: 500; }
+  .tk-lb-body { font-size: 13px; color: #3d3d3a; line-height: 1.65; }
+  .tk-lb-close {
+    position: fixed;
+    top: 22px;
+    right: 28px;
+    font-size: 30px;
+    color: #8b4f35;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    line-height: 1;
+    z-index: 81;
+  }
+
+  @media (max-width: 767px) {
+    .tk-media { grid-template-columns: 1fr; }
+    .tk-lb { padding: 16px; }
+    .tk-lb-inner { flex-direction: column; max-height: 92vh; }
+    .tk-lb-media { flex: none; min-height: 0; max-height: 52vh; }
+    .tk-lb-img { max-height: 52vh; }
+  }
+</style>
+
+<script>
+  (function () {
+    const items = Array.prototype.slice.call(document.querySelectorAll(".tk-item"));
+    function setH(it: Element) {
+      const panel = it.querySelector(".tk-panel") as HTMLElement | null;
+      if (!panel) return;
+      const inner = panel.firstElementChild as HTMLElement | null;
+      const open = it.classList.contains("open");
+      panel.style.maxHeight = open && inner ? inner.scrollHeight + "px" : "0px";
+    }
+    items.forEach((it) => {
+      const row = it.querySelector(".tk-row") as HTMLElement;
+      row.addEventListener("click", () => {
+        const wasOpen = it.classList.contains("open");
+        items.forEach((o) => {
+          o.classList.remove("open");
+          const s = o.querySelector(".tk-sign");
+          if (s) s.textContent = "+";
+          const r = o.querySelector(".tk-row");
+          if (r) r.setAttribute("aria-expanded", "false");
+        });
+        if (!wasOpen) {
+          it.classList.add("open");
+          const s = it.querySelector(".tk-sign");
+          if (s) s.textContent = "−";
+          row.setAttribute("aria-expanded", "true");
+        }
+        items.forEach(setH);
+        // Anchor the opened practice to the top of the viewport so collapsing
+        // a practice above it does not push it off-screen (mobile).
+        if (!wasOpen) {
+          requestAnimationFrame(() => {
+            const top = it.getBoundingClientRect().top + window.scrollY - 12;
+            window.scrollTo({ top, behavior: "smooth" });
+          });
+        }
+      });
+    });
+    items.forEach(setH);
+    window.addEventListener("resize", () => items.forEach(setH));
+
+    // Lightbox
+    const lb = document.querySelector(".tk-lb") as HTMLElement | null;
+    if (!lb) return;
+    const img = lb.querySelector(".tk-lb-img") as HTMLImageElement;
+    const elPractice = lb.querySelector(".tk-lb-practice") as HTMLElement;
+    const elLabel = lb.querySelector(".tk-lb-label") as HTMLElement;
+    const elBody = lb.querySelector(".tk-lb-body") as HTMLElement;
+
+    function openLb(ph: HTMLElement) {
+      elPractice.textContent = ph.dataset.practice || "";
+      elLabel.textContent = ph.dataset.subject || "";
+      const body = ph.dataset.body || "";
+      elBody.textContent = body;
+      elBody.style.display = body ? "" : "none";
+      if (ph.dataset.src) {
+        img.src = ph.dataset.src;
+        img.alt = (ph.dataset.subject || "") + " — " + (ph.dataset.practice || "");
+        img.style.display = "block";
+      } else {
+        img.removeAttribute("src");
+        img.style.display = "none";
+      }
+      lb!.hidden = false;
+      lb!.classList.add("is-open");
+      document.body.style.overflow = "hidden";
+    }
+    function closeLb() {
+      lb!.classList.remove("is-open");
+      lb!.hidden = true;
+      document.body.style.overflow = "";
+    }
+    document.querySelectorAll(".tk-ph").forEach((ph) => {
+      ph.addEventListener("click", () => openLb(ph as HTMLElement));
+    });
+    lb.addEventListener("click", (e) => {
+      const target = e.target as HTMLElement;
+      // Close when clicking the backdrop or the inner frame outside the media.
+      if (target === lb || target.classList.contains("tk-lb-inner") || target.classList.contains("tk-lb-text")) {
+        closeLb();
+      }
+    });
+    const closeBtn = lb.querySelector(".tk-lb-close");
+    if (closeBtn) closeBtn.addEventListener("click", closeLb);
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && lb!.classList.contains("is-open")) closeLb();
+    });
+  })();
+</script>

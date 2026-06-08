@@ -1,41 +1,28 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SectionHero from '../../components/SectionHero.astro';
-import CompetencyAccordion from '../../components/CompetencyAccordion.astro';
+import ThinkPractices from '../../components/ThinkPractices.astro';
+import { thinkHero } from '../../data/think';
 
-// Load all IT competencies, sorted by order field (01 through 06)
-const allCompetencies = await getCollection('competencies');
-const competencies = allCompetencies
-  .filter(item => item.data.lang === 'it')
-  .sort((a, b) => a.data.order - b.data.order);
+const hero = thinkHero.it;
 ---
 <BaseLayout
   title="Strategia di marca e riposizionamento — Matteo Martignoni"
-  description="Sei aree di pratica nello sviluppo di marchi: espansione internazionale, nuove categorie, licenze, retail, marketing, riposizionamento."
+  description="Lavoro sui marchi dall'inizio alla fine: sviluppo internazionale, nuove categorie, licensing, strategia retail, marketing, riposizionamento, eventi."
   lang="it"
 >
   <SectionHero
     number="01"
-    tagline="Aree di pratica"
-    title="Alcune delle cose che so fare."
-    intro="Venticinque anni distillati in sei pratiche tra loro collegate. Sono lenti utili per leggere un problema di marca. La maggior parte dei progetti ne tocca tre o quattro insieme."
+    tagline={hero.tagline}
+    title={hero.title}
+    intro={hero.lead}
   />
 
-  <section class="max-w-3xl mt-12 md:mt-16">
+  <section class="max-w-3xl">
+    <p class="text-ink-700 leading-relaxed">{hero.body}</p>
 
-    {competencies.map((item, index) => (
-      <CompetencyAccordion
-        number={item.data.number}
-        title={item.data.title}
-        description={item.data.description}
-        examples={item.data.examples}
-        isFirst={false}
-      />
-    ))}
-
-    <div class="border-b border-warm-200" aria-hidden="true"></div>
-
+    <div class="mt-10 md:mt-14">
+      <ThinkPractices lang="it" />
+    </div>
   </section>
-
 </BaseLayout>

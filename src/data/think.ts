@@ -1,0 +1,215 @@
+// ──────────────────────────────────────────────────────────────
+// Think / Pensiero — areas of practice.
+//
+// Seven practices, each with a description and a row of media slots.
+// Copy is the source of truth (see think-build-brief.md). The slot
+// count is not fixed: international development has two, the rest three.
+// Each slot maps to an image under /media/think/{slug}-{n}.jpg.
+// ──────────────────────────────────────────────────────────────
+export interface ThinkSlot {
+  subject: string;   // what the visual shows (brand / project), never a claim
+  caption: string;   // short caption shown in the overlay
+  src: string;       // image path
+}
+
+export interface ThinkPractice {
+  number: string;
+  slug: string;
+  title: string;
+  description: string;
+  slots: ThinkSlot[];
+}
+
+export type ThinkLang = "en" | "it";
+
+const img = (slug: string, n: number) => `/media/think/${slug}-${n}.jpg`;
+
+export const thinkHero: Record<ThinkLang, { tagline: string; title: string; lead: string; body: string }> = {
+  en: {
+    tagline: "Areas of practice",
+    title: "Few things I know how to do.",
+    lead: "Brand work, end to end.",
+    body:
+      "At the top: opening markets, repositioning brands, reading a company's internal politics, working through a crisis. On the ground: store openings, fashion shows, product launches, advertising campaigns. And the founder's role, which starts with no brief, only a blank page.",
+  },
+  it: {
+    tagline: "Aree di competenza",
+    title: "Poche cose che so fare.",
+    lead: "Lavoro sui marchi, dall'inizio alla fine.",
+    body:
+      "In alto: aprire mercati, riposizionare marchi, leggere le dinamiche interne di un'azienda, lavorare durante una crisi. Sul campo: aperture di negozi, sfilate, lanci di prodotto, campagne pubblicitarie. E il ruolo del fondatore, che parte senza brief, solo una pagina bianca.",
+  },
+};
+
+export const thinkPractices: Record<ThinkLang, ThinkPractice[]> = {
+  en: [
+    {
+      number: "01",
+      slug: "international-development",
+      title: "International development",
+      description:
+        "No matter what business you are in, there comes a moment when you must expand and open new markets. A good practice is to ask yourself why before all the planning and sorting that come with it. If it still makes sense, then the premises are solid, and all that comes next has meaning.",
+      slots: [
+        { subject: "Uniqlo", caption: "Supporting the French market entry, developing a medium-term strategy for market penetration, brand launch and awareness, store opening.", src: img("international-development", 1) },
+        { subject: "Aēsop", caption: "Avoiding brand dilution in a fast-paced expansion. Brand guidelines, retail opening strategy, full package for new market opening.", src: img("international-development", 2) },
+      ],
+    },
+    {
+      number: "02",
+      slug: "new-categories",
+      title: "New categories",
+      description:
+        "Natural evolution of the main line, or a mere conversion tool, new categories extend a brand's reach. They carry a DNA that has to be carefully maintained, protected and realigned to bring the brand and the new market together. Eventually, they'll give the Compliance team headaches.",
+      slots: [
+        { subject: "Aēsop", caption: "Building a case for why perfume could have become a key category for a skin care company's growth. Initiated the process with IFF. Now the most profitable category.", src: img("new-categories", 1) },
+        { subject: "NOVA", caption: "All-new, from idea to execution: the blueprint for innovation in process, tools and product, distilling Art, AI and technology into something that can be sold and kept.", src: img("new-categories", 2) },
+        { subject: "Napapijri", caption: "Building the A to Z of Ze-Knit, a bold statement of the brand that reaches for new, avant-garde targets.", src: img("new-categories", 3) },
+      ],
+    },
+    {
+      number: "03",
+      slug: "licensing",
+      title: "Licensing",
+      description:
+        "Above all, an exercise in trust. A company knows what it can and can't do; for the latter, there is a partner waiting to create a branch on their tree bearing your company's name. Your brand, their processes, their manufacturing, their distribution.",
+      slots: [
+        { subject: "Diesel", caption: "Perfume, with L'Oréal.", src: img("licensing", 1) },
+        { subject: "Diesel", caption: "Underwear.", src: img("licensing", 2) },
+        { subject: "Diesel", caption: "Watches, with Fossil.", src: img("licensing", 3) },
+      ],
+    },
+    {
+      number: "04",
+      slug: "retail-strategy",
+      title: "Retail strategy",
+      description:
+        "Designing distribution, store networks, and the texture of physical retail experience. It is an exercise that flourishes with a dynamic, well-led and agile company that understands the implications of inviting its customers to its home.",
+      slots: [
+        { subject: "Aēsop", caption: "Brera store, Milan.", src: img("retail-strategy", 1) },
+        { subject: "Uniqlo", caption: "Opéra store, Paris.", src: img("retail-strategy", 2) },
+        { subject: "Surface to Air", caption: "Paris store.", src: img("retail-strategy", 3) },
+      ],
+    },
+    {
+      number: "05",
+      slug: "marketing-end-to-end",
+      title: "Marketing, end to end",
+      description:
+        "The noble art of marketing, from the conception of a product or service to its market release. A delicate exercise that teaches you to navigate the steps in between, and the people whose sign-off you need to bring an idea to light. Part politics, part damage control.",
+      slots: [
+        { subject: "Aēsop", caption: "Mouthwash.", src: img("marketing-end-to-end", 1) },
+        { subject: "NOVA", caption: "Exhibition.", src: img("marketing-end-to-end", 2) },
+        { subject: "Tacit", caption: "", src: img("marketing-end-to-end", 3) },
+      ],
+    },
+    {
+      number: "06",
+      slug: "brand-repositioning",
+      title: "Brand repositioning",
+      description:
+        "Helping an established brand change how the market reads it. Perceived as the slowest of these practices, wrongly. With the right formulation, it can lift brand fatigue quickly. Yet it must be sustained with a continuous effort and a strong conviction that a brand deserves better.",
+      slots: [
+        { subject: "Diesel", caption: "Germany.", src: img("brand-repositioning", 1) },
+        { subject: "System Professional", caption: "Hair Longevity.", src: img("brand-repositioning", 2) },
+        { subject: "Public Goods", caption: "Site.", src: img("brand-repositioning", 3) },
+      ],
+    },
+    {
+      number: "07",
+      slug: "events",
+      title: "Events",
+      description:
+        "A powerful tool, short, clinical, quantifiable. It is to a marketing strategy what a French kiss is to a long-term relationship. It can make or break a reputation. Done right, they create intense brand equity and high-value lead generation. Done wrong, they bring down the brand appeal.",
+      slots: [
+        { subject: "Sonus faber", caption: "Lamborghini Arena.", src: img("events", 1) },
+        { subject: "Corneliani", caption: "Fashion show.", src: img("events", 2) },
+        { subject: "Saint Louis", caption: "Milan Design Week.", src: img("events", 3) },
+      ],
+    },
+  ],
+  it: [
+    {
+      number: "01",
+      slug: "international-development",
+      title: "Sviluppo internazionale",
+      description:
+        "Qualunque sia l'attività, arriva il momento in cui occorre espandersi e aprire nuovi mercati. È buona pratica chiedersi il perché prima di tutta la pianificazione e l'organizzazione che ne seguono. Se ha ancora senso, le premesse sono solide, e tutto ciò che viene dopo acquista significato.",
+      slots: [
+        { subject: "Uniqlo", caption: "Supporto all'ingresso nel mercato francese, sviluppo di una strategia di penetrazione a medio termine, lancio del marchio e notorietà, apertura del negozio.", src: img("international-development", 1) },
+        { subject: "Aēsop", caption: "Evitare la diluizione del marchio in un'espansione rapida. Linee guida di marca, strategia di apertura retail, pacchetto completo per l'ingresso in un nuovo mercato.", src: img("international-development", 2) },
+      ],
+    },
+    {
+      number: "02",
+      slug: "new-categories",
+      title: "Nuove categorie",
+      description:
+        "Evoluzione naturale della linea principale, o semplice strumento di conversione, le nuove categorie estendono la portata di un marchio. Portano un DNA che va mantenuto con cura, protetto e riallineato per far incontrare il marchio e il nuovo mercato. Prima o poi, faranno venire il mal di testa all'ufficio Compliance.",
+      slots: [
+        { subject: "Aēsop", caption: "Costruire le ragioni per cui il profumo poteva diventare una categoria chiave per la crescita di un'azienda di skincare. Avviato il processo con IFF. Oggi la categoria più redditizia.", src: img("new-categories", 1) },
+        { subject: "NOVA", caption: "Tutto nuovo, dall'idea all'esecuzione: il modello per innovare processo, strumenti e prodotto, distillando arte, AI e tecnologia in qualcosa che si può vendere e custodire.", src: img("new-categories", 2) },
+        { subject: "Napapijri", caption: "Costruire un approccio circolare attorno a un tessuto di nuova introduzione, in nylon riciclato, coinvolgendo le università per definire il posizionamento e arricchire il dialogo sull'adozione.", src: img("new-categories", 3) },
+      ],
+    },
+    {
+      number: "03",
+      slug: "licensing",
+      title: "Licensing",
+      description:
+        "Prima di tutto, un esercizio di fiducia. Un'azienda sa cosa può e cosa non può fare; per ciò che non può, c'è un partner pronto a far crescere sul proprio albero un ramo che porta il nome dell'azienda. Il marchio è dell'azienda. I processi, la produzione e la distribuzione, del partner.",
+      slots: [
+        { subject: "Diesel", caption: "Profumo, con L'Oréal.", src: img("licensing", 1) },
+        { subject: "Diesel", caption: "Underwear.", src: img("licensing", 2) },
+        { subject: "Diesel", caption: "Orologi, con Fossil.", src: img("licensing", 3) },
+      ],
+    },
+    {
+      number: "04",
+      slug: "retail-strategy",
+      title: "Strategia retail",
+      description:
+        "Disegnare la distribuzione, le reti di negozi e la trama dell'esperienza retail fisica. Un esercizio che fiorisce con un'azienda dinamica, ben guidata e agile, che comprende le implicazioni dell'invitare i propri clienti a casa propria.",
+      slots: [
+        { subject: "Aēsop", caption: "Negozio Brera, Milano.", src: img("retail-strategy", 1) },
+        { subject: "Uniqlo", caption: "Negozio Opéra, Parigi.", src: img("retail-strategy", 2) },
+        { subject: "Surface to Air", caption: "Negozio di Parigi.", src: img("retail-strategy", 3) },
+      ],
+    },
+    {
+      number: "05",
+      slug: "marketing-end-to-end",
+      title: "Marketing, dall'inizio alla fine",
+      description:
+        "La nobile arte del marketing, dalla concezione di un prodotto o servizio fino alla sua uscita sul mercato. Un esercizio delicato che insegna a muoversi tra i passaggi intermedi, e tra le persone la cui approvazione serve per portare un'idea alla luce. In parte politica, in parte limitazione dei danni.",
+      slots: [
+        { subject: "Aēsop", caption: "Collutorio.", src: img("marketing-end-to-end", 1) },
+        { subject: "NOVA", caption: "Mostra.", src: img("marketing-end-to-end", 2) },
+        { subject: "Tacit", caption: "", src: img("marketing-end-to-end", 3) },
+      ],
+    },
+    {
+      number: "06",
+      slug: "brand-repositioning",
+      title: "Riposizionamento di marca",
+      description:
+        "Aiutare un marchio affermato a cambiare il modo in cui il mercato lo legge. Percepita come la più lenta di queste pratiche, a torto. Con la formulazione giusta, può sollevare in fretta una condizione di stanchezza di marca. Ma va sostenuta con uno sforzo continuo e con la ferma convinzione che un marchio meriti di meglio.",
+      slots: [
+        { subject: "Diesel", caption: "Germania.", src: img("brand-repositioning", 1) },
+        { subject: "System Professional", caption: "Hair Longevity.", src: img("brand-repositioning", 2) },
+        { subject: "Public Goods", caption: "Sito.", src: img("brand-repositioning", 3) },
+      ],
+    },
+    {
+      number: "07",
+      slug: "events",
+      title: "Eventi",
+      description:
+        "Uno strumento potente, breve, clinico, quantificabile. È per una strategia di marketing ciò che un bacio alla francese è per una relazione a lungo termine. Può costruire o distruggere una reputazione. Fatti bene, creano una forte brand equity e generano contatti di alto valore. Fatti male, abbassano l'appeal del marchio.",
+      slots: [
+        { subject: "Sonus faber", caption: "Lamborghini Arena.", src: img("events", 1) },
+        { subject: "Corneliani", caption: "Sfilata.", src: img("events", 2) },
+        { subject: "Saint Louis", caption: "Milano Design Week.", src: img("events", 3) },
+      ],
+    },
+  ],
+};
