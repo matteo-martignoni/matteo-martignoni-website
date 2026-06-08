@@ -207,6 +207,20 @@ const pad2 = (n: number) => String(n).padStart(2, "0");
       const row = it.querySelector(".tk-row") as HTMLElement;
       row.addEventListener("click", () => {
         const wasOpen = it.classList.contains("open");
+        // Measure the practice's document position while everything is still
+        // in its current state, plus how much height collapses above it. The
+        // panel animates (unlike the native <details> in Circle/Make), so we
+        // compute the final target up front instead of measuring mid-animation.
+        const beforeTop = it.getBoundingClientRect().top + window.scrollY;
+        const myIndex = items.indexOf(it);
+        let collapseAbove = 0;
+        if (!wasOpen) {
+          const prevOpen = items.find((o) => o.classList.contains("open"));
+          if (prevOpen && prevOpen !== it && items.indexOf(prevOpen) < myIndex) {
+            const pPanel = prevOpen.querySelector(".tk-panel") as HTMLElement;
+            collapseAbove = pPanel.scrollHeight;
+          }
+        }
         items.forEach((o) => {
           o.classList.remove("open");
           const s = o.querySelector(".tk-sign");
@@ -221,13 +235,10 @@ const pad2 = (n: number) => String(n).padStart(2, "0");
           row.setAttribute("aria-expanded", "true");
         }
         items.forEach(setH);
-        // Anchor the opened practice to the top of the viewport so collapsing
-        // a practice above it does not push it off-screen (mobile).
+        // Anchor the opened practice's top edge to the top of the viewport,
+        // matching the Circle and Make accordions.
         if (!wasOpen) {
-          requestAnimationFrame(() => {
-            const top = it.getBoundingClientRect().top + window.scrollY - 12;
-            window.scrollTo({ top, behavior: "smooth" });
-          });
+          window.scrollTo({ top: beforeTop - collapseAbove - 12, behavior: "smooth" });
         }
       });
     });

@@ -121,9 +121,9 @@ export const thinkPractices: Record<ThinkLang, ThinkPractice[]> = {
       description:
         "A powerful tool, short, clinical, quantifiable. It is to a marketing strategy what a French kiss is to a long-term relationship. It can make or break a reputation. Done right, they create intense brand equity and high-value lead generation. Done wrong, they bring down the brand appeal.",
       slots: [
-        { subject: "Sonus faber", caption: "Lamborghini Arena.", src: img("events", 1) },
-        { subject: "Corneliani", caption: "Fashion show.", src: img("events", 2) },
-        { subject: "Saint Louis", caption: "Milan Design Week.", src: img("events", 3) },
+        { subject: "Sonus faber", caption: "An exciting challenge involved uniting a premium artisanal brand with a luxury car company in a public setting, which ultimately became “Casa Sonus faber,” a branded space within the famous Imola racetrack. Esteemed managers, pilots, and audiophiles savored the experience provided by Sonus faber’s cutting-edge speakers.", src: img("events", 1) },
+        { subject: "Corneliani", caption: "Seasonal shows and collection presentations are essential for every fashion brand, effectively merging marketing and sales into a single event. Despite updating collections seasonally, the brand maintains a consistent tone of voice that must be preserved and respected each time it engages with the public.", src: img("events", 2) },
+        { subject: "Saint Louis", caption: "A heritage brand warrants a heritage space for its public initiatives. Saint Louis and its creations are showcased inside a small church in the Brera district, where history and craftsmanship elevate the efforts of every employee of this French company.", src: img("events", 3) },
       ],
     },
   ],
@@ -206,9 +206,9 @@ export const thinkPractices: Record<ThinkLang, ThinkPractice[]> = {
       description:
         "Uno strumento potente, breve, clinico, quantificabile. È per una strategia di marketing ciò che un bacio alla francese è per una relazione a lungo termine. Può costruire o distruggere una reputazione. Fatti bene, creano una forte brand equity e generano contatti di alto valore. Fatti male, abbassano l'appeal del marchio.",
       slots: [
-        { subject: "Sonus faber", caption: "Lamborghini Arena.", src: img("events", 1) },
-        { subject: "Corneliani", caption: "Sfilata.", src: img("events", 2) },
-        { subject: "Saint Louis", caption: "Milano Design Week.", src: img("events", 3) },
+        { subject: "Sonus faber", caption: "Una sfida entusiasmante: unire un marchio artigianale premium e una casa automobilistica di lusso in un contesto pubblico, diventato infine “Casa Sonus faber”, uno spazio brandizzato all'interno del celebre autodromo di Imola. Manager stimati, piloti e audiofili hanno assaporato l'esperienza offerta dai diffusori all'avanguardia di Sonus faber.", src: img("events", 1) },
+        { subject: "Corneliani", caption: "Sfilate stagionali e presentazioni di collezione sono essenziali per ogni marchio di moda, e uniscono di fatto marketing e vendite in un unico evento. Pur aggiornando le collezioni a ogni stagione, il marchio mantiene un tono di voce coerente, che va preservato e rispettato ogni volta che si rivolge al pubblico.", src: img("events", 2) },
+        { subject: "Saint Louis", caption: "Un marchio heritage merita uno spazio heritage per le sue iniziative pubbliche. Saint Louis e le sue creazioni sono esposte all'interno di una piccola chiesa nel quartiere di Brera, dove storia e artigianalità elevano l'impegno di ogni dipendente di questa azienda francese.", src: img("events", 3) },
       ],
     },
   ],
