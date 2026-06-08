@@ -1,23 +1,6 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-const competencies = defineCollection({
-  loader: glob({
-    pattern: '*.{en,it}.md',
-    base: './src/content/competencies',
-    generateId: ({ entry }) => entry.replace(/\.md$/, ''),
-  }),
-  schema: z.object({
-    number: z.string(),
-    slug: z.string(),
-    title: z.string(),
-    lang: z.enum(['en', 'it']),
-    description: z.string(),
-    examples: z.array(z.string()).optional(),
-    order: z.number(),
-  }),
-});
-
 const projects = defineCollection({
   loader: glob({
     pattern: '*.{en,it}.md',
@@ -63,4 +46,4 @@ const mentors = defineCollection({
   }),
 });
 
-export const collections = { competencies, projects, mentors };
+export const collections = { projects, mentors };
