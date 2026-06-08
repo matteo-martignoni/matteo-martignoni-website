@@ -14,101 +14,105 @@ import SectionHero from '../components/SectionHero.astro';
     intro="Three kinds of work. Read to find your context."
   />
 
-  <section class="max-w-2xl mt-12 md:mt-16 space-y-0">
+  <section class="max-w-5xl mt-12 md:mt-16">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 items-stretch">
 
-    <!-- 01 · Brand work -->
-    <div class="border-t border-warm-200 pt-10 md:pt-12 pb-10 md:pb-12">
-      <div class="flex items-baseline gap-3 mb-5">
-        <span class="text-xs uppercase tracking-widest text-terracotta-900 tabular-nums shrink-0">01</span>
-        <span class="text-xs uppercase tracking-widest text-ink-500">Brand Directors · CEOs · CMOs</span>
-      </div>
-      <h3 class="text-xl md:text-2xl font-medium text-ink-900 mb-5">
-        The brand work I know best.
-      </h3>
-      <p class="text-sm text-ink-700 leading-relaxed mb-2">
-        Brand strategy, repositioning, category development, distribution,
-        retail performance, European market entry.
-      </p>
-      <p class="text-sm text-ink-700 leading-relaxed mb-4">
-        Twenty-five years with Diesel, Aēsop, Eastpak, Reflex, and the
-        companies I founded.
-      </p>
-      <p class="text-sm text-ink-700 leading-relaxed mb-8">
-        The problems tend to repeat. The solutions rarely do.
-      </p>
+      <!-- 01 · Brand work -->
+      <article class="flex flex-col h-full rounded-2xl border border-warm-200 bg-warm-100/60 p-7 md:p-8 transition-colors duration-200 hover:border-sage-100">
+        <div class="flex items-baseline gap-3 mb-5">
+          <span class="text-sm font-semibold text-terracotta-900 tabular-nums leading-none">01</span>
+          <span class="text-[0.7rem] uppercase tracking-widest text-ink-500 leading-snug">Brand Directors · CEOs · CMOs</span>
+        </div>
+        <h3 class="text-lg md:text-xl font-medium text-ink-900 mb-4 leading-snug">
+          The brand work I know best.
+        </h3>
+        <div class="space-y-3 text-sm text-ink-700 leading-relaxed">
+          <p>
+            Brand strategy, repositioning, category development, distribution,
+            retail performance, European market entry.
+          </p>
+          <p>
+            Twenty-five years with Diesel, Aēsop, Eastpak, Reflex, and the
+            companies I founded.
+          </p>
+          <p>The problems tend to repeat. The solutions rarely do.</p>
+        </div>
+        <div class="mt-auto pt-6">
+          <a href="mailto:mm@matteomartignoni.com"
+            class="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-terracotta-900 hover:text-terracotta-700 transition-colors duration-200">
+            <span aria-hidden="true">→</span>
+            <span>mm@matteomartignoni.com</span>
+          </a>
+        </div>
+      </article>
 
-        <a href="mailto:mm@matteomartignoni.com"
-        class="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-terracotta-900 hover:text-terracotta-700 transition-colors duration-200"
-      >
-        <span aria-hidden="true">→</span>
-        <span>mm@matteomartignoni.com</span>
-      </a>
+      <!-- 02 · Investors -->
+      <article class="flex flex-col h-full rounded-2xl border border-warm-200 bg-warm-100/60 p-7 md:p-8 transition-colors duration-200 hover:border-sage-100">
+        <div class="flex items-baseline gap-3 mb-5">
+          <span class="text-sm font-semibold text-terracotta-900 tabular-nums leading-none">02</span>
+          <span class="text-[0.7rem] uppercase tracking-widest text-ink-500 leading-snug">Investors · Business Angels · Funds</span>
+        </div>
+        <h3 class="text-lg md:text-xl font-medium text-ink-900 mb-4 leading-snug">
+          Two companies worth a closer look.
+        </h3>
+        <div class="space-y-3 text-sm text-ink-700 leading-relaxed">
+          <p>
+            <a href="https://novaexperience.ai" target="_blank" rel="noopener noreferrer" class="text-terracotta-900 underline decoration-1 underline-offset-2 hover:text-terracotta-700 transition-colors duration-200">NOVA</a> is an AI experience company building a proprietary platform
+            for museums and cultural institutions. Officina degli Estratti
+            develops high-end cosmetic ingredients from certified Parmesan
+            animal byproducts, with an AI-driven quality and standardisation
+            platform.
+          </p>
+          <p>
+            Both have structured business plans and a clear path forward.
+            Both are registered as Italian innovative startups.
+          </p>
+          <p>
+            We are looking for partners who can strengthen our governance,
+            not only provide capital. If the work interests you, I am open
+            to a conversation.
+          </p>
+        </div>
+        <div class="mt-auto pt-6">
+          <a href="mailto:matteo@novaexperience.ai"
+            class="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-terracotta-900 hover:text-terracotta-700 transition-colors duration-200">
+            <span aria-hidden="true">→</span>
+            <span>matteo@novaexperience.ai</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- 03 · Golden Visa -->
+      <article class="flex flex-col h-full rounded-2xl border border-warm-200 bg-warm-100/60 p-7 md:p-8 transition-colors duration-200 hover:border-sage-100">
+        <div class="flex items-baseline gap-3 mb-5">
+          <span class="text-sm font-semibold text-terracotta-900 tabular-nums leading-none">03</span>
+          <span class="text-[0.7rem] uppercase tracking-widest text-ink-500 leading-snug">Extra-EU Investors</span>
+        </div>
+        <h3 class="text-lg md:text-xl font-medium text-ink-900 mb-4 leading-snug">
+          Residency through innovation.
+        </h3>
+        <div class="space-y-3 text-sm text-ink-700 leading-relaxed">
+          <p>
+            The <a href="https://investorvisa.mise.gov.it/images/documenti/Investor_Visa_for_Italy_Policy_guidance_ENG_19_07_2021.pdf#page=1.00&amp;gsr=0" target="_blank" rel="noopener noreferrer" class="text-terracotta-900 underline decoration-1 underline-offset-2 hover:text-terracotta-700 transition-colors duration-200">Italian government's Investor Visa</a> programme allows
+            extra-EU nationals to apply for an Italian residency permit
+            through a qualifying investment in an Italian innovative startup.
+          </p>
+          <p>
+            Both NOVA and Officina degli Estratti are structured to qualify.
+            If you are exploring this route, an investment in either company
+            could open that path.
+          </p>
+        </div>
+        <div class="mt-auto pt-6">
+          <a href="mailto:mm@matteomartignoni.com"
+            class="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-terracotta-900 hover:text-terracotta-700 transition-colors duration-200">
+            <span aria-hidden="true">→</span>
+            <span>mm@matteomartignoni.com</span>
+          </a>
+        </div>
+      </article>
+
     </div>
-
-    <!-- 02 · Investors -->
-    <div class="border-t border-warm-200 pt-10 md:pt-12 pb-10 md:pb-12">
-      <div class="flex items-baseline gap-3 mb-5">
-        <span class="text-xs uppercase tracking-widest text-terracotta-900 tabular-nums shrink-0">02</span>
-        <span class="text-xs uppercase tracking-widest text-ink-500">Investors · Business Angels · Funds</span>
-      </div>
-      <h3 class="text-xl md:text-2xl font-medium text-ink-900 mb-5">
-        Two companies worth a closer look.
-      </h3>
-      <p class="text-sm text-ink-700 leading-relaxed mb-4">
-        <a href="https://novaexperience.ai" target="_blank" rel="noopener noreferrer" class="text-terracotta-900 underline decoration-1 underline-offset-2 hover:text-terracotta-700 transition-colors duration-200">NOVA</a> is an AI experience company building a proprietary platform
-        for museums and cultural institutions. Officina degli Estratti
-        develops high-end cosmetic ingredients from certified Parmesan
-        animal byproducts, with an AI-driven quality and standardisation
-        platform.
-      </p>
-      <p class="text-sm text-ink-700 leading-relaxed mb-4">
-        Both have structured business plans and a clear path forward.
-        Both are registered as Italian innovative startups.
-      </p>
-      <p class="text-sm text-ink-700 leading-relaxed mb-8">
-        We are looking for partners who can strengthen our governance,
-        not only provide capital. If the work interests you, I am open
-        to a conversation.
-      </p>
-
-        <a href="mailto:matteo@novaexperience.ai"
-        class="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-terracotta-900 hover:text-terracotta-700 transition-colors duration-200"
-      >
-        <span aria-hidden="true">→</span>
-        <span>matteo@novaexperience.ai</span>
-      </a>
-    </div>
-
-    <!-- 03 · Golden Visa -->
-    <div class="border-t border-warm-200 pt-10 md:pt-12 pb-10 md:pb-12">
-      <div class="flex items-baseline gap-3 mb-5">
-        <span class="text-xs uppercase tracking-widest text-terracotta-900 tabular-nums shrink-0">03</span>
-        <span class="text-xs uppercase tracking-widest text-ink-500">Extra-EU Investors</span>
-      </div>
-      <h3 class="text-xl md:text-2xl font-medium text-ink-900 mb-5">
-        Residency through innovation.
-      </h3>
-      <p class="text-sm text-ink-700 leading-relaxed mb-4">
-        The <a href="https://investorvisa.mise.gov.it/images/documenti/Investor_Visa_for_Italy_Policy_guidance_ENG_19_07_2021.pdf#page=1.00&amp;gsr=0" target="_blank" rel="noopener noreferrer" class="text-terracotta-900 underline decoration-1 underline-offset-2 hover:text-terracotta-700 transition-colors duration-200">Italian government's Investor Visa</a> programme allows
-        extra-EU nationals to apply for an Italian residency permit
-        through a qualifying investment in an Italian innovative startup.
-      </p>
-      <p class="text-sm text-ink-700 leading-relaxed mb-8">
-        Both NOVA and Officina degli Estratti are structured to qualify.
-        If you are exploring this route, an investment in either company
-        could open that path.
-      </p>
-
-        <a href="mailto:mm@matteomartignoni.com"
-        class="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-terracotta-900 hover:text-terracotta-700 transition-colors duration-200"
-      >
-        <span aria-hidden="true">→</span>
-        <span>mm@matteomartignoni.com</span>
-      </a>
-    </div>
-
-    <div class="border-t border-warm-200" aria-hidden="true"></div>
-
   </section>
 
 </BaseLayout>

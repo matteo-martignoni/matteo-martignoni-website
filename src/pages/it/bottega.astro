@@ -14,104 +14,108 @@ import SectionHero from '../../components/SectionHero.astro';
     intro="Tre tipi di lavoro. Leggi per trovare il tuo contesto."
   />
 
-  <section class="max-w-2xl mt-12 md:mt-16 space-y-0">
+  <section class="max-w-5xl mt-12 md:mt-16">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 items-stretch">
 
-    <!-- 01 · Lavoro di marca -->
-    <div class="border-t border-warm-200 pt-10 md:pt-12 pb-10 md:pb-12">
-      <div class="flex items-baseline gap-3 mb-5">
-        <span class="text-xs uppercase tracking-widest text-terracotta-900 tabular-nums shrink-0">01</span>
-        <span class="text-xs uppercase tracking-widest text-ink-500">Brand Directors · CEO · CMO</span>
-      </div>
-      <h3 class="text-xl md:text-2xl font-medium text-ink-900 mb-5">
-        Il lavoro di marca che conosco meglio.
-      </h3>
-      <p class="text-sm text-ink-700 leading-relaxed mb-2">
-        Strategia di marca, riposizionamento, sviluppo di categoria,
-        distribuzione, performance retail, ingresso nel mercato italiano
-        ed europeo.
-      </p>
-      <p class="text-sm text-ink-700 leading-relaxed mb-4">
-        Venticinque anni con Diesel, Aēsop, Eastpak, Reflex e le società
-        che ho fondato.
-      </p>
-      <p class="text-sm text-ink-700 leading-relaxed mb-8">
-        I problemi tendono a ripetersi. Le soluzioni raramente.
-      </p>
-      <a
-        href="mailto:mm@matteomartignoni.com"
-        class="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-terracotta-900 hover:text-terracotta-700 transition-colors duration-200"
-      >
-        <span aria-hidden="true">→</span>
-        <span>mm@matteomartignoni.com</span>
-      </a>
+      <!-- 01 · Lavoro di marca -->
+      <article class="flex flex-col h-full rounded-2xl border border-warm-200 bg-warm-100/60 p-7 md:p-8 transition-colors duration-200 hover:border-sage-100">
+        <div class="flex items-baseline gap-3 mb-5">
+          <span class="text-sm font-semibold text-terracotta-900 tabular-nums leading-none">01</span>
+          <span class="text-[0.7rem] uppercase tracking-widest text-ink-500 leading-snug">Brand Directors · CEO · CMO</span>
+        </div>
+        <h3 class="text-lg md:text-xl font-medium text-ink-900 mb-4 leading-snug">
+          Il lavoro di marca che conosco meglio.
+        </h3>
+        <div class="space-y-3 text-sm text-ink-700 leading-relaxed">
+          <p>
+            Strategia di marca, riposizionamento, sviluppo di categoria,
+            distribuzione, performance retail, ingresso nel mercato italiano
+            ed europeo.
+          </p>
+          <p>
+            Venticinque anni con Diesel, Aēsop, Eastpak, Reflex e le società
+            che ho fondato.
+          </p>
+          <p>I problemi tendono a ripetersi. Le soluzioni raramente.</p>
+        </div>
+        <div class="mt-auto pt-6">
+          <a href="mailto:mm@matteomartignoni.com"
+            class="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-terracotta-900 hover:text-terracotta-700 transition-colors duration-200">
+            <span aria-hidden="true">→</span>
+            <span>mm@matteomartignoni.com</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- 02 · Investitori -->
+      <article class="flex flex-col h-full rounded-2xl border border-warm-200 bg-warm-100/60 p-7 md:p-8 transition-colors duration-200 hover:border-sage-100">
+        <div class="flex items-baseline gap-3 mb-5">
+          <span class="text-sm font-semibold text-terracotta-900 tabular-nums leading-none">02</span>
+          <span class="text-[0.7rem] uppercase tracking-widest text-ink-500 leading-snug">Investitori · Business Angel · Fondi</span>
+        </div>
+        <h3 class="text-lg md:text-xl font-medium text-ink-900 mb-4 leading-snug">
+          Due società che vale la pena guardare da vicino.
+        </h3>
+        <div class="space-y-3 text-sm text-ink-700 leading-relaxed">
+          <p>
+            <a href="https://novaexperience.ai" target="_blank" rel="noopener noreferrer" class="text-terracotta-900 underline decoration-1 underline-offset-2 hover:text-terracotta-700 transition-colors duration-200">NOVA</a> è una società di esperienze AI che sviluppa una piattaforma
+            proprietaria per musei e istituzioni culturali. Officina degli
+            Estratti sviluppa ingredienti cosmetici di alta gamma da
+            sottoprodotti animali certificati del territorio parmense, con una
+            piattaforma AI per la qualità e la standardizzazione.
+          </p>
+          <p>
+            Entrambe hanno piani aziendali strutturati e un percorso chiaro.
+            Entrambe sono iscritte come startup innovative italiane.
+          </p>
+          <p>
+            Cerchiamo partner che possano rafforzare la nostra governance,
+            non solo fornire capitale. Se il lavoro ti interessa, sono aperto
+            a una conversazione.
+          </p>
+        </div>
+        <div class="mt-auto pt-6">
+          <a href="mailto:matteo@novaexperience.ai"
+            class="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-terracotta-900 hover:text-terracotta-700 transition-colors duration-200">
+            <span aria-hidden="true">→</span>
+            <span>matteo@novaexperience.ai</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- 03 · Investitori Extra-UE -->
+      <article class="flex flex-col h-full rounded-2xl border border-warm-200 bg-warm-100/60 p-7 md:p-8 transition-colors duration-200 hover:border-sage-100">
+        <div class="flex items-baseline gap-3 mb-5">
+          <span class="text-sm font-semibold text-terracotta-900 tabular-nums leading-none">03</span>
+          <span class="text-[0.7rem] uppercase tracking-widest text-ink-500 leading-snug">Investitori Extra-UE</span>
+        </div>
+        <h3 class="text-lg md:text-xl font-medium text-ink-900 mb-4 leading-snug">
+          Residenza attraverso l'innovazione.
+        </h3>
+        <div class="space-y-3 text-sm text-ink-700 leading-relaxed">
+          <p>
+            Il programma <a href="https://investorvisa.mise.gov.it/images/documenti/Investor_Visa_for_Italy_Policy_guidance_ENG_19_07_2021.pdf#page=1.00&amp;gsr=0" target="_blank" rel="noopener noreferrer" class="text-terracotta-900 underline decoration-1 underline-offset-2 hover:text-terracotta-700 transition-colors duration-200">Visto per Investitori del governo italiano</a> permette
+            ai cittadini extra-UE di richiedere un permesso di soggiorno
+            italiano attraverso un investimento qualificante in una startup
+            innovativa italiana.
+          </p>
+          <p>
+            Sia NOVA che Officina degli Estratti sono strutturate per
+            qualificarsi. Se stai esplorando questa possibilità, un
+            investimento in una delle due società potrebbe aprire quel
+            percorso.
+          </p>
+        </div>
+        <div class="mt-auto pt-6">
+          <a href="mailto:mm@matteomartignoni.com"
+            class="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-terracotta-900 hover:text-terracotta-700 transition-colors duration-200">
+            <span aria-hidden="true">→</span>
+            <span>mm@matteomartignoni.com</span>
+          </a>
+        </div>
+      </article>
+
     </div>
-
-    <!-- 02 · Investitori -->
-    <div class="border-t border-warm-200 pt-10 md:pt-12 pb-10 md:pb-12">
-      <div class="flex items-baseline gap-3 mb-5">
-        <span class="text-xs uppercase tracking-widest text-terracotta-900 tabular-nums shrink-0">02</span>
-        <span class="text-xs uppercase tracking-widest text-ink-500">Investitori · Business Angel · Fondi</span>
-      </div>
-      <h3 class="text-xl md:text-2xl font-medium text-ink-900 mb-5">
-        Due società che vale la pena guardare da vicino.
-      </h3>
-      <p class="text-sm text-ink-700 leading-relaxed mb-4">
-        <a href="https://novaexperience.ai" target="_blank" rel="noopener noreferrer" class="text-terracotta-900 underline decoration-1 underline-offset-2 hover:text-terracotta-700 transition-colors duration-200">NOVA</a> è una società di esperienze AI che sviluppa una piattaforma
-        proprietaria per musei e istituzioni culturali. Officina degli
-        Estratti sviluppa ingredienti cosmetici di alta gamma da
-        sottoprodotti animali certificati del territorio parmense, con una
-        piattaforma AI per la qualità e la standardizzazione.
-      </p>
-      <p class="text-sm text-ink-700 leading-relaxed mb-4">
-        Entrambe hanno piani aziendali strutturati e un percorso chiaro.
-        Entrambe sono iscritte come startup innovative italiane.
-      </p>
-      <p class="text-sm text-ink-700 leading-relaxed mb-8">
-        Cerchiamo partner che possano rafforzare la nostra governance,
-        non solo fornire capitale. Se il lavoro ti interessa, sono aperto
-        a una conversazione.
-      </p>
-      <a
-        href="mailto:matteo@novaexperience.ai"
-        class="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-terracotta-900 hover:text-terracotta-700 transition-colors duration-200"
-      >
-        <span aria-hidden="true">→</span>
-        <span>matteo@novaexperience.ai</span>
-      </a>
-    </div>
-
-    <!-- 03 · Investitori Extra-UE -->
-    <div class="border-t border-warm-200 pt-10 md:pt-12 pb-10 md:pb-12">
-      <div class="flex items-baseline gap-3 mb-5">
-        <span class="text-xs uppercase tracking-widest text-terracotta-900 tabular-nums shrink-0">03</span>
-        <span class="text-xs uppercase tracking-widest text-ink-500">Investitori Extra-UE</span>
-      </div>
-      <h3 class="text-xl md:text-2xl font-medium text-ink-900 mb-5">
-        Residenza attraverso l'innovazione.
-      </h3>
-      <p class="text-sm text-ink-700 leading-relaxed mb-4">
-        Il programma <a href="https://investorvisa.mise.gov.it/images/documenti/Investor_Visa_for_Italy_Policy_guidance_ENG_19_07_2021.pdf#page=1.00&amp;gsr=0" target="_blank" rel="noopener noreferrer" class="text-terracotta-900 underline decoration-1 underline-offset-2 hover:text-terracotta-700 transition-colors duration-200">Visto per Investitori del governo italiano</a> permette
-        ai cittadini extra-UE di richiedere un permesso di soggiorno
-        italiano attraverso un investimento qualificante in una startup
-        innovativa italiana.
-      </p>
-      <p class="text-sm text-ink-700 leading-relaxed mb-8">
-        Sia NOVA che Officina degli Estratti sono strutturate per
-        qualificarsi. Se stai esplorando questa possibilità, un
-        investimento in una delle due società potrebbe aprire quel
-        percorso.
-      </p>
-      <a
-        href="mailto:mm@matteomartignoni.com"
-        class="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-terracotta-900 hover:text-terracotta-700 transition-colors duration-200"
-      >
-        <span aria-hidden="true">→</span>
-        <span>mm@matteomartignoni.com</span>
-      </a>
-    </div>
-
-    <div class="border-t border-warm-200" aria-hidden="true"></div>
-
   </section>
 
 </BaseLayout>
