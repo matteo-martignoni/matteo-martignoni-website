@@ -97,9 +97,9 @@ export const thinkPractices: Record<ThinkLang, ThinkPractice[]> = {
       description:
         "The noble art of marketing, from the conception of a product or service to its market release. A delicate exercise that teaches you to navigate the steps in between, and the people whose sign-off you need to bring an idea to light. Part politics, part damage control.",
       slots: [
-        { subject: "Aēsop", caption: "Mouthwash.", src: img("marketing-end-to-end", 1) },
-        { subject: "NOVA", caption: "Exhibition.", src: img("marketing-end-to-end", 2) },
-        { subject: "Tacit", caption: "", src: img("marketing-end-to-end", 3) },
+        { subject: "Aēsop", caption: "A refreshing product and a bet for the whole company. Many codes were rewritten to make room for an unconventional take on mouth wellbeing. The packaging features a masculine bottle, rather different from the brand’s unisex approach. The price is well above the conventional range for this category. The whole marketing push was supported by a sexy image hinting at the pleasure of kissing. A project that brought great fun to all those involved and possibly to those who bought it.", src: img("marketing-end-to-end", 1) },
+        { subject: "NOVA", caption: "An ambitious project, born of the idea that art and AI will eventually meet. To support this marriage, NOVA is also building a technological platform to enhance the visitors’ experience. A complex, innovative and challenging project, from inception to release, designed to push the boundaries of interactivity.", src: img("marketing-end-to-end", 2) },
+        { subject: "Tacit", caption: "The brand’s olfactory signature relied for years on two exceptionally good but unmarketable essential-oil-based perfumes. Until a new strategy was designed to build a category that has risen to the top of the profitability chart over the years. Tacit, built with IFF in New York, was the first.", src: img("marketing-end-to-end", 3) },
       ],
     },
     {
@@ -182,9 +182,9 @@ export const thinkPractices: Record<ThinkLang, ThinkPractice[]> = {
       description:
         "La nobile arte del marketing, dalla concezione di un prodotto o servizio fino alla sua uscita sul mercato. Un esercizio delicato che insegna a muoversi tra i passaggi intermedi, e tra le persone la cui approvazione serve per portare un'idea alla luce. In parte politica, in parte limitazione dei danni.",
       slots: [
-        { subject: "Aēsop", caption: "Collutorio.", src: img("marketing-end-to-end", 1) },
-        { subject: "NOVA", caption: "Mostra.", src: img("marketing-end-to-end", 2) },
-        { subject: "Tacit", caption: "", src: img("marketing-end-to-end", 3) },
+        { subject: "Aēsop", caption: "Un prodotto rinfrescante e una scommessa per l'intera azienda. Molti codici sono stati riscritti per fare spazio a un approccio non convenzionale al benessere della bocca. Il packaging presenta un flacone maschile, piuttosto diverso dall'approccio unisex del marchio. Il prezzo è ben al di sopra della fascia convenzionale per questa categoria. Tutta la spinta di marketing è stata sostenuta da un'immagine sensuale che alludeva al piacere del bacio. Un progetto che ha portato grande divertimento a tutti i coinvolti e, forse, anche a chi lo ha acquistato.", src: img("marketing-end-to-end", 1) },
+        { subject: "NOVA", caption: "Un progetto ambizioso, nato dall'idea che arte e AI prima o poi si incontreranno. Per sostenere questo matrimonio, NOVA sta costruendo anche una piattaforma tecnologica per arricchire l'esperienza dei visitatori. Un progetto complesso, innovativo e impegnativo, dall'ideazione al rilascio, pensato per spingere i confini dell'interattività.", src: img("marketing-end-to-end", 2) },
+        { subject: "Tacit", caption: "La firma olfattiva del marchio si è retta per anni su due profumi a base di oli essenziali, eccezionalmente buoni ma non commercializzabili. Finché è stata disegnata una nuova strategia per costruire una categoria che negli anni è salita in cima alla classifica della redditività. Tacit, realizzato con IFF a New York, è stato il primo.", src: img("marketing-end-to-end", 3) },
       ],
     },
     {
