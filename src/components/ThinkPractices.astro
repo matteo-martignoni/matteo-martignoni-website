@@ -18,12 +18,12 @@ const pad2 = (n: number) => String(n).padStart(2, "0");
 ---
 
 <div class="tk-acc">
-  {practices.map((p, i) => (
-    <div class:list={["tk-item", i === 0 && "open"]}>
-      <button class="tk-row" type="button" aria-expanded={i === 0 ? "true" : "false"}>
+  {practices.map((p) => (
+    <div class="tk-item">
+      <button class="tk-row" type="button" aria-expanded="false">
         <span class="tk-n">{p.number}</span>
         <span class="tk-t">{p.title}</span>
-        <span class="tk-sign" aria-hidden="true">{i === 0 ? "−" : "+"}</span>
+        <span class="tk-sign" aria-hidden="true">+</span>
       </button>
       <div class="tk-panel">
         <div class="tk-pi">
