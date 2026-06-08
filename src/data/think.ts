@@ -109,9 +109,9 @@ export const thinkPractices: Record<ThinkLang, ThinkPractice[]> = {
       description:
         "Helping an established brand change how the market reads it. Perceived as the slowest of these practices, wrongly. With the right formulation, it can lift brand fatigue quickly. Yet it must be sustained with a continuous effort and a strong conviction that a brand deserves better.",
       slots: [
-        { subject: "Diesel", caption: "Germany.", src: img("brand-repositioning", 1) },
-        { subject: "System Professional", caption: "Hair Longevity.", src: img("brand-repositioning", 2) },
-        { subject: "Public Goods", caption: "Site.", src: img("brand-repositioning", 3) },
+        { subject: "Diesel", caption: "From the start, the mission was to change the brand’s perception and align it with the rest of the world. A smart and powerful plan was implemented, boldly anticipating a 2-year decrease in turnover resulting from wholesale account cleanup and contract cuts. With discipline, this medicine did wonders, and the 3rd year saw a brand-new market emerge and flourish, changing all the KPIs and bringing them closer to the group’s.", src: img("brand-repositioning", 1) },
+        { subject: "System Professional", caption: "Part of the Wella Group, it felt it was time for a full restage of the brand. In a highly competitive segment, professional haircare, where global companies can leverage their control over hair salons, changing skin is eventually the right solution to restart the narrative of the brand. With “longevity” in mind.", src: img("brand-repositioning", 2) },
+        { subject: "Public Goods", caption: "As time passes, the need for a new self is not bizarre but rather an exercise in adaptation. When sales strategies evolve, market uncertainties expand, and new targets emerge, a brand must review how it communicates its DNA and to whom. As Public Goods did, challenging its core identity and product range.", src: img("brand-repositioning", 3) },
       ],
     },
     {
@@ -194,9 +194,9 @@ export const thinkPractices: Record<ThinkLang, ThinkPractice[]> = {
       description:
         "Aiutare un marchio affermato a cambiare il modo in cui il mercato lo legge. Percepita come la più lenta di queste pratiche, a torto. Con la formulazione giusta, può sollevare in fretta una condizione di stanchezza di marca. Ma va sostenuta con uno sforzo continuo e con la ferma convinzione che un marchio meriti di meglio.",
       slots: [
-        { subject: "Diesel", caption: "Germania.", src: img("brand-repositioning", 1) },
-        { subject: "System Professional", caption: "Hair Longevity.", src: img("brand-repositioning", 2) },
-        { subject: "Public Goods", caption: "Sito.", src: img("brand-repositioning", 3) },
+        { subject: "Diesel", caption: "Fin dall'inizio, la missione era cambiare la percezione del marchio e allinearla al resto del mondo. È stato attuato un piano intelligente e deciso, che metteva in conto con coraggio un calo del fatturato per due anni, conseguenza della pulizia degli account wholesale e del taglio dei contratti. Con disciplina, questa medicina ha fatto miracoli, e il terzo anno ha visto emergere e fiorire un mercato del tutto nuovo, cambiando tutti i KPI e avvicinandoli a quelli del gruppo.", src: img("brand-repositioning", 1) },
+        { subject: "System Professional", caption: "Parte del gruppo Wella, sentiva che era il momento di un restage completo del marchio. In un segmento altamente competitivo, l'haircare professionale, dove le aziende globali possono far leva sul controllo dei saloni, cambiare pelle è alla fine la soluzione giusta per ripartire con la narrazione del marchio. Con la “longevity” in mente.", src: img("brand-repositioning", 2) },
+        { subject: "Public Goods", caption: "Con il passare del tempo, il bisogno di un nuovo sé non è bizzarro, ma piuttosto un esercizio di adattamento. Quando le strategie di vendita evolvono, le incertezze di mercato aumentano e nuovi target emergono, un marchio deve rivedere come comunica il proprio DNA e a chi. Come ha fatto Public Goods, mettendo in discussione la propria identità di fondo e la gamma di prodotti.", src: img("brand-repositioning", 3) },
       ],
     },
     {
