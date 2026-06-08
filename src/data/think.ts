@@ -85,9 +85,9 @@ export const thinkPractices: Record<ThinkLang, ThinkPractice[]> = {
       description:
         "Designing distribution, store networks, and the texture of physical retail experience. It is an exercise that flourishes with a dynamic, well-led and agile company that understands the implications of inviting its customers to its home.",
       slots: [
-        { subject: "Aēsop", caption: "Brera store, Milan.", src: img("retail-strategy", 1) },
-        { subject: "Uniqlo", caption: "Opéra store, Paris.", src: img("retail-strategy", 2) },
-        { subject: "Surface to Air", caption: "Paris store.", src: img("retail-strategy", 3) },
+        { subject: "Aēsop", caption: "A good example of a natural, effortless distribution strategy emerged from a brand DNA that requires a “house” to dialogue with customers. The less the mediation, the clearer the intent. The next step was to turn the stores into a replacement for marketing spend, delegating architecture, design, visual merchandising, and consultants’ training to a true dive into the wonders of the brand.", src: img("retail-strategy", 1) },
+        { subject: "Uniqlo", caption: "When Uniqlo enters a new country, the discussion before profitability centres on culture. Understanding how the local customer base will adopt the newcomers is a delicate balance of research, diplomacy, persuasion, and ambassadorship. Once this is achieved and secured, the retail expansion is ensured, and the success of the formula is then extended to other countries.", src: img("retail-strategy", 2) },
+        { subject: "Surface to Air", caption: "An exceptionally talented group of creatives opened two stores in Paris and one in New York, aiming to cement the brand’s hype on the world’s coolest streets. All the premises were right, yet the complexity of the fashion business and the lack of funds told a different story. Surface to Air is no longer, but it still echoes today for its vision and creative boldness.", src: img("retail-strategy", 3) },
       ],
     },
     {
@@ -170,9 +170,9 @@ export const thinkPractices: Record<ThinkLang, ThinkPractice[]> = {
       description:
         "Disegnare la distribuzione, le reti di negozi e la trama dell'esperienza retail fisica. Un esercizio che fiorisce con un'azienda dinamica, ben guidata e agile, che comprende le implicazioni dell'invitare i propri clienti a casa propria.",
       slots: [
-        { subject: "Aēsop", caption: "Negozio Brera, Milano.", src: img("retail-strategy", 1) },
-        { subject: "Uniqlo", caption: "Negozio Opéra, Parigi.", src: img("retail-strategy", 2) },
-        { subject: "Surface to Air", caption: "Negozio di Parigi.", src: img("retail-strategy", 3) },
+        { subject: "Aēsop", caption: "Un buon esempio di strategia distributiva naturale e senza sforzo, nata da un DNA di marca che ha bisogno di una “casa” per dialogare con i clienti. Meno è la mediazione, più chiara è l'intenzione. Il passo successivo è stato trasformare i negozi in un sostituto della spesa di marketing, delegando architettura, design, visual merchandising e formazione dei consulenti a una vera immersione nelle meraviglie del marchio.", src: img("retail-strategy", 1) },
+        { subject: "Uniqlo", caption: "Quando Uniqlo entra in un nuovo Paese, la discussione prima ancora della redditività si concentra sulla cultura. Capire come la base clienti locale adotterà i nuovi arrivati è un equilibrio delicato di ricerca, diplomazia, persuasione e capacità di rappresentanza. Una volta raggiunto e consolidato questo, l'espansione retail è assicurata, e il successo della formula viene poi esteso ad altri Paesi.", src: img("retail-strategy", 2) },
+        { subject: "Surface to Air", caption: "Un gruppo di creativi di straordinario talento aprì due negozi a Parigi e uno a New York, con l'obiettivo di consolidare l'hype del marchio sulle strade più cool del mondo. Le premesse erano tutte giuste, eppure la complessità del business della moda e la mancanza di fondi raccontarono un'altra storia. Surface to Air non esiste più, ma ancora oggi riecheggia per la sua visione e l'audacia creativa.", src: img("retail-strategy", 3) },
       ],
     },
     {
