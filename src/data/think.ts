@@ -73,9 +73,9 @@ export const thinkPractices: Record<ThinkLang, ThinkPractice[]> = {
       description:
         "Above all, an exercise in trust. A company knows what it can and can't do; for the latter, there is a partner waiting to create a branch on their tree bearing your company's name. Your brand, their processes, their manufacturing, their distribution.",
       slots: [
-        { subject: "Diesel", caption: "Perfume, with L'Oréal.", src: img("licensing", 1) },
-        { subject: "Diesel", caption: "Underwear.", src: img("licensing", 2) },
-        { subject: "Diesel", caption: "Watches, with Fossil.", src: img("licensing", 3) },
+        { subject: "Diesel", caption: "A long and complex alignment with L'Oréal, which masters production, distribution and marketing of this category. Eventually, it became a success story, extended to other brands in the OTB group.", src: img("licensing", 1) },
+        { subject: "Diesel", caption: "Above all, a fun project that allowed the brand to inject its DNA in an unconventional way, well expressed at the launch event in Paris, held at the Hotel Amour.", src: img("licensing", 2) },
+        { subject: "Diesel", caption: "The collaboration with Fossil became one of the most solid and stable in the Diesel ecosystem. It flourished through creative language and brought to light exceptional pieces, season after season.", src: img("licensing", 3) },
       ],
     },
     {
@@ -158,9 +158,9 @@ export const thinkPractices: Record<ThinkLang, ThinkPractice[]> = {
       description:
         "Prima di tutto, un esercizio di fiducia. Un'azienda sa cosa può e cosa non può fare; per ciò che non può, c'è un partner pronto a far crescere sul proprio albero un ramo che porta il nome dell'azienda. Il marchio è dell'azienda. I processi, la produzione e la distribuzione, del partner.",
       slots: [
-        { subject: "Diesel", caption: "Profumo, con L'Oréal.", src: img("licensing", 1) },
-        { subject: "Diesel", caption: "Underwear.", src: img("licensing", 2) },
-        { subject: "Diesel", caption: "Orologi, con Fossil.", src: img("licensing", 3) },
+        { subject: "Diesel", caption: "Un allineamento lungo e complesso con L'Oréal, che padroneggia produzione, distribuzione e marketing di questa categoria. Alla fine è diventato un caso di successo, esteso ad altri marchi del gruppo OTB.", src: img("licensing", 1) },
+        { subject: "Diesel", caption: "Soprattutto un progetto divertente, che ha permesso al marchio di iniettare il proprio DNA in modo non convenzionale, ben espresso all'evento di lancio a Parigi, all'Hotel Amour.", src: img("licensing", 2) },
+        { subject: "Diesel", caption: "La collaborazione con Fossil è diventata una delle più solide e stabili nell'ecosistema Diesel. È fiorita attraverso il linguaggio creativo e ha portato alla luce pezzi eccezionali, stagione dopo stagione.", src: img("licensing", 3) },
       ],
     },
     {
