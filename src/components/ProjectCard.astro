@@ -238,5 +238,24 @@ const hasVideo = !!videoPath;
         }
       });
     });
+
+    // Open the card targeted by the URL hash (e.g. a deep link from /circle),
+    // both on initial load and on later hash changes. Setting .open fires the
+    // toggle handler above, which closes the others and scrolls it into view.
+    function openFromHash() {
+      const id = decodeURIComponent(location.hash.slice(1));
+      if (!id) return;
+      const target = document.getElementById(id) as HTMLDetailsElement | null;
+      if (!target || !target.classList.contains('project')) return;
+      if (!target.open) {
+        target.open = true;
+      } else {
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 12, behavior: 'smooth' });
+        });
+      }
+    }
+    if (location.hash) requestAnimationFrame(openFromHash);
+    window.addEventListener('hashchange', openFromHash);
   });
 </script>

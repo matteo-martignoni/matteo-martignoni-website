@@ -6,8 +6,8 @@ lang: "it"
 order: 1
 role: "Fondatore, Aēsop"
 portrait: /images/maestri/dennis-paphitis.png
-projectSlug: "aesop-italia"
-projectLabel: "Aēsop Italia, 2015 — 2016"
+projectSlug: "aesop-headquarters"
+projectLabel: "Lavorare insieme alla sede Aēsop"
 ---
 
 > “Credo che il motivo per cui ho avviato la mia azienda di cosmetici sia che non ero abbastanza paziente per fare il filosofo, né abbastanza tollerante per fare l'architetto.”

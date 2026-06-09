@@ -147,25 +147,9 @@ const pad2 = (n: number) => String(n).padStart(2, "0");
   @media (hover: none) {
     .tk-ph-overlay { opacity: 0; }
   }
-  /* Strobe — different cadence per slot so the three are not in sync. */
-  .tk-media .tk-ph:nth-child(1) { --tk-strobe-dur: 460ms; }
-  .tk-media .tk-ph:nth-child(2) { --tk-strobe-dur: 600ms; }
-  .tk-media .tk-ph:nth-child(3) { --tk-strobe-dur: 520ms; }
-  @keyframes tk-strobe {
-    0%   { opacity: 0; }
-    12%  { opacity: 0.85; }
-    24%  { opacity: 0; }
-    40%  { opacity: 0.9; }
-    56%  { opacity: 0; }
-    72%  { opacity: 0.7; }
-    100% { opacity: 0; }
-  }
-  .tk-ph-overlay.is-strobe {
-    animation: tk-strobe var(--tk-strobe-dur, 500ms) linear 1 both;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .tk-ph-overlay.is-strobe { animation: none; }
-  }
+  /* Touch: the filter shows when the card opens, then fades out after a
+     short delay (the delay is timed in JS). */
+  .tk-ph-overlay.tk-timed { opacity: 1; }
 
   /* ── Lightbox overlay ─────────────────────────────────────── */
   .tk-lb {
@@ -237,7 +221,7 @@ const pad2 = (n: number) => String(n).padStart(2, "0");
   (function () {
     const items = Array.prototype.slice.call(document.querySelectorAll(".tk-item"));
     const isTouch = window.matchMedia("(hover: none)").matches;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const filterTimers = new Map<HTMLElement, number>();
     function setH(it: Element) {
       const panel = it.querySelector(".tk-panel") as HTMLElement | null;
       if (!panel) return;
@@ -282,14 +266,19 @@ const pad2 = (n: number) => String(n).padStart(2, "0");
         if (!wasOpen) {
           window.scrollTo({ top: beforeTop - collapseAbove - 12, behavior: "smooth" });
         }
-        // On touch devices there is no hover, so play a short strobe on the
-        // opened card's photos (each with its own cadence) to draw the eye,
-        // then leave them unfiltered.
-        if (!wasOpen && isTouch && !reduced) {
+        // On touch devices there is no hover: show the filter on open, then
+        // let it fade away after 3 seconds, inviting a tap in the meantime.
+        if (!wasOpen && isTouch) {
           it.querySelectorAll(".tk-ph-overlay").forEach((ov) => {
-            ov.classList.remove("is-strobe");
-            void (ov as HTMLElement).offsetWidth;
-            ov.classList.add("is-strobe");
+            const el = ov as HTMLElement;
+            const prev = filterTimers.get(el);
+            if (prev) clearTimeout(prev);
+            el.classList.add("tk-timed");
+            const id = window.setTimeout(() => {
+              el.classList.remove("tk-timed");
+              filterTimers.delete(el);
+            }, 3000);
+            filterTimers.set(el, id);
           });
         }
       });

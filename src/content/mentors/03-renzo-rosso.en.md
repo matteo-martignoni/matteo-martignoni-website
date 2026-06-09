@@ -7,7 +7,7 @@ order: 3
 role: "Founder, Diesel and OTB Group"
 portrait: /images/maestri/renzo-rosso.png
 projectSlug: "diesel"
-projectLabel: "Diesel, 2001 — 2007"
+projectLabel: "Working together at Diesel HQ"
 ---
 
 > “I have always been more interested in imperfection, as it is what stands out from the crowd.”

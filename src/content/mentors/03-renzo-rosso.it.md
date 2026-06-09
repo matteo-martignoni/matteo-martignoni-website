@@ -7,7 +7,7 @@ order: 3
 role: "Fondatore, Diesel e Gruppo OTB"
 portrait: /images/maestri/renzo-rosso.png
 projectSlug: "diesel"
-projectLabel: "Diesel, 2001 — 2007"
+projectLabel: "Lavorare insieme alla sede Diesel"
 ---
 
 > “Sono sempre stato più interessato all'imperfezione, poiché è quella che spicca nella massa.”
