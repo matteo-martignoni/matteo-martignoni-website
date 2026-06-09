@@ -1,7 +1,7 @@
 ---
 number: "08"
 slug: "eastpak-emea"
-title: "Eastpak EMEA"
+title: "Eastpak"
 lang: "en"
 order: 8
 role: "EMEA Marketing Director"

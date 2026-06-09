@@ -1,7 +1,7 @@
 ---
 number: "02"
 slug: "nova-srl"
-title: "NOVA srl"
+title: "Nova"
 lang: "it"
 order: 2
 role: "Co-fondatore e CEO"

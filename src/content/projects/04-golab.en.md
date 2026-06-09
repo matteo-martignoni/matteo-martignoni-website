@@ -1,7 +1,7 @@
 ---
 number: "04"
 slug: "golab"
-title: "GOLAB"
+title: "Golab"
 lang: "en"
 order: 4
 role: "Strategy Director, Partner"
