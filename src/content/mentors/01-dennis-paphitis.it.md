@@ -10,6 +10,6 @@ projectSlug: "aesop-italia"
 projectLabel: "Aēsop Italia, 2015 — 2016"
 ---
 
-> “Il design è in fondo un processo di eliminazione del superfluo: è completo quando non resta più nulla da togliere, riducendo l'inutile e arrivando a una soluzione sensuale e seducente. È un atto d'amore, più che velocità e tentativi isterici di accontentare tutti.”
+> “Credo che il motivo per cui ho avviato la mia azienda di cosmetici sia che non ero abbastanza paziente per fare il filosofo, né abbastanza tollerante per fare l'architetto.”
 
-Tutto questo descrive una persona che conosce sé stessa, il proprio gusto e il proprio percorso, fatto di avventure, battute d'arresto e influenze culturali figlie degli incontri lungo la strada. Tutto è racchiuso nella sua sensibilità verso lo sforzo umano. Nato a Melbourne in una comunità di matrice greca, quasi estranea alla scena conservatrice dell'Australia degli anni '60 e '70, il rivoluzionario impatto di Aesop sull'industria cosmetica globale rivela il profondo talento del suo creatore.
+Uomo di straordinaria cultura e animo profondamente sensibile, è stato formato dall'eredità duratura del Grand Tour europeo. Nato e cresciuto nella comunità greca di Melbourne negli anni '60 conservatori, ha portato quella doppia influenza in una visione singolare, capace di dare vita a uno dei marchi cosmetici più desiderati, eleganti e sofisticati al mondo.
