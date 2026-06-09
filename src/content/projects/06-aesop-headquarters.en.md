@@ -16,12 +16,4 @@ meta:
     value: "18 countries, 300+ stores"
 ---
 
-In Paris I was approached by Aēsop for the position of General Manager for Marketing, Creative and Product, based in Melbourne. I said yes and moved to Australia.
-
-At headquarters I worked alongside Dennis Paphitis, the founder, to structure the marketing and product division. The work was precise: translate his creative and ethical vision into tools, procedures, and dependencies that the company could use to grow internationally without losing what it was.
-
-When I arrived, Aēsop was turning over 80 million Australian dollars with 30 percent annual growth. The strategy ran through owned stores, many of them opening in new markets every year. That meant working across every department at headquarters: the identity of the brand, so strong in Australia, had to be understood and supported in countries that had never seen it before.
-
-The project I am most attached to is the creation of the fragrance category. Working with Dennis, with IFF, and with perfumers of real talent, we decoded the olfactory signature of the brand and laid the foundations for what is today one of Aēsop's most significant product lines. The line is still growing.
-
-The other work that mattered was the organisational one. New departments, new teams, new procedures, all of it built with a DNA that put respect for the product above profit, and ethics above growth. It is harder than it sounds when a company is expanding at 30 percent per year.
+At Aēsop’s Melbourne headquarters, I collaborated with founder Dennis Paphitis to develop the marketing and product divisions. My role involved translating his creative and ethical vision into practical tools, processes, and dependencies to support the company’s international growth while maintaining its core values. When I started, Aēsop was generating over 80 million AUD with a 30% annual growth rate. The strategy focused on expanding owned stores, many of which opened in new markets each year. This required coordinating across all departments, ensuring that the brand’s strong Australian identity was understood and embraced in unfamiliar markets. A project close to my heart was establishing the fragrance category. Working with Dennis, IFF, and talented perfumers, we analysed the brand’s olfactory signature and built the foundation for what is now one of Aēsop’s key product lines, which continues to grow. Another important focus was organisational development: creating new departments, teams, and procedures, all rooted in a DNA that prioritises respect for the product and ethics over profit and growth.

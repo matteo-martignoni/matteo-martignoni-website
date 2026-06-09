@@ -16,8 +16,4 @@ meta:
     value: "Fashion, art"
 ---
 
-Golab is a boutique agency founded by Giorgio Bartoli, a creative entrepreneur who I have known for 25 years. I support its most complex pitches, the ones that needed a strategic vision alongside the creative work. The collaboration grew into something stable by 2017.
-
-At Golab I work alongside the creative team on the moments that need both: strategic positioning for a new brand, repositioning for an established one, the pitches where the client needs to see a future as well as a campaign.
-
-A few years later, with Golab as the partner, we co-founded Nova.
+Golab is a boutique agency founded by Giorgio Bartoli, a creative entrepreneur I’ve known for 25 years. I assist with its most challenging pitches by offering strategic support alongside the creative efforts. The agency has a diverse portfolio, ranging from art installations to advertising campaigns. Our collaboration became stable by 2017, and a few years afterward, we co-founded Nova with Golab as a partner.

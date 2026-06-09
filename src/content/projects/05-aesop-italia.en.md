@@ -16,10 +16,4 @@ meta:
     value: "18 countries, 300+ stores"
 ---
 
-After three years in Melbourne at Aēsop headquarters, I asked the company for the direction of a country. I wanted to build a market from zero, not just inform one from above.
-
-I moved to Milan and opened Aēsop Italy. From zero meant from zero. The business unit, the office, the back-office structure, the hiring and training of the retail team, the relationships with the city, the openings of the first stores in Milan, the aggressive plan for the years that followed.
-
-Italy was a delicate market for Aēsop. A country with strong incumbent luxury beauty brands, deep traditions in apothecary and perfumery, and a customer used to being courted. The launch had to be confident but quiet, in the brand's voice. Stores opened, the team grew, the work was good.
-
-Then I moved on.
+After spending three years at Aēsop headquarters in Melbourne, I faced a new challenge in developing a market from the ground up in the country. This involved actively building the market rather than merely overseeing from a higher level. When I moved to Milan, I established Aēsop Italy, focusing on setting up operations, developing the back-office structure, recruiting and training the retail team, cultivating relationships within the city, and opening the first stores in Milan.

@@ -16,8 +16,4 @@ meta:
     value: "New York, Parigi, Shanghai, Londra, Milano"
 ---
 
-Reflex Group è un'agenzia internazionale con uffici in tutto il mondo. Nel 2022 mi hanno chiesto di aprire e dirigere quello italiano.
-
-Il mio lavoro ha due lati. Sui progetti italiani sono il partner senior sul campo, dalla strategia all'esecuzione. Sui progetti internazionali contribuisco alla strategia di marketing come parte del team globale. I due lati si alimentano a vicenda: quello che imparo a Milano informa il lavoro a New York o Shanghai, e viceversa.
-
-Reflex attrae marchi importanti nella moda, nella bellezza e nell'automotive. Il team internazionale è serio e capace. Ogni progetto è una sfida vera, e il lavoro resta a un livello alto.
+Reflex Group è un'agenzia internazionale fondata da Luc Besnier, con uffici in tutto il mondo. Nel 2022 ho fondato la filiale italiana. Il mio ruolo ha due aspetti: sui progetti italiani sono il partner senior, dalla strategia all'esecuzione, mentre sui progetti internazionali contribuisco alla strategia di marketing come parte del team globale. Le intuizioni che nascono a Milano informano il lavoro a New York e Shanghai, e viceversa, creando uno scambio di reciproco beneficio. Reflex attrae marchi importanti nella moda, nella bellezza e nell'automotive. Il team internazionale è dedicato e capace. Ogni progetto è una sfida, e la qualità del lavoro resta costantemente alta.
