@@ -11,10 +11,6 @@ interface Props {
   projectLabel?: string;
   linkPrefix?: string;
   isFirst?: boolean;
-  /** Enlarge the portrait by ~50% on mobile only (desktop unchanged) */
-  portraitMobileBoost?: boolean;
-  /** Shrink the portrait by 25% (both mobile and desktop) */
-  portraitShrink?: boolean;
 }
 const {
   name,
@@ -24,15 +20,11 @@ const {
   projectLabel,
   linkPrefix = 'A project we worked on',
   isFirst = false,
-  portraitMobileBoost = false,
-  portraitShrink = false,
 } = Astro.props;
 
-const portraitWidth = portraitShrink
-  ? 'w-[6.75rem] md:w-[8.25rem]'
-  : portraitMobileBoost
-    ? 'w-[13.5rem] md:w-44'
-    : 'w-36 md:w-44';
+// All three portraits share the same 560×700 canvas and head scale
+// (harmonized to the Renzo baseline), so they display at one uniform width.
+const portraitWidth = 'w-[13.5rem] md:w-44';
 ---
 <details
   class="maestro group border-t border-warm-200 py-10 md:py-12"
