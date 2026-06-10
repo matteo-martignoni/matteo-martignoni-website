@@ -13,6 +13,8 @@ interface Props {
   isFirst?: boolean;
   /** Enlarge the portrait by ~50% on mobile only (desktop unchanged) */
   portraitMobileBoost?: boolean;
+  /** Shrink the portrait by 25% (both mobile and desktop) */
+  portraitShrink?: boolean;
 }
 const {
   name,
@@ -23,7 +25,14 @@ const {
   linkPrefix = 'A project we worked on',
   isFirst = false,
   portraitMobileBoost = false,
+  portraitShrink = false,
 } = Astro.props;
+
+const portraitWidth = portraitShrink
+  ? 'w-[6.75rem] md:w-[8.25rem]'
+  : portraitMobileBoost
+    ? 'w-[13.5rem] md:w-44'
+    : 'w-36 md:w-44';
 ---
 <details
   class="maestro group border-t border-warm-200 py-10 md:py-12"
@@ -65,7 +74,7 @@ const {
 
     <!-- Right: illustrated portrait (optional) -->
     {portrait && (
-      <div class:list={[portraitMobileBoost ? "w-[13.5rem]" : "w-36", "md:w-44 shrink-0 self-start"]}>
+      <div class:list={[portraitWidth, "shrink-0 self-start"]}>
         <img
           src={portrait}
           alt=""
