@@ -19,10 +19,25 @@ const {
 } = Astro.props;
 
 // Canonical + language alternates, derived from the current path.
-// EN lives at the root, IT under /it/ (mirrors Header.astro).
+// Section slugs are localised (Think↔Pensiero, Make↔Manualità, etc.), so a
+// naive /it prefix swap yields non-existent URLs (404) and breaks the hreflang
+// cluster — Google then declines to index. Use the same explicit map as
+// Header.astro, and emit trailing-slash URLs so the alternates match the
+// canonical exactly (no hreflang → redirect).
+const routeMap = [
+  { en: '/',       it: '/it/'          },
+  { en: '/think',  it: '/it/pensiero'  },
+  { en: '/make',   it: '/it/manualita' },
+  { en: '/circle', it: '/it/maestri'   },
+  { en: '/visit',  it: '/it/bottega'   },
+];
 const path = Astro.url.pathname;
-const enPath = path.startsWith('/it') ? path.replace(/^\/it/, '') || '/' : path;
-const itPath = path.startsWith('/it') ? path : '/it' + (path === '/' ? '/' : path);
+const norm = (p: string) => (p !== '/' && p.endsWith('/') ? p.slice(0, -1) : p);
+const withSlash = (p: string) => (p.endsWith('/') ? p : p + '/');
+const here = norm(path);
+const pair = routeMap.find((r) => norm(r.en) === here || norm(r.it) === here);
+const enPath = withSlash(pair ? pair.en : path);
+const itPath = withSlash(pair ? pair.it : path);
 
 const canonical = new URL(path, Astro.site).href;
 const enHref = new URL(enPath, Astro.site).href;
