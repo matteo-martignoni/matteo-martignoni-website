@@ -21,10 +21,18 @@ const ideas = [
   },
 ];
 
-const pillars = [
-  { href: r.amsa, n: 'Pillar 01', title: 'Technology', desc: 'Multimodal spectroscopic agent, the chain causal datum and Digital Lipid Passport: the technological core of OdE.' },
-  { href: r.mercato, n: 'Pillar 02', title: 'Market', desc: 'The validation: size, trends, competition and the Digital Product Passport regulatory window.' },
-  { href: r.visione, n: 'Pillar 03', title: 'Vision', desc: 'The trajectory: from producer to multi-market supplier, AMSA’s three blue oceans.' },
+// Navigation to the spine sections (the what). Names are distinct from the
+// "The vision" ideas: no word repeats between the two sections.
+const sections = [
+  { href: r.amsa, title: 'AMSA', desc: 'The multimodal spectroscopic agent that reads every batch and signs its Digital Lipid Passport.' },
+  { href: r.mercato, title: 'Market', desc: 'The validation: size, trends, competition and the Digital Product Passport regulatory window.' },
+  { href: r.visione, title: 'Trajectory', desc: 'From niche producer to multi-market qualification supplier: AMSA’s three blue oceans.' },
+];
+
+// The two doors, one per audience. Visually distinct from the spine cards.
+const doors = [
+  { href: r.investitori, title: 'Investors', desc: 'The investment thesis, the incentives for innovative startups in Italy and the routes open to non-EU investors.' },
+  { href: r.ricerca, title: 'Research', desc: 'The open questions, the method and the decisive provenance-to-stability experiment: an invitation to research groups.' },
 ];
 ---
 <OdeLayout title={m.title} description={m.description} lang={lang}>
@@ -61,14 +69,25 @@ const pillars = [
     </div>
   </section>
 
-  <section class="block" aria-label="The pillars">
-    <p class="ode-eyebrow block-eyebrow">The three pillars</p>
+  <section class="block" aria-label="Explore the project">
+    <p class="ode-eyebrow block-eyebrow">Explore the project</p>
     <nav class="pillars" aria-label="Project sections">
-      {pillars.map((p) => (
+      {sections.map((p) => (
         <a class="pillar" href={p.href}>
-          <span class="pillar-n">{p.n}</span>
           <span class="pillar-title">{p.title}</span>
           <span class="pillar-desc">{p.desc}</span>
+        </a>
+      ))}
+    </nav>
+  </section>
+
+  <section class="block" aria-label="The two doors">
+    <p class="ode-eyebrow block-eyebrow">Two doors, two audiences</p>
+    <nav class="doors" aria-label="Investors and research">
+      {doors.map((d) => (
+        <a class="door" href={d.href}>
+          <span class="door-title">{d.title}<span class="door-arrow" aria-hidden="true">→</span></span>
+          <span class="door-desc">{d.desc}</span>
         </a>
       ))}
     </nav>
@@ -123,9 +142,27 @@ const pillars = [
     transition: border-color 160ms ease, transform 160ms ease;
   }
   .pillar:hover { border-color: var(--ode-accent); transform: translateY(-2px); }
-  .pillar-n { font-family: var(--ode-font-mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ode-muted); }
   .pillar-title { font-size: 1.3rem; font-weight: 500; color: var(--ode-ink); }
   .pillar-desc { font-size: 0.9rem; line-height: 1.5; color: var(--ode-body); }
+
+  /* The two audience doors: distinct from the spine cards — green-soft,
+     accent-bordered, with an arrow that signals "an entry point". */
+  .doors { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1rem; }
+  .door {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-decoration: none;
+    background: var(--green-soft);
+    border: 1px solid var(--green-border);
+    border-radius: var(--ode-radius);
+    padding: 1.4rem 1.5rem;
+    transition: transform 160ms ease;
+  }
+  .door:hover { transform: translateY(-2px); }
+  .door-title { font-size: 1.3rem; font-weight: 500; color: var(--ode-ink); display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem; }
+  .door-arrow { color: var(--accent); font-size: 1.1rem; }
+  .door-desc { font-size: 0.9rem; line-height: 1.5; color: var(--ode-body); }
 
   @media (max-width: 700px) {
     .hero { grid-template-columns: 1fr; gap: 1rem; }

@@ -22,11 +22,18 @@ const ideas = [
   },
 ];
 
-// I tre pilastri di approfondimento.
-const pillars = [
-  { href: r.amsa, n: 'Pilastro 01', title: 'Tecnologia', desc: 'Agente spettroscopico multimodale, dato causale di filiera e Passaporto Lipidico Digitale: il motore tecnologico di OdE.' },
-  { href: r.mercato, n: 'Pilastro 02', title: 'Mercato', desc: 'La validazione: dimensione, trend, competizione e la finestra normativa del Digital Product Passport.' },
-  { href: r.visione, n: 'Pilastro 03', title: 'Visione', desc: 'Lo sviluppo: da produttore a fornitore multi-mercato, i tre spazi azzurri di AMSA.' },
+// Navigazione alle sezioni di spina (il cosa). I nomi sono distinti dalle
+// idee di "La visione": nessuna parola si ripete fra le due sezioni.
+const sections = [
+  { href: r.amsa, title: 'AMSA', desc: 'L’agente spettroscopico multimodale che legge ogni lotto e ne firma il Passaporto Lipidico Digitale.' },
+  { href: r.mercato, title: 'Mercato', desc: 'La validazione: dimensione, trend, competizione e la finestra normativa del Digital Product Passport.' },
+  { href: r.visione, title: 'Sviluppo', desc: 'Da produttore di nicchia a fornitore di qualificazione multi-mercato: i tre spazi azzurri di AMSA.' },
+];
+
+// Le due porte, una per pubblico. Visivamente distinte dalle sezioni di spina.
+const doors = [
+  { href: r.investitori, title: 'Investitori', desc: 'La tesi di investimento, gli incentivi per le startup innovative in Italia e i percorsi per investitori extra-UE.' },
+  { href: r.ricerca, title: 'Ricerca', desc: 'Le domande aperte, il metodo e l’esperimento decisivo provenienza verso stabilità: un invito ai gruppi di ricerca.' },
 ];
 ---
 <OdeLayout title={m.title} description={m.description} lang={lang}>
@@ -63,14 +70,25 @@ const pillars = [
     </div>
   </section>
 
-  <section class="block" aria-label="I pilastri">
-    <p class="ode-eyebrow block-eyebrow">I tre pilastri</p>
+  <section class="block" aria-label="Esplora il progetto">
+    <p class="ode-eyebrow block-eyebrow">Esplora il progetto</p>
     <nav class="pillars" aria-label="Sezioni del progetto">
-      {pillars.map((p) => (
+      {sections.map((p) => (
         <a class="pillar" href={p.href}>
-          <span class="pillar-n">{p.n}</span>
           <span class="pillar-title">{p.title}</span>
           <span class="pillar-desc">{p.desc}</span>
+        </a>
+      ))}
+    </nav>
+  </section>
+
+  <section class="block" aria-label="Le due porte">
+    <p class="ode-eyebrow block-eyebrow">Due porte, due pubblici</p>
+    <nav class="doors" aria-label="Investitori e ricerca">
+      {doors.map((d) => (
+        <a class="door" href={d.href}>
+          <span class="door-title">{d.title}<span class="door-arrow" aria-hidden="true">→</span></span>
+          <span class="door-desc">{d.desc}</span>
         </a>
       ))}
     </nav>
@@ -125,9 +143,27 @@ const pillars = [
     transition: border-color 160ms ease, transform 160ms ease;
   }
   .pillar:hover { border-color: var(--ode-accent); transform: translateY(-2px); }
-  .pillar-n { font-family: var(--ode-font-mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ode-muted); }
   .pillar-title { font-size: 1.3rem; font-weight: 500; color: var(--ode-ink); }
   .pillar-desc { font-size: 0.9rem; line-height: 1.5; color: var(--ode-body); }
+
+  /* The two audience doors: distinct from the spine cards — green-soft,
+     accent-bordered, with an arrow that signals "an entry point". */
+  .doors { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1rem; }
+  .door {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-decoration: none;
+    background: var(--green-soft);
+    border: 1px solid var(--green-border);
+    border-radius: var(--ode-radius);
+    padding: 1.4rem 1.5rem;
+    transition: transform 160ms ease;
+  }
+  .door:hover { transform: translateY(-2px); }
+  .door-title { font-size: 1.3rem; font-weight: 500; color: var(--ode-ink); display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem; }
+  .door-arrow { color: var(--accent); font-size: 1.1rem; }
+  .door-desc { font-size: 0.9rem; line-height: 1.5; color: var(--ode-body); }
 
   @media (max-width: 700px) {
     .hero { grid-template-columns: 1fr; gap: 1rem; }
