@@ -30,13 +30,16 @@ const r = odeRoutes[lang];
 const other: OdeLang = lang === 'it' ? 'en' : 'it';
 const otherHome = odeRoutes[other].home;
 
-const navItems: { key: OdeRouteKey; label: string; href: string }[] = [
-  { key: 'amsa', label: t.nav.amsa, href: r.amsa },
-  { key: 'mercato', label: t.nav.mercato, href: r.mercato },
+// Order puts the why before the how: vision and market first, then the
+// technology, then the supporting spine. The two "doors" — Investors and
+// Research, one per audience — sit at the tail, set apart by a separator.
+const navItems: { key: OdeRouteKey; label: string; href: string; door?: boolean }[] = [
   { key: 'visione', label: t.nav.visione, href: r.visione },
+  { key: 'mercato', label: t.nav.mercato, href: r.mercato },
+  { key: 'amsa', label: t.nav.amsa, href: r.amsa },
   { key: 'tracciabilita', label: t.nav.tracciabilita, href: r.tracciabilita },
   { key: 'normativa', label: t.nav.normativa, href: r.normativa },
-  { key: 'investitori', label: t.nav.investitori, href: r.investitori },
+  { key: 'investitori', label: t.nav.investitori, href: r.investitori, door: true },
 ];
 ---
 <!DOCTYPE html>
@@ -80,12 +83,17 @@ const navItems: { key: OdeRouteKey; label: string; href: string }[] = [
       </button>
 
       <nav id="ode-nav" class="ode-nav" aria-label="OdE navigation">
-        {navItems.map((item) => (
-          <a
-            href={item.href}
-            class:list={['ode-nav-link', active === item.key && 'is-active']}
-            aria-current={active === item.key ? 'page' : undefined}
-          >{item.label}</a>
+        {navItems.map((item, i) => (
+          <>
+            {item.door && !navItems[i - 1]?.door && (
+              <span class="ode-nav-sep" aria-hidden="true"></span>
+            )}
+            <a
+              href={item.href}
+              class:list={['ode-nav-link', item.door && 'is-door', active === item.key && 'is-active']}
+              aria-current={active === item.key ? 'page' : undefined}
+            >{item.label}</a>
+          </>
         ))}
         <a href={otherHome} class="ode-lang">{other.toUpperCase()}</a>
       </nav>
@@ -163,6 +171,17 @@ const navItems: { key: OdeRouteKey; label: string; href: string }[] = [
       }
       .ode-nav-link:hover { color: var(--ode-ink); }
       .ode-nav-link.is-active { color: var(--ode-accent); font-weight: 500; }
+      /* The two audience "doors" (Investors, Research) read as entry points,
+         not spine items: accent ink, set off by a thin vertical rule. */
+      .ode-nav-sep {
+        align-self: center;
+        width: 1px; height: 1.1rem;
+        background: var(--ode-rule);
+        margin: 0 0.15rem;
+      }
+      .ode-nav-link.is-door { color: var(--ode-accent); }
+      .ode-nav-link.is-door:hover { color: var(--ode-ink); }
+      .ode-nav-link.is-door.is-active { font-weight: 500; }
       .ode-lang {
         font-size: 0.75rem;
         font-family: var(--ode-font-mono);
@@ -230,6 +249,7 @@ const navItems: { key: OdeRouteKey; label: string; href: string }[] = [
         }
         .ode-header.is-open .ode-nav { display: flex; }
         .ode-nav-link { width: 100%; padding: 0.6rem 0; font-size: 0.95rem; }
+        .ode-nav-sep { align-self: stretch; width: 100%; height: 1px; margin: 0.4rem 0; }
         .ode-lang { margin-top: 0.6rem; }
       }
     </style>
