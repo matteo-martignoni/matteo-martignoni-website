@@ -29,6 +29,15 @@ const oceans = [
   },
 ];
 
+// An honest snapshot of the current state, calibrated with the site's
+// maturity grades (the same DataTag colours: fonte = today, stima = in
+// progress, bench = hypothesis).
+const today: { kind: 'fonte' | 'stima' | 'bench'; word: string; d: string }[] = [
+  { kind: 'fonte', word: 'Today', d: 'OdE is at an early stage, with a small team. The concrete present is the production of traceable cosmetic tallow and the accumulation of the provenance datum, the asset that cannot be replicated quickly.' },
+  { kind: 'stima', word: 'In progress', d: 'AMSA’s architecture is being defined: the Digital Lipid Passport is operational as a framework, the predictive models are training on the first batches and the decisive experiment is in preparation.' },
+  { kind: 'bench', word: 'Hypothesis', d: 'Expansion beyond cosmetics, Phases 2 to 4 of the roadmap below, is a reasoned and sequential direction, not a milestone already reached.' },
+];
+
 const phases = [
   { ph: 'Phase 0–1', title: 'Niche producer (today)', note: 'Traceable cosmetic tallow. AMSA is internal QC and the Passport engine. The provenance dataset accumulates — the one asset that cannot be replicated quickly.' },
   { ph: 'Phase 2', title: 'Low-risk adjacency', note: 'Extension to contiguous matrices: circular feedstock and PDO authentication. AMSA leaves cosmetics-only, staying product and service.' },
@@ -45,6 +54,23 @@ const phases = [
       cosmetics, turning OdE from a niche producer into a multi-market qualification supplier.
     </p>
   </header>
+
+  <section class="status" aria-label="Where we are today">
+    <p class="ode-eyebrow status-eyebrow">Where we are today</p>
+    <p class="status-intro">
+      Before the route, the position. An honest snapshot of the current state, calibrated with the same
+      maturity grades used across the site: what is already real, what is in progress and what remains a
+      hypothesis.
+    </p>
+    <ul class="status-list">
+      {today.map((s) => (
+        <li>
+          <span class={`ode-tag ode-tag--${s.kind}`}>{s.word}</span>
+          <p>{s.d}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
 
   <Section n="1" title="The framework travels, the moat stays home">
     <p>
@@ -108,6 +134,19 @@ const phases = [
   .hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0.4rem 0 1rem; }
   .lede { font-size: 1.1rem; line-height: 1.6; color: var(--body); }
   .note { font-size: 0.85rem; color: var(--muted); line-height: 1.5; max-width: 42rem; }
+
+  /* "Where we are today": maturity snapshot that precedes the roadmap. */
+  .status { margin: 1.6rem 0 0; padding: 1.3rem 1.4rem; background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); }
+  .status-eyebrow { margin: 0 0 0.6rem; }
+  .status-intro { font-size: 0.95rem; line-height: 1.55; color: var(--body); margin: 0 0 1rem; max-width: 44rem; }
+  .status-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.7rem; }
+  .status-list li { display: grid; grid-template-columns: 7.5rem 1fr; gap: 0.9rem; align-items: start; }
+  .status-list li p { margin: 0; font-size: 0.9rem; line-height: 1.5; color: var(--body); }
+  .status-list .ode-tag { justify-self: start; margin-top: 0.1rem; }
+  @media (max-width: 560px) {
+    .status-list li { grid-template-columns: 1fr; gap: 0.3rem; }
+  }
+
   .oceans { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 0.9rem; }
   .ocean { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.2rem 1.3rem; display: flex; flex-direction: column; gap: 0.5rem; }
   .ocean-head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }

@@ -29,6 +29,15 @@ const oceans = [
   },
 ];
 
+// Fotografia onesta dello stato attuale, calibrata con i gradi di maturità
+// del sito (gli stessi colori di DataTag: fonte = oggi, stima = in
+// costruzione, bench = ipotesi).
+const today: { kind: 'fonte' | 'stima' | 'bench'; word: string; d: string }[] = [
+  { kind: 'fonte', word: 'Oggi', d: 'OdE è in fase iniziale, con un team ridotto. Il presente concreto è la produzione di sego cosmetico tracciabile e l’accumulo del dato di provenienza, l’asset che non si replica in fretta.' },
+  { kind: 'stima', word: 'In costruzione', d: 'L’architettura di AMSA è in definizione: il Passaporto Lipidico Digitale è operativo come impianto, i modelli predittivi sono in addestramento sui primi lotti e l’esperimento decisivo è in preparazione.' },
+  { kind: 'bench', word: 'Ipotesi', d: 'L’espansione oltre il cosmetico, le Fasi 2 to 4 della roadmap qui sotto, è una direzione ragionata e sequenziale, non una tappa già raggiunta.' },
+];
+
 const phases = [
   { ph: 'Fase 0–1', title: 'Produttore di nicchia (oggi)', note: 'Sego cosmetico tracciabile. AMSA è QC interno e motore del Passaporto. Si accumula il dataset di provenienza, l’unico asset non replicabile in fretta.' },
   { ph: 'Fase 2', title: 'Adiacenza a basso rischio', note: 'Estensione alle matrici contigue: feedstock circolari e autenticazione DOP. AMSA esce dal solo cosmetico, restando prodotto e servizio.' },
@@ -45,6 +54,23 @@ const phases = [
       la cosmetica, trasformando OdE da produttore di nicchia a fornitore di qualificazione multi-mercato.
     </p>
   </header>
+
+  <section class="status" aria-label="Dove siamo oggi">
+    <p class="ode-eyebrow status-eyebrow">Dove siamo oggi</p>
+    <p class="status-intro">
+      Prima della rotta, la posizione. Una fotografia onesta dello stato attuale, calibrata con gli stessi
+      gradi di maturità usati in tutto il sito: ciò che è già reale, ciò che è in costruzione e ciò che
+      resta un’ipotesi.
+    </p>
+    <ul class="status-list">
+      {today.map((s) => (
+        <li>
+          <span class={`ode-tag ode-tag--${s.kind}`}>{s.word}</span>
+          <p>{s.d}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
 
   <Section n="1" title="Il framework viaggia, il vantaggio resta a casa">
     <p>
@@ -109,6 +135,18 @@ const phases = [
   .hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0.4rem 0 1rem; }
   .lede { font-size: 1.1rem; line-height: 1.6; color: var(--body); }
   .note { font-size: 0.85rem; color: var(--muted); line-height: 1.5; max-width: 42rem; }
+
+  /* "Dove siamo oggi": maturity snapshot that precedes the roadmap. */
+  .status { margin: 1.6rem 0 0; padding: 1.3rem 1.4rem; background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); }
+  .status-eyebrow { margin: 0 0 0.6rem; }
+  .status-intro { font-size: 0.95rem; line-height: 1.55; color: var(--body); margin: 0 0 1rem; max-width: 44rem; }
+  .status-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.7rem; }
+  .status-list li { display: grid; grid-template-columns: 7.5rem 1fr; gap: 0.9rem; align-items: start; }
+  .status-list li p { margin: 0; font-size: 0.9rem; line-height: 1.5; color: var(--body); }
+  .status-list .ode-tag { justify-self: start; margin-top: 0.1rem; }
+  @media (max-width: 560px) {
+    .status-list li { grid-template-columns: 1fr; gap: 0.3rem; }
+  }
 
   .oceans { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 0.9rem; }
   .ocean { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.2rem 1.3rem; display: flex; flex-direction: column; gap: 0.5rem; }
