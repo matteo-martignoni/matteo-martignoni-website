@@ -1,0 +1,206 @@
+---
+import OdeLayout from '../../layouts/OdeLayout.astro';
+import Section from '../../components/ode/Section.astro';
+import DataTag from '../../components/ode/DataTag.astro';
+import StatCard from '../../components/ode/StatCard.astro';
+import { odeMeta, odeRoutes } from '../../i18n/ode';
+
+const lang = 'it' as const;
+const m = odeMeta[lang].ricerca;
+const r = odeRoutes[lang];
+
+// Le domande di ricerca aperte.
+const questions = [
+  {
+    t: 'La provenienza migliora la previsione della stabilità?',
+    d: 'La domanda cardine: aggiungere le variabili di provenienza (dieta, stagione, rendering, storia del lotto) migliora in modo misurabile la previsione della stabilità ossidativa rispetto al solo spettro? È l’ipotesi che fonda il dato causale di OdE, e va falsificata, non assunta.',
+  },
+  {
+    t: 'Come si impara nel regime low-data?',
+    d: 'I lotti tracciati sono pochi e costosi da caratterizzare. Quali strategie (pre-training self-supervised, few-shot, regolarizzazione informata dalla chimica) reggono quando le etichette sono dell’ordine delle decine, non delle migliaia?',
+  },
+  {
+    t: 'Come si costruisce un dataset causale di filiera?',
+    d: 'Il dataset non è raccolto, è coltivato dentro una filiera certificata. Quali metadati di provenienza sono davvero informativi, come si appaiano spettro ed esito misurato, e come si tiene sotto controllo la covarianza biologica fra variabili?',
+  },
+];
+
+// Cosa cerchiamo in un gruppo partner.
+const partner = [
+  { k: 'Spettroscopia e chemometria', d: 'Competenze in NIR e Raman su matrici grasse, preprocessing del segnale, modelli PLS e PLS-DA, decomposizione di componenti sovrapposti.' },
+  { k: 'Modello di collaborazione', d: 'Tesi di laurea e dottorato, co-supervisione, accesso a campioni tracciati e a un caso d’uso industriale reale. Pubblicazione del metodo concordata, riservatezza sul dato di filiera.' },
+  { k: 'Co-finanziamento e bandi', d: 'Costruzione congiunta di proposte su bandi di ricerca (regionali, nazionali, europei) dove l’incontro fra bioeconomia circolare, AI e tracciabilità DOP è un tema finanziabile.' },
+];
+---
+<OdeLayout title={m.title} description={m.description} lang={lang} active="ricerca">
+  <header class="hero">
+    <p class="ode-eyebrow">Ricerca</p>
+    <h1>Una porta per chi fa ricerca</h1>
+    <p class="lede">
+      Questa pagina è un invito, rivolto da pari a gruppi di ricerca in spettroscopia, chemometria e
+      scienza dei lipidi. OdE non cerca una vetrina, cerca interlocutori per le domande che ha ancora
+      aperte. Il valore non è solo nostro: un dato causale che lega la provenienza tracciata delle filiere
+      del Parmigiano Reggiano alla stabilità dei grassi è un bene per l’intero ecosistema territoriale e
+      per la bioeconomia circolare, non per una sola azienda.
+    </p>
+  </header>
+
+  <Section n="1" title="Le domande di ricerca aperte">
+    <p>
+      Le mettiamo in chiaro, comprese quelle che potrebbero non avere la risposta che speriamo. È il modo
+      onesto di aprire un dialogo scientifico.
+    </p>
+    <div class="cards">
+      {questions.map((q) => (
+        <article class="q">
+          <h3>{q.t}</h3>
+          <p>{q.d}</p>
+        </article>
+      ))}
+    </div>
+  </Section>
+
+  <Section n="2" title="Il metodo">
+    <p>
+      L’approccio è disciplinato e baseline-first: la chemiometria matura viene prima, i modelli avanzati
+      entrano solo dove aggiungono valore misurato. Quattro scelte ne formano la spina dorsale.
+    </p>
+    <div class="method">
+      <article class="mi">
+        <span class="mi-k">Data Ladder</span>
+        <p>Il capitale di dati cresce per gradi a difendibilità crescente: fondamenta pubbliche, dato
+        esterno reale, dataset proprietario di lotti tracciati, e infine il flywheel dei lotti reali. Il
+        sottoinsieme che conta è quello con provenienza, spettro ed esito appaiati.</p>
+      </article>
+      <article class="mi">
+        <span class="mi-k">Conformal prediction</span>
+        <p>Ogni previsione esce con un intervallo a copertura garantita e un cancello
+        out-of-distribution che fa scattare l’escalation al test accreditato. L’incertezza è validata,
+        non dichiarata a parole.</p>
+      </article>
+      <article class="mi">
+        <span class="mi-k">Modelli interpretabili</span>
+        <p>La spiegazione chimica conta quanto la previsione: regioni spettrali rilevanti, coerenza con
+        la chimica nota (doppi legami, aldeidi, perossidi). Un modello che non si lascia leggere non è
+        utile a un valutatore.</p>
+      </article>
+      <article class="mi">
+        <span class="mi-k">Foundation model lipidico</span>
+        <p>Un pre-training self-supervised sul corpus non annotato di spettri produce un encoder ricco; i
+        task a valle si fine-tunano con poche etichette. È la leva contro il regime low-data.</p>
+      </article>
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Foundation/generalist model per spettroscopia vibrazionale, frontiera 2025-2026" />
+      Il metodo è pubblico e condivisibile; ciò che resta proprietario è il corpus di pre-training e il
+      dato causale di filiera. L’approfondimento tecnico vive in <a href={r.amsaTecnica}>Sotto il cofano di AMSA</a>.
+    </p>
+  </Section>
+
+  <Section n="3" title="L’esperimento decisivo, pre-registrato">
+    <p>
+      La tesi centrale non va difesa a parole, va messa alla prova prima di scalare. Per questo l’abbiamo
+      ridotta a un singolo esperimento pre-registrato, con il criterio di successo dichiarato prima di
+      guardare i dati, per evitare conferme di comodo.
+    </p>
+    <div class="gate">
+      <p class="gate-q">La provenienza migliora in modo misurabile la previsione della stabilità (induction
+      time, OSI) rispetto al solo spettro?</p>
+      <ul class="gate-proto">
+        <li>Circa 30 to 40 lotti di sego con metadati di provenienza completi <DataTag kind="stima" label="Dimensione campione di piano" />.</li>
+        <li>Acquisizione spettrale e misura dell’OSI (induction time) al Rancimat come ground truth.</li>
+        <li>Confronto pre-registrato fra un modello solo-spettro e un modello spettro più provenienza, metrica RMSE sull’induction time previsto.</li>
+        <li>Criterio di successo fissato e depositato prima dell’analisi.</li>
+      </ul>
+      <p class="gate-state">
+        <DataTag kind="stima" label="Esperimento di piano, non ancora eseguito" />
+        Stato: in costruzione. Il protocollo è definito, la raccolta dei lotti provenienza-paired è in
+        corso. L’esito, in un senso o nell’altro, è esso stesso il risultato scientifico.
+      </p>
+    </div>
+  </Section>
+
+  <Section n="4" title="Cosa cerchiamo in un gruppo partner">
+    <div class="cards">
+      {partner.map((p) => (
+        <article class="q">
+          <h3>{p.k}</h3>
+          <p>{p.d}</p>
+        </article>
+      ))}
+    </div>
+  </Section>
+
+  <Section n="5" title="Onestà sui limiti">
+    <p>
+      La calibrazione delle aspettative è parte del metodo. Distinguiamo con gli stessi tag usati in tutto
+      il sito ciò che è dimostrato, ciò che è in costruzione e ciò che resta una scommessa.
+    </p>
+    <div class="stats">
+      <StatCard value="Dimostrato" caption="La chemiometria dei lipidi è matura: composizione e proxy di insaturazione si leggono bene da spettro, in linea con la letteratura." kind="fonte" source="Letteratura NIR/Raman su acidi grassi" />
+      <StatCard value="In costruzione" caption="Il legame causale provenienza verso stabilità: plausibile e fondante, ma da validare con l’esperimento pre-registrato." kind="stima" source="Ipotesi di piano OdE, da validare" />
+      <StatCard value="Scommessa" caption="La previsione assoluta di shelf-life è una capacità emergente, condizionata da fattori esogeni (stoccaggio, packaging, luce) che lo spettro non cattura. Non un fatto." kind="bench" />
+    </div>
+    <div class="caveat">
+      <span class="caveat-k">Aspettativa calibrata</span>
+      <p>La velocità di ossidazione dipende anche da condizioni che lo spettro non vede. La provenienza ne
+      riduce una parte a monte, l’esito misurato la calibra a valle, e ogni stabilità prevista resta legata
+      al suo intervallo di confidenza. La shelf-life assoluta va trattata come obiettivo di ricerca, non
+      come prestazione acquisita.</p>
+    </div>
+  </Section>
+
+  <Section n="6" title="Apriamo un dialogo">
+    <p>
+      Se queste domande intersecano il vostro lavoro, scriveteci: una tesi, un esperimento congiunto, una
+      proposta di bando o semplicemente un confronto sul metodo.
+    </p>
+    <p class="contact">
+      <a href="mailto:martignoni.matteo@gmail.com?subject=Collaborazione%20di%20ricerca%20OdE">martignoni.matteo@gmail.com</a>
+    </p>
+    <p class="note">
+      Per il quadro applicativo e di mercato, si veda <a href={r.amsa}>la tecnologia (AMSA)</a> e la
+      <a href={r.visione}>visione di sviluppo</a>.
+    </p>
+  </Section>
+</OdeLayout>
+
+<style>
+  .hero { max-width: 46rem; padding: 0.5rem 0 1rem; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0.4rem 0 1rem; }
+  .lede { font-size: 1.1rem; line-height: 1.6; color: var(--body); }
+  .note { font-size: 0.85rem; color: var(--muted); line-height: 1.5; max-width: 44rem; }
+  .note a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; }
+  .q { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.1rem 1.2rem; }
+  .q h3 { font-size: 1rem; font-weight: 500; color: var(--ink); margin: 0 0 0.4rem; }
+  .q p { margin: 0; font-size: 0.9rem; line-height: 1.5; color: var(--body); }
+
+  .method { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; margin: 0.4rem 0 1rem; }
+  .mi { border-left: 3px solid var(--green-border); padding: 0.2rem 0 0.2rem 1rem; }
+  .mi-k { font-family: var(--ode-font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent); }
+  .mi p { margin: 0.4rem 0 0; font-size: 0.9rem; line-height: 1.5; color: var(--body); }
+
+  .gate { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.2rem 1.4rem; margin: 1.2rem 0; }
+  .gate-q { font-size: 1.05rem; color: var(--ink); font-weight: 500; margin: 0 0 0.8rem; line-height: 1.4; }
+  .gate-proto { padding-left: 1.2rem; margin: 0 0 1rem; line-height: 1.6; }
+  .gate-proto li { margin-bottom: 0.35rem; font-size: 0.9rem; color: var(--body); }
+  .gate-proto li::marker { color: var(--accent); }
+  .gate-state { font-size: 0.9rem; color: var(--body); line-height: 1.55; margin: 0; }
+  .gate-state .ode-tag { margin-right: 0.3rem; }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0.8rem; margin: 1rem 0; }
+
+  .caveat {
+    background: rgba(255, 255, 255, 0.34);
+    border-left: 3px solid var(--green-border);
+    border-radius: 0 var(--ode-radius) var(--ode-radius) 0;
+    padding: 0.8rem 1rem; margin: 1rem 0 0; max-width: 44rem;
+  }
+  .caveat-k { display: block; font-family: var(--ode-font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent); margin-bottom: 0.3rem; }
+  .caveat p { margin: 0; font-size: 0.92rem; line-height: 1.55; color: var(--body); }
+
+  .contact { font-size: 1.05rem; }
+  .contact a { color: var(--accent); font-family: var(--ode-font-mono); text-decoration: underline; text-underline-offset: 3px; }
+</style>

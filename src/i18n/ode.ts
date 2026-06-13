@@ -21,6 +21,7 @@ export const odeRoutes = {
     tracciabilita: '/OdE/tracciabilita',
     visione: '/OdE/visione',
     investitori: '/OdE/investitori',
+    ricerca: '/OdE/ricerca',
     glossario: '/OdE/glossario',
     live: '/OdE/amsa-live',
   },
@@ -33,6 +34,7 @@ export const odeRoutes = {
     tracciabilita: '/OdE/en/tracciabilita',
     visione: '/OdE/en/visione',
     investitori: '/OdE/en/investitori',
+    ricerca: '/OdE/en/ricerca',
     glossario: '/OdE/en/glossario',
     live: '/OdE/en/amsa-live',
   },
@@ -51,6 +53,7 @@ export const odeUI = {
       tracciabilita: 'Tracciabilità',
       visione: 'Visione',
       investitori: 'Investitori',
+      ricerca: 'Ricerca',
     },
     footer: {
       glossario: 'Glossario',
@@ -75,6 +78,7 @@ export const odeUI = {
       tracciabilita: 'Traceability',
       visione: 'Vision',
       investitori: 'Investors',
+      ricerca: 'Research',
     },
     footer: {
       glossario: 'Glossary',
@@ -134,6 +138,11 @@ export const odeMeta = {
       description:
         'La tesi di investimento su OdE, gli incentivi per chi investe in startup innovative in Italia e i percorsi per investitori extra-UE.',
     },
+    ricerca: {
+      title: 'Ricerca — Officina degli Estratti',
+      description:
+        'Una porta per i gruppi di ricerca: le domande aperte sulla previsione della stabilità ossidativa dei lipidi animali, il metodo (Data Ladder, conformal prediction, foundation model) e l’esperimento decisivo provenienza verso stabilità. Un invito alla collaborazione.',
+    },
     glossario: {
       title: 'Glossario — Officina degli Estratti',
       description:
@@ -185,6 +194,11 @@ export const odeMeta = {
       title: 'Investors — Officina degli Estratti',
       description:
         'The investment thesis for OdE, the incentives for investing in innovative startups in Italy and the routes open to non-EU investors.',
+    },
+    ricerca: {
+      title: 'Research — Officina degli Estratti',
+      description:
+        'A door for research groups: the open questions on predicting the oxidative stability of animal lipids, the method (Data Ladder, conformal prediction, foundation model) and the decisive provenance-to-stability experiment. An invitation to collaborate.',
     },
     glossario: {
       title: 'Glossary — Officina degli Estratti',

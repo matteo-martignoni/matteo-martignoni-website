@@ -1,0 +1,203 @@
+---
+import OdeLayout from '../../../layouts/OdeLayout.astro';
+import Section from '../../../components/ode/Section.astro';
+import DataTag from '../../../components/ode/DataTag.astro';
+import StatCard from '../../../components/ode/StatCard.astro';
+import { odeMeta, odeRoutes } from '../../../i18n/ode';
+
+const lang = 'en' as const;
+const m = odeMeta[lang].ricerca;
+const r = odeRoutes[lang];
+
+const questions = [
+  {
+    t: 'Does provenance improve stability prediction?',
+    d: 'The cardinal question: do provenance variables (diet, season, rendering, batch history) measurably improve oxidative-stability prediction over the spectrum alone? This is the hypothesis that underpins OdE’s causal datum, and it must be falsified, not assumed.',
+  },
+  {
+    t: 'How do you learn in the low-data regime?',
+    d: 'Traced batches are few and costly to characterise. Which strategies (self-supervised pre-training, few-shot, chemistry-informed regularisation) hold when labels are in the tens, not the thousands?',
+  },
+  {
+    t: 'How do you build a causal supply-chain dataset?',
+    d: 'The dataset is not collected, it is cultivated inside a certified chain. Which provenance metadata are genuinely informative, how do you pair spectrum and measured outcome, and how do you keep biological covariance between variables under control?',
+  },
+];
+
+const partner = [
+  { k: 'Spectroscopy and chemometrics', d: 'Expertise in NIR and Raman on fatty matrices, signal preprocessing, PLS and PLS-DA models, decomposition of overlapping components.' },
+  { k: 'Collaboration model', d: 'Master’s and PhD theses, co-supervision, access to traced samples and to a real industrial use case. Method publication agreed, confidentiality on the supply-chain data.' },
+  { k: 'Co-funding and grants', d: 'Jointly building proposals for research calls (regional, national, European) where the meeting of circular bioeconomy, AI and PDO traceability is a fundable theme.' },
+];
+---
+<OdeLayout title={m.title} description={m.description} lang={lang} active="ricerca">
+  <header class="hero">
+    <p class="ode-eyebrow">Research</p>
+    <h1>A door for those who do research</h1>
+    <p class="lede">
+      This page is an invitation, addressed as a peer to research groups in spectroscopy, chemometrics and
+      lipid science. OdE is not after a showcase, it is after interlocutors for the questions it still has
+      open. The value is not ours alone: a causal datum linking the traced provenance of the Parmigiano
+      Reggiano supply chains to fat stability is a good for the whole territorial ecosystem and for the
+      circular bioeconomy, not for a single company.
+    </p>
+  </header>
+
+  <Section n="1" title="The open research questions">
+    <p>
+      We state them plainly, including the ones that may not have the answer we hope for. It is the honest
+      way to open a scientific dialogue.
+    </p>
+    <div class="cards">
+      {questions.map((q) => (
+        <article class="q">
+          <h3>{q.t}</h3>
+          <p>{q.d}</p>
+        </article>
+      ))}
+    </div>
+  </Section>
+
+  <Section n="2" title="The method">
+    <p>
+      The approach is disciplined and baseline-first: mature chemometrics comes first, advanced models
+      enter only where they add measured value. Four choices form its backbone.
+    </p>
+    <div class="method">
+      <article class="mi">
+        <span class="mi-k">Data Ladder</span>
+        <p>Data capital grows in steps of increasing defensibility: public foundations, real external data,
+        a proprietary dataset of traced batches, and finally the flywheel of real batches. The subset that
+        matters is the one with provenance, spectrum and outcome paired.</p>
+      </article>
+      <article class="mi">
+        <span class="mi-k">Conformal prediction</span>
+        <p>Every prediction comes with a guaranteed-coverage interval and an out-of-distribution gate that
+        triggers escalation to the accredited test. Uncertainty is validated, not asserted in words.</p>
+      </article>
+      <article class="mi">
+        <span class="mi-k">Interpretable models</span>
+        <p>The chemical explanation matters as much as the prediction: relevant spectral regions,
+        consistency with known chemistry (double bonds, aldehydes, peroxides). A model that cannot be read
+        is of no use to an assessor.</p>
+      </article>
+      <article class="mi">
+        <span class="mi-k">Lipid foundation model</span>
+        <p>Self-supervised pre-training on the unannotated spectral corpus yields a rich encoder; downstream
+        tasks fine-tune with few labels. It is the lever against the low-data regime.</p>
+      </article>
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Foundation/generalist model per spettroscopia vibrazionale, frontiera 2025-2026" />
+      The method is public and shareable; what stays proprietary is the pre-training corpus and the causal
+      supply-chain datum. The technical deep dive lives in <a href={r.amsaTecnica}>Under AMSA’s hood</a>.
+    </p>
+  </Section>
+
+  <Section n="3" title="The decisive, pre-registered experiment">
+    <p>
+      The central thesis is not defended in words, it is put to the test before scaling. So we reduced it
+      to a single pre-registered experiment, with the success criterion declared before looking at the
+      data, to avoid convenient confirmations.
+    </p>
+    <div class="gate">
+      <p class="gate-q">Does provenance measurably improve stability prediction (induction time, OSI) over
+      the spectrum alone?</p>
+      <ul class="gate-proto">
+        <li>About 30 to 40 tallow batches with complete provenance metadata <DataTag kind="stima" label="Plan sample size" />.</li>
+        <li>Spectral acquisition and OSI (induction time) measurement on the Rancimat as ground truth.</li>
+        <li>Pre-registered comparison between a spectrum-only model and a spectrum-plus-provenance model, RMSE on predicted induction time as the metric.</li>
+        <li>Success criterion fixed and deposited before the analysis.</li>
+      </ul>
+      <p class="gate-state">
+        <DataTag kind="stima" label="Plan experiment, not yet run" />
+        Status: in progress. The protocol is defined, the collection of provenance-paired batches is
+        under way. The outcome, either way, is itself the scientific result.
+      </p>
+    </div>
+  </Section>
+
+  <Section n="4" title="What we look for in a partner group">
+    <div class="cards">
+      {partner.map((p) => (
+        <article class="q">
+          <h3>{p.k}</h3>
+          <p>{p.d}</p>
+        </article>
+      ))}
+    </div>
+  </Section>
+
+  <Section n="5" title="Honesty about the limits">
+    <p>
+      Calibrating expectations is part of the method. Using the same tags as across the whole site, we
+      distinguish what is demonstrated, what is in progress and what remains a bet.
+    </p>
+    <div class="stats">
+      <StatCard value="Demonstrated" caption="Lipid chemometrics is mature: composition and unsaturation proxies read well from spectra, in line with the literature." kind="fonte" source="NIR/Raman fatty-acid literature" />
+      <StatCard value="In progress" caption="The causal provenance-to-stability link: plausible and foundational, but to be validated with the pre-registered experiment." kind="stima" source="OdE plan hypothesis, to be validated" />
+      <StatCard value="A bet" caption="Absolute shelf-life prediction is an emergent capability, conditioned by exogenous factors (storage, packaging, light) the spectrum does not capture. Not a fact." kind="bench" />
+    </div>
+    <div class="caveat">
+      <span class="caveat-k">Calibrated expectation</span>
+      <p>Oxidation rate also depends on conditions the spectrum does not see. Provenance reduces part of it
+      upstream, the measured outcome calibrates it downstream, and every predicted stability stays tied to
+      its confidence interval. Absolute shelf-life is to be treated as a research goal, not an acquired
+      performance.</p>
+    </div>
+  </Section>
+
+  <Section n="6" title="Let’s open a dialogue">
+    <p>
+      If these questions intersect your work, write to us: a thesis, a joint experiment, a grant proposal
+      or simply an exchange on method.
+    </p>
+    <p class="contact">
+      <a href="mailto:martignoni.matteo@gmail.com?subject=OdE%20research%20collaboration">martignoni.matteo@gmail.com</a>
+    </p>
+    <p class="note">
+      For the applied and market picture, see <a href={r.amsa}>the technology (AMSA)</a> and the
+      <a href={r.visione}>development vision</a>.
+    </p>
+  </Section>
+</OdeLayout>
+
+<style>
+  .hero { max-width: 46rem; padding: 0.5rem 0 1rem; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0.4rem 0 1rem; }
+  .lede { font-size: 1.1rem; line-height: 1.6; color: var(--body); }
+  .note { font-size: 0.85rem; color: var(--muted); line-height: 1.5; max-width: 44rem; }
+  .note a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; }
+  .q { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.1rem 1.2rem; }
+  .q h3 { font-size: 1rem; font-weight: 500; color: var(--ink); margin: 0 0 0.4rem; }
+  .q p { margin: 0; font-size: 0.9rem; line-height: 1.5; color: var(--body); }
+
+  .method { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; margin: 0.4rem 0 1rem; }
+  .mi { border-left: 3px solid var(--green-border); padding: 0.2rem 0 0.2rem 1rem; }
+  .mi-k { font-family: var(--ode-font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent); }
+  .mi p { margin: 0.4rem 0 0; font-size: 0.9rem; line-height: 1.5; color: var(--body); }
+
+  .gate { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.2rem 1.4rem; margin: 1.2rem 0; }
+  .gate-q { font-size: 1.05rem; color: var(--ink); font-weight: 500; margin: 0 0 0.8rem; line-height: 1.4; }
+  .gate-proto { padding-left: 1.2rem; margin: 0 0 1rem; line-height: 1.6; }
+  .gate-proto li { margin-bottom: 0.35rem; font-size: 0.9rem; color: var(--body); }
+  .gate-proto li::marker { color: var(--accent); }
+  .gate-state { font-size: 0.9rem; color: var(--body); line-height: 1.55; margin: 0; }
+  .gate-state .ode-tag { margin-right: 0.3rem; }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0.8rem; margin: 1rem 0; }
+
+  .caveat {
+    background: rgba(255, 255, 255, 0.34);
+    border-left: 3px solid var(--green-border);
+    border-radius: 0 var(--ode-radius) var(--ode-radius) 0;
+    padding: 0.8rem 1rem; margin: 1rem 0 0; max-width: 44rem;
+  }
+  .caveat-k { display: block; font-family: var(--ode-font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent); margin-bottom: 0.3rem; }
+  .caveat p { margin: 0; font-size: 0.92rem; line-height: 1.55; color: var(--body); }
+
+  .contact { font-size: 1.05rem; }
+  .contact a { color: var(--accent); font-family: var(--ode-font-mono); text-decoration: underline; text-underline-offset: 3px; }
+</style>
