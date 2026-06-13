@@ -50,6 +50,13 @@ const passport = [
   <header class="hero">
     <p class="ode-eyebrow">Pilastro 01 · La tecnologia</p>
     <h1>AMSA</h1>
+    <p class="plain-intro">
+      In parole semplici: ogni partita di grasso che entra viene osservata con la luce, due tecniche di
+      spettroscopia che la leggono senza alterarla, e ne vengono certificate qualità, stabilità nel tempo e
+      storia di lavorazione in un passaporto digitale, lotto per lotto. Non prende il posto del laboratorio
+      accreditato: gli sta accanto, ne accelera il metodo e aggiunge la provenienza, l’informazione che il
+      laboratorio da solo non possiede. Sotto, il dettaglio per chi vuole vedere come.
+    </p>
     <p class="lede">
       AMSA è l'<strong>AI-driven Multimodal Spectroscopic Agent</strong>: un agente operativo che per
       ogni lotto acquisisce, interpreta, predice, spiega e suggerisce il processo, e costruisce un
@@ -238,7 +245,17 @@ const passport = [
 <style>
   .hero { max-width: 44rem; padding: 0.5rem 0 1rem; }
   .hero h1 { font-size: clamp(2.4rem, 6vw, 3.4rem); margin: 0.4rem 0 1rem; }
-  .lede { font-size: 1.1rem; line-height: 1.6; color: var(--body); }
+  /* Plain-language threshold: the first thing a non-expert reads, before the
+     dense, acronym-bearing lede below it. */
+  .plain-intro {
+    font-size: 1.18rem;
+    line-height: 1.6;
+    color: var(--ink);
+    border-left: 3px solid var(--green-border);
+    padding: 0.2rem 0 0.2rem 1rem;
+    margin: 0 0 1.2rem;
+  }
+  .lede { font-size: 1rem; line-height: 1.6; color: var(--muted); }
   .verbs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.4rem; }
   .verb {
     font-family: var(--ode-font-mono);

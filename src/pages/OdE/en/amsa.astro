@@ -49,6 +49,13 @@ const passport = [
   <header class="hero">
     <p class="ode-eyebrow">Pillar 01 · The technology</p>
     <h1>AMSA</h1>
+    <p class="plain-intro">
+      In plain terms: every incoming batch of fat is observed with light, two spectroscopy techniques that
+      read it without altering it, and its quality, stability over time and processing history are certified
+      in a digital passport, batch by batch. It does not take the place of the accredited laboratory: it
+      stands beside it, accelerates its method and adds provenance, the information the lab alone does not
+      hold. Below, the detail for those who want to see how.
+    </p>
     <p class="lede">
       AMSA is the <strong>AI-driven Multimodal Spectroscopic Agent</strong>: an operational agent that for
       every batch acquires, interprets, predicts, explains and recommends the process, and builds a
@@ -225,7 +232,17 @@ const passport = [
 <style>
   .hero { max-width: 44rem; padding: 0.5rem 0 1rem; }
   .hero h1 { font-size: clamp(2.4rem, 6vw, 3.4rem); margin: 0.4rem 0 1rem; }
-  .lede { font-size: 1.1rem; line-height: 1.6; color: var(--body); }
+  /* Plain-language threshold: the first thing a non-expert reads, before the
+     dense, acronym-bearing lede below it. */
+  .plain-intro {
+    font-size: 1.18rem;
+    line-height: 1.6;
+    color: var(--ink);
+    border-left: 3px solid var(--green-border);
+    padding: 0.2rem 0 0.2rem 1rem;
+    margin: 0 0 1.2rem;
+  }
+  .lede { font-size: 1rem; line-height: 1.6; color: var(--muted); }
   .verbs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.4rem; }
   .verb {
     font-family: var(--ode-font-mono);
