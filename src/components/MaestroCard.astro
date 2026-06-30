@@ -11,6 +11,7 @@ interface Props {
   projectLabel?: string;
   linkPrefix?: string;
   isFirst?: boolean;
+  portraitWidth?: string;
 }
 const {
   name,
@@ -20,11 +21,11 @@ const {
   projectLabel,
   linkPrefix = 'A project we worked on',
   isFirst = false,
+  // All three portraits share the same 560×700 canvas and head scale
+  // (harmonized to the Renzo baseline), so they default to one uniform width.
+  // A card can override this to display its portrait slightly larger.
+  portraitWidth = 'w-[13.5rem] md:w-44',
 } = Astro.props;
-
-// All three portraits share the same 560×700 canvas and head scale
-// (harmonized to the Renzo baseline), so they display at one uniform width.
-const portraitWidth = 'w-[13.5rem] md:w-44';
 ---
 <details
   class="maestro group border-t border-warm-200 py-10 md:py-12"

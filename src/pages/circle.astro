@@ -42,6 +42,7 @@ const renderedMentors = await Promise.all(
         projectLabel={data.projectLabel}
         linkPrefix="A project we worked on"
         isFirst={false}
+        portraitWidth={data.slug === 'luca-sacchetti' ? 'w-[14.85rem] md:w-[12.1rem]' : undefined}
       >
         <Content />
       </MaestroCard>
