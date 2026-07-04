@@ -1,3 +1,29 @@
 # Cloudflare edge redirects
 # Conventional sitemap path → the actual Astro-generated sitemap index.
 /sitemap.xml  /sitemap-index.xml  301
+
+# Legacy URL scheme (pre-rebuild): languages were swapped. Italian pages lived
+# at the root and English pages under /it/. The rebuild flipped this — English
+# is now the default at the root and Italian moved under /it/. Old URLs 404,
+# so 301 them to their current equivalents to preserve indexing/link equity.
+# Both trailing-slash and bare forms are listed to match however they're hit.
+
+# Italian: root → /it/
+/bottega     /it/bottega/     301
+/bottega/    /it/bottega/     301
+/maestri     /it/maestri/     301
+/maestri/    /it/maestri/     301
+/pensiero    /it/pensiero/    301
+/pensiero/   /it/pensiero/    301
+/manualita   /it/manualita/   301
+/manualita/  /it/manualita/   301
+
+# English: /it/ → root
+/it/circle   /circle/         301
+/it/circle/  /circle/         301
+/it/make     /make/           301
+/it/make/    /make/           301
+/it/visit    /visit/          301
+/it/visit/   /visit/          301
+/it/think    /think/          301
+/it/think/   /think/          301
