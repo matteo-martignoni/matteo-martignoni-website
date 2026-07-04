@@ -1,0 +1,13 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Martignoni;Matteo;;;
+FN:Matteo Martignoni
+TITLE:Brand strategist
+ROLE:Brand strategist
+EMAIL;TYPE=INTERNET,PREF:mm@matteomartignoni.com
+EMAIL;TYPE=INTERNET,WORK:matteo@novaexperience.ai
+URL:https://matteomartignoni.com
+X-SOCIALPROFILE;TYPE=linkedin:https://www.linkedin.com/in/matteomartignoni/
+ADR;TYPE=WORK:;;;Milan;;;Italy
+REV:2026-07-04T00:00:00Z
+END:VCARD
