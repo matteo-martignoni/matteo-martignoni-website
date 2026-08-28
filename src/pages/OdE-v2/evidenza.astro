@@ -1,0 +1,411 @@
+---
+import OdeV2Layout from '../../layouts/OdeV2Layout.astro';
+import Section from '../../components/ode/Section.astro';
+import DataTag from '../../components/ode-v2/DataTag.astro';
+import Status from '../../components/ode-v2/Status.astro';
+import Finding from '../../components/ode-v2/Finding.astro';
+import Callout from '../../components/ode-v2/Callout.astro';
+import ReadNext from '../../components/ode-v2/ReadNext.astro';
+import { odeMeta, odeRoutes } from '../../i18n/ode-v2';
+
+const lang = 'it' as const;
+const m = odeMeta[lang].evidenza;
+const r = odeRoutes[lang];
+
+// Le lacune verificate, per traccia. Con la query e il bacino, perché una
+// lacuna senza metodo è un'opinione.
+const gaps = [
+  {
+    t: 'Nessuna soglia di numero di acidità validata contro un esito cutaneo',
+    d: 'Esistono ancoraggi dose-risposta su acido oleico puro o in veicoli promotori, mai sul numero di acidità di un prodotto finito. È lo spazio di ricerca originale che rivendichiamo.',
+    q: 'Bacini: PubMed, ScienceDirect, Karger. Query dichiarate sulla relazione dose-risposta fra concentrazione di acido grasso libero e disruzione dello strato corneo.',
+  },
+  {
+    t: 'Nessuna cinetica di comparsa degli acidi grassi liberi dopo applicazione topica',
+    d: 'Nessuno studio applica un trigliceride intatto sulla cute umana e misura la curva temporale di comparsa degli acidi grassi liberi. L’evidenza umana esistente è inversa, cioè per deplezione batterica, e la prova diretta di rilascio è in vitro.',
+    q: 'Bacini: PubMed, Google Scholar. È la lacuna più seria della libreria, e quella che il primo esperimento chiude.',
+  },
+  {
+    t: 'Nessun ponte fra stato ossidativo misurato ed esito cutaneo per i trigliceridi',
+    d: 'Nessuno studio ossida un trigliceride a un valore dichiarato, lo applica sulla cute e regredisce quantitativamente un esito misurato contro quel valore. È la ragione per cui l’Oxidative Risk Score non è un predittore.',
+    q: 'Bacini: PubMed e PMC, ScienceDirect, Wiley, MDPI, Springer, CIR, FAO Codex.',
+  },
+  {
+    t: 'Nessun dato di comedogenicità sul sego trigliceridico',
+    d: 'Il valore che circola è estrapolato da acidi grassi in forma libera e dai loro esteri di alcoli monovalenti. Sul sego intero, e sul gliceril trioleato, non esistono dati primari. Il sego non è provato comedogenico né provato non comedogenico: è non testato.',
+    q: 'Bacini: PubMed, Google Scholar.',
+  },
+  {
+    t: 'Nessun dato sull’effetto dello stato fisico sulla velocità di idrolisi da parte di lipasi cutanee',
+    d: 'Tutta l’evidenza sullo stato fisico proviene da lipasi digestive in modelli di digestione simulata. Sulle lipasi microbiche cutanee, esito nullo.',
+    q: 'Bacini: PubMed, Google Scholar. È la lacuna che il primo esperimento colmerebbe insieme alla seconda.',
+  },
+  {
+    t: 'Nessuno studio ha mai misurato il sego su un endpoint della categoria emolliente',
+    d: 'Non esistono dati di indice di desquamazione, microtopografia, morfometria corneocitaria, elasticità o coefficiente di attrito per il sego topico su cute umana. La lacuna è totale.',
+    q: 'Bacini: letteratura dermatologica indicizzata e letteratura di scienza cosmetica meno indicizzata. L’asimmetria di indicizzazione è essa stessa un risultato.',
+  },
+];
+
+// Il programma sperimentale. Domanda, costo, durata, categoria. NON il protocollo.
+const experiments = [
+  { n: '1', t: 'In vitro su stato fisico e idrolisi lipasica', q: 'La classe semisolida rallenta l’idrolisi microbica, e quanto rapidamente si idrolizza il nostro materiale?', cost: '8.000-18.000 €', dur: '2-4 mesi', cat: 'Asset e conoscenza', crit: true },
+  { n: '2', t: 'Caratterizzazione analitica per lotto', q: 'Qual è il profilo, l’acidità e lo stato ossidativo del materiale reale?', cost: '500-1.000 € per lotto', dur: 'continuo', cat: 'Licenza e asset', crit: false },
+  { n: '3', t: 'Quantificazione dell’epitopo alpha-gal', q: 'Quanto ne contiene un sego ultrapurificato?', cost: '2.000-5.000 €', dur: '1-2 mesi', cat: 'Asset, due diligence', crit: false },
+  { n: '4', t: 'Batteria di saggi di sensibilizzazione, oppure read-across', q: 'Il materiale è sensibilizzante?', cost: '8.000-15.000 €', dur: '2-3 mesi', cat: 'Licenza a operare', crit: false },
+  { n: '5', t: 'Braccio di sicurezza barriera', q: 'Il sego a bassa acidità si comporta come il trigliceride o come l’acido grasso libero?', cost: '15.000-30.000 €', dur: '3-4 mesi', cat: 'Asset commerciale', crit: true },
+  { n: '6', t: 'Modulo sensoriale e reologia', q: 'Il profilo di attrito è accettabile, ed è correggibile?', cost: '5.000-15.000 €', dur: '2-3 mesi', cat: 'Asset e conoscenza', crit: false },
+  { n: '7', t: 'Mappatura della curva di contenuto di grasso solido e frazionamento', q: 'Esiste una curva di compromesso fra appiccicosità e occlusività?', cost: '20.000-50.000 €', dur: '4-8 mesi', cat: 'Asset commerciale', crit: false },
+  { n: '8', t: 'Braccio comparativo su endpoint emollienti', q: 'Il sego regge contro olio minerale e dimeticone?', cost: '30.000-60.000 €', dur: '5-7 mesi', cat: 'Asset commerciale', crit: false },
+  { n: '9', t: 'Studio clinico di comedogenicità', q: 'Il nostro sego è comedogenico?', cost: '25.000-45.000 €', dur: '4-6 mesi', cat: 'Licenza e asset', crit: false },
+];
+
+// I gate, con criterio numerico scritto prima dei dati.
+const gates = [
+  {
+    f: 'Verifiche a costo zero, novanta giorni',
+    go: 'Almeno un formulatore europeo richiede un campione; oppure almeno due richiedono la scheda tecnica e almeno uno di essi accetta una seconda conversazione tecnica.',
+    stop: 'Zero richieste di campione e meno di due richieste di scheda tecnica dopo otto-dieci contatti qualificati.',
+    turn: 'Interesse solo sull’argomento non-palma o sul perimetro esteso, e non sul prodotto che resta sulla pelle.',
+  },
+  {
+    f: 'In vitro su idrolisi',
+    go: 'La velocità iniziale di rilascio di acidi grassi liberi differisce fra i livelli estremi di stato fisico oltre il 20%.',
+    stop: 'La differenza è sotto il 20%, oppure si annulla entro due ore. In quel caso il profilo di fusione NON entra nel posizionamento come fattore protettivo.',
+    turn: 'La cinetica risulta rapida ed estesa: il claim di sicurezza va riformulato senza attenuanti.',
+  },
+  {
+    f: 'Braccio di sicurezza barriera',
+    go: 'La variazione di perdita d’acqua transepidermica del sego a bassa acidità non differisce dal trigliceride di riferimento né dal veicolo a 24 ore.',
+    stop: 'La variazione aumenta come per l’acido grasso libero.',
+    turn: 'Aumento intermedio e dose-dipendente: si definisce una soglia di acidità massima certificabile, che è comunque un risultato utilizzabile.',
+  },
+  {
+    f: 'Braccio comparativo emolliente',
+    go: 'Miglioramento significativo su entrambi gli endpoint co-primari contro veicolo, con profilo di attrito accettabile; oppure miglioramento forte su uno con non inferiorità sull’altro.',
+    stop: 'Nessun endpoint emolliente supera il veicolo, oppure attrito significativamente peggiore dei comparatori.',
+    turn: 'Miglioramento solo su un endpoint marginale: posizionamento di nicchia mirato.',
+  },
+];
+
+// Le condizioni di fallimento della tesi, e che cosa resterebbe.
+const failures = [
+  { c: 'Il braccio di sicurezza mostra che il sego a bassa acidità aumenta comunque la perdita d’acqua transepidermica', k: 'Cadrebbe l’unico claim scientifico forte. Resterebbero la tracciabilità, l’infrastruttura di misura e la libreria di evidenza come servizio.' },
+  { c: 'L’idrolisi in situ risulta rapida ed estesa', k: 'Il controllo del numero di acidità perderebbe valore comunicabile. Resterebbero il dato in vitro come primo dato proprietario e la piattaforma di qualificazione.' },
+  { c: 'Nessun formulatore europeo mostra interesse dopo otto-dieci contatti qualificati', k: 'Il mercato accessibile sarebbe confermato troppo piccolo. Resterebbero l’opzione sul perimetro esteso e il passaggio a servizio analitico.' },
+  { c: 'L’appiccicosità risulta non correggibile per frazionamento', k: 'Il sego resterebbe penalizzato sull’endpoint primario emolliente. Resterebbe la collocazione come veicolo lipidico dentro sistemi formulati da terzi.' },
+];
+
+// Forme di collaborazione, con il compromesso dichiarato.
+const collab = [
+  { f: 'Tesi magistrale', cost: 'Molto basso: materiali e tutoraggio', ctl: 'Basso, tende alla pubblicazione', fit: 'Caratterizzazione analitica, prove esplorative' },
+  { f: 'Dottorato, anche industriale', cost: 'Costo triennale pieno rilevante', ctl: 'Medio, negoziabile per convenzione', fit: 'Cinetica lipasica, sviluppo dei modelli' },
+  { f: 'Assegno di ricerca cofinanziato', cost: 'Costo pieno annuo con oneri', ctl: 'Medio-alto', fit: 'Studio proprietario mirato' },
+  { f: 'Contratto di ricerca conto terzi', cost: 'Variabile, a preventivo', ctl: 'Alto: risultati del committente', fit: 'In vitro su idrolisi, caratterizzazione, mappatura' },
+  { f: 'Partner in progetto già finanziato', cost: 'Cofinanziamento parziale', ctl: 'Condiviso', fit: 'Accesso a infrastrutture senza ruolo di capofila' },
+];
+---
+<OdeV2Layout title={m.title} description={m.description} lang={lang} active="evidenza">
+  <header class="pg">
+    <p class="ode-eyebrow">Evidenza aperta</p>
+    <h1>Le domande che non sappiamo ancora rispondere</h1>
+    <p class="lede">
+      Questa pagina è un invito rivolto da pari a gruppi di ricerca in scienza dei lipidi,
+      microbiologia cutanea, chemiometria e cosmetologia. Contiene le lacune che abbiamo
+      verificato, gli esperimenti che le chiuderebbero con il loro ordine di costo, e i criteri
+      che ci farebbero fermare.
+    </p>
+    <p class="sub">
+      Contiene anche le domande la cui risposta potrebbe non essere quella che speriamo, e sono
+      elencate con la stessa evidenza delle altre.
+    </p>
+  </header>
+
+  <Callout tone="note" title="Che cosa questa pagina pubblica, e che cosa no">
+    <p>
+      Per ogni esperimento pubblichiamo: la domanda a cui risponde, l’ordine di grandezza del
+      costo, la durata, la posizione nella sequenza e il criterio che lo invaliderebbe.
+      <strong>Non pubblichiamo il protocollo</strong>: concentrazioni, enzimi, punti di
+      campionamento e numerosità per braccio restano fuori.
+    </p>
+    <p>
+      La ragione è dichiarata e non è ipocrita: il primo dato proprietario non esiste ancora, e
+      la lacuna che descriviamo è un asset con scadenza. La riga di confine che abbiamo scelto è
+      quella fra "che cosa vogliamo sapere e quanto costa saperlo", che è pubblico, e "come
+      esattamente lo misuriamo", che discutiamo con chi collabora. Il criterio di invalidazione
+      resta pubblico, perché è la garanzia di serietà e non il disegno.
+    </p>
+  </Callout>
+
+  <Section n="1" title="Le lacune verificate">
+    <p>
+      Una lacuna non è "non abbiamo trovato nulla": è un esito negativo, e come tale porta con sé
+      i bacini interrogati. Queste sono le sei che governano il programma.
+    </p>
+    <ol class="gaps">
+      {gaps.map((g, i) => (
+        <li>
+          <span class="g-n">{String(i + 1).padStart(2, '0')}</span>
+          <div>
+            <h3>{g.t}</h3>
+            <p>{g.d}</p>
+            <p class="g-q"><Status kind="lacuna" lang={lang} /> {g.q}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+    <p class="note">
+      <DataTag kind="fonte" label="Lacune verificate con query e bacini dichiarati: Traccia 1 sez. 7; Traccia 2 v2.1 sez. 7; Traccia 3 v4 sez. 8 e 5.10.5; Traccia 5 v3.0 sez. 8; Traccia 6 v2 sez. 7." />
+    </p>
+  </Section>
+
+  <Section n="2" title="Il programma, e quanto costa">
+    <p>
+      Nove voci. Le tre categorie non sono decorative: confondere una
+      <strong>licenza a operare</strong>, che va fatta comunque e non produce vantaggio, con un
+      <strong>asset commerciale</strong>, che produce un dato che nessuno possiede, porta a
+      spendere su adempimenti credendo di costruire posizionamento.
+    </p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th scope="col">Studio</th><th scope="col">Domanda</th>
+            <th scope="col">Ordine di costo</th><th scope="col">Durata</th><th scope="col">Categoria</th>
+          </tr>
+        </thead>
+        <tbody>
+          {experiments.map((e) => (
+            <tr class:list={[e.crit && 'is-ode']}>
+              <th scope="row">{e.t}{e.crit && <span class="crit">cammino critico</span>}</th>
+              <td>{e.q}</td>
+              <td class="num">{e.cost}</td>
+              <td class="num">{e.dur}</td>
+              <td>{e.cat}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="note">
+      <DataTag kind="stima" label="Ordini di grandezza, non preventivi. I laboratori di ricerca a contratto tossicologici e clinici non pubblicano listini e operano su preventivo. Le sole cifre verificate su listino pubblico sono quelle analitiche di routine. Consolidamento della ricerca OdE, parte C.1 e nota metodologica." />
+      Somma delle voci discrete: <strong>115.000-240.000 euro</strong> per il programma completo,
+      prima di qualsiasi spesa di produzione, formulazione, personale o mercato. È la cifra che
+      governa tutto il piano, e il suo peso sul capitale è dichiarato in
+      <a href={r.investitori}>Investitori</a>.
+    </p>
+
+    <Callout tone="note" title="Perché il primo nodo è quello, e non lo studio clinico">
+      <p>
+        L’in vitro su stato fisico e idrolisi è il primo nodo del cammino critico per quattro
+        ragioni che si sommano: costa un ordine di grandezza meno dello studio clinico,
+        <strong>definisce i tempi di campionamento</strong> di tutto ciò che viene dopo, non
+        richiede soggetti umani né approvazione etica, e
+        <strong>produce valore in entrambi gli esiti</strong>.
+      </p>
+      <p>
+        Se l’ipotesi regge, otteniamo un parametro protettivo certificabile e un dato che nessuno
+        possiede. Se non regge, chiudiamo comunque la lacuna cinetica, che è la più seria della
+        libreria, e sappiamo che cosa non dobbiamo affermare. Invertire l’ordine significherebbe
+        progettare i tempi di campionamento di uno studio clinico al buio.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="3" title="La sequenza, ordinata per costo dell’informazione">
+    <p>
+      Il criterio è esplicito: viene prima ciò che costa meno e riduce più incertezza. Un
+      esperimento vale quanto la decisione che consente di prendere, moltiplicata per la
+      probabilità che ne cambi l’esito. Un esperimento il cui risultato non cambierebbe alcuna
+      decisione non va fatto, per quanto sia scientificamente interessante.
+    </p>
+    <ol class="seq">
+      <li><span class="s-c">circa 0 €</span><span class="s-t">Domanda di capitolato a interlocutori che hanno visto i capitolati dall’interno: quando un grande gruppo qualifica un fornitore lipidico, che cosa chiede sull’origine?</span></li>
+      <li><span class="s-c">circa 0 €</span><span class="s-t">Verifica presso trasformatori europei e saponifici se l’onere documentale sugli input di palma sia un problema reale o un adempimento di routine.</span></li>
+      <li><span class="s-c">circa 0 €</span><span class="s-t">Preventivi ai laboratori, per sostituire le stime con costi reali.</span></li>
+      <li><span class="s-c">1.000-3.000 €</span><span class="s-t">Pacchetto documentale per una prima conversazione esplorativa credibile, e otto-dieci contatti qualificati con formulatori europei. <strong>È il gate che decide.</strong></span></li>
+      <li><span class="s-c">2.000-4.000 €</span><span class="s-t">Caratterizzazione analitica dei primi lotti reali.</span></li>
+      <li><span class="s-c">8.000-18.000 €</span><span class="s-t">In vitro su stato fisico e idrolisi lipasica. Primo dato proprietario.</span></li>
+      <li><span class="s-c">2.000-5.000 €</span><span class="s-t">Quantificazione dell’epitopo alpha-gal.</span></li>
+      <li><span class="s-c">8.000-15.000 €</span><span class="s-t">Dossier di sensibilizzazione, oppure read-across giustificato.</span></li>
+      <li><span class="s-c">15.000-30.000 €</span><span class="s-t">Braccio di sicurezza barriera.</span></li>
+      <li><span class="s-c">15.000-30.000 €</span><span class="s-t">Modulo sensoriale e primi stadi di mappatura del frazionamento.</span></li>
+    </ol>
+    <p class="note">
+      <DataTag kind="stima" label="Sequenza prioritizzata con costi cumulati e decisione abilitata per ciascun passo. Consolidamento della ricerca OdE, parte C.3. Nota di metodo: i cumulati usano i valori medi di ciascun intervallo, non la somma dei minimi." />
+      I primi tre passi non producono alcun dato sperimentale, e possono chiudere il progetto o
+      riorientarlo. Vengono prima di tutto per questo.
+    </p>
+    <p class="measure">
+      Un esperimento che non compare in questa sequenza: il confronto occlusivo diretto contro il
+      petrolato. Non compare in applicazione del criterio, perché
+      <a href={r.tesi}>abbiamo già stabilito</a> che OdE non deve rivendicare superiorità
+      occlusiva, e quindi il suo esito non cambierebbe alcuna decisione.
+    </p>
+  </Section>
+
+  <Section n="4" title="I criteri di arresto, scritti prima dei dati">
+    <p>
+      Sono scritti adesso, in forma verificabile: una soglia numerica o un evento osservabile, non
+      un giudizio qualitativo reinterpretabile a posteriori. La loro funzione è proteggere dalla
+      propria capacità di trovare ragioni per continuare.
+    </p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr><th scope="col">Fase</th><th scope="col">Prosegue se</th><th scope="col">Si ferma se</th><th scope="col">Cambia direzione se</th></tr>
+        </thead>
+        <tbody>
+          {gates.map((g) => (
+            <tr><th scope="row">{g.f}</th><td>{g.go}</td><td>{g.stop}</td><td>{g.turn}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Gate decisionali con criteri numerici pre-fissati. Consolidamento della ricerca OdE, parte E.1; criterio di invalidazione dell’in vitro pre-fissato in Traccia 6 v2, sez. 5.11.3." />
+    </p>
+    <Callout tone="note" title="Il principio di costruzione dei gate">
+      <p>
+        <strong>Nessun gate può essere superato da un segnale a costo nullo per
+        l’interlocutore.</strong> Una richiesta di scheda tecnica si concede per curiosità e non
+        costa nulla a chi la fa. Una richiesta di campione, o l’accettazione di una seconda
+        conversazione tecnica, implicano un costo di attenzione e quindi un segnale reale. Un gate
+        che si supera con un segnale gratuito non svolge la funzione per cui è stato scritto.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="5" title="Le condizioni in cui la tesi fallisce">
+    <p>
+      Quattro. Per ciascuna, che cosa resterebbe di utilizzabile, perché il fallimento di una tesi
+      non è il fallimento di tutto ciò che si è costruito.
+    </p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th scope="col">Se accade questo</th><th scope="col">Che cosa resterebbe</th></tr></thead>
+        <tbody>
+          {failures.map((f) => (
+            <tr><th scope="row">{f.c}</th><td>{f.k}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="ev-line"><Finding kind="contro" lang={lang} /> <Status kind="costruzione" lang={lang} /></p>
+    <p class="note">
+      <DataTag kind="fonte" label="Condizioni di fallimento della tesi e residui utilizzabili. Consolidamento della ricerca OdE, parte E.2." />
+    </p>
+  </Section>
+
+  <Section n="6" title="Che cosa cerchiamo in un gruppo partner">
+    <p>
+      Le competenze che servono non sono una sola. La cinetica di idrolisi richiede microbiologia
+      ed enzimologia; la caratterizzazione richiede chimica dei lipidi; gli endpoint cutanei
+      richiedono cosmetologia; i modelli richiedono chemiometria. Nessuna singola struttura le ha
+      tutte, e non pretendiamo che le abbia.
+    </p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr><th scope="col">Forma</th><th scope="col">Costo per OdE</th><th scope="col">Controllo sui risultati</th><th scope="col">Adatta a</th></tr>
+        </thead>
+        <tbody>
+          {collab.map((c) => (
+            <tr><th scope="row">{c.f}</th><td>{c.cost}</td><td>{c.ctl}</td><td>{c.fit}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <Callout tone="honest" title="Il compromesso, dichiarato prima della conversazione">
+      <p>
+        Una tesi è economica ma il risultato tende alla pubblicazione: desiderabile per credibilità
+        e priorità scientifica, problematico se divulga l’unico dato proprietario prima che esista
+        una protezione. Un contratto conto terzi costa di più ma mantiene il controllo. Non
+        fingiamo che questa tensione non esista, e preferiamo negoziarla in apertura anziché
+        scoprirla a metà lavoro.
+      </p>
+      <p>
+        C’è anche un costo che di solito non si dichiara: una collaborazione accademica
+        <strong>non è gratuita</strong>. Costa tempo di coordinamento, che per una struttura molto
+        piccola è la risorsa più scarsa. Un percorso pluriennale impone un impegno di supervisione
+        che va valutato come costo, non solo come borsa.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="7" title="Se queste domande intersecano il vostro lavoro">
+    <p>
+      Scriveteci. Una tesi, un esperimento congiunto, una proposta di bando, o semplicemente un
+      confronto sul metodo. Siamo interessati anche, e forse soprattutto, a chi ritiene che una
+      di queste ipotesi non regga: un’obiezione argomentata a questo stadio vale più di una
+      conferma.
+    </p>
+    <p class="contact">
+      <a href="mailto:mm@matteomartignoni.com?subject=Collaborazione%20di%20ricerca%20OdE">mm@matteomartignoni.com</a>
+    </p>
+    <p class="note phline">
+      <span class="ph">Da confermare</span>
+      Indirizzo di contatto provvisorio, ereditato dal sito attuale. Se le tre porte devono avere
+      recapiti distinti, va deciso prima della pubblicazione.
+    </p>
+  </Section>
+
+  <ReadNext
+    lang={lang}
+    links={[
+      { href: r.audit, label: 'L’Audit: che cosa abbiamo già verificato' },
+      { href: r.tesi, label: 'La Tesi: la chimica che sostiene le domande' },
+      { href: r.investitori, label: 'Investitori: che cosa costa arrivare alle risposte' },
+    ]}
+  />
+</OdeV2Layout>
+
+<style>
+  .ev-line { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1.2rem; }
+  .gaps { list-style: none; margin: 1.3rem 0; padding: 0; display: flex; flex-direction: column; gap: 1.2rem; }
+  .gaps > li { display: grid; grid-template-columns: 2.6rem 1fr; gap: 1rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--rule); }
+  .gaps > li:last-child { border-bottom: 0; padding-bottom: 0; }
+  .g-n { font-family: var(--ode-font-mono); font-size: 1.1rem; color: var(--accent); }
+  .gaps h3 { font-size: 1rem; font-weight: 500; color: var(--ink); margin: 0 0 0.45rem; line-height: 1.35; }
+  .gaps p { font-size: 0.92rem; line-height: 1.58; color: var(--body); margin: 0; max-width: 42rem; }
+  .g-q { margin-top: 0.5rem !important; font-size: 0.8rem !important; color: var(--muted) !important; display: flex; flex-wrap: wrap; gap: 0.45rem; align-items: baseline; }
+
+  .crit {
+    display: block;
+    font-family: var(--ode-font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--green);
+    font-weight: 500;
+    margin-top: 0.25rem;
+  }
+
+  .seq { list-style: none; counter-reset: s; margin: 1.3rem 0; padding: 0; display: flex; flex-direction: column; gap: 0; }
+  .seq li {
+    counter-increment: s;
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    gap: 0.4rem 1.2rem;
+    padding: 0.85rem 0 0.85rem 1.3rem;
+    border-left: 2px solid var(--green-border);
+    position: relative;
+  }
+  .seq li::before {
+    content: counter(s);
+    position: absolute; left: -0.72rem; top: 0.9rem;
+    width: 1.4rem; height: 1.4rem; border-radius: 999px;
+    background: var(--bg); border: 2px solid var(--green-border);
+    font-family: var(--ode-font-mono); font-size: 0.66rem; color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .s-c { font-family: var(--ode-font-mono); font-size: 0.82rem; color: var(--accent); white-space: nowrap; }
+  .s-t { font-size: 0.9rem; line-height: 1.55; color: var(--body); }
+  @media (max-width: 620px) {
+    .seq li { grid-template-columns: 1fr; }
+  }
+
+  .contact { margin: 1rem 0 0; font-size: 1.02rem; }
+  .contact a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; font-family: var(--ode-font-mono); }
+  .phline { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem; }
+</style>

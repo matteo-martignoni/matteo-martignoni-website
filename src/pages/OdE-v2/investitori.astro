@@ -1,0 +1,447 @@
+---
+import OdeV2Layout from '../../layouts/OdeV2Layout.astro';
+import Section from '../../components/ode/Section.astro';
+import DataTag from '../../components/ode-v2/DataTag.astro';
+import Status from '../../components/ode-v2/Status.astro';
+import Finding from '../../components/ode-v2/Finding.astro';
+import Callout from '../../components/ode-v2/Callout.astro';
+import StatCard from '../../components/ode-v2/StatCard.astro';
+import ReadNext from '../../components/ode-v2/ReadNext.astro';
+import { odeMeta, odeRoutes } from '../../i18n/ode-v2';
+
+const lang = 'it' as const;
+const m = odeMeta[lang].investitori;
+const r = odeRoutes[lang];
+
+// I tre scenari, con che cosa OdE potrà affermare in ciascuno.
+const scenarios = [
+  {
+    k: 'Minimo',
+    cost: '17.000-39.000 €',
+    pct: '5-11%',
+    dur: '4-6 mesi',
+    what: 'Verifiche a costo zero, analitica per lotto, pacchetto documentale, dossier di sicurezza, quantificazione dell’epitopo alpha-gal.',
+    say: 'Ingrediente tracciato, qualificato per lotto, sicuro secondo dossier, non derivato da olio di palma, con profilo e stato ossidativo certificati. Nessun claim di efficacia.',
+    v: 'Punto di partenza obbligato',
+  },
+  {
+    k: 'Intermedio',
+    cost: '55.000-90.000 €',
+    pct: '16-26%',
+    dur: '8-12 mesi',
+    what: 'Il minimo, più l’in vitro su idrolisi, il braccio di sicurezza barriera e il modulo sensoriale.',
+    say: 'Aggiunge cinetica di idrolisi caratterizzata, comportamento di barriera in applicazione singola documentato, profilo sensoriale misurato. È il primo dato proprietario.',
+    v: 'Tetto ragionevole',
+  },
+  {
+    k: 'Completo',
+    cost: '115.000-240.000 €',
+    pct: '33-69%',
+    dur: '18-24 mesi',
+    what: 'L’intero programma, incluso il braccio comparativo, lo studio clinico di comedogenicità e la mappatura del frazionamento.',
+    say: 'Aggiunge performance emolliente su endpoint validati e claim competitivi, condizionati agli esiti.',
+    v: 'Da escludere salvo capitale aggiuntivo',
+  },
+];
+
+// SWOT. Forze e debolezze con lo stesso peso tipografico.
+const swot = {
+  f: [
+    'Il principio della forma esterificata e del basso numero di acidità è il claim scientifico più difendibile disponibile, e poggia su uno studio su cute umana.',
+    'A temperatura cutanea il materiale è semisolido, cioè nella classe fisica del petrolato: la predizione sfavorevole stabilita su un olio liquido non è automaticamente trasferibile.',
+    'Gli ossisteroli sono un marcatore che nessuna matrice vegetale possiede, con una leva di processo documentata.',
+    'La tracciabilità e la circolarità sono verificabili e non narrative, il che è più di quanto offra la media del mercato.',
+    'La dichiarazione di non derivazione da olio di palma è un campo a costo quasi nullo, verificabile e non contestabile.',
+  ],
+  d: [
+    'Assenza totale di evidenza di grado alto sul sego topico: non raggiunge la soglia minima che un formulatore si aspetta.',
+    'Appiccicosità documentata strumentalmente, sulla matrice bovina, sull’endpoint primario della categoria in cui il materiale va collocato.',
+    'Vulnerabilità strutturale all’idrolisi lipasica, asimmetrica rispetto ai comparatori idrocarburici e siliconici.',
+    'Impossibilità di competere su occlusione e su riparazione della barriera.',
+    'Struttura molto piccola, capacità di rendicontazione limitata, nessun laboratorio interno.',
+  ],
+  o: [
+    'Nessun operatore offre oggi la combinazione di tracciabilità documentata, indice di rischio ossidativo e caratterizzazione per lotto in un solo documento.',
+    'Sull’asse emolliente l’esito di uno studio è genuinamente ignoto e la letteratura è poco indicizzata: il valore marginale di un dato nuovo è alto.',
+    'L’asimmetria documentale sulla deforestazione apre un argomento di conformità presso trasformatori e saponifici europei.',
+    'La restrizione su alcuni ciclosilossani apre un asse di domanda, condizionato e con la sua precisazione.',
+  ],
+  m: [
+    'Il ciclo di attenzione mediatica è fra picco e riflusso, con la comunità clinica prevalentemente critica.',
+    'Il trend che esclude gli ingredienti animali per definizione è il segmento in maggiore crescita.',
+    'Contaminazione reputazionale da claim altrui indifendibili e dagli errori di attribuzione che circolano in letteratura.',
+    'Un concorrente potrebbe pubblicare per primo un dato primario, azzerando il vantaggio della lacuna.',
+  ],
+};
+
+// La roadmap, conservata dal sito attuale ma ricollocata come ipotesi.
+const phases = [
+  { ph: 'Fase 0 e 1', t: 'Laboratorio di qualificazione (oggi)', n: 'Sego tracciato e qualificato per lotto. La piattaforma di misura è controllo qualità interno e motore del Passaporto. Si accumula il dato di provenienza appaiato al dato analitico.' },
+  { ph: 'Fase 2', t: 'Adiacenza a basso rischio', n: 'Estensione alle matrici contigue: qualificazione di feedstock circolari e autenticazione di provenienza. La piattaforma esce dal solo cosmetico.' },
+  { ph: 'Fase 3', t: 'Concessione del framework', n: 'Il metodo su matrici ad alto valore, vendita di dataset e moduli software.' },
+  { ph: 'Fase 4', t: 'Piattaforma multi-matrice', n: 'La proprietà intellettuale diventa il baricentro; la produzione di ingredienti resta vetrina e fonte di dati.' },
+];
+
+// I quattro riposizionamenti, in ordine di prontezza.
+const pivots = [
+  { t: 'La piattaforma di qualificazione lipidica, indipendente dal sego', d: 'Spettroscopia più chemiometria più modelli predittivi è applicabile a qualunque lipide. È l’asset più trasferibile e il riposizionamento più difendibile.' },
+  { t: 'L’infrastruttura di tracciabilità su altre materie prime della stessa filiera', d: 'Il Passaporto e la logica di catena di custodia si applicano ad altri sottoprodotti dello stesso territorio.' },
+  { t: 'La libreria di evidenza come asset autonomo', d: 'Position paper, due diligence documentale, consulenza di posizionamento scientifico per altri operatori della categoria.' },
+  { t: 'Da produttore a fornitore di servizio analitico', d: 'Certificare per lotto il sego di terzi, inclusi i concorrenti, invece di produrlo. Evita il vincolo di volume e di prezzo.' },
+];
+---
+<OdeV2Layout title={m.title} description={m.description} lang={lang} active="investitori">
+  <header class="pg">
+    <p class="ode-eyebrow">Investitori</p>
+    <h1>Il verdetto, in due parti</h1>
+    <p class="lede">
+      Un’analisi che non può concludere negativamente non è un’analisi. Questa pagina apre con la
+      parte negativa del verdetto, perché è quella che un investitore scoprirebbe comunque, e
+      perché la parte condizionata regge solo se la prima è stata detta.
+    </p>
+  </header>
+
+  <div class="verdict">
+    <div class="verdict-half verdict-half--no">
+      <span class="verdict-k"><Finding kind="contro" lang={lang} /></span>
+      <h2>Come produttore di sego che compete su volumi, il progetto non regge</h2>
+      <p>
+        Il vincolo volume contro differenziale non è risolto, il mercato accessibile è più piccolo
+        del trend e non dimensionabile, il ciclo di attenzione è fra picco e riflusso, e il
+        programma sperimentale necessario a sostenere claim competitivi assorbe una quota
+        insostenibile del capitale. <strong>Presentato così, va fermato.</strong>
+      </p>
+    </div>
+    <div class="verdict-half verdict-half--si">
+      <span class="verdict-k"><Finding kind="pro" lang={lang} /></span>
+      <h2>Come laboratorio che qualifica e certifica un ingrediente lotto per lotto, la posizione è difendibile</h2>
+      <p>
+        Fornitore di un pacchetto documentale e analitico proprietario a un numero ristretto di
+        formulatori premium europei, con la piattaforma di misura come asset trasferibile.
+        <strong>A quattro condizioni precise</strong>, elencate qui sotto.
+      </p>
+    </div>
+  </div>
+  <p class="note">
+    <DataTag kind="fonte" label="Verdetto in due parti e quattro condizioni. Consolidamento della ricerca OdE, parte E.4." />
+  </p>
+
+  <Section n="1" title="Le quattro condizioni">
+    <ol class="conds">
+      <li><span class="c-n">01</span><p>Che le tre verifiche a costo quasi nullo diano esito positivo: almeno un formulatore chiede un campione, l’argomento documentale sulla provenienza non-palma ha sostanza commerciale, e i preventivi confermano gli ordini di grandezza.</p></li>
+      <li><span class="c-n">02</span><p>Che si accetti lo scenario minimo o al più intermedio, tenendo la maggior parte del capitale per produzione, relazione e mercato, non per esperimenti.</p></li>
+      <li><span class="c-n">03</span><p>Che la competenza regolatoria e di rendicontazione sia acquisita come consulenza puntuale, perché il fabbisogno è discontinuo e la competenza mancante più critica non è tecnica ma regolatoria.</p></li>
+      <li><span class="c-n">04</span><p>Che si generi un solo dato proprietario difendibile, la cinetica di idrolisi in vitro, <strong>prima</strong> di divulgare l’intera libreria di evidenza.</p></li>
+    </ol>
+    <p class="note">
+      Sono condizioni raggiungibili con le risorse disponibili. Non sono un elenco di buoni
+      propositi: la quarta, in particolare, è la ragione per cui
+      <a href={r.evidenza}>Evidenza aperta</a> pubblica costi e criteri di arresto ma non i
+      protocolli.
+    </p>
+  </Section>
+
+  <Section n="2" title="La cosa più importante di questa pagina">
+    <div class="headline">
+      <p class="headline-big">
+        La decisione di andare avanti o fermarsi costa <strong>meno di tremila euro e novanta
+        giorni</strong>.
+      </p>
+      <p class="headline-sub">
+        Non servono centomila euro per sapere se il progetto merita di proseguire. Il pacchetto
+        che rende credibile una prima conversazione tecnica con un formulatore è quasi
+        interamente documentale, e il gate di mercato si decide su otto-dieci contatti
+        qualificati. La postura corretta non è "devo reperire capitale per gli esperimenti", ma
+        "devo spendere qualche migliaio di euro per sapere se ne serviranno altri".
+      </p>
+    </div>
+    <div class="grid">
+      <StatCard value="1.000-3.000 €" caption="Costo del pacchetto documentale per una prima conversazione esplorativa credibile: scheda tecnica, profilo acidi grassi, dichiarazioni, storia di filiera, campione." kind="bench" source="Requisiti documentali standard richiesti a un nuovo fornitore di ingrediente cosmetico sul mercato UE, secondo la guida pubblica di riferimento per gli esportatori (cbi.eu). Consolidamento della ricerca OdE, parte C.4." />
+      <StatCard value="90 giorni" caption="Orizzonte entro cui le tre verifiche a costo quasi nullo e il gate di mercato danno un esito." kind="stima" source="Piano operativo a novanta giorni. Consolidamento della ricerca OdE, parte F.1." />
+      <StatCard value="8-10" caption="Contatti qualificati con formulatori premium europei su cui si decide il gate di mercato." kind="stima" source="Criterio del gate mercato, con soglia di superamento fissata prima dell’esecuzione. Consolidamento della ricerca OdE, parte E.1." />
+    </div>
+  </Section>
+
+  <Section n="3" title="I numeri veri del programma sperimentale">
+    <p>
+      Il dato che governa tutto il piano, e che non era mai stato messo in fila prima della
+      ricerca: il programma completo costa una frazione del capitale che va dichiarata, non
+      nascosta.
+    </p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th scope="col">Scenario</th><th scope="col">Costo</th><th scope="col">Quota del capitale</th>
+            <th scope="col">Durata</th><th scope="col">Che cosa OdE potrà affermare</th><th scope="col">Verdetto</th>
+          </tr>
+        </thead>
+        <tbody>
+          {scenarios.map((s) => (
+            <tr class:list={[s.k === 'Intermedio' && 'is-ode', s.k === 'Completo' && 'is-gap']}>
+              <th scope="row">{s.k}<span class="s-what">{s.what}</span></th>
+              <td class="num">{s.cost}</td>
+              <td class="num">{s.pct}</td>
+              <td class="num">{s.dur}</td>
+              <td>{s.say}</td>
+              <td>{s.v}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="note phline">
+      <DataTag kind="stima" label="Composizione degli scenari ricostruita voce per voce, con rimando alla riga di origine di ciascuna. Nessuna cifra è un preventivo. Consolidamento della ricerca OdE, parti C.1, C.5 e C.5bis." />
+      <span class="ph">Da confermare</span>
+      Le percentuali sono calcolate su un capitale di riferimento di 350.000 euro, coerente con
+      tutti i calcoli della ricerca. Il valore va allineato al piano economico prima della
+      pubblicazione.
+    </p>
+    <Callout tone="warn" title="La lettura, senza sconti">
+      <p>
+        Lo scenario completo assorbe da solo <strong>da un terzo a oltre due terzi del
+        capitale</strong>, prima di qualunque spesa di produzione, formulazione, personale e
+        mercato. È insostenibile per una struttura molto piccola e va escluso, salvo ingresso di
+        capitale aggiuntivo o cofinanziamento pubblico.
+      </p>
+      <p>
+        Lo scenario intermedio è il tetto ragionevole. Lo scenario minimo è il punto di partenza
+        obbligato ed è quasi interamente licenza a operare più documentazione, cioè non produce
+        vantaggio competitivo: produce il diritto di stare sul mercato.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="4" title="Forze, debolezze, opportunità e minacce">
+    <div class="swot">
+      <div class="sw sw--f"><h3>Forze</h3><ul>{swot.f.map((x) => <li>{x}</li>)}</ul></div>
+      <div class="sw sw--d"><h3>Debolezze</h3><ul>{swot.d.map((x) => <li>{x}</li>)}</ul></div>
+      <div class="sw sw--o"><h3>Opportunità</h3><ul>{swot.o.map((x) => <li>{x}</li>)}</ul></div>
+      <div class="sw sw--m"><h3>Minacce</h3><ul>{swot.m.map((x) => <li>{x}</li>)}</ul></div>
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Matrice costruita sulle sette tracce di ricerca, con rimando alla traccia di origine per ciascuna voce. Consolidamento della ricerca OdE, parte B.1." />
+    </p>
+    <Callout tone="honest" title="L’asimmetria che va letta, e che è essa stessa un risultato">
+      <p>
+        Nella libreria di evidenza che sostiene questa pagina, <strong>le tesi favorevoli a OdE
+        sono quasi tutte sostenute da una sola traccia di ricerca, mentre le tesi sfavorevoli sono
+        spesso sostenute da tre tracce convergenti</strong>. Questa asimmetria di supporto
+        probatorio non va appiattita nella lettura: significa che le buone notizie sono più
+        fragili delle cattive.
+      </p>
+      <p>
+        Se ne trae una conseguenza operativa: la mossa a più alto rapporto fra valore e costo non
+        è un esperimento, è il pacchetto documentale portato a formulatori premium europei. Non
+        richiede alcuno studio clinico, e la prima gamba del verdetto si decide lì.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="5" title="La leva della finanza agevolata cambia il costo, non il verdetto">
+    <p>
+      Due strumenti sono realisticamente accessibili, e non sono equivalenti.
+    </p>
+    <div class="grid-2">
+      <article class="fin">
+        <h3>Bando regionale su startup innovative</h3>
+        <p>
+          Contributo a fondo perduto fino al 60% delle spese ammissibili, elevabile con premialità.
+          <strong>Nomina esplicitamente l’uso di laboratori esterni per ricerca e test</strong> fra
+          le spese ammissibili, il che risolve l’incertezza principale dell’altro strumento.
+        </p>
+        <p class="fin-c">
+          Contro: la soglia minima di investimento di progetto è sopra lo scenario intermedio, la
+          selezione è competitiva con sbarramento, e alla data della ricognizione la finestra
+          risulta chiusa in attesa dell’edizione successiva.
+        </p>
+      </article>
+      <article class="fin">
+        <h3>Strumento nazionale a tasso zero</h3>
+        <p>
+          Finanziamento a tasso zero, senza garanzie, fino all’80% delle spese ammissibili, con
+          sportello aperto e istruttoria rapida. Porterebbe l’esposizione di capitale proprio dello
+          scenario intermedio da circa il 16-26% a circa il 6%.
+        </p>
+        <p class="fin-c">
+          Contro, e sono decisivi: <strong>in questa regione non è previsto alcun fondo perduto, il
+          finanziamento va restituito al 100% anche se un gate impone di fermarsi</strong>;
+          l’ammissibilità dei test esternalizzati a laboratori commerciali non è nominata
+          esplicitamente sul testo ufficiale; e presuppone uno status che è ancora da verificare.
+        </p>
+      </article>
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Quadro sinottico degli strumenti con ente, forma, intensità, requisito critico e stato della finestra alla data di consultazione. Consolidamento della ricerca OdE, parti D.1 e D.1bis." />
+    </p>
+    <Callout tone="warn" title="Capitale differito, non capitale gratuito">
+      <p>
+        Il vantaggio reale di un finanziamento a tasso zero non è l’assenza di interessi: è che
+        l’esposizione si distribuisce nel tempo mentre il dato proprietario si acquisisce subito.
+        Ma <strong>se il dato è negativo, si è pagato per un esperimento fallito e se ne deve anche
+        restituire il finanziamento</strong>, a rate, per un decennio. A questo si aggiungono un
+        debito in bilancio per una struttura che dovrà poi raccogliere capitale di rischio, e un
+        onere di rendicontazione strutturale che grava proprio sulla competenza già identificata
+        come collo di bottiglia.
+      </p>
+      <p>
+        La finanza agevolata <strong>non allenta nessuna delle quattro condizioni</strong>. Le
+        verifiche a costo zero restano il gate d’ingresso, e il debito rende ancora più stringente
+        la quarta condizione.
+        <Status kind="costruzione" lang={lang} />
+      </p>
+    </Callout>
+    <p class="note phline">
+      <span class="ph">Da confermare</span>
+      Entrambi gli strumenti presuppongono l’iscrizione alla sezione speciale del registro delle
+      imprese. Alla data della ricerca lo status risulta <strong>ancora da verificare</strong>, ed
+      è la prima riga del piano a novanta giorni. Gli incentivi fiscali della sezione seguente
+      hanno lo stesso prerequisito.
+    </p>
+  </Section>
+
+  <Section n="6" title="Incentivi per chi investe, subordinati alla stessa condizione">
+    <p>
+      L’ordinamento italiano incentiva l’investimento nel capitale delle startup innovative. Le
+      agevolazioni sono reali e significative, e sono <strong>tutte condizionate all’iscrizione
+      alla sezione speciale</strong>, che è la verifica aperta della sezione precedente. Le
+      riportiamo con questa premessa, non senza.
+    </p>
+    <div class="grid">
+      <StatCard value="30%" caption="Detrazione per le persone fisiche, su un massimo investibile annuo, con detenzione minima triennale." kind="fonte" source="Regime di agevolazioni per investimenti in startup innovative, art. 29 DL 179/2012 e successive modifiche. Aliquote e massimali da riverificare alla data di pubblicazione." />
+      <StatCard value="65%" caption="Detrazione in regime de minimis, su un massimale annuo più basso. Alternativa e non cumulabile con la precedente." kind="fonte" source="Aliquota innalzata dalla L. 193/2024. Da riverificare alla data di pubblicazione." />
+      <StatCard value="30%" caption="Deduzione per i soggetti che investono nel capitale in regime di imposta sul reddito delle società." kind="fonte" source="Regime di agevolazioni per investimenti in startup innovative. Da riverificare alla data di pubblicazione." />
+    </div>
+    <p class="note">
+      Esistono inoltre percorsi dedicati agli investitori extra-UE, con soglie di investimento
+      differenziate per tipologia. Le riportiamo su richiesta e con la data di verifica, perché
+      soglie e requisiti cambiano.
+      <DataTag kind="fonte" label="Programma italiano di visto per investitori, portale ufficiale MIMIT (investorvisa.mise.gov.it). Soglie e requisiti da riverificare alla data di pubblicazione." />
+      Nessuna di queste voci è un parere fiscale.
+    </p>
+  </Section>
+
+  <Section n="7" title="Se la tesi principale fallisse">
+    <p>
+      Quattro riposizionamenti abilitati dagli asset già costruiti, in ordine di prontezza. Non
+      sono un piano B retorico: sono la ragione per cui il capitale investito nella misura non è a
+      perdere anche nel caso peggiore sul sego.
+    </p>
+    <ol class="pivots">
+      {pivots.map((p, i) => (
+        <li><span class="p-n">{String(i + 1).padStart(2, '0')}</span><div><h3>{p.t}</h3><p>{p.d}</p></div></li>
+      ))}
+    </ol>
+    <p class="note">
+      <DataTag kind="fonte" label="Scenari di riposizionamento in ordine di prontezza. Consolidamento della ricerca OdE, parte E.3." />
+      La conclusione della ricerca su questo punto è netta: se le tre verifiche a costo zero
+      falliscono, la risposta onesta è il riposizionamento sulla piattaforma di misura e sulla
+      libreria, non l’accanimento sul sego.
+    </p>
+  </Section>
+
+  <Section n="8" title="La traiettoria, dichiarata come ipotesi">
+    <p>
+      Quattro fasi. La prima è il presente; le altre tre sono una direzione ragionata e
+      sequenziale, non una tappa già raggiunta, e sono etichettate come tali.
+    </p>
+    <ol class="phases">
+      {phases.map((p, i) => (
+        <li>
+          <span class="ph-k">{p.ph}</span>
+          <div>
+            <h3>{p.t} {i > 0 && <Status kind="scommessa" lang={lang} />}</h3>
+            <p>{p.n}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </Section>
+
+  <Section n="9" title="Che cosa serve sapere prima di parlarci">
+    <p class="measure">
+      Ci sono tre cose che non possiamo dirvi e che scoprireste comunque, quindi le diciamo qui.
+      Non esiste alcuna evidenza clinica sul materiale. Il mercato dove il nostro differenziale
+      conta non è dimensionabile con dati pubblici. E lo status societario che condiziona metà
+      degli strumenti finanziari di questa pagina è ancora da verificare.
+    </p>
+    <p class="measure">
+      Se dopo questo la conversazione ha ancora senso per voi, ha senso anche per noi.
+    </p>
+    <p class="contact">
+      <a href="mailto:mm@matteomartignoni.com?subject=OdE%20-%20conversazione%20investitori">mm@matteomartignoni.com</a>
+    </p>
+    <p class="note phline">
+      <span class="ph">Da confermare</span>
+      Il sito non contiene oggi una scheda del fondatore. Se la credibilità della persona è parte
+      di ciò che un investitore valuta, la sezione va scritta e serve materiale.
+    </p>
+  </Section>
+
+  <ReadNext
+    lang={lang}
+    links={[
+      { href: r.posizione, label: 'Posizione: il vincolo strutturale per esteso' },
+      { href: r.audit, label: 'L’Audit: la base su cui poggia il verdetto' },
+      { href: r.evidenza, label: 'Evidenza aperta: i gate e i criteri di arresto' },
+    ]}
+  />
+</OdeV2Layout>
+
+<style>
+  .verdict { display: grid; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); gap: 1.1rem; margin: 0.5rem 0 0.8rem; }
+  .verdict-half { border-radius: var(--ode-radius); padding: 1.4rem 1.5rem; border: 1px solid var(--rule); }
+  .verdict-half--no { background: var(--pink-soft); border-color: var(--pink); }
+  .verdict-half--si { background: var(--green-soft); border-color: var(--green-border); }
+  .verdict-k { display: block; margin-bottom: 0.7rem; }
+  .verdict-half h2 { font-size: 1.15rem; font-weight: 500; line-height: 1.35; color: var(--ink); margin: 0 0 0.7rem; }
+  .verdict-half p { margin: 0; font-size: 0.93rem; line-height: 1.6; color: var(--body); }
+
+  .conds { list-style: none; margin: 1.2rem 0; padding: 0; display: flex; flex-direction: column; gap: 0.9rem; }
+  .conds li { display: grid; grid-template-columns: 2.4rem 1fr; gap: 1rem; align-items: baseline; }
+  .c-n { font-family: var(--ode-font-mono); font-size: 0.95rem; color: var(--accent); }
+  .conds p { margin: 0; font-size: 0.93rem; line-height: 1.6; color: var(--body); max-width: 42rem; }
+
+  .headline {
+    background: var(--panel-strong);
+    border: 1px solid var(--green-border);
+    border-radius: var(--ode-radius);
+    padding: 1.5rem 1.7rem;
+    margin: 1.2rem 0 1.4rem;
+    max-width: 44rem;
+  }
+  .headline-big { margin: 0; font-size: clamp(1.15rem, 2.5vw, 1.5rem); line-height: 1.35; font-weight: 300; color: var(--ink); }
+  .headline-big strong { font-weight: 500; }
+  .headline-sub { margin: 0.9rem 0 0; font-size: 0.93rem; line-height: 1.6; color: var(--body); }
+
+  .s-what { display: block; font-weight: 400; font-size: 0.8rem; color: var(--muted); margin-top: 0.3rem; line-height: 1.45; max-width: 16rem; }
+  .is-gap td, .is-gap th { border-bottom-style: dashed; border-bottom-color: var(--ink); }
+
+  .swot { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1rem; margin: 1.3rem 0; }
+  .sw { border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.1rem 1.2rem; background: var(--panel); }
+  .sw h3 { font-size: 0.72rem; font-family: var(--ode-font-mono); letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 0.7rem; }
+  .sw ul { margin: 0; padding-left: 1.05rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  .sw li { font-size: 0.87rem; line-height: 1.5; color: var(--body); }
+  .sw--f h3, .sw--o h3 { color: var(--green); }
+  .sw--d h3, .sw--m h3 { color: var(--pink-ink); }
+  .sw--d, .sw--m { background: transparent; border-style: dashed; border-color: var(--ink); }
+
+  .fin { border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.2rem 1.3rem; background: var(--panel); }
+  .fin h3 { font-size: 1.02rem; font-weight: 500; color: var(--ink); margin: 0 0 0.55rem; }
+  .fin p { font-size: 0.9rem; line-height: 1.58; color: var(--body); margin: 0 0 0.6rem; }
+  .fin-c { color: var(--pink-ink) !important; margin-bottom: 0 !important; }
+
+  .pivots, .phases { list-style: none; margin: 1.2rem 0; padding: 0; display: flex; flex-direction: column; gap: 1rem; }
+  .pivots li { display: grid; grid-template-columns: 2.4rem 1fr; gap: 1rem; }
+  .p-n { font-family: var(--ode-font-mono); font-size: 1rem; color: var(--accent); }
+  .pivots h3, .phases h3 { font-size: 1rem; font-weight: 500; color: var(--ink); margin: 0 0 0.35rem; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: baseline; }
+  .pivots p, .phases p { font-size: 0.9rem; line-height: 1.55; color: var(--body); margin: 0; max-width: 42rem; }
+  .phases li { display: grid; grid-template-columns: 7rem 1fr; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--rule); }
+  .phases li:last-child { border-bottom: 0; padding-bottom: 0; }
+  .ph-k { font-family: var(--ode-font-mono); font-size: 0.8rem; color: var(--accent); }
+
+  .contact { margin: 1rem 0 0; font-size: 1.02rem; }
+  .contact a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; font-family: var(--ode-font-mono); }
+  .phline { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem; }
+  @media (max-width: 620px) { .phases li { grid-template-columns: 1fr; gap: 0.3rem; } }
+</style>
