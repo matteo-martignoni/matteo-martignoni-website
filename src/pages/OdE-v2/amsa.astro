@@ -1,0 +1,285 @@
+---
+import OdeV2Layout from '../../layouts/OdeV2Layout.astro';
+import Section from '../../components/ode/Section.astro';
+import ControlLoop from '../../components/ode/ControlLoop.astro';
+import PassportSections from '../../components/ode/PassportSections.astro';
+import DataTag from '../../components/ode-v2/DataTag.astro';
+import Status from '../../components/ode-v2/Status.astro';
+import Finding from '../../components/ode-v2/Finding.astro';
+import Callout from '../../components/ode-v2/Callout.astro';
+import ReadNext from '../../components/ode-v2/ReadNext.astro';
+import { odeMeta, odeRoutes } from '../../i18n/ode-v2';
+
+const lang = 'it' as const;
+const m = odeMeta[lang].amsa;
+const r = odeRoutes[lang];
+
+// I parametri misurati, con norma, ruolo e stato. È la sostanza della pagina.
+const params = [
+  { p: 'Numero di acidità e acidi grassi liberi', norm: 'EN ISO 660', role: 'Il parametro che decide la sicurezza secondo la chimica della Tesi', st: 'requisito' },
+  { p: 'Numero di perossidi', norm: 'EN ISO 3960, oppure ISO 27107 specifica per grassi animali', role: 'Ossidazione primaria. Soglia Codex a 10 meq O₂/kg', st: 'requisito' },
+  { p: 'Valore di p-anisidina', norm: 'ISO 6885', role: 'Ossidazione secondaria, complementare ai perossidi che sono transitori', st: 'differenziale' },
+  { p: 'TOTOX', norm: 'calcolato, 2·PV + AnV', role: 'Indice composito di sintesi', st: 'differenziale' },
+  { p: 'Dieni coniugati', norm: 'ISO 3656', role: 'Ossidazione precoce, prima che i perossidi siano informativi', st: 'differenziale' },
+  { p: 'Profilo in acidi grassi', norm: 'GC-FID, ISO 16958', role: 'Identità compositiva del lotto', st: 'requisito' },
+  { p: 'Contenuto di grasso solido e profilo di fusione', norm: 'pNMR, AOCS Cd 16b-93', role: 'Classe fisica alla temperatura cutanea, comportamento in formula', st: 'differenziale' },
+  { p: 'Stabilità ossidativa accelerata', norm: 'Schaal Oven a 40-60 °C', role: 'Preferito al test a 120 °C per i grassi animali, perché a quella temperatura la matrice non è nello stato in cui verrà usata', st: 'differenziale' },
+  { p: 'Metalli pesanti in tracce', norm: 'Ph. Eur. per la materia prima', role: 'Requisito di sicurezza cosmetica', st: 'requisito' },
+  { p: 'Ossisteroli con speciazione', norm: 'QuEChERS GC-MS', role: 'L’unico asse di ossidazione che le metriche standard non intercettano, e che nessuna matrice vegetale possiede', st: 'differenziale' },
+];
+
+// Le nove sezioni del Passaporto Lipidico Digitale, riviste sulla ricerca.
+const passport = [
+  { n: '01', title: 'Identità del lotto', fields: 'Codice lotto, specie, filiera di origine, data di macellazione, data e metodo di rendering, quantità' },
+  { n: '02', title: 'Provenienza documentata', fields: 'Catena di custodia dal macello al rendering, riferimenti dei documenti di movimentazione, perimetro geografico dichiarato con i suoi limiti' },
+  { n: '03', title: 'Forma chimica', fields: 'Dichiarazione esplicita di forma trigliceridica, non ammina, non saponificato, non esterificato con alcoli monovalenti' },
+  {
+    n: '04', title: 'Profilo e acidità',
+    groups: [
+      { label: 'Misurato', kind: 'fonte' as const, fields: 'Profilo GC-FID completo, numero di acidità, acidi grassi liberi in percentuale' },
+    ],
+  },
+  {
+    n: '05', title: 'Stato ossidativo',
+    groups: [
+      { label: 'Misurato', kind: 'fonte' as const, fields: 'Perossidi, p-anisidina, TOTOX, dieni coniugati' },
+      { label: 'Stimato', kind: 'stima' as const, fields: 'Oxidative Risk Score, come metrica di qualità del materiale' },
+    ],
+  },
+  { n: '06', title: 'Comportamento fisico', fields: 'Curva di contenuto di grasso solido, punto di scorrimento, insaponificabile, umidità' },
+  { n: '07', title: 'Parametri di processo', fields: 'Tempo fra macellazione e rendering, temperatura massima, tempo sopra 65 °C, tempo sopra 120 °C, antiossidanti e dosaggio, condizioni di stoccaggio' },
+  { n: '08', title: 'Conformità e dichiarazioni', fields: 'Categoria 3 ai sensi del regolamento sui sottoprodotti animali, dichiarazione BSE e TSE, allergeni, dichiarazione di non derivazione da olio di palma, metalli pesanti' },
+  { n: '09', title: 'Che cosa NON è stato testato', fields: 'Comedogenicità: non testata. Esito cutaneo strumentale: non testato. Cinetica di idrolisi in situ: non misurata. Contenuto di alpha-gal: non quantificato' },
+];
+---
+<OdeV2Layout title={m.title} description={m.description} lang={lang} active="amsa">
+  <header class="pg">
+    <p class="ode-eyebrow">AMSA</p>
+    <h1>Lo strumento che misura</h1>
+    <p class="lede">
+      AMSA è un agente spettroscopico multimodale guidato dall’intelligenza artificiale.
+      Il suo compito non è dire che cosa il sego faccia alla pelle, perché nessuno lo sa.
+      Il suo compito è dire, lotto per lotto e con metodi normati, che cosa c’è dentro.
+    </p>
+    <p class="sub">
+      È la traduzione operativa della <a href={r.tesi}>Tesi</a>: se il parametro che decide è
+      misurabile ed economico, e quasi nessuno lo dichiara, allora misurarlo bene e dichiararlo
+      per intero è il prodotto.
+    </p>
+  </header>
+
+  <Section n="1" title="Il problema che risolve">
+    <p>
+      I grassi animali sono matrici difficili da leggere per via spettroscopica: prevalentemente
+      saturi, con segnali di insaturazione deboli, fluorescenza che disturba il Raman, e una
+      variabilità lotto-lotto che nasce da specie, alimentazione, stagione e condizioni di
+      rendering. Un’acquisizione subita produce spettri rumorosi; un’acquisizione governata
+      produce spettri utilizzabili.
+    </p>
+    <p class="measure">
+      AMSA governa l’acquisizione: regola i parametri del sensore a ogni iterazione fino a
+      superare una soglia di qualità, e solo allora passa alla predizione. È la differenza fra
+      subire la misura e controllarla.
+    </p>
+    <ControlLoop
+      inputLabel="Campione"
+      loopLabel="Itera finché il controllo di qualità non è accettabile"
+      loopNodes={['Scansione esplorativa', 'Valutatore di qualità', 'Controllore di politica', 'Azione sull’hardware']}
+      exitGate="Qualità accettabile"
+      predict="Predizione con spiegazione"
+      outcome="Passaporto Lipidico Digitale"
+    />
+    <p class="note">
+      L’architettura è in definizione e i modelli sono in addestramento sui primi lotti.
+      <Status kind="costruzione" lang={lang} />
+    </p>
+  </Section>
+
+  <Section n="2" title="Che cosa misuriamo, con quale norma">
+    <p>
+      Questa tabella è il contenuto reale del prodotto. La colonna a destra distingue ciò che è
+      <strong>requisito</strong>, cioè va fatto comunque e non produce vantaggio competitivo, da
+      ciò che è <strong>differenziale</strong>, cioè discrezionale e produce vantaggio solo se
+      comunicato. Confondere le due cose porta a spendere su adempimenti credendo di costruire
+      posizionamento.
+      <DataTag kind="fonte" label="Convenzione requisito contro differenziale ereditata dalla Traccia 6 v2, sez. 8.3, e verificata contro il perimetro di applicabilità del Reg. (UE) 2023/915, che per 3-MCPD e glicidil esteri copre oli vegetali, di pesce e marini e non i grassi animali terrestri." />
+    </p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr><th scope="col">Parametro</th><th scope="col">Norma o metodo</th><th scope="col">Perché lo misuriamo</th><th scope="col">Ruolo</th></tr>
+        </thead>
+        <tbody>
+          {params.map((p) => (
+            <tr>
+              <th scope="row">{p.p}</th>
+              <td class="num">{p.norm}</td>
+              <td>{p.role}</td>
+              <td><span class:list={['role', `role--${p.st}`]}>{p.st === 'requisito' ? 'Requisito' : 'Differenziale'}</span></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Soglie di riferimento: numero di perossidi non superiore a 10 meq O₂/kg e numero di acidità non superiore a 2,5 mg KOH/g per il sego edibile, 1,3 per il lardo puro reso. FAO/WHO Codex Alimentarius CXS 211-1999, Sezione 3." />
+      <DataTag kind="fonte" label="Preferenza dello Schaal Oven a 40-60 °C rispetto al test accelerato a 120 °C per i grassi animali, e composizione del paniere di parametri ossidativi: Traccia 2 v2.1, sez. 8.2." />
+    </p>
+  </Section>
+
+  <Section n="3" title="L’Oxidative Risk Score, e che cosa non è">
+    <p>
+      L’Oxidative Risk Score è un punteggio sintetico che riassume lo stato ossidativo di un
+      lotto a partire dai parametri misurati. È utile perché il mercato non ne ha uno, e perché
+      un punteggio ancorato a metodi normati è auditabile.
+    </p>
+    <Callout tone="honest" title="Regola interna, dichiarata pubblicamente">
+      <p>
+        <strong>L’Oxidative Risk Score si presenta come metrica di qualità e stabilità del
+        materiale lipidico. Non si presenta come predittore di esito cutaneo.</strong>
+      </p>
+      <p>
+        La ragione è che non esiste uno studio in cui un trigliceride sia stato ossidato a un
+        valore dichiarato, applicato sulla cute, e un esito cutaneo regredito quantitativamente
+        contro quel valore. Il ponte non esiste, per il sego come per qualunque altro lipide, e
+        finché non esiste qualsiasi affermazione predittiva sarebbe indifendibile.
+        <DataTag kind="fonte" label="Lacuna verificata su PubMed, PMC, ScienceDirect, Wiley, MDPI, Springer, CIR e FAO Codex, con query dichiarate. Traccia 2 v2.1, sez. 7.1 e regola interna in sez. 8.1." />
+      </p>
+      <p>
+        Vale anche per la ponderazione: in assenza di una correlazione quantificata fra un
+        parametro analitico e un esito cutaneo, <strong>ogni ponderazione fine è in misura
+        sostanziale arbitraria</strong>, e va dichiarata tale nel documento metodologico dello
+        score. I pesi sono una scelta ingegneristica di qualità, mai coefficienti derivati da un
+        modello dose-risposta.
+      </p>
+    </Callout>
+    <p class="ev-line"><Status kind="costruzione" lang={lang} /> <Finding kind="neutro" lang={lang} /></p>
+
+    <h3 class="sub-h">Gli ossisteroli: il solo asse che nessuna matrice vegetale possiede</h3>
+    <p class="measure">
+      Il colesterolo è l’unico substrato di ossidazione presente nel sego e assente per
+      costruzione negli oli vegetali. Riscaldato, genera ossisteroli, e i grassi animali
+      riscaldati ne contengono in quantità misurabile con un metodo validato specificamente su
+      lardo e sego.
+      <DataTag kind="fonte" label="Metodo QuEChERS-GC-MS validato su lardo e sego, con separazione di sette ossisteroli, colesterolo e standard interno. Contenuti riportati nel sego di uno o due ordini di grandezza superiori a quelli di lardo e burro. Traccia 2 v2.1, sez. 5.3bis e 8.3." />
+    </p>
+    <p class="measure">
+      È una leva di processo, non una narrazione: il colesterolo risulta sostanzialmente stabile
+      a 100 °C e instabile sopra 120 °C, e l’aggiunta di ascorbil palmitato e tocoferolo a sego
+      riscaldato ha impedito la formazione di ossisteroli rilevabili. Un rendering a bassa
+      temperatura, con antiossidanti e tempi controllati, è misurabile e comunicabile.
+    </p>
+    <Callout tone="warn" title="Il contro-dato, riportato con lo stesso rigore">
+      <p>
+        <strong>Non tutti gli ossisteroli sono nocivi.</strong> Quelli a catena laterale sono
+        agonisti di un recettore nucleare e, applicati per via topica su modello murino, inducono
+        differenziamento epidermico. La linea di separazione passa fra ossisteroli a catena
+        laterale e ossisteroli ad anello in posizione 7, e quelli che si formano termicamente nel
+        sego appartengono alla seconda classe.
+      </p>
+      <p>
+        Ne consegue che riportare un totale sarebbe scientificamente ingenuo: il minimo
+        difendibile è la <strong>speciazione</strong>, con il 7-chetocolesterolo come marcatore
+        sentinella. E poiché non esiste alcuna soglia normativa per gli ossisteroli in alcun
+        settore, il Passaporto non applica alcun criterio di superamento o rigetto: misura,
+        dichiara il metodo e i parametri di processo associati, e lascia il giudizio al
+        formulatore. Una soglia inventata sarebbe peggio di nessuna soglia.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="4" title="Il Passaporto Lipidico Digitale">
+    <p>
+      Il documento che viaggia con il lotto e che un cliente può archiviare e verificare senza
+      fidarsi di noi. Nove sezioni. La nona è quella che nessun concorrente pubblica.
+    </p>
+    <PassportSections sections={passport} />
+    <Callout tone="honest" title="Perché la sezione 09 esiste">
+      <p>
+        Un documento che elenca solo ciò che è stato misurato lascia al lettore il compito di
+        indovinare che cosa non lo è stato, e in questa categoria quel silenzio viene riempito da
+        chi vende. La sezione "che cosa non è stato testato" rende l’onestà epistemica un campo
+        del prodotto, non una premessa che si legge una volta e si dimentica.
+      </p>
+      <p>
+        Comprende anche un’attestazione anti-contaminazione: i dati di sicurezza che citiamo si
+        riferiscono al <strong>sego trigliceridico</strong> e non alle ammine di sego etossilate,
+        che sono un’altra molecola e sono la fonte di più di un equivoco in letteratura. Il
+        dettaglio è nell’<a href={r.audit}>Audit</a>.
+      </p>
+    </Callout>
+    <p class="note">
+      Una simulazione dimostrativa di come si legge un Passaporto, dal campione al documento, è
+      in <a href={r.live}>AMSA Live</a>. È una simulazione e lo dichiara in ogni schermata.
+    </p>
+  </Section>
+
+  <Section n="5" title="Il metodo, per chi lo vuole verificare">
+    <p>
+      L’impianto è disciplinato e parte dalla linea di base: la chemiometria matura viene prima,
+      i modelli avanzati entrano solo dove aggiungono valore misurato. Quattro scelte ne formano
+      la spina dorsale.
+    </p>
+    <div class="method">
+      <article class="mi">
+        <span class="mi-k">Scala del dato</span>
+        <p>Quattro livelli, dal dato pubblico non tracciato al dato proprietario di filiera con esito misurato. Il valore cresce con il livello, e il livello più alto è l’unico che nessuno può comprare, perché va coltivato dentro una filiera.</p>
+      </article>
+      <article class="mi">
+        <span class="mi-k">Chemiometria prima</span>
+        <p>Analisi in componenti principali e regressione ai minimi quadrati parziali come riferimento obbligato. Un modello avanzato che non batte questa linea di base non entra in produzione.</p>
+      </article>
+      <article class="mi">
+        <span class="mi-k">Apprendimento da pochi esempi</span>
+        <p>I lotti tracciati sono pochi e costosi da caratterizzare. La domanda non è "che classe è" ma "quanto è simile a lotti idonei, ossidati o instabili" in uno spazio di rappresentazione.</p>
+      </article>
+      <article class="mi">
+        <span class="mi-k">Fiducia quantificata</span>
+        <p>Ogni predizione porta il proprio intervallo e un punteggio di distanza dalla distribuzione di addestramento. Un campione lontano da ciò che il modello conosce innesca cautela, repliche o rinvio a test esterno, non una predizione sicura di sé.</p>
+      </article>
+    </div>
+    <p class="note">
+      <Status kind="costruzione" lang={lang} />
+      Il fossato, se esiste, è di dato e di accesso, non di algoritmo: strumenti e metodi sono
+      acquistabili, il dato di filiera appaiato all’esito misurato no. Ma è un fossato
+      <strong>da costruire</strong>, non uno già costruito, e il suo anello causale è oggi
+      indimostrato: vedi la catena virtuosa nell’<a href={r.audit}>Audit</a>.
+    </p>
+  </Section>
+
+  <ReadNext
+    lang={lang}
+    links={[
+      { href: r.filiera, label: 'Filiera: da dove arriva il dato di provenienza' },
+      { href: r.normativa, label: 'Normativa: requisito o differenziale' },
+      { href: r.live, label: 'AMSA Live: la simulazione' },
+    ]}
+  />
+</OdeV2Layout>
+
+<style>
+  .ev-line { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1.2rem; }
+  .sub-h { font-size: 1.05rem; font-weight: 500; color: var(--ink); margin: 2rem 0 0.7rem; }
+  .role {
+    display: inline-block;
+    font-family: var(--ode-font-mono);
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.15em 0.45em;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .role--requisito { background: var(--lav-soft); color: var(--lav-ink); }
+  .role--differenziale { background: var(--green-soft); color: var(--green); }
+  .method { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1.1rem; margin: 1.3rem 0; }
+  .mi {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: var(--ode-radius);
+    padding: 1.1rem 1.2rem;
+  }
+  .mi-k { display: block; font-size: 0.95rem; font-weight: 500; color: var(--accent); margin-bottom: 0.4rem; }
+  .mi p { margin: 0; font-size: 0.88rem; line-height: 1.55; color: var(--body); }
+</style>
