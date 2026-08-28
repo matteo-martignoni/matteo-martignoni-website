@@ -61,10 +61,11 @@ const navItems: { key: OdeRouteKey; label: string; href: string; door?: boolean 
   { key: 'investitori', label: t.nav.investitori, href: r.investitori, door: true },
 ];
 
+// The badge word already says "test version", so the notice must not repeat it.
 const testNotice =
   lang === 'it'
-    ? 'Versione di prova, non indicizzata. Confronto affiancato in corso, nessun contenuto è definitivo.'
-    : 'Test version, not indexed. Side-by-side comparison in progress; no content is final.';
+    ? 'non indicizzata, confronto affiancato in corso, nessun contenuto è definitivo'
+    : 'not indexed, side-by-side comparison in progress, no content is final';
 ---
 <!DOCTYPE html>
 <html lang={lang}>
