@@ -649,16 +649,25 @@ visibile in pagina, marcato e raccolto nella PR.
 
 ---
 
-## Richiesta di conferma
+## 14. Checkpoint: decisioni del committente
 
-Prima della Fase 3 servono tre risposte:
+Prese in data 28 agosto 2026, prima dell'inizio della Fase 3.
 
-1. **La rotta `/OdE-v2` e la soluzione a zero file modificati** vanno bene?
-2. **L'architettura a dieci pagine** della sezione 4, con la fusione di
-   `amsa/tecnica` dentro `amsa` e la sostituzione di `mercato` con `posizione`,
-   è approvata? In particolare: si conferma che `mercato` sparisce come rotta?
-3. **Il rilievo della sezione 10** (pubblicare l'Audit prima di avere il dato
-   proprietario) e i **placeholder P1, P2 e P3** della sezione 11: come li
-   sciogliamo?
+| Questione | Decisione |
+|---|---|
+| **Rotta e isolamento** | `/OdE-v2`, albero di file interamente nuovo, zero file esistenti modificati. Il filtro sitemap esistente copre già la rotta |
+| **Architettura** | **Approvata come proposta.** Dieci pagine più AMSA Live. `mercato` sparisce come rotta e diventa `posizione`; `amsa/tecnica` si fonde dentro `amsa` e l'esperimento decisivo si sposta in `evidenza` cambiando identità |
+| **Soglia dell'Audit** (rilievo della sezione 10) | **Esito sì, protocollo no.** L'Audit pubblica il vuoto di evidenza, l'errore di matrice nella rassegna più citata e la tassonomia delle claim. `Evidenza aperta` dichiara domanda, costo, sequenza e criterio di arresto di ogni esperimento, **ma non il protocollo sperimentale**. Il criterio di invalidazione dell'in vitro resta pubblicato, perché è la garanzia di serietà, non il disegno |
+| **P1, capitale** | **350.000 euro.** Le percentuali di scenario restano quelle del Consolidamento: MINIMO 5-11%, INTERMEDIO 16-26%, COMPLETO 33-69%. Il valore va comunque marcato `[DA CONFERMARE]` finché il committente non allinea il piano economico |
+| **P3, concorrenti** | **Non nominati.** La formulazione è "esiste almeno un operatore già posizionato esplicitamente su tracciabilità e sostenibilità, oltre a più operatori statunitensi sul grass-fed". L'ammissione resta integra, il nome no |
 
-Su tutto il resto procedo con le assunzioni dichiarate.
+Restano aperti i placeholder **P2, P4, P5, P6, P7, P8** della sezione 11, gestiti
+con le assunzioni provvisorie dichiarate e raccolti nella Pull Request.
+
+**Conseguenza operativa della soglia dell'Audit su `/evidenza`.** La pagina
+pubblica per ogni esperimento: la domanda a cui risponde, la categoria (licenza a
+operare, asset commerciale, conoscenza interna), l'ordine di grandezza del costo,
+la durata, la posizione nella sequenza e il gate collegato. Non pubblica:
+concentrazioni, temperature, enzimi specifici, punti di campionamento, numerosità
+campionaria per braccio. La riga di confine è quella fra "che cosa vogliamo
+sapere e quanto costa saperlo" e "come esattamente lo misuriamo".

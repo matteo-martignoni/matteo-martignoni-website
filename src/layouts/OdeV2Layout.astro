@@ -1,0 +1,287 @@
+---
+// ──────────────────────────────────────────────────────────────
+// OdeV2Layout — isolated layout for the /OdE-v2 TEST microsite.
+//
+// New file. It does not touch, import from, or link to the live /OdE
+// microsite, and it never uses the host site's Header/Footer/Navigation.
+//
+// Five independent isolation mechanisms:
+//   1. own header/footer (below) — no entry in any host navigation array
+//   2. <meta name="robots" content="noindex, nofollow"> on every page
+//   3. excluded from the sitemap — astro.config.mjs already filters any URL
+//      containing "/OdE", and "/OdE-v2" contains it, so no config change
+//      was needed
+//   4. no inbound link from the host site or from /OdE
+//   5. no outbound link to /OdE
+// Reachable only via direct URL.
+// ──────────────────────────────────────────────────────────────
+import '../styles/ode-theme.css';
+import '../styles/ode-v2-theme.css';
+import { odeUI, odeRoutes, type OdeLang, type OdeRouteKey } from '../i18n/ode-v2';
+import DropMark from '../components/ode/DropMark.astro';
+import Sources from '../components/ode-v2/Sources.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  lang?: OdeLang;
+  /** Which nav item is the current page (for active state). */
+  active?: OdeRouteKey;
+}
+
+const { title, description = '', lang = 'it', active } = Astro.props;
+const t = odeUI[lang];
+const r = odeRoutes[lang];
+
+const other: OdeLang = lang === 'it' ? 'en' : 'it';
+const otherHome = odeRoutes[other].home;
+
+// Order follows the narrative, not the org chart: first what we verified
+// (Audit), then what follows from it (Tesi), then the instrument (AMSA) and
+// its inputs (Filiera), then the limits (Posizione, Normativa). The two
+// audience doors, Evidenza aperta and Investitori, sit at the tail, set
+// apart by a rule.
+const navItems: { key: OdeRouteKey; label: string; href: string; door?: boolean }[] = [
+  { key: 'audit', label: t.nav.audit, href: r.audit },
+  { key: 'tesi', label: t.nav.tesi, href: r.tesi },
+  { key: 'amsa', label: t.nav.amsa, href: r.amsa },
+  { key: 'filiera', label: t.nav.filiera, href: r.filiera },
+  { key: 'posizione', label: t.nav.posizione, href: r.posizione },
+  { key: 'normativa', label: t.nav.normativa, href: r.normativa },
+  { key: 'evidenza', label: t.nav.evidenza, href: r.evidenza, door: true },
+  { key: 'investitori', label: t.nav.investitori, href: r.investitori, door: true },
+];
+
+const testNotice =
+  lang === 'it'
+    ? 'Versione di prova, non indicizzata. Confronto affiancato in corso, nessun contenuto è definitivo.'
+    : 'Test version, not indexed. Side-by-side comparison in progress; no content is final.';
+---
+<!DOCTYPE html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <!-- Isolation: keep the test microsite out of search indexes -->
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="googlebot" content="noindex, nofollow" />
+    <link rel="icon" type="image/svg+xml" href="/images/ode/favicon.svg" />
+
+    <!-- OdE brand typeface: Roboto + Roboto Mono (OdE_Brand_System) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Roboto+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+  </head>
+  <body class="ode ode-v2">
+    <p class="testbar">{t.testBadge} · {testNotice}</p>
+
+    <a class="skip" href="#main">{lang === 'it' ? 'Vai al contenuto' : 'Skip to content'}</a>
+
+    <header class="ode-header">
+      <a href={r.home} class="ode-brand" aria-label={t.brand}>
+        <span class="ode-logo-mark">OdE</span>
+        <span class="ode-logo-name">
+          <span>Officina</span>
+          <span>degli</span>
+          <span>Estratti</span>
+        </span>
+      </a>
+
+      <button
+        type="button"
+        class="ode-burger"
+        aria-label="Menu"
+        aria-expanded="false"
+        aria-controls="odev2-nav"
+      >
+        <span class="ode-burger-box"><span class="ode-burger-bar"></span></span>
+      </button>
+
+      <nav id="odev2-nav" class="ode-nav" aria-label="OdE navigation">
+        {navItems.map((item, i) => (
+          <>
+            {item.door && !navItems[i - 1]?.door && (
+              <span class="ode-nav-sep" aria-hidden="true"></span>
+            )}
+            <a
+              href={item.href}
+              class:list={['ode-nav-link', item.door && 'is-door', active === item.key && 'is-active']}
+              aria-current={active === item.key ? 'page' : undefined}
+            >{item.label}</a>
+          </>
+        ))}
+        <a href={otherHome} class="ode-lang">{other.toUpperCase()}</a>
+      </nav>
+    </header>
+
+    <main id="main" class="ode-main">
+      <slot />
+      <Sources lang={lang} />
+    </main>
+
+    <footer class="ode-footer">
+      <span class="ode-copy">
+        <span>© {new Date().getFullYear()}</span>
+        <DropMark class="ode-foot-drop" />
+        <span>{t.brand}</span>
+      </span>
+      <nav class="ode-foot-links" aria-label="OdE utility">
+        <a href={r.glossario}>{t.footer.glossario}</a>
+        <a href={r.live}>{t.footer.live}</a>
+      </nav>
+      <span class="ode-sim-badge">{t.testBadge}</span>
+    </footer>
+
+    <script>
+      const header = document.querySelector('.ode-header');
+      const burger = header?.querySelector('.ode-burger');
+      if (header && burger) {
+        const close = () => {
+          header.classList.remove('is-open');
+          burger.setAttribute('aria-expanded', 'false');
+        };
+        burger.addEventListener('click', () => {
+          const open = header.classList.toggle('is-open');
+          burger.setAttribute('aria-expanded', String(open));
+        });
+        header.querySelectorAll('.ode-nav a').forEach((a) =>
+          a.addEventListener('click', close)
+        );
+        window.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') close();
+        });
+      }
+    </script>
+
+    <style>
+      .skip {
+        position: absolute;
+        left: -9999px;
+        top: 0;
+        background: var(--ink);
+        color: var(--bg);
+        padding: 0.6rem 1rem;
+        z-index: 10;
+        font-size: 0.85rem;
+      }
+      .skip:focus { left: 0; }
+
+      .ode-header {
+        max-width: var(--ode-maxw);
+        margin: 0 auto;
+        padding: 1.5rem 1.5rem;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+        border-bottom: 1px solid var(--ode-rule);
+      }
+      .ode-brand { display: inline-flex; align-items: center; gap: 0.7rem; text-decoration: none; color: var(--ode-ink); }
+      .ode-logo-mark { font-size: 2.05rem; font-weight: 400; line-height: 1; letter-spacing: -0.005em; color: var(--ode-ink); }
+      .ode-logo-name {
+        display: flex; flex-direction: column; gap: 0.05rem;
+        padding-left: 0.7rem; border-left: 2px solid rgba(28, 38, 32, 0.25);
+      }
+      .ode-logo-name span {
+        font-size: 0.6rem; font-weight: 400; line-height: 1.32;
+        letter-spacing: 0.16em; text-transform: uppercase; color: var(--ode-ink);
+      }
+      .ode-nav { display: flex; align-items: center; gap: 1.05rem; flex-wrap: wrap; }
+      .ode-nav-link {
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--ode-muted);
+        text-decoration: none;
+        transition: color 160ms ease;
+      }
+      .ode-nav-link:hover { color: var(--ode-ink); }
+      .ode-nav-link.is-active { color: var(--ode-accent); font-weight: 500; }
+      .ode-nav-sep {
+        align-self: center;
+        width: 1px; height: 1.1rem;
+        background: var(--ode-rule);
+        margin: 0 0.15rem;
+      }
+      .ode-nav-link.is-door { color: var(--ode-accent); }
+      .ode-nav-link.is-door:hover { color: var(--ode-ink); }
+      .ode-nav-link.is-door.is-active { font-weight: 500; }
+      .ode-lang {
+        font-size: 0.75rem;
+        font-family: var(--ode-font-mono);
+        color: var(--ode-muted);
+        text-decoration: none;
+        border: 1px solid var(--ode-rule);
+        border-radius: var(--ode-radius-sm);
+        padding: 0.15rem 0.45rem;
+      }
+      .ode-main { max-width: var(--ode-maxw); margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+      .ode-footer {
+        max-width: var(--ode-maxw);
+        margin: 0 auto;
+        padding: 2rem 1.5rem;
+        border-top: 1px solid var(--ode-rule);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        font-size: 0.75rem;
+        color: var(--ode-muted);
+        flex-wrap: wrap;
+      }
+      .ode-foot-links { display: flex; gap: 1rem; }
+      .ode-foot-links a {
+        color: var(--ode-muted);
+        text-decoration: none;
+        transition: color 160ms ease;
+      }
+      .ode-foot-links a:hover { color: var(--ode-ink); }
+      .ode-copy { display: inline-flex; align-items: center; gap: 0.4rem; }
+      .ode-copy :global(.ode-drop) { height: 1.6em; width: auto; color: var(--ode-ink); }
+
+      /* Hamburger menu — hidden on desktop, shown at <= 900px */
+      .ode-burger { display: none; }
+      .ode-burger-box { position: relative; display: block; width: 22px; height: 16px; }
+      .ode-burger-bar,
+      .ode-burger-bar::before,
+      .ode-burger-bar::after {
+        position: absolute; left: 0; width: 22px; height: 2px;
+        background: var(--ode-ink); border-radius: 2px;
+        transition: transform 200ms ease, background-color 200ms ease;
+      }
+      .ode-burger-bar { top: 50%; transform: translateY(-50%); }
+      .ode-burger-bar::before { content: ''; top: -7px; }
+      .ode-burger-bar::after { content: ''; top: 7px; }
+      .ode-header.is-open .ode-burger-bar { background: transparent; }
+      .ode-header.is-open .ode-burger-bar::before { transform: translateY(7px) rotate(45deg); }
+      .ode-header.is-open .ode-burger-bar::after { transform: translateY(-7px) rotate(-45deg); }
+
+      @media (max-width: 900px) {
+        .ode-header { align-items: center; gap: 0.75rem; }
+        .ode-brand { flex: 1 1 0; min-width: 0; }
+        .ode-burger {
+          flex: 0 0 auto;
+          display: inline-flex; align-items: center; justify-content: center;
+          width: 40px; height: 40px; margin: -0.4rem -0.5rem -0.4rem 0;
+          padding: 0; background: none; border: 0; cursor: pointer;
+          color: var(--ode-ink); order: 2;
+        }
+        .ode-nav {
+          order: 3; flex-basis: 100%;
+          display: none; flex-direction: column; align-items: flex-start;
+          gap: 0; padding-top: 0.6rem;
+        }
+        .ode-header.is-open .ode-nav { display: flex; }
+        .ode-nav-link { width: 100%; padding: 0.6rem 0; font-size: 0.95rem; }
+        .ode-nav-sep { align-self: stretch; width: 100%; height: 1px; margin: 0.4rem 0; }
+        .ode-lang { margin-top: 0.6rem; }
+      }
+    </style>
+  </body>
+</html>

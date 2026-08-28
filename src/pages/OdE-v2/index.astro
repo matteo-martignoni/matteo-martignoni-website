@@ -1,0 +1,228 @@
+---
+import OdeV2Layout from '../../layouts/OdeV2Layout.astro';
+import DataTag from '../../components/ode-v2/DataTag.astro';
+import Status from '../../components/ode-v2/Status.astro';
+import Doors from '../../components/ode-v2/Doors.astro';
+import Finding from '../../components/ode-v2/Finding.astro';
+import { odeMeta, odeRoutes } from '../../i18n/ode-v2';
+
+const lang = 'it' as const;
+const m = odeMeta[lang].home;
+const r = odeRoutes[lang];
+
+// Le tre porte. Ogni porta porta la domanda con cui quel pubblico arriva
+// davvero, non una descrizione della pagina.
+const doors = [
+  {
+    who: 'Investitore',
+    question: 'Esiste una posizione difendibile, e quali rischi sono già dichiarati?',
+    href: r.investitori,
+    cta: 'Il verdetto, in due parti',
+    next: 'Poi: Posizione, dove OdE può esistere e dove no.',
+  },
+  {
+    who: 'Partner scientifico',
+    question: 'Le domande sono reali, il metodo regge, e c’è qualcosa da pubblicare?',
+    href: r.evidenza,
+    cta: 'Le domande aperte',
+    next: 'Poi: l’Audit, cioè che cosa abbiamo già verificato.',
+  },
+  {
+    who: 'Partner commerciale',
+    question: 'Che cosa compro davvero, e che cosa posso dichiarare senza espormi?',
+    href: r.tesi,
+    cta: 'Il parametro che decide',
+    next: 'Poi: AMSA e Normativa.',
+  },
+];
+
+// I tre limiti che un lettore di tre minuti deve incontrare comunque, anche
+// se non apre nessun'altra pagina.
+const limits = [
+  {
+    kind: 'contro' as const,
+    t: 'Non esiste evidenza clinica sul sego topico',
+    d: 'Zero studi di grado alto sull’effetto cutaneo del sego applicato tal quale. Non è un difetto della nostra ricerca: è lo stato del campo, e vale anche per noi.',
+  },
+  {
+    kind: 'contro' as const,
+    t: 'Il nostro materiale ha una vulnerabilità che i concorrenti non hanno',
+    d: 'I batteri della pelle producono lipasi che scindono i trigliceridi. Petrolato, olio minerale, squalano e dimeticone non sono trigliceridi: nessuna lipasi può scinderli. Sono immuni, noi no.',
+  },
+  {
+    kind: 'contro' as const,
+    t: 'Il mercato dove il differenziale conta è piccolo, e non lo sappiamo misurare',
+    d: 'Dove il sego si compra in volume non possiamo competere sul prezzo. Dove la qualificazione conta, i volumi sono piccoli e nessun dato pubblico li separa.',
+  },
+];
+---
+<OdeV2Layout title={m.title} description={m.description} lang={lang}>
+  <section class="hero">
+    <p class="ode-eyebrow hero-eyebrow">
+      Ricerca sistematica, dodici bacini bibliografici in sei lingue
+    </p>
+    <h1>
+      Non esiste uno studio clinico che misuri l’effetto del sego sulla pelle umana.
+    </h1>
+    <p class="hero-lede">
+      Zero. Non uno debole, non uno vecchio, non uno in una lingua che nessuno legge.
+      Abbiamo cercato in dodici banche dati e sei lingue prima di accettarlo, e prima di
+      costruirci sopra un’azienda.
+      <DataTag kind="fonte" label="Lacuna verificata interrogando dodici bacini: PubMed, EMBASE, Europe PMC, Scopus, Web of Science, Google Scholar, Semantic Scholar, ClinicalTrials.gov, CIR, CosIng, EUR-Lex e FAO Codex Alimentarius. Ricerche mirate in polacco, russo, cinese, giapponese e turco oltre all’inglese. Traccia 5 v3.0, sezioni 1.3 e 8." />
+    </p>
+    <p class="hero-status"><Status kind="lacuna" lang={lang} /></p>
+
+    <div class="thesis">
+      <p class="thesis-line">
+        Se nessuno sa e nessuno misura, il valore non è nel sego.
+        <strong>È nel saperlo qualificare.</strong>
+      </p>
+      <p class="thesis-sub">
+        OdE non vende sego. Vende la certezza su cosa c’è dentro un lotto di sego.
+        In un mercato dove nessuno misura, chi misura per primo definisce lo standard.
+        Siamo un laboratorio prima che un produttore.
+      </p>
+    </div>
+  </section>
+
+  <section class="block" aria-label="Tre porte">
+    <p class="ode-eyebrow block-eyebrow">Tre pubblici, tre domande diverse</p>
+    <Doors doors={doors} />
+  </section>
+
+  <section class="block" aria-label="Il lavoro di verifica">
+    <p class="ode-eyebrow block-eyebrow">Che cosa abbiamo verificato</p>
+    <div class="verif">
+      <div class="verif-text">
+        <p>
+          Prima di descrivere un prodotto abbiamo passato mesi a cercare di demolire l’idea.
+          Il risultato è una libreria di evidenza con record graduati, identificativi
+          persistenti e lacune dichiarate con la query e il bacino che le hanno prodotte.
+          Comprende un audit della rassegna più citata del campo, che chiunque può ripetere
+          in un pomeriggio.
+        </p>
+        <p class="note">
+          È il lavoro che nessun concorrente può copiare senza rifarlo, e l’unica ragione per
+          cui riteniamo di poter parlare di questo materiale.
+        </p>
+      </div>
+      <a class="verif-cta" href={r.audit}>
+        <span class="verif-cta-k">L’Audit</span>
+        <span class="verif-cta-d">Il vuoto di evidenza, l’errore di matrice nella rassegna più citata, la tassonomia delle claim che non reggono.</span>
+        <span class="verif-cta-a" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="block" aria-label="I limiti dichiarati">
+    <p class="ode-eyebrow block-eyebrow">Tre limiti, prima che li scopriate da soli</p>
+    <p class="measure block-intro">
+      Un rischio dichiarato aumenta la credibilità di tutto il resto. Un limite scoperto da
+      soli la azzera. Questi tre sono i più seri, e sono in home apposta.
+    </p>
+    <ul class="limits">
+      {limits.map((l) => (
+        <li>
+          <Finding kind={l.kind} lang={lang} />
+          <h2>{l.t}</h2>
+          <p>{l.d}</p>
+        </li>
+      ))}
+    </ul>
+    <p class="note">
+      Il quadro completo, senza attenuanti, sta in <a href={r.posizione}>Posizione</a> e in
+      <a href={r.investitori}>Investitori</a>.
+    </p>
+  </section>
+
+  <section class="block block--last" aria-label="Che cosa OdE è">
+    <p class="ode-eyebrow block-eyebrow">In una riga</p>
+    <p class="closing">
+      Un laboratorio che qualifica e certifica un ingrediente lotto per lotto, in una categoria
+      che non ha ancora uno standard. Il sego è il portatore. Il documento è il prodotto.
+    </p>
+  </section>
+</OdeV2Layout>
+
+<style>
+  .hero { padding: 1rem 0 2.4rem; max-width: 48rem; }
+  .hero-eyebrow { margin: 0 0 1.1rem; }
+  .hero h1 {
+    font-size: clamp(1.9rem, 5.2vw, 3.3rem);
+    letter-spacing: -0.015em;
+    line-height: 1.08;
+  }
+  .hero-lede {
+    font-size: 1.08rem;
+    line-height: 1.62;
+    color: var(--ode-body);
+    margin: 1.3rem 0 0;
+    max-width: 40rem;
+  }
+  .hero-status { margin: 1rem 0 0; }
+
+  .thesis {
+    margin: 2.2rem 0 0;
+    padding: 1.5rem 1.7rem;
+    background: var(--green-soft);
+    border: 1px solid var(--green-border);
+    border-radius: var(--ode-radius);
+    max-width: 42rem;
+  }
+  .thesis-line {
+    font-size: clamp(1.15rem, 2.4vw, 1.45rem);
+    line-height: 1.35;
+    color: var(--ink);
+    margin: 0;
+    font-weight: 300;
+  }
+  .thesis-line strong { font-weight: 500; }
+  .thesis-sub {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--body);
+    margin: 0.9rem 0 0;
+  }
+
+  .block { padding: 2.3rem 0; border-top: 1px solid var(--ode-rule); }
+  .block--last { padding-bottom: 0.5rem; }
+  .block-eyebrow { margin: 0 0 1.2rem; }
+  .block-intro { margin: 0 0 1.4rem; font-size: 0.95rem; line-height: 1.6; color: var(--body); }
+
+  .verif { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 1.8rem; align-items: start; }
+  .verif-text p { margin: 0 0 0.8rem; font-size: 0.98rem; line-height: 1.62; color: var(--body); max-width: 34rem; }
+  .verif-text .note { margin-bottom: 0; }
+  .verif-cta {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas: 'k a' 'd d';
+    gap: 0.5rem 0.8rem;
+    text-decoration: none;
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: var(--ode-radius);
+    padding: 1.3rem 1.4rem;
+    transition: border-color 160ms ease, transform 160ms ease;
+  }
+  .verif-cta:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .verif-cta-k { grid-area: k; font-size: 1.3rem; font-weight: 500; color: var(--ink); }
+  .verif-cta-a { grid-area: a; color: var(--accent); font-size: 1.1rem; }
+  .verif-cta-d { grid-area: d; font-size: 0.88rem; line-height: 1.5; color: var(--body); }
+
+  .limits { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1.4rem 1.8rem; }
+  .limits h2 { font-size: 1rem; font-weight: 500; color: var(--ink); margin: 0.6rem 0 0.45rem; line-height: 1.35; }
+  .limits p { font-size: 0.9rem; line-height: 1.55; color: var(--body); margin: 0; }
+
+  .closing {
+    font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+    line-height: 1.5;
+    font-weight: 300;
+    color: var(--ink);
+    max-width: 40rem;
+    margin: 0;
+  }
+
+  @media (max-width: 780px) {
+    .verif { grid-template-columns: 1fr; gap: 1.3rem; }
+  }
+</style>

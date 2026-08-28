@@ -1,0 +1,58 @@
+---
+// The three audience doors. Each door names its audience, carries the
+// question that audience actually arrives with, and points at the page that
+// answers it. A door that does not enable an action is decoration.
+export interface Door {
+  who: string;      // audience
+  question: string; // the question they arrive with
+  href: string;
+  cta: string;
+  next?: string;    // suggested second stop, plain text
+}
+interface Props {
+  doors: Door[];
+}
+const { doors } = Astro.props;
+---
+<nav class="doors" aria-label="Tre porte">
+  {doors.map((d) => (
+    <a class="door" href={d.href}>
+      <span class="door-who">{d.who}</span>
+      <span class="door-q">{d.question}</span>
+      <span class="door-cta">{d.cta}<span class="door-arrow" aria-hidden="true">→</span></span>
+      {d.next && <span class="door-next">{d.next}</span>}
+    </a>
+  ))}
+</nav>
+
+<style>
+  .doors { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; }
+  .door {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    text-decoration: none;
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: var(--ode-radius);
+    padding: 1.4rem 1.5rem;
+    transition: border-color 160ms ease, transform 160ms ease, background-color 160ms ease;
+  }
+  .door:hover { border-color: var(--accent); transform: translateY(-2px); background: var(--panel-strong); }
+  .door:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .door-who {
+    font-family: var(--ode-font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .door-q { font-size: 1.05rem; line-height: 1.35; color: var(--ink); }
+  .door-cta {
+    margin-top: auto;
+    display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem;
+    font-size: 0.9rem; font-weight: 500; color: var(--accent);
+  }
+  .door-arrow { font-size: 1rem; }
+  .door-next { font-size: 0.78rem; color: var(--muted); line-height: 1.4; }
+</style>

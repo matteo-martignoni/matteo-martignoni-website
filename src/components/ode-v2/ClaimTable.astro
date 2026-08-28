@@ -1,0 +1,74 @@
+---
+// Taxonomy of market claims. Evaluates the CLAIM, never who makes it: no
+// operator, brand or author is named in any row. Ported from the research
+// taxonomy built against the common criteria for cosmetic claims.
+import { type OdeLang } from '../../i18n/ode-v2';
+
+export interface ClaimRow {
+  claim: string;      // the recurring claim, in quotes at the call site
+  says: string;       // what it actually asserts
+  evidence: string;   // what the evidence says
+  ok: 'no' | 'parziale' | 'neutra';
+  criterion: string;  // which common criterion it puts under strain
+}
+interface Props {
+  rows: ClaimRow[];
+  lang?: OdeLang;
+}
+const { rows, lang = 'it' } = Astro.props;
+
+const H = {
+  it: { claim: 'Claim ricorrente', says: 'Che cosa afferma', ev: 'Evidenza', ok: 'Difendibile?', cr: 'Criterio in tensione' },
+  en: { claim: 'Recurring claim', says: 'What it asserts', ev: 'Evidence', ok: 'Defensible?', cr: 'Criterion under strain' },
+}[lang];
+
+const VERDICT = {
+  it: { no: 'No', parziale: 'Solo in parte', neutra: 'Neutra' },
+  en: { no: 'No', parziale: 'Only in part', neutra: 'Neutral' },
+}[lang];
+---
+<div class="tw">
+  <table class="ct">
+    <thead>
+      <tr>
+        <th scope="col">{H.claim}</th>
+        <th scope="col">{H.says}</th>
+        <th scope="col">{H.ev}</th>
+        <th scope="col">{H.ok}</th>
+        <th scope="col">{H.cr}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((r) => (
+        <tr>
+          <th scope="row" class="c-claim">{r.claim}</th>
+          <td>{r.says}</td>
+          <td>{r.evidence}</td>
+          <td><span class:list={['v', `v--${r.ok}`]}>{VERDICT[r.ok]}</span></td>
+          <td class="c-cr">{r.criterion}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .tw { overflow-x: auto; margin: 1.4rem 0; }
+  .ct { border-collapse: collapse; width: 100%; min-width: 46rem; }
+  .ct th, .ct td { padding: 0.75rem 0.9rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--rule); }
+  .ct thead th {
+    color: var(--accent); font-weight: 500; font-size: 0.72rem;
+    text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap;
+  }
+  .ct td, .ct tbody th { font-size: 0.88rem; line-height: 1.5; color: var(--body); font-weight: 400; }
+  .c-claim { color: var(--ink); font-style: italic; max-width: 14rem; }
+  .c-cr { font-size: 0.82rem; color: var(--muted); }
+  .v {
+    display: inline-block; font-family: var(--ode-font-mono); font-size: 0.68rem;
+    font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase;
+    padding: 0.15em 0.45em; border-radius: 3px; white-space: nowrap;
+  }
+  .v--no { background: var(--pink-soft); color: var(--pink-ink); }
+  .v--parziale { background: var(--lav-soft); color: var(--lav-ink); }
+  .v--neutra { background: var(--pill); color: var(--muted); }
+</style>
