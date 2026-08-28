@@ -27,14 +27,23 @@ interface Props {
   lang?: OdeLang;
   /** Which nav item is the current page (for active state). */
   active?: OdeRouteKey;
+  /**
+   * Route key of this page, for the language switch. Defaults to `active`;
+   * pass it explicitly on pages that carry no nav highlight (glossary,
+   * dashboard) so the switch lands on the same page rather than the home.
+   */
+  pageKey?: OdeRouteKey;
 }
 
-const { title, description = '', lang = 'it', active } = Astro.props;
+const { title, description = '', lang = 'it', active, pageKey } = Astro.props;
 const t = odeUI[lang];
 const r = odeRoutes[lang];
 
+// Language switch: same page in the other language where we know which page
+// this is, home otherwise.
 const other: OdeLang = lang === 'it' ? 'en' : 'it';
-const otherHome = odeRoutes[other].home;
+const key = pageKey ?? active;
+const otherHref = key ? odeRoutes[other][key] : odeRoutes[other].home;
 
 // Order follows the narrative, not the org chart: first what we verified
 // (Audit), then what follows from it (Tesi), then the instrument (AMSA) and
@@ -115,7 +124,7 @@ const testNotice =
             >{item.label}</a>
           </>
         ))}
-        <a href={otherHome} class="ode-lang">{other.toUpperCase()}</a>
+        <a href={otherHref} class="ode-lang" hreflang={other}>{other.toUpperCase()}</a>
       </nav>
     </header>
 

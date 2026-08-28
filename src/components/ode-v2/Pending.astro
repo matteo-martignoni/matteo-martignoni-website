@@ -1,0 +1,62 @@
+---
+// Placeholder body for an EN route whose Italian counterpart is written but
+// not yet translated. The route exists so navigation never 404s, and the
+// notice is explicit rather than silent: an untranslated page that pretends
+// to be finished is worse than one that says so.
+import { odeRoutes, type OdeLang } from '../../i18n/ode-v2';
+
+interface Props {
+  /** Route key of the Italian page that carries the content. */
+  itHref: string;
+  /** One-line summary of what the finished page will contain. */
+  summary: string;
+}
+const { itHref, summary } = Astro.props;
+const r = odeRoutes.en;
+---
+<section class="pending">
+  <p class="pending-k">Translation pending</p>
+  <p class="pending-s">{summary}</p>
+  <p class="pending-b">
+    This page is written and published in Italian. The English version is part of the
+    same delivery and is not yet complete; the route exists so that navigation and
+    internal links stay intact.
+  </p>
+  <p class="pending-a">
+    <a href={itHref}>Read the Italian version</a>
+    <a href={r.home}>Back to home</a>
+  </p>
+</section>
+
+<style>
+  .pending {
+    margin: 2rem 0;
+    padding: 1.6rem 1.7rem;
+    border: 1px dashed var(--ink);
+    border-radius: var(--ode-radius);
+    max-width: 42rem;
+  }
+  .pending-k {
+    font-family: var(--ode-font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin: 0 0 0.8rem;
+  }
+  .pending-s { margin: 0 0 0.8rem; font-size: 1.02rem; line-height: 1.5; color: var(--ink); }
+  .pending-b { margin: 0 0 1.1rem; font-size: 0.92rem; line-height: 1.6; color: var(--body); }
+  .pending-a { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 0; }
+  .pending-a a {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.88rem;
+    color: var(--ink);
+    text-decoration: none;
+    border: 1px solid var(--rule);
+    border-radius: var(--ode-radius-sm);
+    padding: 0.4rem 0.8rem;
+    transition: border-color 160ms ease, color 160ms ease;
+  }
+  .pending-a a:hover { border-color: var(--accent); color: var(--accent); }
+</style>

@@ -1,0 +1,16 @@
+---
+import OdeV2Layout from '../../../layouts/OdeV2Layout.astro';
+import Pending from '../../../components/ode-v2/Pending.astro';
+import { odeMeta, odeRoutes } from '../../../i18n/ode-v2';
+
+const lang = 'en' as const;
+const m = odeMeta[lang].normativa;
+const itHref = odeRoutes.it.normativa;
+---
+<OdeV2Layout title={m.title} description={m.description} lang={lang} active="normativa">
+  <header class="pg">
+    <p class="ode-eyebrow">Regulation</p>
+    <h1>The frame, without forcing it</h1>
+  </header>
+  <Pending itHref={itHref} summary="A documentary survey rather than legal advice: animal by-products, the cosmetic regulation, the common criteria for claims, the deforestation asymmetry with its three mandatory qualifications, and the requirement-versus-differentiator table." />
+</OdeV2Layout>

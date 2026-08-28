@@ -1,0 +1,16 @@
+---
+import OdeV2Layout from '../../../layouts/OdeV2Layout.astro';
+import Pending from '../../../components/ode-v2/Pending.astro';
+import { odeMeta, odeRoutes } from '../../../i18n/ode-v2';
+
+const lang = 'en' as const;
+const m = odeMeta[lang].amsa;
+const itHref = odeRoutes.it.amsa;
+---
+<OdeV2Layout title={m.title} description={m.description} lang={lang} active="amsa">
+  <header class="pg">
+    <p class="ode-eyebrow">AMSA</p>
+    <h1>The instrument that measures</h1>
+  </header>
+  <Pending itHref={itHref} summary="The parameters measured batch by batch with their standards, the distinction between requirement and differentiator, why the Oxidative Risk Score is not a predictor of cutaneous outcome, and the nine sections of the Digital Lipid Passport, the ninth of which lists what has NOT been tested." />
+</OdeV2Layout>

@@ -1,0 +1,16 @@
+---
+import OdeV2Layout from '../../../layouts/OdeV2Layout.astro';
+import Pending from '../../../components/ode-v2/Pending.astro';
+import { odeMeta, odeRoutes } from '../../../i18n/ode-v2';
+
+const lang = 'en' as const;
+const m = odeMeta[lang].evidenza;
+const itHref = odeRoutes.it.evidenza;
+---
+<OdeV2Layout title={m.title} description={m.description} lang={lang} active="evidenza">
+  <header class="pg">
+    <p class="ode-eyebrow">Open evidence</p>
+    <h1>The questions we cannot answer yet</h1>
+  </header>
+  <Pending itHref={itHref} summary="Six verified gaps with the basins searched, nine experiments with question, cost order and category, the ten-step sequence ordered by cost of information, four gates with pre-set numerical criteria, and the conditions under which the thesis fails." />
+</OdeV2Layout>

@@ -1,0 +1,16 @@
+---
+import OdeV2Layout from '../../../layouts/OdeV2Layout.astro';
+import Pending from '../../../components/ode-v2/Pending.astro';
+import { odeMeta, odeRoutes } from '../../../i18n/ode-v2';
+
+const lang = 'en' as const;
+const m = odeMeta[lang].filiera;
+const itHref = odeRoutes.it.filiera;
+---
+<OdeV2Layout title={m.title} description={m.description} lang={lang} active="filiera">
+  <header class="pg">
+    <p class="ode-eyebrow">Supply chain</p>
+    <h1>Provenance is an input, not a promise</h1>
+  </header>
+  <Pending itHref={itHref} summary="The two regulatory layers, the life path of a dairy cow and the exact point where traceability breaks, the three things provenance does NOT demonstrate, the verifiable fact behind circularity, and the bovine versus porcine comparison." />
+</OdeV2Layout>

@@ -1,0 +1,16 @@
+---
+import OdeV2Layout from '../../../layouts/OdeV2Layout.astro';
+import Pending from '../../../components/ode-v2/Pending.astro';
+import { odeMeta, odeRoutes } from '../../../i18n/ode-v2';
+
+const lang = 'en' as const;
+const m = odeMeta[lang].posizione;
+const itHref = odeRoutes.it.posizione;
+---
+<OdeV2Layout title={m.title} description={m.description} lang={lang} active="posizione">
+  <header class="pg">
+    <p class="ode-eyebrow">Position</p>
+    <h1>Where we can exist, and where we cannot</h1>
+  </header>
+  <Pending itHref={itHref} summary="The volume-versus-differential pincer, the three-legged verdict on the large groups with the weakness of the first leg stated by us, who is already in the traceability space, the realistic customer, the five sizing gaps and six unsoftened risks." />
+</OdeV2Layout>

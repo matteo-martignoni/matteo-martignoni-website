@@ -153,6 +153,150 @@ remove the `noindex` meta in `src/layouts/OdeLayout.astro` and drop the
 `filter` line in `astro.config.mjs` so the pages re-enter the sitemap. No other
 change is required.
 
+## OdE test site (`/OdE-v2`)
+
+A **redesign of the OdE microsite, published side by side with the original** for
+comparison. It lives at `/OdE-v2` (IT) and `/OdE-v2/en` (EN). The original `/OdE`
+is untouched: not one of its files is modified, and neither is
+`astro.config.mjs`.
+
+### Why the route is named `/OdE-v2`
+
+Because the sitemap filter already covers it. `astro.config.mjs` contains
+
+```js
+filter: (page) => !page.includes('/OdE'),
+```
+
+and the string `/OdE-v2` contains `/OdE`, so every page of the test site is
+already excluded from the sitemap **without touching the config**. Any other
+name would have required editing a shared file.
+
+### Structure
+
+```
+src/pages/OdE-v2/            IT default (/OdE-v2) + EN mirror under /OdE-v2/en
+src/layouts/OdeV2Layout.astro  isolated layout (own header/footer/nav, noindex)
+src/styles/ode-v2-theme.css    v2-only additions, scoped under .ode-v2
+src/components/ode-v2/         DataTag, Sources, StatCard, Status, Finding,
+                               Callout, ClaimTable, Doors, KeyValue, ReadNext,
+                               Pending
+src/i18n/ode-v2.ts             route map, UI strings, per-page meta
+src/lib/ode-v2/sources.ts      footnote source resolver (DOIs, EUR-Lex, FAO)
+PLAN.md                        the redesign plan and the checkpoint decisions
+docs/ode-v2/QA.md              the delivery checklist and how to re-run it
+```
+
+The v2 site **imports the original OdE brand tokens unchanged**
+(`src/styles/ode-theme.css`) and reuses several original components read-only
+(`Section`, `BarChart`, `ControlLoop`, `PassportSections`, `LifecycleFlow`,
+`CowGlyph`, `DropMark`) plus the AMSA Live simulation engine in `src/lib/ode/`.
+`DataTag`, `Sources` and `StatCard` are duplicated rather than reused, because
+they resolve against an extended source list; extending the original in place
+would have changed how `/OdE` renders its own footnotes.
+
+### Pages
+
+| IT | EN | What it does |
+|---|---|---|
+| `/OdE-v2` | `/OdE-v2/en` | Opens with the verified fact, not the promise. Three doors, three stated limits |
+| `/OdE-v2/audit` | `/OdE-v2/en/audit` | The evidence gap, the matrix errors in the most cited review, the claim taxonomy |
+| `/OdE-v2/tesi` | `/OdE-v2/en/tesi` | Acid value, the hydrolysis complication, where OdE cannot compete |
+| `/OdE-v2/amsa` | *pending* | The instrument, the measured parameters, the Digital Lipid Passport |
+| `/OdE-v2/filiera` | *pending* | Provenance as documented input, and where traceability breaks |
+| `/OdE-v2/posizione` | *pending* | The pincer, the three-legged verdict, the sizing gaps |
+| `/OdE-v2/normativa` | *pending* | Documentary survey, the EUDR asymmetry with its qualifications |
+| `/OdE-v2/evidenza` | *pending* | Gaps, experiments with costs, gates and stopping criteria |
+| `/OdE-v2/investitori` | `/OdE-v2/en/investitori` | The two-part verdict, the real numbers, the failure conditions |
+| `/OdE-v2/glossario` | *pending* | Seven groups of terms |
+| `/OdE-v2/amsa-live` | `/OdE-v2/en/amsa-live` | The demonstration dashboard |
+
+Pages marked *pending* exist as routes and carry an explicit "translation
+pending" notice with a link to the Italian version, so navigation never breaks.
+
+### Isolation (five independent mechanisms)
+
+1. **Separate layout** — `OdeV2Layout` renders its own header and footer; the
+   host `Header.astro` / `Navigation.astro` are never used.
+2. **No inbound links** — nothing in the host site or in `/OdE` mentions
+   `/OdE-v2`.
+3. **No outbound links** — nothing in `/OdE-v2` links to `/OdE`.
+4. **`noindex, nofollow`** — on every page, plus an explicit `googlebot` tag.
+5. **Sitemap exclusion** — inherited from the existing filter, no config change.
+
+All five are verified automatically. See `docs/ode-v2/QA.md`.
+
+### Comparing the two versions
+
+```bash
+npm install
+npm run dev
+```
+
+Then open the two side by side:
+
+| | Original | Test site |
+|---|---|---|
+| Home | http://localhost:4321/OdE | http://localhost:4321/OdE-v2 |
+| English | http://localhost:4321/OdE/en | http://localhost:4321/OdE-v2/en |
+| Dashboard | http://localhost:4321/OdE/amsa-live | http://localhost:4321/OdE-v2/amsa-live |
+
+Both are built from the same `main`, so a single `npm run dev` serves both. The
+test site carries a black bar at the top of every page saying it is a test
+version; that bar is the first thing to remove on promotion.
+
+### Verifying the isolation yourself
+
+```bash
+git diff --name-only main           # nothing under src/pages/OdE/, src/lib/ode/,
+                                    # src/components/ode/, src/i18n/ode.ts,
+                                    # src/styles/ode-theme.css, astro.config.mjs
+npm run build
+python3 docs/ode-v2/qa.py           # the full Phase 6 checklist
+```
+
+### Promoting the test site, if approved
+
+The promotion is a rename plus three deletions. Nothing else changes: the
+sitemap filter and the `noindex` stay valid for `/OdE` as they are.
+
+```bash
+git checkout -b promote-ode-v2
+
+# 1. Park the current site in the local recycle bin (git-ignored, outside src/)
+mkdir -p _trash/OdE-v1
+git mv src/pages/OdE            _trash/OdE-v1/pages-OdE
+git mv src/layouts/OdeLayout.astro _trash/OdE-v1/
+git mv src/i18n/ode.ts          _trash/OdE-v1/
+
+# 2. Promote the test site into the live route
+git mv src/pages/OdE-v2 src/pages/OdE
+
+# 3. Rename the v2 modules to the plain names and update the imports
+git mv src/layouts/OdeV2Layout.astro src/layouts/OdeLayout.astro
+git mv src/i18n/ode-v2.ts            src/i18n/ode.ts
+#    then, in src/i18n/ode.ts, replace every '/OdE-v2' with '/OdE'
+#    and, across src/pages/OdE/ and src/components/ode-v2/, replace
+#    'OdeV2Layout' with 'OdeLayout' and 'i18n/ode-v2' with 'i18n/ode'
+
+# 4. Remove the test banner
+#    in src/layouts/OdeLayout.astro delete the <p class="testbar"> line
+#    and the .testbar rule in src/styles/ode-v2-theme.css
+
+npm run build                        # must end with "[build] Complete!"
+```
+
+Only after the client decides the site should also become **visible** from the
+personal site do the existing instructions in the section above apply: add a nav
+entry, remove the `noindex`, and drop the sitemap `filter` line.
+
+### What still needs client input
+
+Nine placeholders are marked in-page with a hatched "Da confermare" chip and
+listed in `docs/ode-v2/QA.md`. The three that block publication are the
+reference capital figure, the innovative-startup registration status, and
+whether the three doors need separate contact addresses.
+
 ### Data honesty
 
 The AMSA LIVE dashboard is a **demonstration simulation**, labelled as such in

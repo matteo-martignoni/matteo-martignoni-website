@@ -1,0 +1,16 @@
+---
+import OdeV2Layout from '../../../layouts/OdeV2Layout.astro';
+import Pending from '../../../components/ode-v2/Pending.astro';
+import { odeMeta, odeRoutes } from '../../../i18n/ode-v2';
+
+const lang = 'en' as const;
+const m = odeMeta[lang].glossario;
+const itHref = odeRoutes.it.glossario;
+---
+<OdeV2Layout title={m.title} description={m.description} lang={lang} active="glossario">
+  <header class="pg">
+    <p class="ode-eyebrow">Glossary</p>
+    <h1>The terms, explained</h1>
+  </header>
+  <Pending itHref={itHref} summary="Seven groups of terms, from acid value and lipase to comedogenicity, cholesterol oxidation products, the deforestation regulation, evidence grades and verified gaps. Where a definition has a limit, the limit is part of the definition." />
+</OdeV2Layout>

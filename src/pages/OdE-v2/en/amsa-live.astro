@@ -1,34 +1,33 @@
 ---
-import OdeV2Layout from '../../layouts/OdeV2Layout.astro';
-import { odeMeta, odeRoutes } from '../../i18n/ode-v2';
+import OdeV2Layout from '../../../layouts/OdeV2Layout.astro';
+import { odeMeta, odeRoutes } from '../../../i18n/ode-v2';
 
-const lang = 'it' as const;
+const lang = 'en' as const;
 const m = odeMeta[lang].live;
 const r = odeRoutes[lang];
 ---
 <OdeV2Layout title={m.title} description={m.description} lang={lang} pageKey="live">
   <header class="hero">
-    <p class="ode-eyebrow">Dimostrazione</p>
+    <p class="ode-eyebrow">Demonstration</p>
     <h1>AMSA Live</h1>
     <p class="lede">
-      Cambia la materia prima e osserva come si costruisce un Passaporto: dall'acquisizione dello
-      spettro al profilo lipidico, dal rischio ossidativo alla decisione industriale. Serve a
-      mostrare <strong>come si legge</strong> un documento di lotto, non che cosa il sego faccia
-      alla pelle.
+      Change the raw material and watch a Passport being built: from spectral acquisition to the
+      lipid profile, from oxidative risk to the industrial decision. It is there to show
+      <strong>how a batch document is read</strong>, not what tallow does to skin.
     </p>
-    <p class="ode-sim-badge">Simulazione dimostrativa</p>
+    <p class="ode-sim-badge">Demonstration simulation</p>
     <p class="notice">
-      Tutti i valori sono una simulazione a fini illustrativi, <strong>non misure di laboratorio
-      reali</strong>. Le assegnazioni delle bande spettrali sono corrette; intensità, punteggi e
-      previsioni di durata sono euristiche calibrate solo per chiarezza, e non hanno alcun valore
-      predittivo. Il quadro reale di che cosa misuriamo, con le norme e i limiti, è in
+      Every value here is a simulation for illustration, <strong>not a laboratory
+      measurement</strong>. The spectral band assignments are correct; intensities, scores and
+      shelf-life figures are heuristics calibrated for clarity alone, and have no predictive
+      value. What we actually measure, with the standards and the limits, is in
       <a href={r.amsa}>AMSA</a>.
     </p>
   </header>
 
   <!-- STEP 1 · INPUT -->
   <section class="step step--input">
-    <div class="step-head"><span class="step-n">1</span><h2>Materia prima</h2></div>
+    <div class="step-head"><span class="step-n">1</span><h2>Raw material</h2></div>
     <div class="controls">
       <label>Grasso<select id="ode-fat"></select></label>
       <label>Dieta / origine<select id="ode-diet"></select></label>
@@ -38,22 +37,22 @@ const r = odeRoutes[lang];
 
   <!-- STEP 2 · ACTIVE CONTROL LOOP -->
   <section class="step step--ai">
-    <div class="step-head"><span class="step-n">2</span><h2>Acquisizione spettrale · Active Control Loop</h2></div>
-    <p class="step-intro">L'agente regola i parametri del sensore a ogni iterazione, finché il quality control supera la soglia.</p>
+    <div class="step-head"><span class="step-n">2</span><h2>Spectral acquisition · Active Control Loop</h2></div>
+    <p class="step-intro">The agent adjusts the sensor parameters at each iteration until quality control clears the threshold.</p>
     <ol id="ode-acq" class="acq"></ol>
   </section>
 
   <!-- STEP 3 · SPECTRUM + PROFILE -->
   <section class="step step--ai">
-    <div class="step-head"><span class="step-n">3</span><h2>Spettro e profilo lipidico</h2></div>
+    <div class="step-head"><span class="step-n">3</span><h2>Spectrum and lipid profile</h2></div>
     <div class="cols">
       <div class="col">
-        <p class="step-intro">Spettro NIR/Raman simulato (intensità relativa vs numero d'onda, cm⁻¹).</p>
+        <p class="step-intro">Simulated NIR/Raman spectrum (relative intensity versus wavenumber, cm⁻¹).</p>
         <div id="ode-spectrum" class="spectrum"></div>
         <ul id="ode-bands" class="bands"></ul>
       </div>
       <div class="col">
-        <p class="step-intro">Profilo acidi grassi e parametri chiave.</p>
+        <p class="step-intro">Fatty acid profile and key parameters.</p>
         <div id="ode-fabars" class="fabars"></div>
         <div id="ode-metrics" class="metrics"></div>
       </div>
@@ -62,7 +61,7 @@ const r = odeRoutes[lang];
 
   <!-- STEP 4 · RISK + PASSPORT -->
   <section class="step step--out">
-    <div class="step-head"><span class="step-n">4</span><h2>Rischio ossidativo e Passaporto</h2></div>
+    <div class="step-head"><span class="step-n">4</span><h2>Oxidative risk and Passport</h2></div>
     <div class="cols">
       <div class="col">
         <div id="ode-risk" class="risk"></div>
@@ -73,30 +72,30 @@ const r = odeRoutes[lang];
     </div>
   </section>
   <aside class="closing-note">
-    <p class="closing-k">Che cosa questa pagina non dimostra</p>
+    <p class="closing-k">What this page does not demonstrate</p>
     <p>
-      Che il materiale funzioni sulla pelle. La simulazione mostra il flusso informativo di una
-      qualificazione, non un esito cutaneo, e la previsione di durata che vedete è una euristica
-      illustrativa: nessun ponte fra stato ossidativo misurato ed esito cutaneo esiste in
-      letteratura per i trigliceridi. Il perché è nell'<a href={r.audit}>Audit</a>, e che cosa
-      servirebbe per costruirlo è in <a href={r.evidenza}>Evidenza aperta</a>.
+      That the material works on skin. The simulation shows the information flow of a
+      qualification, not a cutaneous outcome, and the shelf-life figure you see is an
+      illustrative heuristic: no bridge between measured oxidative state and cutaneous outcome
+      exists in the literature for triglycerides. Why is in the <a href={r.audit}>Audit</a>, and
+      what it would take to build one is in <a href={r.evidenza}>Open evidence</a>.
     </p>
   </aside>
 </OdeV2Layout>
 
 <script>
-  import { initDashboard } from '../../lib/ode/dashboard-ui';
+  import { initDashboard } from '../../../lib/ode/dashboard-ui';
   initDashboard({
-    lang: 'it',
-    fatNames: { beef_tallow: 'Sego bovino', pork_lard: 'Grasso suino' },
-    fatLabel: 'Grasso', dietLabel: 'Dieta', renderLabel: 'Rendering',
-    acqTitle: 'Acquisizione', acqIntro: '', qcOk: 'QC ok', snr: 'SNR',
-    spectrumTitle: 'Spettro simulato', spectrumIntro: '', wavenumber: "Numero d'onda (cm⁻¹)",
-    profileTitle: 'Profilo', iodine: 'Iodine value', slip: 'Slip point', stability: 'Stabilità ossidativa',
-    riskTitle: 'Rischio', pv: 'Peroxide value (PV)', totox: 'TOTOX', codexOk: 'Entro specifica', codexOut: 'Fuori specifica',
-    shelfLife: 'Shelf-life prevista', days: 'giorni',
-    riskBands: { basso: 'Rischio basso', moderato: 'Rischio moderato', alto: 'Rischio alto' },
-    passportTitle: 'Passaporto', decision: 'Decisione industriale',
+    lang: 'en',
+    fatNames: { beef_tallow: 'Beef tallow', pork_lard: 'Pork fat' },
+    fatLabel: 'Fat', dietLabel: 'Diet', renderLabel: 'Rendering',
+    acqTitle: 'Acquisition', acqIntro: '', qcOk: 'QC ok', snr: 'SNR',
+    spectrumTitle: 'Simulated spectrum', spectrumIntro: '', wavenumber: 'Wavenumber (cm⁻¹)',
+    profileTitle: 'Profile', iodine: 'Iodine value', slip: 'Slip point', stability: 'Oxidative stability',
+    riskTitle: 'Risk', pv: 'Peroxide value (PV)', totox: 'TOTOX', codexOk: 'Within specification', codexOut: 'Out of specification',
+    shelfLife: 'Predicted shelf-life', days: 'days',
+    riskBands: { basso: 'Low risk', moderato: 'Moderate risk', alto: 'High risk' },
+    passportTitle: 'Passport', decision: 'Industrial decision',
   });
 </script>
 
