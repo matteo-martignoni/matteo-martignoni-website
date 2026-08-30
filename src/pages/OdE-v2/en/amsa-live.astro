@@ -8,19 +8,19 @@ const r = odeRoutes[lang];
 ---
 <OdeV2Layout title={m.title} description={m.description} lang={lang} pageKey="live">
   <header class="hero">
-    <p class="ode-eyebrow">Demonstration</p>
+    <p class="ode-eyebrow">Walkthrough</p>
     <h1>AMSA Live</h1>
     <p class="lede">
-      Change the raw material and watch a Passport being built: from spectral acquisition to the
-      lipid profile, from oxidative risk to the industrial decision. It is there to show
-      <strong>how a batch document is read</strong>, not what tallow does to skin.
+      Switch the raw material and watch a Passport get built, from spectral acquisition through
+      the lipid profile and the oxidative risk to the decision at the end. It is here to show you
+      <strong>how to read a batch document</strong>, not what tallow does to skin.
     </p>
     <p class="ode-sim-badge">Demonstration simulation</p>
     <p class="notice">
-      Every value here is a simulation for illustration, <strong>not a laboratory
-      measurement</strong>. The spectral band assignments are correct; intensities, scores and
-      shelf-life figures are heuristics calibrated for clarity alone, and have no predictive
-      value. What we actually measure, with the standards and the limits, is in
+      Every number on this page is simulated for illustration and is
+      <strong>not a laboratory measurement</strong>. The spectral band assignments are real.
+      Intensities, scores and shelf-life figures are heuristics tuned for clarity and predict
+      nothing. What we actually measure, with the standards and the limits, is in
       <a href={r.amsa}>AMSA</a>.
     </p>
   </header>
@@ -72,13 +72,13 @@ const r = odeRoutes[lang];
     </div>
   </section>
   <aside class="closing-note">
-    <p class="closing-k">What this page does not demonstrate</p>
+    <p class="closing-k">What this page does not show</p>
     <p>
-      That the material works on skin. The simulation shows the information flow of a
-      qualification, not a cutaneous outcome, and the shelf-life figure you see is an
-      illustrative heuristic: no bridge between measured oxidative state and cutaneous outcome
-      exists in the literature for triglycerides. Why is in the <a href={r.audit}>Audit</a>, and
-      what it would take to build one is in <a href={r.evidenza}>Open evidence</a>.
+      That the material works on skin. What you are watching is how information moves through a
+      qualification, not an outcome on skin, and the shelf-life figure is an illustrative
+      heuristic: for triglycerides, no bridge exists in the literature between measured oxidative
+      state and anything that happens on skin. Why, in the <a href={r.audit}>Audit</a>. What it
+      would take to build one, in <a href={r.evidenza}>Open questions</a>.
     </p>
   </aside>
 </OdeV2Layout>

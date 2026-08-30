@@ -200,19 +200,31 @@ would have changed how `/OdE` renders its own footnotes.
 |---|---|---|
 | `/OdE-v2` | `/OdE-v2/en` | Opens with the verified fact, not the promise. Three doors, three stated limits |
 | `/OdE-v2/audit` | `/OdE-v2/en/audit` | The evidence gap, the matrix errors in the most cited review, the claim taxonomy |
-| `/OdE-v2/tesi` | `/OdE-v2/en/tesi` | Acid value, the hydrolysis complication, where OdE cannot compete |
+| `/OdE-v2/tesi` | `/OdE-v2/en/thesis` | Acid value, the hydrolysis complication, where OdE cannot compete |
 | `/OdE-v2/amsa` | `/OdE-v2/en/amsa` | The instrument, the measured parameters, the Digital Lipid Passport |
-| `/OdE-v2/filiera` | `/OdE-v2/en/filiera` | Provenance as documented input, and where traceability breaks |
-| `/OdE-v2/posizione` | `/OdE-v2/en/posizione` | The pincer, the three-legged verdict, the sizing gaps |
-| `/OdE-v2/normativa` | `/OdE-v2/en/normativa` | Documentary survey, the EUDR asymmetry with its qualifications |
-| `/OdE-v2/evidenza` | `/OdE-v2/en/evidenza` | Gaps, experiments with costs, gates and stopping criteria |
-| `/OdE-v2/investitori` | `/OdE-v2/en/investitori` | The two-part verdict, the real numbers, the failure conditions |
-| `/OdE-v2/glossario` | `/OdE-v2/en/glossario` | Seven groups of terms |
+| `/OdE-v2/filiera` | `/OdE-v2/en/supply-chain` | Provenance as documented input, and where traceability breaks |
+| `/OdE-v2/posizione` | `/OdE-v2/en/position` | The squeeze, the three-legged verdict, the sizing gaps |
+| `/OdE-v2/normativa` | `/OdE-v2/en/regulation` | Documentary survey, the EUDR asymmetry with its caveats |
+| `/OdE-v2/evidenza` | `/OdE-v2/en/open-evidence` | Gaps, experiments with costs, gates and stopping criteria |
+| `/OdE-v2/investitori` | `/OdE-v2/en/investors` | The two-part verdict, the real numbers, the failure conditions |
+| `/OdE-v2/glossario` | `/OdE-v2/en/glossary` | Seven groups of terms |
 | `/OdE-v2/amsa-live` | `/OdE-v2/en/amsa-live` | The demonstration dashboard |
 
-Both languages are complete: every page exists as a full translation, and the
-two versions carry the same number of footnotes page by page, which is the
-quickest way to spot a reference lost on one side.
+**English is the source language.** Copy is written in English and rendered into
+Italian, which is why the English routes carry English slugs while the route
+keys that address them stay stable and language-neutral: the language switch
+resolves on keys, so it always lands on the same page in the other language.
+`DataTag` reads the locale from the route, so a source badge says "Source" in
+English and "Fonte" in Italian.
+
+Both languages are complete, and the two versions carry the same number of
+footnotes page by page, which is the quickest way to spot a reference lost on
+one side.
+
+The default locale has **not** been flipped: `/OdE-v2` still serves Italian.
+Whether English should also become the default, with Italian moving under
+`/it`, is a decision about the project's primary audience and is left to the
+client.
 
 ### Isolation (five independent mechanisms)
 

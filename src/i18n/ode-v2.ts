@@ -5,7 +5,12 @@
 // import from src/i18n/ode.ts: the original microsite must keep working
 // untouched, and a shared module would couple the two.
 //
-// Convention (OdE): NO em-dash in Italian copy. Use commas, colons or
+// ENGLISH IS THE SOURCE LANGUAGE of this microsite. Italian is the translation.
+// Copy is drafted in English and rendered into Italian, not the other way
+// round, which is why the English routes carry English slugs while the keys
+// that address them stay stable and language-neutral.
+//
+// House style, both languages: NO em-dash in body copy. Use commas, colons or
 // parentheses instead. The em-dash is allowed only in code comments.
 // ──────────────────────────────────────────────────────────────
 
@@ -13,7 +18,9 @@ export type OdeLang = 'it' | 'en';
 
 export const ODE_LANGS: OdeLang[] = ['it', 'en'];
 
-// Route map — IT default at /OdE-v2, EN under /OdE-v2/en.
+// Route map. The keys are identifiers and never change; only the slugs are
+// localised, so the language switch can always find the same page in the
+// other language.
 export const odeRoutes = {
   it: {
     home: '/OdE-v2',
@@ -31,14 +38,14 @@ export const odeRoutes = {
   en: {
     home: '/OdE-v2/en',
     audit: '/OdE-v2/en/audit',
-    tesi: '/OdE-v2/en/tesi',
+    tesi: '/OdE-v2/en/thesis',
     amsa: '/OdE-v2/en/amsa',
-    filiera: '/OdE-v2/en/filiera',
-    posizione: '/OdE-v2/en/posizione',
-    normativa: '/OdE-v2/en/normativa',
-    evidenza: '/OdE-v2/en/evidenza',
-    investitori: '/OdE-v2/en/investitori',
-    glossario: '/OdE-v2/en/glossario',
+    filiera: '/OdE-v2/en/supply-chain',
+    posizione: '/OdE-v2/en/position',
+    normativa: '/OdE-v2/en/regulation',
+    evidenza: '/OdE-v2/en/open-evidence',
+    investitori: '/OdE-v2/en/investors',
+    glossario: '/OdE-v2/en/glossary',
     live: '/OdE-v2/en/amsa-live',
   },
 } as const;
@@ -56,7 +63,7 @@ export const odeUI = {
       filiera: 'Filiera',
       posizione: 'Posizione',
       normativa: 'Normativa',
-      evidenza: 'Evidenza aperta',
+      evidenza: 'Domande aperte',
       investitori: 'Investitori',
     },
     footer: {
@@ -74,7 +81,7 @@ export const odeUI = {
   },
   en: {
     brand: 'Officina degli Estratti',
-    tagline: 'A laboratory before it is a producer',
+    tagline: 'A laboratory first, a producer second',
     nav: {
       audit: 'Audit',
       tesi: 'Thesis',
@@ -82,7 +89,7 @@ export const odeUI = {
       filiera: 'Supply chain',
       posizione: 'Position',
       normativa: 'Regulation',
-      evidenza: 'Open evidence',
+      evidenza: 'Open questions',
       investitori: 'Investors',
     },
     footer: {
@@ -90,12 +97,12 @@ export const odeUI = {
       live: 'AMSA Live',
     },
     sourcesTitle: 'Sources and notes',
-    testBadge: 'Test version',
-    simBadge: 'Demonstration simulation',
-    backHome: 'Back to home',
-    statusTitle: 'Status of the claim',
-    findingTitle: 'Sign of the finding',
-    placeholder: 'Requires input from the client',
+    testBadge: 'Test build',
+    simBadge: 'Worked simulation',
+    backHome: 'Back to the home page',
+    statusTitle: 'How well we know this',
+    findingTitle: 'Which way it cuts',
+    placeholder: 'Waiting on the client',
     readNext: 'Read next',
   },
 } as const;
@@ -139,7 +146,7 @@ export const odeMeta = {
         'Ricognizione documentale del quadro normativo: sottoprodotti animali, regolamento cosmetico, criteri per le dichiarazioni, e l’asimmetria EUDR con le sue qualificazioni.',
     },
     evidenza: {
-      title: 'Evidenza aperta · Officina degli Estratti',
+      title: 'Domande aperte · Officina degli Estratti',
       description:
         'Le domande aperte, il programma sperimentale con costi e sequenza, i criteri di arresto pre-fissati e l’invito ai gruppi di ricerca.',
     },
@@ -163,57 +170,57 @@ export const odeMeta = {
     home: {
       title: 'Officina degli Estratti',
       description:
-        'There is no clinical study measuring what tallow does to human skin. OdE does not sell tallow: it sells certainty about what is inside a batch of tallow.',
+        'Nobody has ever measured what tallow does to human skin. OdE does not sell tallow. It sells certainty about what is inside the drum.',
     },
     audit: {
       title: 'The Audit · Officina degli Estratti',
       description:
-        'What we verified and how: the evidence gap on topical tallow, the matrix error in the most cited review, and the taxonomy of claims that do not hold.',
+        'What we checked, and how: the hole in the evidence on topical tallow, the wrong-material errors in the most cited review, and the claims that would not survive scrutiny.',
     },
     tesi: {
       title: 'The Thesis · Officina degli Estratti',
       description:
-        'Acid value is the parameter that decides the safety of a tallow batch, and it is measurable. The bacterial hydrolysis complication, declared.',
+        'Acid value decides whether a batch of tallow is safe, it costs a few tens of euros to measure, and almost nobody states it. The hydrolysis complication, spelled out.',
     },
     amsa: {
       title: 'AMSA · Officina degli Estratti',
       description:
-        'The instrument that measures: multimodal spectroscopy, chemometrics and the Digital Lipid Passport, with the parameters carried by every batch.',
+        'The instrument: multimodal spectroscopy, chemometrics and the Digital Lipid Passport, with every parameter that travels with a batch.',
     },
     filiera: {
       title: 'Supply chain · Officina degli Estratti',
       description:
-        'Provenance as a documented input to qualification, not as a superiority claim. Including the exact point at which traceability breaks.',
+        'Provenance is an input we can document, not a claim we can sell. Including the exact point where traceability breaks down.',
     },
     posizione: {
       title: 'Position · Officina degli Estratti',
       description:
-        'Where OdE can exist and where it cannot. The three-legged verdict on the large groups and the volume-versus-differential pincer, stated openly.',
+        'Where OdE can compete and where it cannot. The three-legged verdict on the big groups, and the squeeze between volume and difference.',
     },
     normativa: {
       title: 'Regulation · Officina degli Estratti',
       description:
-        'A documentary survey of the regulatory frame: animal by-products, the cosmetic regulation, claim criteria, and the EUDR asymmetry with its qualifications.',
+        'A paper trail, not legal advice: animal by-products, the cosmetic regulation, the rules on claims, and the deforestation asymmetry with its three caveats.',
     },
     evidenza: {
-      title: 'Open evidence · Officina degli Estratti',
+      title: 'Open questions · Officina degli Estratti',
       description:
-        'The open questions, the experimental programme with costs and sequence, the pre-set stopping criteria, and the invitation to research groups.',
+        'What we still cannot answer, what each experiment would cost, the order we would run them in, and the numbers that would make us stop.',
     },
     investitori: {
       title: 'Investors · Officina degli Estratti',
       description:
-        'The two-part verdict, the real numbers of the experimental programme, the decision gates and the failure conditions of the thesis. No inflated projections.',
+        'The verdict in two halves, what the experimental programme really costs, the decision gates, and the conditions under which the thesis fails. No hockey sticks.',
     },
     glossario: {
       title: 'Glossary · Officina degli Estratti',
       description:
-        'The technical terms used on this site, explained: acid value, free fatty acids, lipase, SFC, comedogenicity, COPs, EUDR and others.',
+        'Every technical term this site uses, explained: acid value, free fatty acids, lipase, solid fat content, comedogenicity, oxysterols, the deforestation rules and the rest.',
     },
     live: {
       title: 'AMSA Live · Officina degli Estratti',
       description:
-        'Demonstration dashboard: from the animal fat sample to the Digital Lipid Passport, step by step. A simulation, not laboratory measurements.',
+        'A worked simulation: from a sample of animal fat to a Digital Lipid Passport, step by step. Simulated numbers, not laboratory measurements.',
     },
   },
 } as const;

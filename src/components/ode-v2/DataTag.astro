@@ -1,7 +1,12 @@
 ---
 // Data-classification tag for /OdE-v2 — OdE tone rule: every quantitative
-// datum is labelled [FONTE] (verified), [STIMA] (own estimate) or
-// [BENCHMARK] (proxy from a comparable case).
+// datum is labelled Source (verified), Estimate (our own) or Benchmark
+// (a proxy taken from a comparable case).
+//
+// English is the source language of this microsite, so the badge word follows
+// the page locale instead of being fixed in Italian. The locale is read from
+// the URL rather than passed as a prop: roughly 150 call sites would otherwise
+// have to repeat what the route already says.
 //
 // Duplicated from the original components/ode/DataTag.astro rather than
 // reused, because it must resolve against lib/ode-v2/sources.ts. It writes
@@ -20,7 +25,10 @@ interface Props {
   label?: string; // source note shown in the footnote list
 }
 const { kind, label } = Astro.props;
-const text = { fonte: 'Fonte', stima: 'Stima', bench: 'Benchmark' }[kind];
+const isIt = !Astro.url.pathname.startsWith('/OdE-v2/en');
+const text = isIt
+  ? { fonte: 'Fonte', stima: 'Stima', bench: 'Benchmark' }[kind]
+  : { fonte: 'Source', stima: 'Estimate', bench: 'Benchmark' }[kind];
 
 const hasSource = Boolean(label && label.trim());
 

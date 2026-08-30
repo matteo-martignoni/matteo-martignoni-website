@@ -19,12 +19,12 @@ const { rows, lang = 'it' } = Astro.props;
 
 const H = {
   it: { claim: 'Claim ricorrente', says: 'Che cosa afferma', ev: 'Evidenza', ok: 'Difendibile?', cr: 'Criterio in tensione' },
-  en: { claim: 'Recurring claim', says: 'What it asserts', ev: 'Evidence', ok: 'Defensible?', cr: 'Criterion under strain' },
+  en: { claim: 'Claim in circulation', says: 'What it says', ev: 'Evidence', ok: 'Would it hold up?', cr: 'Criterion it strains' },
 }[lang];
 
 const VERDICT = {
   it: { no: 'No', parziale: 'Solo in parte', neutra: 'Neutra' },
-  en: { no: 'No', parziale: 'Only in part', neutra: 'Neutral' },
+  en: { no: 'No', parziale: 'Partly', neutra: 'Neutral' },
 }[lang];
 ---
 <div class="tw">

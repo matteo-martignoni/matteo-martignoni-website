@@ -20,14 +20,14 @@ const layers = [
     k: 'Mandatory layer',
     glyph: 'calf' as const,
     title: 'Bovine registry',
-    body: 'Every head has an individual identity: a double ear tag and a fourteen-character code, unchanged from birth to death. Birth, movements and slaughter are recorded as a matter of law.',
+    body: 'Every animal has an identity of its own: a double ear tag and a fourteen-character code that never changes from birth to death. Birth, movements and slaughter all go on the record, because the law says so.',
     refs: 'Reg. EU 2016/429, Implementing Reg. EU 2021/520, Legislative Decree 134/2022',
   },
   {
     k: 'Voluntary but binding layer',
     glyph: 'cow' as const,
     title: 'Designation specification',
-    body: 'The specification ties the animal to a certified territory and diet: local forage, an absolute ban on silage, an area limited to five provinces. It is a nutritional identity card for the herd.',
+    body: 'The specification ties the animal to a certified territory and a certified diet: local forage, silage banned outright, an area of five provinces and no more. It amounts to a nutritional identity card for the herd.',
     refs: 'Reg. EU 1151/2012, Implementing Reg. EU 2025/661',
   },
 ];
@@ -36,32 +36,32 @@ const gaps = [
   {
     n: '01',
     problema: 'Individual identity dissolves into the batch',
-    body: 'The ear tag identifies the single head up to the slaughterhouse. At rendering, adipose tissue from several animals flows into lots: the commercial document tracks the batch of rendered fat, no longer the individual animal or the farm.',
-    presidio: 'Chain of custody agreements with slaughterhouses and plants that segregate batches by origin and document their geographic provenance.',
+    body: 'The ear tag follows one animal as far as the slaughterhouse. At rendering, fat from several animals goes into the same lot, and from there the paperwork tracks a batch of rendered fat rather than an animal or a farm.',
+    presidio: 'Chain of custody agreements with slaughterhouses and rendering plants that keep batches separated by origin and put their geography on paper.',
   },
   {
     n: '02',
     problema: 'The specification does not cover the fat',
-    body: 'The designation concerns milk and cheese. No certification extends to tallow: OdE cannot claim the designation for the fat, nor imply that the lipid product is certified.',
-    presidio: 'Communicate provenance from the district, never a certification of the lipid product. Rigour in the claim is the only form of credibility available.',
+    body: 'The designation covers milk and cheese. Nothing certifies the tallow. OdE cannot claim the designation for the fat, and cannot let anyone infer that the lipid is certified either.',
+    presidio: 'Talk about where the material comes from, never about a certification the lipid does not have. Getting the wording right is the only credibility on offer here.',
   },
   {
     n: '03',
     problema: 'An end-of-career cow can leave earlier',
-    body: 'A cow that has produced milk may be sold, fed differently and moved outside the district before slaughter, with those events still recorded. "From a cow that produced milk" is not the same as "fed under the specification up to slaughter".',
-    presidio: 'Define the claim precisely and tie sourcing to animals slaughtered directly from the circuit.',
+    body: 'A cow that has been milked can be sold on, fed differently and moved out of the district before slaughter, with every step still on the record. "From a dairy cow" is not the same thing as "fed to the specification right up to slaughter".',
+    presidio: 'Word the claim tightly, and buy only from animals slaughtered straight out of the circuit.',
   },
   {
     n: '04',
     problema: 'The category must be proven, not asserted',
-    body: 'Fat for cosmetic use must be Category 3 material, from animals subjected to ante and post mortem inspection. Category 3 rendered fats require no chemical marker, which makes documentary separation even more crucial.',
-    presidio: 'Prove the category and the physical and documentary separation across transport and processing: lot register, commercial document, plant approval.',
+    body: 'Fat for cosmetic use has to be Category 3 material, from animals inspected before and after slaughter. Rendered Category 3 fats carry no chemical marker, which puts all the weight on keeping the paperwork separate.',
+    presidio: 'Prove the category, and prove the separation, physical and documentary, across transport and processing: lot register, commercial document, plant approval.',
   },
   {
     n: '05',
     problema: 'No rule ties the batch to its origin',
-    body: 'The void between mandatory individual identity and the anonymous lot stays open. No rule fills it, and no operator is obliged to fill it.',
-    presidio: 'The Digital Lipid Passport rests on a contractual and information system built by OdE, which voluntarily fills the void left by regulation. It is work, not a property of the territory.',
+    body: 'The hole between an animal with a legal identity and an anonymous lot stays open. No rule closes it, and nobody is obliged to close it.',
+    presidio: 'The Digital Lipid Passport sits on a contractual and information system OdE builds, closing the hole regulation leaves open because we choose to. That is work we do, not something the territory hands us.',
   },
 ];
 
@@ -78,21 +78,22 @@ const species = [
     <p class="ode-eyebrow">Supply chain</p>
     <h1>Provenance is an input, not a promise</h1>
     <p class="lede">
-      The dairy cows of the Parmigiano Reggiano district are among the most documented and
-      regulated animals in Europe. That is a verifiable fact, and this page uses it for what it is
-      worth: <strong>a documented input to the qualification process</strong>, not a declaration
-      of product superiority.
+      The dairy cows of the Parmigiano Reggiano district are among the most documented and most
+      regulated animals in Europe. That much is checkable, and this page uses it for exactly what
+      it is worth: <strong>a documented input to qualification</strong>, not a claim that the
+      product is better.
     </p>
     <p class="sub">
-      The page also says, with equal prominence, where that traceability breaks and what
-      provenance <em>does not</em> demonstrate.
+      The page also says, just as loudly, where that traceability breaks down and what provenance
+      <em>does not</em> prove.
     </p>
   </header>
 
   <Section n="1" title="The double regulatory layer">
     <p>
-      Two independent systems overlap on the same animal: one mandatory, which fixes its
-      individual identity, and one voluntary but binding, which certifies territory and diet.
+      Two independent systems sit on top of the same animal. One is mandatory and fixes its
+      identity. The other is voluntary but binding once you sign up, and it certifies territory
+      and diet.
     </p>
     <div class="layers">
       {layers.map((l) => (
@@ -114,18 +115,18 @@ const species = [
 
   <Section n="2" title="The life path, and where it breaks">
     <p>
-      From birth to slaughter, traceability is strong and mandatory. Then, between leaving the
-      barn and the batch of rendered fat, individual identity weakens and dissolves. That zone is
-      where the work of OdE makes sense, and it is also the point at which a generic traceability
-      statement would stop being true.
+      From birth to slaughter, traceability is strong and it is compulsory. Then, somewhere
+      between the barn door and the batch of rendered fat, the animal's identity thins out and
+      disappears. That gap is where OdE's work earns its keep, and it is also the exact point
+      where a loose claim about traceability would stop being true.
     </p>
     <LifecycleFlow lang={lang} />
   </Section>
 
   <Section n="3" title="Where traceability breaks">
     <p>
-      Five break points, each with the safeguard that addresses it. Naming them is the part of the
-      job the market usually leaves out.
+      Five break points, each with the safeguard that deals with it. Naming them is the part of
+      the job the market usually skips.
     </p>
     <div class="gaps">
       {gaps.map((gp) => (
@@ -144,91 +145,91 @@ const species = [
   <Section n="4" title="Three things provenance does NOT demonstrate">
     <Callout tone="honest" title="First: it does not demonstrate a better cutaneous outcome">
       <p>
-        That supply chain quality produces a superior cutaneous outcome is <strong>undemonstrated
-        for OdE as for the entire market</strong>. It is the third link of the virtuous chain
-        described in the <a href={r.audit}>Audit</a>, and it is the link with no data.
+        Nobody has shown that a better supply chain produces a better outcome on skin.
+        <strong>Not us, and not the rest of the market.</strong> It is the third link of the
+        four-link chain in the <a href={r.audit}>Audit</a>, and it is the link with no data
+        behind it.
       </p>
       <p>
-        Our advantage, if there is one, sits on the earlier links: traceability and composition,
-        documented and measured. We do not spend the third until it exists.
+        Our advantage, if we have one, sits on the earlier links: traceability and composition,
+        documented and measured. We do not spend the third one before it exists.
         <Status kind="lacuna" lang={lang} /> <Finding kind="contro" lang={lang} />
       </p>
       <p>
-        On <strong>link 2</strong>, by contrast, a candidate has appeared: the animal diet should
-        modify the lipid profile measurably, with fewer polyunsaturates under forage feeding and
-        therefore greater oxidative stability. It would be the first point at which provenance
-        produces a property of the material instead of a story.
+        On <strong>link 2</strong>, though, something has turned up. Diet should shift the lipid
+        profile measurably: fewer polyunsaturates on forage feeding, and therefore better
+        oxidative stability. That would be the first place where provenance buys a property of
+        the material rather than a story about it.
       </p>
       <p>
-        <strong>We do not use it as an argument, and the reason is the one that governs this whole
-        site.</strong> The source of the figure is a popular one, not peer reviewed, and our own
-        research prescribes re-verifying it on our own sample <em>before</em> taking it into
-        communication. This site is communication. So the figure does not appear here as an
-        advantage: it appears in <a href={r.evidenza}>Open evidence</a> as a measurement to be
-        made, with the threshold already written.
+        <strong>We are not using it as an argument, for the reason that governs this whole
+        site.</strong> The figure comes from a popular source that was never peer reviewed, and
+        our own research says to re-check it on our own sample <em>before</em> it goes anywhere
+        near communication. This site is communication. So it does not appear here as an
+        advantage. It appears in <a href={r.evidenza}>Open questions</a> as a measurement waiting
+        to be made, with the threshold already written down.
         <DataTag kind="bench" label="Compositional differential attributed to diet, reported by a popular source that is not peer reviewed and classified as level C by the library. OdE research consolidation v4.0, thesis 15 and still-open verification no. 9: to be re-verified on an OdE sample before any use in communication." />
       </p>
     </Callout>
 
     <Callout tone="honest" title="Second: it is not the same as deforestation compliance">
       <p>
-        It is an easy mistake to make in a commercial document, and it must be avoided. The
-        European deforestation regulation asks for geolocation of the plots or establishments
-        where the animals were kept, and for absence of deforestation after a given date. A
-        protected designation of origin certifies something else entirely: geographic area,
-        production specification, supply chain control. <strong>The two documentary
-        infrastructures do not coincide and are not interchangeable.</strong>
+        This is an easy slip to make in a sales document, so it is worth stating plainly. The
+        European deforestation regulation wants geolocation of the plots or premises where the
+        animals were kept, plus no deforestation after a given date. A protected designation of
+        origin certifies something else entirely: a geographic area, a production specification,
+        supply chain control. <strong>Two different pieces of paperwork, and they do not
+        substitute for one another.</strong>
       </p>
       <p>
-        The question is in any case without practical effect, because tallow falls outside the
-        scope of that regulation. The full picture is in <a href={r.normativa}>Regulation</a>.
+        The point is moot in practice anyway, because tallow falls outside the scope of that
+        regulation. The full picture is in <a href={r.normativa}>Regulation</a>.
         <DataTag kind="fonte" label="Check of Annex I to Reg. (EU) 2023/1115: CN code 1502, fats of bovine, ovine and caprine animals, does not appear among the relevant products. Track 7 v2, sec. 4.6.2." />
       </p>
     </Callout>
 
     <Callout tone="honest" title="Third: it is not a certification of the lipid product">
       <p>
-        The specification governs milk and cheese. The end of life of the animal, from which
-        tallow typically derives, stays outside its perimeter: the control plan covers farms,
-        dairies, ageing facilities, grating and portioning plants, while slaughterhouses and
-        rendering plants fall under general legislation.
+        The specification governs milk and cheese. The end of the animal's life, which is where
+        tallow usually comes from, falls outside it: the control plan covers farms, dairies,
+        ageing rooms, grating and portioning plants, while slaughterhouses and rendering plants
+        answer to general legislation.
       </p>
       <p>
-        Two planes must be kept apart, and OdE sits clearly on the second: the specification bans
-        tallow as an <em>ingredient of the diet</em> of the cows, and leaves out tallow as an
-        <em>output product</em> at the end of the animal's life.
+        Two things get confused here, and OdE sits squarely on the second. The specification bans
+        tallow as something you <em>feed</em> the cows. It says nothing about tallow as something
+        that <em>comes out</em> at the end of the animal's life.
       </p>
     </Callout>
   </Section>
 
   <Section n="5" title="The verifiable fact behind circularity">
     <p>
-      The circular economy narrative, in this category, is almost always rhetoric. There is,
-      however, an industry figure that supports it without logical leaps, and it comes from the
-      European association of processors.
+      In this category the circular economy story is nearly always just talk. There is one
+      industry figure that supports it without any leaps, though, and it comes from the European
+      association of processors.
     </p>
     <div class="grid">
-      <StatCard value="2.3 m t" caption="Category 3 animal fat produced in Europe in 2025, that is the only category eligible for feed and cosmetics." kind="fonte" source="EFPRA, 2025 data presented at the association congress, reported by the trade press. Track 7 v2, sec. 4.1." />
-      <StatCard value="1.58 m t" caption="Share destined for biofuels in 2025, growing by 8.9%. It is the dominant destination, and it governs the upstream flow OdE depends on." kind="fonte" source="EFPRA, 2025 data. Track 7 v2, sec. 4.1." />
+      <StatCard value="2.3 million t" caption="Category 3 animal fat produced in Europe in 2025. Category 3 is the only grade eligible for feed and cosmetics." kind="fonte" source="EFPRA, 2025 data presented at the association congress, reported by the trade press. Track 7 v2, sec. 4.1." />
+      <StatCard value="1.58 million t" caption="Share destined for biofuels in 2025, growing by 8.9%. It is the dominant destination, and it governs the upstream flow OdE depends on." kind="fonte" source="EFPRA, 2025 data. Track 7 v2, sec. 4.1." />
       <StatCard value="42,000 t" caption="Food and feed grade fats still sent to combustion in 2025, growing by 28%, with the trade association publicly asking whether that is the highest value destination." kind="fonte" source="EFPRA, 2025 data via the trade press. Track 7 v2, sec. 4.1." />
     </div>
     <p class="note">
-      Suitable material exists that is being destroyed today, and the volume is growing. It is the
-      most concrete point of contact between circularity as an argument and a verifiable fact. It
-      is not an argument for product superiority, and it is all that can honestly be said on this
-      axis.
+      Usable material is being destroyed right now, and the volume is going up. That is the one
+      place where the circularity argument touches a fact you can check. It says nothing about the
+      product being better, and it is all we can honestly say on this axis.
       <Status kind="dimostrato" lang={lang} /> <Finding kind="pro" lang={lang} />
     </p>
     <p class="note">
-      The share of that material reaching cosmetics <strong>cannot be isolated</strong> from any
-      public statistic we found. Why is in <a href={r.posizione}>Position</a>.
+      How much of that material reaches cosmetics <strong>cannot be pulled out</strong> of any
+      public statistic we found. Why, in <a href={r.posizione}>Position</a>.
     </p>
   </Section>
 
   <Section n="6" title="Bovine or porcine: why bovine comes first">
     <p>
-      The territory offers two flows, from dairy cows and from the pig circuit. They are not
-      equivalent, and the priority choice is argued across four axes.
+      The area gives us two streams, one from dairy cows and one from the pig circuit. They are
+      not interchangeable, and the case for taking bovine first runs across four axes.
     </p>
     <div class="tbl-wrap">
       <table class="tbl">
@@ -244,24 +245,23 @@ const species = [
     </div>
     <p class="note">
       <DataTag kind="fonte" label="Comparative physical parameters from a primary source: FAO/WHO Codex Alimentarius CXS 211-1999, Section 3 and Appendix. Four-axis comparison in Track 5 v3.0, sec. 13." />
-      None of the four axes favours porcine. This is not a recommendation to abandon the porcine
-      line: it is a recommendation about the order of priority.
+      Not one of the four favours porcine. That is not a case for dropping the porcine line. It is
+      a case for taking it second.
     </p>
 
     <Callout tone="warn" title="An analytical gap specific to the porcine line">
       <p>
-        No <strong>measured</strong> acid value for lard was found in the analytical literature,
-        unlike tallow for which two characterisations with a stated value exist. It has to be
-        filled internally before any definitive decision: it is a measurement to be made in the
-        laboratory on samples from the real supply chain, not something to look for in the
-        literature.
+        We found no <strong>measured</strong> acid value for lard anywhere in the analytical
+        literature, where tallow has two characterisations with a stated value. That gap has to be
+        closed in house before any final decision, and it closes in a laboratory with samples from
+        the real supply chain, not in a library.
         <Status kind="lacuna" lang={lang} />
       </p>
       <p>
-        There is also an operational consequence worth stating, because it raises our costs and
-        not our arguments: selected back fat from the pig circuit falls into the commercial class
-        "pure rendered lard", whose acid value limit is <strong>1.3 mg KOH/g and not 2.5</strong>.
-        If we process porcine, we have to aim at the stricter limit, and it has to be budgeted.
+        There is a practical consequence worth stating too, because it costs us money without
+        buying us an argument. Selected back fat from the pig circuit falls into the trading class
+        "pure rendered lard", whose acid value limit is <strong>1.3 mg KOH/g, not 2.5</strong>. If
+        we run porcine, we have to hit the tighter limit, and that goes in the budget.
       </p>
     </Callout>
   </Section>
@@ -269,9 +269,9 @@ const species = [
   <ReadNext
     lang={lang}
     links={[
-      { href: r.amsa, label: 'AMSA: how the supply chain datum enters the Passport' },
-      { href: r.normativa, label: 'Regulation: what can be declared' },
-      { href: r.posizione, label: 'Position: and what it is worth on the market' },
+      { href: r.amsa, label: 'AMSA: how the provenance data gets into the Passport' },
+      { href: r.normativa, label: 'Regulation: what you are allowed to say' },
+      { href: r.posizione, label: 'Position: and what any of it is worth' },
     ]}
   />
 </OdeV2Layout>

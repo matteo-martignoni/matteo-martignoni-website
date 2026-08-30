@@ -25,13 +25,13 @@ const { kind, lang = 'it', block = false } = Astro.props;
 const WORDS: Record<OdeLang, Record<Kind, string>> = {
   it: {
     dimostrato: 'Dimostrato',
-    costruzione: 'In costruzione',
+    costruzione: 'Non ancora testato',
     scommessa: 'Scommessa',
     lacuna: 'Lacuna verificata',
   },
   en: {
     dimostrato: 'Established',
-    costruzione: 'Under construction',
+    costruzione: 'Not yet tested',
     scommessa: 'Bet',
     lacuna: 'Verified gap',
   },
@@ -42,13 +42,13 @@ const TITLES: Record<OdeLang, Record<Kind, string>> = {
     dimostrato: 'Fatto stabilito con evidenza verificata e citabile.',
     costruzione: 'Inferenza meccanicisticamente plausibile, non ancora testata.',
     scommessa: 'Ipotesi o capacità emergente. Non un fatto.',
-    lacuna: 'Si è cercato in modo esaustivo nel bacino pertinente e non si è trovato.',
+    lacuna: 'Abbiamo cercato in modo esaustivo nelle banche dati pertinenti e non abbiamo trovato nulla.',
   },
   en: {
-    dimostrato: 'Established fact, with verified and citable evidence.',
-    costruzione: 'Mechanistically plausible inference, not yet tested.',
-    scommessa: 'Hypothesis or emerging capability. Not a fact.',
-    lacuna: 'Searched exhaustively in the relevant basins and not found.',
+    dimostrato: 'Established fact, backed by evidence we can cite.',
+    costruzione: 'A mechanistically plausible inference. Nobody has tested it.',
+    scommessa: 'A hypothesis, or a capability we are still building. Not a fact.',
+    lacuna: 'We searched the relevant databases exhaustively and found nothing.',
   },
 };
 ---
@@ -75,7 +75,7 @@ const TITLES: Record<OdeLang, Record<Kind, string>> = {
 
   /* Established: the positive-outcome green of the brand book. */
   .st--dimostrato { background: var(--green-soft); color: var(--green); border-color: var(--green-border); }
-  /* Under construction: the grigio-blu diagram accent (process, volumes). */
+  /* Not yet tested: the grigio-blu diagram accent (process, volumes). */
   .st--costruzione { background: var(--lav-soft); color: var(--lav-ink); border-color: var(--lav-border); }
   /* Bet: the pesca diagram accent (highlight, input). */
   .st--scommessa { background: var(--pink-soft); color: var(--pink-ink); border-color: var(--pink); }

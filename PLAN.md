@@ -804,3 +804,77 @@ vive di distinzioni epistemiche vale la pena.
 
 La sezione 5 di `evidenza` annunciava "Quattro" condizioni di fallimento mentre
 la tabella ne conteneva sei dalla v4.0. Corretta.
+
+---
+
+## 17. L'inglese diventa la lingua sorgente
+
+Decisione del committente: **il sito è concepito e scritto in inglese, e
+l'italiano è la sua traduzione.** Non è una revisione di stile, è
+un'inversione della direzione di autorità: dove le due lingue divergono, decide
+l'inglese.
+
+### Che cosa questo ha imposto di cambiare
+
+**Le rotte inglesi portano slug inglesi.** `thesis`, `supply-chain`, `position`,
+`regulation`, `open-evidence`, `investors`, `glossary`. Le chiavi della mappa di
+rotte restano quelle di prima, perché sono identificatori e non testo: il
+selettore di lingua lavora sulle chiavi, quindi continua a trovare la stessa
+pagina nell'altra lingua. Un lettore inglese che atterrava su `/en/filiera`
+capiva in mezzo secondo di essere su un sito tradotto.
+
+**Il badge dei dati parlava italiano anche in inglese.** `DataTag` stampava
+`Fonte` e `Stima` su tutte le pagine, comprese quelle inglesi, perché il
+componente non aveva un parametro di lingua e le circa 150 chiamate non
+glielo passavano. Ora legge la lingua dalla rotta e rende `Source` ed
+`Estimate`. Era il difetto singolo più rivelatore dell'intero sito.
+
+**Mancava una sezione intera.** La versione inglese di `investitori` aveva nove
+sezioni contro le dieci italiane: la traiettoria in quattro fasi non era mai
+stata tradotta, insieme ai suoi stili. Scritta.
+
+### I calchi rimossi, con il criterio
+
+| Calco | Perché non regge | Sostituito con |
+|---|---|---|
+| `basin` per "bacino" bibliografico | In inglese si cerca su *databases*. "Basin" è un bacino idrografico | `database` |
+| `that is` come "cioè" | In inglese è pesante e ricorreva a ogni paragrafo | riformulazione, oppure `in other words` |
+| `it must be said` per "va detto" | L'impersonale italiano diventa passivo debole in inglese | voce attiva, soggetto esplicito |
+| `translated evidence` per "evidenza traslata" | Non è un termine inglese | `borrowed evidence` |
+| `matrix error` per "errore di matrice" | Ambiguo: in chimica analitica "matrix" è il campione | `wrong-material error` |
+| `perimeter` per "perimetro di mercato" | In inglese un perimetro è geometrico | `market`, `scope` |
+| `2,3 mln t` | Notazione italiana | `2.3 million t` |
+
+### Due nomi cambiati in entrambe le lingue
+
+L'inglese naturale ha imposto la formulazione, e l'italiano l'ha seguita.
+
+| Prima | Inglese | Italiano |
+|---|---|---|
+| Evidenza aperta | **Open questions** | **Domande aperte** |
+| In costruzione | **Not yet tested** | **Non ancora testato** |
+
+Il secondo conta più del primo. La definizione condivisa dell'etichetta è
+"inferenza meccanicisticamente plausibile, non ancora testata", e le due lingue
+la rendevano con due parole di angolazione diversa. Ora dicono la stessa cosa.
+
+### Che cosa NON ho fatto, e perché
+
+**Non ho ritradotto l'italiano riga per riga dall'inglese nuovo.** La revisione
+ha cambiato il *modo di dire* le cose in inglese, non le cose dette: il
+significato è invariante, quindi l'italiano resta un parallelo fedele.
+Ritradurlo integralmente avrebbe peggiorato una prosa italiana già buona senza
+cambiare un solo contenuto, e avrebbe moltiplicato il rischio di introdurre
+errori in pagine che l'audit dichiara verificabili riga per riga.
+
+**Non ho cambiato la lingua di default.** `/OdE-v2` serve l'italiano,
+`/OdE-v2/en` l'inglese, come il sito originale. Se l'inglese è la lingua
+sorgente si può sostenere che debba essere anche il default, con l'italiano
+sotto `/it`. Ma quella è una decisione sul **pubblico primario del progetto**,
+non sulla lingua dei testi, e ha conseguenze su SEO, su che cosa vede chi arriva
+senza percorso, e su come il sito si presenta a un investitore italiano. La
+lascio al committente, ed è l'unica questione aperta di questa revisione.
+
+**Ho esteso all'inglese il divieto di trattino lungo.** In inglese sarebbe
+idiomatico, ma farne a meno non costa nulla e tenere una sola regola di stile
+per tutto il sito vale più della sfumatura.

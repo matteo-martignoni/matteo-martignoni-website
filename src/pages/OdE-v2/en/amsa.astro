@@ -16,22 +16,22 @@ const r = odeRoutes[lang];
 
 // The measured parameters, with standard, role and status. This is the substance of the page.
 const params = [
-  { p: 'Acid value and free fatty acids', norm: 'EN ISO 660', role: 'The parameter that decides safety according to the chemistry of the Thesis', st: 'requisito' },
+  { p: 'Acid value and free fatty acids', norm: 'EN ISO 660', role: 'The parameter safety turns on, per the chemistry in the Thesis', st: 'requisito' },
   { p: 'Peroxide value', norm: 'EN ISO 3960, or ISO 27107 specific to animal fats', role: 'Primary oxidation. Codex threshold at 10 meq O₂/kg', st: 'requisito' },
-  { p: 'p-Anisidine value', norm: 'ISO 6885', role: 'Secondary oxidation, complementary to peroxides which are transient', st: 'differenziale' },
+  { p: 'p-Anisidine value', norm: 'ISO 6885', role: 'Secondary oxidation. Peroxides come and go; this does not', st: 'differenziale' },
   { p: 'TOTOX', norm: 'calculated, 2·PV + AnV', role: 'A composite summary index', st: 'differenziale' },
-  { p: 'Conjugated dienes', norm: 'ISO 3656', role: 'Early oxidation, before peroxides become informative', st: 'differenziale' },
-  { p: 'Fatty acid profile', norm: 'GC-FID, ISO 16958', role: 'Compositional identity of the batch', st: 'requisito' },
+  { p: 'Conjugated dienes', norm: 'ISO 3656', role: 'Early oxidation, before peroxides tell you anything', st: 'differenziale' },
+  { p: 'Fatty acid profile', norm: 'GC-FID, ISO 16958', role: 'The compositional fingerprint of the batch', st: 'requisito' },
   { p: 'Solid fat content and melting profile', norm: 'pNMR, AOCS Cd 16b-93', role: 'Physical class at skin temperature, behaviour in formula', st: 'differenziale' },
-  { p: 'Accelerated oxidative stability', norm: 'Schaal Oven at 40-60 °C', role: 'Preferred to the 120 °C test for animal fats, because at that temperature the matrix is not in the state in which it will be used', st: 'differenziale' },
+  { p: 'Accelerated oxidative stability', norm: 'Schaal Oven at 40-60 °C', role: 'Preferred to the 120 °C test for animal fats: at that temperature the matrix is nowhere near the state it will be used in', st: 'differenziale' },
   { p: 'Trace heavy metals', norm: 'Ph. Eur. for the raw material', role: 'A cosmetic safety requirement', st: 'requisito' },
-  { p: 'Oxysterols with speciation', norm: 'QuEChERS GC-MS', role: 'The one oxidation axis that standard metrics do not capture, and that no vegetable matrix possesses', st: 'differenziale' },
+  { p: 'Oxysterols with speciation', norm: 'QuEChERS GC-MS', role: 'The one oxidation route the standard metrics miss, and the one no vegetable matrix even has', st: 'differenziale' },
 ];
 
 // The nine sections of the Digital Lipid Passport, revised against the research.
 const passport = [
   { n: '01', title: 'Batch identity', fields: 'Batch code, species, supply chain of origin, slaughter date, rendering date and method, quantity' },
-  { n: '02', title: 'Documented provenance', fields: 'Chain of custody from slaughterhouse to rendering, references of the movement documents, declared geographic perimeter with its limits' },
+  { n: '02', title: 'Documented provenance', fields: 'Chain of custody from slaughterhouse to rendering, references for the movement documents, the geographic area declared, with its limits' },
   { n: '03', title: 'Chemical form', fields: 'Explicit declaration of triglyceride form, not amine, not saponified, not esterified with monohydric alcohols' },
   {
     n: '04', title: 'Profile and acidity',
@@ -57,28 +57,29 @@ const passport = [
     <p class="ode-eyebrow">AMSA</p>
     <h1>The instrument that measures</h1>
     <p class="lede">
-      AMSA is an artificial intelligence guided multimodal spectroscopic agent.
-      Its job is not to say what tallow does to skin, because nobody knows.
-      Its job is to say, batch by batch and with standardised methods, what is inside.
+      AMSA is a multimodal spectroscopic agent run by artificial intelligence. Its job is not to
+      tell you what tallow does to skin, because nobody knows that. Its job is to tell you what is
+      in the drum, batch by batch, using standardised methods.
     </p>
     <p class="sub">
-      It is the operational translation of the <a href={r.tesi}>Thesis</a>: if the parameter that
-      decides is measurable and cheap, and almost nobody declares it, then measuring it well and
-      declaring it in full is the product.
+      It is the <a href={r.tesi}>Thesis</a> turned into an instrument. If the parameter that
+      decides is cheap to measure and almost nobody declares it, then measuring it properly and
+      declaring all of it is the product.
     </p>
   </header>
 
   <Section n="1" title="The problem it solves">
     <p>
-      Animal fats are difficult matrices to read spectroscopically: predominantly saturated, with
-      weak unsaturation signals, fluorescence that disturbs Raman, and batch-to-batch variability
-      arising from species, feed, season and rendering conditions. An acquisition that is merely
-      endured produces noisy spectra; an acquisition that is governed produces usable ones.
+      Animal fats are hard to read spectroscopically. They are mostly saturated, so the
+      unsaturation signals are weak; fluorescence gets in the way of Raman; and species, feed,
+      season and rendering conditions push the material around from batch to batch. Take whatever
+      spectrum the instrument gives you and you get noise. Steer the acquisition and you get
+      something you can work with.
     </p>
     <p class="measure">
-      AMSA governs acquisition: it adjusts the sensor parameters at every iteration until a
-      quality threshold is passed, and only then moves to prediction. It is the difference
-      between undergoing the measurement and controlling it.
+      AMSA steers the acquisition. It retunes the sensor at every pass until the spectrum clears
+      a quality threshold, and only then does it predict anything. That is the difference between
+      taking a measurement and being handed one.
     </p>
     <ControlLoop
       inputLabel="Sample"
@@ -89,18 +90,18 @@ const passport = [
       outcome="Digital Lipid Passport"
     />
     <p class="note">
-      The architecture is being defined and the models are training on the first batches.
+      The architecture is still being settled, and the models are training on the first batches.
       <Status kind="costruzione" lang={lang} />
     </p>
   </Section>
 
   <Section n="2" title="What we measure, under which standard">
     <p>
-      This table is the real content of the product. The right-hand column separates what is a
-      <strong>requirement</strong>, that is what has to be done anyway and produces no competitive
-      advantage, from what is a <strong>differentiator</strong>, that is discretionary and
-      produces advantage only if communicated. Confusing the two leads to spending on compliance
-      while believing you are building positioning.
+      This table is what the product actually contains. The right-hand column splits what is a
+      <strong>requirement</strong>, which has to be done anyway and buys no advantage, from what
+      is a <strong>differentiator</strong>, which is optional and only pays if you tell somebody
+      about it. Mix the two up and you spend money on compliance while thinking you are building
+      a position.
       <DataTag kind="fonte" label="Requirement versus differentiator convention inherited from Track 6 v2, sec. 8.3, and checked against the scope of Reg. (EU) 2023/915, which for 3-MCPD and glycidyl esters covers vegetable, fish and marine oils and not terrestrial animal fats." />
     </p>
     <div class="tbl-wrap">
@@ -128,9 +129,9 @@ const passport = [
 
   <Section n="3" title="The Oxidative Risk Score, and what it is not">
     <p>
-      The Oxidative Risk Score is a summary score condensing the oxidative state of a batch from
-      the measured parameters. It is useful because the market has none, and because a score
-      anchored to standardised methods is auditable.
+      The Oxidative Risk Score rolls the measured parameters into one number describing the
+      oxidative state of a batch. It is useful because the market has nothing of the kind, and
+      because a score anchored to standardised methods can be audited.
     </p>
     <Callout tone="honest" title="An internal rule, stated publicly">
       <p>
@@ -139,57 +140,55 @@ const passport = [
         outcome.</strong>
       </p>
       <p>
-        The reason is that no study exists in which a triglyceride was oxidised to a stated
-        value, applied to skin, and a cutaneous outcome regressed quantitatively against that
-        value. The bridge does not exist, for tallow as for any other lipid, and until it does
-        any predictive statement would be indefensible.
+        The reason: nobody has ever oxidised a triglyceride to a stated value, put it on skin,
+        and regressed a measured outcome against that value. That bridge does not exist, for
+        tallow or for any other lipid, and until it does, any predictive claim would be
+        indefensible.
         <DataTag kind="fonte" label="Gap verified on PubMed, PMC, ScienceDirect, Wiley, MDPI, Springer, CIR and FAO Codex, with declared queries. Track 2 v2.1, sec. 7.1 and internal rule in sec. 8.1." />
       </p>
       <p>
-        The same holds for the weighting: absent a quantified correlation between an analytical
-        parameter and a cutaneous outcome, <strong>any fine weighting is substantially
-        arbitrary</strong>, and must be declared as such in the methodological document of the
-        score. The weights are an engineering choice about quality, never coefficients derived
-        from a dose-response model.
+        Same goes for the weighting. With no quantified correlation between an analytical
+        parameter and a skin outcome, <strong>any fine-grained weighting is largely
+        arbitrary</strong>, and the methods document behind the score says so. The weights are an
+        engineering judgement about quality. They are not coefficients from a dose-response
+        model.
       </p>
     </Callout>
     <p class="ev-line"><Status kind="costruzione" lang={lang} /> <Finding kind="neutro" lang={lang} /></p>
 
-    <h3 class="sub-h">Oxysterols: the one axis no vegetable matrix possesses</h3>
+    <h3 class="sub-h">Oxysterols: the one axis no vegetable matrix has</h3>
     <p class="measure">
-      Cholesterol is the only oxidation substrate present in tallow and absent by construction
-      from vegetable oils. Heated, it generates oxysterols, and heated animal fats contain them
-      in quantities measurable with a method validated specifically on lard and tallow.
+      Cholesterol is the one oxidation substrate tallow has and vegetable oils, by construction,
+      do not. Heat it and it generates oxysterols, and heated animal fats carry enough of them to
+      measure with a method validated on lard and tallow specifically.
       <DataTag kind="fonte" label="QuEChERS-GC-MS method validated on lard and tallow, separating seven oxysterols, cholesterol and an internal standard. Contents reported in tallow one to two orders of magnitude above those of lard and butter. Track 2 v2.1, sec. 5.3bis and 8.3." />
     </p>
     <p class="measure">
-      It is a process lever, not a narrative: cholesterol is substantially stable at 100 °C and
-      unstable above 120 °C, and adding ascorbyl palmitate and tocopherol to heated tallow
-      prevented the formation of detectable oxysterols. Low temperature rendering, with
-      antioxidants and controlled times, is measurable and communicable.
+      This is a process lever, not a story. Cholesterol holds up well at 100 °C and falls apart
+      above 120 °C, and adding ascorbyl palmitate and tocopherol to heated tallow stopped
+      detectable oxysterols forming at all. Render cold, with antioxidants and controlled times,
+      and you have something you can measure and something you can talk about.
     </p>
     <Callout tone="warn" title="The counter-datum, reported with the same rigour">
       <p>
-        <strong>Not all oxysterols are harmful.</strong> Side-chain oxysterols are agonists of a
-        nuclear receptor and, applied topically in a murine model, induce epidermal
-        differentiation. The dividing line runs between side-chain oxysterols and ring oxysterols
-        at position 7, and the ones that form thermally in tallow belong to the second class.
+        <strong>Not all oxysterols are harmful.</strong> The side-chain ones are agonists of a
+        nuclear receptor, and applied topically in a mouse model they drive epidermal
+        differentiation. The line runs between side-chain oxysterols and ring oxysterols at
+        position 7, and the ones heat produces in tallow fall in the second group.
       </p>
       <p>
-        It follows that reporting a total would be scientifically naive: the defensible minimum is
-        <strong>speciation</strong>, with 7-ketocholesterol as the sentinel marker. And since no
-        regulatory threshold exists for oxysterols in any sector, the Passport applies no pass or
-        reject criterion: it measures, states the method and the associated process parameters,
-        and leaves judgement to the formulator. An invented threshold would be worse than no
-        threshold.
+        So reporting a total would be scientifically naive. The defensible minimum is
+        <strong>speciation</strong>, with 7-ketocholesterol as the sentinel. And since no sector
+        anywhere sets a regulatory threshold for oxysterols, the Passport applies no pass or fail
+        criterion. It measures, states the method and the process parameters that go with it, and
+        leaves the judgement to the formulator. A made-up threshold would be worse than none.
       </p>
       <p>
-        What we have given ourselves instead is an <strong>internal target, declared as
-        such</strong>: total oxysterols below 1 μg/g. It is not a standard and it does not become
-        one because we write it: it is the threshold against which we will judge our own
-        rendering process, written before the measurement. Above 5 μg/g the ultrapurity claim
-        would not hold, and it would be the process that has to change, not the claim that
-        softens.
+        What we have set ourselves instead is an <strong>internal target, and we label it as
+        one</strong>: total oxysterols below 1 μg/g. It is not a standard, and writing it down
+        does not make it one. It is the bar we will hold our own rendering process to, set before
+        we measure. Above 5 μg/g the ultrapurity claim does not hold, and then the process
+        changes, not the claim.
         <DataTag kind="stima" label="Internal target derived from the finding that oxysterols form in negligible quantities in tallow processed with controlled refining, with a limit of quantification of the available methods around 0.1 μg/g. OdE research consolidation v4.0, thesis 9 and ultrapurity gate. No regulatory threshold exists for this parameter in any sector." />
       </p>
     </Callout>
@@ -197,103 +196,104 @@ const passport = [
 
   <Section n="4" title="The Digital Lipid Passport">
     <p>
-      The document that travels with the batch and that a customer can archive and verify without
-      trusting us. Nine sections. The ninth is the one no competitor publishes.
+      The document that travels with the batch, which a customer can file away and check without
+      having to take our word for anything. Nine sections. The ninth is the one no competitor
+      publishes.
     </p>
     <PassportSections sections={passport} />
     <Callout tone="honest" title="Why section 09 exists">
       <p>
-        A document listing only what was measured leaves the reader to guess what was not, and in
-        this category that silence gets filled by whoever is selling. The "what has not been
-        tested" section makes epistemic honesty a field of the product, not a preamble read once
-        and forgotten.
+        List only what you measured and the reader is left guessing about the rest, and in this
+        category whoever is selling fills that silence. Putting "what has not been tested" on the
+        certificate makes honesty a field of the product rather than a preamble nobody reads
+        twice.
       </p>
       <p>
-        It also includes an anti-contamination attestation: the safety data we cite refer to
-        <strong>triglyceride tallow</strong> and not to ethoxylated tallow amines, which are a
-        different molecule and the source of more than one misunderstanding in the literature.
-        The detail is in the <a href={r.audit}>Audit</a>.
+        It also carries an anti-contamination statement: the safety data we cite are for
+        <strong>triglyceride tallow</strong>, not for ethoxylated tallow amines, which are a
+        different molecule and the source of more than one mix-up in the literature. The detail
+        is in the <a href={r.audit}>Audit</a>.
       </p>
     </Callout>
     <p class="note">
-      A demonstration simulation of how a Passport is read, from sample to document, is in
-      <a href={r.live}>AMSA Live</a>. It is a simulation and says so on every screen.
+      <a href={r.live}>AMSA Live</a> walks through how a Passport is read, from sample to
+      document. It is a simulation, and it says so on every screen.
     </p>
   </Section>
 
-  <Section n="5" title="The method, for whoever wants to check it">
+  <Section n="5" title="The method, for anyone who wants to check it">
     <p>
-      The setup is disciplined and starts from the baseline: mature chemometrics comes first,
-      advanced models enter only where they add measured value. Four choices form its backbone.
+      The setup is disciplined and starts from the baseline. Mature chemometrics goes first, and
+      advanced models only get in where they add measured value. Four choices hold it up.
     </p>
     <div class="method">
       <article class="mi">
         <span class="mi-k">Data scale</span>
-        <p>Four levels, from untracked public data to proprietary supply chain data with a measured outcome. Value grows with the level, and the highest level is the only one nobody can buy, because it has to be grown inside a supply chain.</p>
+        <p>Four levels, from untracked public data up to proprietary supply chain data with a measured outcome attached. Value rises with the level, and the top level is the only one money cannot buy, because it has to be grown inside a supply chain.</p>
       </article>
       <article class="mi">
         <span class="mi-k">Chemometrics first</span>
-        <p>Principal component analysis and partial least squares regression as the mandatory reference. An advanced model that does not beat this baseline does not go into production.</p>
+        <p>Principal component analysis and partial least squares regression are the reference, and they are not optional. An advanced model that cannot beat that baseline does not ship.</p>
       </article>
       <article class="mi">
         <span class="mi-k">Few-shot learning</span>
-        <p>Tracked batches are few and expensive to characterise. The question is not "which class is it" but "how similar is it to suitable, oxidised or unstable batches" in a representation space.</p>
+        <p>Tracked batches are few and expensive to characterise. The question is not which class a sample belongs to. It is how close it sits, in a representation space, to batches we know to be sound, oxidised or unstable.</p>
       </article>
       <article class="mi">
         <span class="mi-k">Quantified confidence</span>
-        <p>Every prediction carries its own interval and a distance score from the training distribution. A sample far from what the model knows triggers caution, replicates or referral to an external test, not a self-confident prediction.</p>
+        <p>Every prediction comes with its interval and a distance score from the training distribution. A sample that sits far from anything the model has seen buys caution, replicates or an outside test. It does not buy a confident answer.</p>
       </article>
     </div>
     <p class="note">
       <Status kind="costruzione" lang={lang} />
-      The moat, if it exists, is one of data and access, not of algorithm: instruments and methods
-      can be bought, supply chain data paired with a measured outcome cannot. But it is a moat
-      <strong>to be built</strong>, not one already built, and its causal link is undemonstrated
-      today: see the virtuous chain in the <a href={r.audit}>Audit</a>.
+      The moat, if there is one, is data and access rather than algorithm. Instruments and methods
+      are for sale; supply chain data paired with a measured outcome is not. But it is a moat
+      <strong>still to be dug</strong>, not one already there, and the causal link it depends on
+      is unproven today: see the four-link chain in the <a href={r.audit}>Audit</a>.
     </p>
     <Callout tone="warn" title="And it is not one of process either">
       <p>
-        It belongs here, because this is where a technical reader would ask:
-        <strong>fractionation and refining of tallow are prior art and largely in the public
-        domain</strong>. Anyone can fractionate this material, and expired patents already
-        describe semi-solid fractions suitable for cosmetic use.
+        This belongs here, because this is where a technical reader would ask.
+        <strong>Fractionating and refining tallow is prior art, and largely in the public
+        domain.</strong> Anyone can fractionate this material, and expired patents already
+        describe semi-solid fractions fit for cosmetic use.
       </p>
       <p>
-        For us that has a good side, freedom to operate with no licensing costs, and a side that
-        weighs more: <strong>how it is produced is not defensible</strong>. What remains is the
+        There is an upside for us, freedom to operate with nothing to license, and a downside
+        that weighs more: <strong>how we make it is not defensible</strong>. What is left is the
         proprietary datum, the supply chain dataset and this document as infrastructure. The full
         picture is in <a href={r.investitori}>Investors</a>.
       </p>
     </Callout>
 
-    <h3 class="sub-h">How much the artificial intelligence really weighs, in here</h3>
+    <h3 class="sub-h">How much the artificial intelligence is really doing</h3>
     <p class="measure">
-      AMSA carries artificial intelligence in its name, so the question has to be put by us
-      first, not by the reader: <strong>is the use of artificial intelligence in AMSA substantial
-      or marginal?</strong> Today we do not know, and it is under assessment.
+      AMSA has artificial intelligence in the name, so we should be the ones to ask the awkward
+      question rather than the reader: <strong>is the artificial intelligence in AMSA doing real
+      work, or is it decoration?</strong> Today we do not know. We are working it out.
     </p>
     <p class="measure">
-      The question has a precise shape, the one from the section above: what does a learned model
-      do that principal component analysis and partial least squares regression would not do on
-      their own, on a predominantly saturated matrix, with the number of characterised batches we
-      will realistically have. If the answer is "it governs acquisition and quantifies confidence
-      in a way chemometrics alone does not", then it is substantial. If the answer is "it
-      produces the same result with more complexity", then it is marginal, and the correct thing
-      to do is to say so and remove the model, not keep it for the name.
+      The question has a precise shape, and it comes from the section above: what does a learned
+      model do that principal component analysis and partial least squares regression would not do
+      on their own, on a mostly saturated matrix, with the number of characterised batches we will
+      realistically have? If the answer is that it steers acquisition and quantifies confidence in
+      ways chemometrics cannot, the artificial intelligence is doing real work. If the answer is
+      that it reaches the same place with more moving parts, it is decoration, and the right move
+      is to say so and take it out rather than keep it for the name.
     </p>
     <Callout tone="warn" title="Why this question has to be kept clean">
       <p>
-        There is a reason we might be tempted to answer yes without measuring:
-        <strong>the innovative asset put forward to support the innovative-startup classification
-        is exactly this one</strong>, and on that classification depend two of the three
-        public-finance instruments and all the tax incentives for investors. The picture is in
+        There is a reason we might be tempted to answer yes before measuring anything.
+        <strong>This is the very asset put forward to support the innovative-startup
+        classification</strong>, and hanging off that classification are two of the three
+        public-finance instruments and every tax incentive for investors. The picture is in
         <a href={r.investitori}>Investors</a>.
       </p>
       <p>
-        We write it here because a declared incentive is less dangerous than a silent one. The
-        rule stands as written first, in the section above: <strong>an advanced model that does
-        not beat the chemometric baseline does not go into production</strong>. That holds even
-        when applying it is expensive.
+        We put it here because an incentive you have named is less dangerous than one you have
+        not. The rule stands as written above, and it was written first: <strong>an advanced
+        model that cannot beat the chemometric baseline does not ship</strong>. That holds even
+        when honouring it is expensive.
         <Status kind="scommessa" lang={lang} />
       </p>
     </Callout>
@@ -302,9 +302,9 @@ const passport = [
   <ReadNext
     lang={lang}
     links={[
-      { href: r.filiera, label: 'Supply chain: where the provenance datum comes from' },
+      { href: r.filiera, label: 'Supply chain: where the provenance data comes from' },
       { href: r.normativa, label: 'Regulation: requirement or differentiator' },
-      { href: r.live, label: 'AMSA Live: the simulation' },
+      { href: r.live, label: 'AMSA Live: see it work' },
     ]}
   />
 </OdeV2Layout>

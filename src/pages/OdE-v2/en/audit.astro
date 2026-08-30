@@ -13,7 +13,7 @@ const lang = 'en' as const;
 const m = odeMeta[lang].audit;
 const r = odeRoutes[lang];
 
-const basins = [
+const databases = [
   'PubMed', 'EMBASE', 'Europe PMC', 'Scopus', 'Web of Science', 'Google Scholar',
   'Semantic Scholar', 'ClinicalTrials.gov', 'CIR', 'CosIng', 'EUR-Lex', 'FAO Codex Alimentarius',
 ];
@@ -30,26 +30,26 @@ const corpus = [
 const errors = [
   {
     t: 'A plant fat read as an animal one',
-    what: 'Esters of Engkabang fat, that is, the fat of Shorea stenoptera, are described as derived mainly from tallow, and their hydration data are reported as evidence of tallow benefit.',
-    why: 'Engkabang is a plant fat. The consequence is stark: the only quantitative hydration figure in the entire review, the progression from 4.7% to 47.2% between 30 and 180 minutes, does not concern tallow and is not a benchmark for tallow. That figure circulates.',
+    what: 'Esters of Engkabang fat, from the tree Shorea stenoptera, are described as being derived mainly from tallow, and their hydration data are offered as evidence that tallow works.',
+    why: 'Engkabang is a plant fat. The consequence is blunt: the only hard hydration number in the whole review, the climb from 4.7% to 47.2% between 30 and 180 minutes, has nothing to do with tallow and is no benchmark for it. That number is still doing the rounds.',
     src: 'Abd Rahman et al. 2011, Bioresour Technol 102(3):2168-76, DOI 10.1016/j.biortech.2010.10.034. The citation chain has been traced back to the real plant source, Abd Gani et al. 2010, PubMed 20530909. Verified against full text, research track 5 v3.0 section 6.9.1 and consolidation v4.0 part A.4.',
   },
   {
     t: 'A herbicide surfactant read as tallow',
-    what: 'Among the studies on the adverse effects of tallow are works on ethoxylated tallow amines, the surfactants used in glyphosate herbicide formulations.',
-    why: 'Ethoxylated tallow amines are derived from tallow by amination and ethoxylation: they are cationic surfactants, and they share neither the structure nor the toxicological behaviour of the triglyceride. Two circulating statements follow from this: that tallow is a sensitiser according to a given assay, and that tallow is not safe for marine ecosystems. Both measure a different molecule.',
+    what: 'The studies on the adverse effects of tallow include work on ethoxylated tallow amines, the surfactants used in glyphosate herbicide formulations.',
+    why: 'Ethoxylated tallow amines start from tallow and go through amination and ethoxylation to become cationic surfactants. They share neither the structure nor the toxicology of the triglyceride. Two claims in circulation rest on them: that tallow is a sensitiser on a given assay, and that tallow harms marine ecosystems. Both describe a different molecule.',
     src: 'Lindberg et al. 2020, J Proteomics, DOI 10.1016/j.jprot.2020.103647. Research track 6 v2, section 6 and record sheet R23.',
   },
   {
     t: 'A systemic route read as topical application',
     what: 'Among the included studies are an intravenous infusion of a tallow emulsion in dairy cattle and an abomasal infusion, plus a triglyceride emulsion given intravenously.',
-    why: 'These are systemic routes of administration. They say nothing about how a lipid behaves when applied to skin, which is the question the review sets out to answer.',
+    why: 'Those are systemic routes. They say nothing about how a lipid behaves on skin, which is the question the review set out to answer.',
     src: 'Pires et al. 2007 and Brickner et al. 2009, mapped in the audit table of research track 5 v3.0, section 6.9.',
   },
   {
     t: 'A compositional source that disagrees with direct characterisations',
-    what: 'The composition of tallow and its vitamin content, that is, the whole biocompatibility argument, are attributed to a study on food tallow thermally oxidised at 180 °C and fed to rabbits.',
-    why: 'The fatty acid profile reported there is anomalous: linoleic acid between 18.7 and 23.7 g per 100 g, with no oleic acid among the majority species. Two gas-chromatographic characterisations read in full give linoleic acid at 0.50% and 1.3%. The discrepancy is roughly fortyfold.',
+    what: 'The composition of tallow and its vitamin content, which between them carry the whole biocompatibility argument, are sourced to a study on food tallow heated to 180 °C and fed to rabbits.',
+    why: 'The fatty acid profile in that paper does not look like tallow: linoleic acid at 18.7 to 23.7 g per 100 g, and no oleic acid among the major species. Two gas-chromatographic characterisations we read in full put linoleic acid at 0.50% and 1.3%. That is a fortyfold gap.',
     src: 'Zeb & Akbar 2018, DOI 10.1155/2018/7408370, compared with Limmatvapirat 2021 (DOI 10.7324/JAPS.2021.110903) and Kowalska 2020 (DOI 10.3390/biom10010115). Research track 5 v3.0, section 6.9.1.',
   },
 ];
@@ -57,7 +57,7 @@ const errors = [
 const claims = [
   {
     claim: '"Similar to sebum or to human skin lipids"',
-    says: 'Compositional similarity to human sebum, often in superlative form against entire ingredient classes.',
+    says: 'That it matches human sebum, often pitched as beating whole classes of ingredient.',
     evidence: 'True for the triglyceride fraction only. Human sebum contains roughly 25% wax esters and 12-15% squalene, both absent from tallow, and its characteristic fatty acid is unique to the human species.',
     ok: 'parziale' as const,
     criterion: 'Truthfulness; evidential support',
@@ -65,7 +65,7 @@ const claims = [
   {
     claim: '"Rich in vitamins A, D, E, K"',
     says: 'Composition, with an implied benefit.',
-    evidence: 'Present in traces, never standardised. The compositional fact does not support the functional implication.',
+    evidence: 'Present in traces, never standardised. A compositional fact does not carry a functional promise.',
     ok: 'parziale' as const,
     criterion: 'Evidential support',
   },
@@ -79,21 +79,21 @@ const claims = [
   {
     claim: '"Treats acne, eczema or dermatitis"',
     says: 'Treatment of named pathological conditions.',
-    evidence: 'None. And a statement describing the treatment of a disease risks being reclassified as a medicinal claim.',
+    evidence: 'None. And describing the treatment of a disease invites reclassification as a medicinal claim.',
     ok: 'no' as const,
     criterion: 'Fairness; the medicinal boundary',
   },
   {
     claim: '"Non-comedogenic", or "comedogenic rating 2"',
     says: 'A value on a comedogenicity scale.',
-    evidence: 'The value is extrapolated from data on free fatty acids and their esters of monohydric alcohols, that is, from molecules in a chemical form different from the one present in tallow. It has never been measured on tallow.',
+    evidence: 'The number is extrapolated from data on free fatty acids and their monohydric alcohol esters, molecules in a different chemical form from the one in tallow. Nobody has measured it on tallow.',
     ok: 'no' as const,
     criterion: 'Evidential support',
   },
   {
     claim: '"Natural and ancestral"',
     says: 'Origin and tradition of use.',
-    evidence: 'Not evidential. It describes a provenance, not a performance, and must not be used to imply one.',
+    evidence: 'Not evidence of anything. It describes where something comes from, not what it does, and it must not be made to stand in for performance.',
     ok: 'neutra' as const,
     criterion: 'Fairness; informed choice',
   },
@@ -116,62 +116,62 @@ const bar = [
 <OdeV2Layout title={m.title} description={m.description} lang={lang} active="audit">
   <header class="pg">
     <p class="ode-eyebrow">The Audit</p>
-    <h1>What we verified, and how</h1>
+    <h1>What we checked, and how</h1>
     <p class="lede">
-      This is the page that explains why we believe we are entitled to talk about this material.
-      It contains no statements about what tallow does to skin: it contains the result of months
-      spent trying to break the idea before building a company on it.
+      This is the page that explains why we think we have earned the right to talk about this
+      material. It makes no claims about what tallow does to skin. It reports what came out of
+      months spent trying to break the idea before we built a company on it.
     </p>
     <p class="sub">
-      Everything below can be verified by anyone with access to the literature, in an afternoon.
-      That is its main property.
+      Anyone with access to the literature can check every line of it in an afternoon. That is
+      the point of it.
     </p>
   </header>
 
   <Section n="1" title="The evidence gap">
     <p>
-      The number of studies measuring an instrumental cutaneous outcome for beef tallow applied
-      as such to human skin is <strong>zero</strong>. No randomised trial, no quantitative
-      measurement of transepidermal water loss, no controlled corneometric data, no direct
-      comparison against an active comparator.
-      <DataTag kind="fonte" label="Gap verified by searching twelve basins: PubMed, EMBASE, Europe PMC, Scopus, Web of Science, Google Scholar, Semantic Scholar, ClinicalTrials.gov, CIR, CosIng, EUR-Lex and the FAO Codex Alimentarius. Targeted searches in Polish, Russian, Chinese, Japanese and Turkish in addition to English. Research track 5 v3.0, sections 1.3 and 8." />
+      Count the studies that measure an instrumental skin outcome for beef tallow put on human
+      skin as it comes, and you get <strong>zero</strong>. No randomised trial. No measurement of
+      transepidermal water loss. No controlled corneometry. No head-to-head against an active
+      comparator.
+      <DataTag kind="fonte" label="Gap verified across twelve databases: PubMed, EMBASE, Europe PMC, Scopus, Web of Science, Google Scholar, Semantic Scholar, ClinicalTrials.gov, CIR, CosIng, EUR-Lex and the FAO Codex Alimentarius. Targeted searches in Polish, Russian, Chinese, Japanese and Turkish in addition to English. Research track 5 v3.0, sections 1.3 and 8." />
     </p>
     <p class="ev-line"><Status kind="lacuna" lang={lang} /> <Finding kind="contro" lang={lang} /></p>
 
     <p class="measure">
-      A gap is not an absence of research: it is a negative result, and as such it has to carry
-      the basins searched and the languages covered. These are the twelve basins.
+      A gap is not the same as nobody having looked. It is a negative result, so it has to come
+      with the databases we searched and the languages we covered. Here they are.
     </p>
-    <ul class="basins">{basins.map((b) => <li>{b}</li>)}</ul>
+    <ul class="databases">{databases.map((d) => <li>{d}</li>)}</ul>
     <p class="note">
-      Plus targeted searches in Polish, Russian, Chinese, Japanese and Turkish, in addition to
-      English. Polish returned commercial material only; Russian, an anecdotal tradition; Chinese,
-      clinical sources advising against lard on burns for infection risk; Japanese, fat appearing
-      only as an oil base, that is, as a vehicle and not as an active. The gap was
-      <strong>reconfirmed on 28 August 2026</strong> by a later revision of the library.
+      Plus targeted searches in Polish, Russian, Chinese, Japanese and Turkish alongside English.
+      Polish turned up commercial material only. Russian, an anecdotal tradition. Chinese,
+      clinical sources warning against lard on burns because of infection risk. Japanese, fat
+      appearing only as an oil base, a vehicle rather than an active. A later revision of the
+      library <strong>reconfirmed the gap on 28 August 2026</strong>.
     </p>
 
-    <Callout tone="honest" title="And the basins we did NOT search">
+    <Callout tone="honest" title="And the databases we did NOT search">
       <p>
-        A site that publishes its method has to publish its holes too, otherwise the gap becomes
-        a convenient assertion. These are the basins left out:
+        A site that publishes its method has to publish the holes in it too, or the gap turns
+        into a convenient assertion. These are the ones we left out:
         <strong>CNKI, the full text of J-STAGE, KoreaScience and KISS, DIALNET and SciELO</strong>.
         Scopus and Web of Science were not directly accessible and were searched only through
         aggregators.
       </p>
       <p>
-        What this means, stated precisely: the gap is a negative result
-        <strong>in the basins searched</strong>, which are twelve and cover six languages. It is
-        not proof that no study exists in any archive anywhere. Anyone wanting to prove us wrong
-        knows exactly where to look, and that is as it should be.
+        To be exact: the gap is a negative result
+        <strong>in the twelve databases we searched</strong>, which between them cover six
+        languages. It is not proof that no study exists in any archive anywhere. Anyone who wants
+        to prove us wrong now knows exactly where to look, which is how it should be.
         <DataTag kind="fonte" label="Missing documentary coverage declared as an open verification in v4.0 of the OdE research consolidation, item 13. SFC curves from two Chinese papers remain to be digitised for the values at skin temperature." />
       </p>
     </Callout>
 
-    <h3 class="sub-h">What actually exists, once cleaned up</h3>
+    <h3 class="sub-h">What is left once you clean it up</h3>
     <p class="measure">
-      The evidential core amounts to eight records. None of them is pure beef tallow on human
-      skin with instrumental measurement.
+      Eight records, and that is the lot. Not one of them is pure beef tallow on human skin with
+      an instrument attached.
     </p>
     <div class="tbl-wrap">
       <table class="tbl">
@@ -187,9 +187,9 @@ const bar = [
     </div>
     <p class="note">
       <DataTag kind="fonte" label="Grade distribution recomputed record by record. Research track 5 v3.0, sections 3.1 and 4; confirmed in track 1 section 7, track 3 v4 section 2 and track 6 v2 section 2.1." />
-      The grading scale is the one used throughout the library: A1 is a controlled study on human
-      skin in vivo with instrumental measurement and an active comparator; D is a commercial
-      source with no evidential value.
+      The grading scale runs through the whole library: A1 is a controlled study on human skin in
+      vivo with instrumental measurement and an active comparator, and D is a commercial source
+      that counts for nothing.
     </p>
 
     <Callout tone="honest" title="The most uncomfortable result in this section">
@@ -200,32 +200,32 @@ const bar = [
         <DataTag kind="fonte" label="Prokop et al. 2022, Planta Med 88:300-312, DOI 10.1055/a-1646-2959. Abstract access. Research track 5 v3.0, sections 5 and 13.3." />
       </p>
       <p>
-        We report it in full and with its correct weighting: the setting is an open surgical
-        wound, not intact skin, so the result firmly excludes wound care and dressing from the
-        claimable perimeter and says little about cosmetic use. But it is a study with a
-        comparator, a control and a decent sample, and it belongs on the table.
+        We report it in full, and we weight it correctly. The setting is an open surgical wound,
+        not intact skin, so it rules wound care and dressing out of anything we could claim, and
+        it says little about cosmetic use. But it has a comparator, a control and a decent
+        sample, and it belongs on the table.
       </p>
     </Callout>
   </Section>
 
   <Section n="2" title="The audit of the most cited review">
     <p>
-      The document the field cites when tallow and skin are discussed is a 2024 scoping review.
-      It screened 147 studies and included 19, across two databases only, and it states that
-      limit itself. Its main conclusion, that no randomised trial of tallow left on human skin
-      exists, is the same one we reached independently.
+      When tallow and skin come up, the field cites a 2024 scoping review. It screened 147
+      studies, included 19, searched two databases only, and says so itself. Its headline
+      conclusion, that no randomised trial of tallow left on human skin exists, is the one we
+      reached independently.
       <DataTag kind="fonte" label="Russell MF, Sandhu M, Vail M, Haran C, Batool U, Leo J. Tallow, Rendered Animal Fat, and Its Biocompatibility With Skin: A Scoping Review. Cureus 2024;16(5):e60981. DOI 10.7759/cureus.60981. PRISMA-ScR pathway verified against full text." />
     </p>
 
     <Callout tone="note" title="How to read this section">
       <p>
-        What follows is a documentary observation, not an accusation. We are not interested in
-        anyone's carelessness: we are interested in what this says about the state of the field.
-        The document everyone cites is one nobody has audited. That is not a gap in the
-        literature. That is the absence of a literature.
+        What follows is a documentary observation, not an accusation. Nobody's carelessness
+        interests us. What this says about the state of the field does. The paper everyone cites
+        is one nobody has audited, and that is not a gap in the literature. It is the absence of
+        one.
       </p>
       <p>
-        Every entry below can be verified by comparing the review with the primary study it
+        You can check every entry below by putting the review next to the primary study it
         cites. We name which one.
       </p>
     </Callout>
@@ -242,58 +242,59 @@ const bar = [
       ))}
     </ol>
 
-    <h3 class="sub-h">The verdict of the audit</h3>
+    <h3 class="sub-h">The verdict</h3>
     <p class="measure">
-      The review's general conclusion holds, but despite the method rather than because of it.
-      Of the 19 included studies, six bear on the topical application of a triglyceride animal
-      fat, and of those one measures no biological outcome at all. The real corpus with a
-      cutaneous outcome is <strong>five studies out of nineteen declared</strong>.
+      The review's overall conclusion stands, but in spite of the method rather than because of
+      it. Of the 19 studies it includes, six involve putting a triglyceride animal fat on skin,
+      and one of those six measures no biological outcome at all. The real corpus with a skin
+      outcome is <strong>five studies out of the nineteen declared</strong>.
       <DataTag kind="fonte" label="Entry-by-entry reclassification of the 19 included studies, research track 5 v3.0, sections 6.9 and 6.9.4. [DERIVED CALCULATION]" />
     </p>
     <p class="measure">
-      This page rests on <strong>two errors traced back to source</strong>, not one: the
-      attribution to tallow of data measured on a plant fat, with the citation chain followed
-      back to the original paper, and the attribution to tallow of results obtained on an amine
-      derivative used in herbicides. They are the part of our work a formulator can check first,
-      at no cost, which is why we keep them in view rather than in a footnote.
+    <p class="measure">
+      Two of those errors we chased all the way back to the source, not one: data measured on a
+      plant fat and credited to tallow, with the citation chain followed to the original paper,
+      and results obtained on an amine derivative used in herbicides, credited the same way. They
+      are the first thing a formulator can check, and it costs nothing to check them, so we keep
+      them in plain sight instead of in a footnote.
     </p>
 
     <Callout tone="warn" title="The review's conclusion that is unfavourable to us">
       <p>
-        In its conclusions the same review states that other compounds studied in the comparative
-        work, in particular pumpkin seed oil and linoleic acid, offer moisturising and emollient
-        benefits <strong>superior</strong> to tallow. It further reports that tallow is
-        significantly stickier than pumpkin seed oil, which may discourage application, and that
-        it leaves a surface oily film potentially unwelcome on oily or acne-prone skin.
+        In its conclusions, the same review puts other compounds from the comparative work,
+        pumpkin seed oil and linoleic acid in particular, <strong>above</strong> tallow on
+        moisturising and emollient benefit. It also reports that tallow is significantly stickier
+        than pumpkin seed oil, which may put people off applying it, and that it leaves an oily
+        film that oily or acne-prone skin will not thank you for.
       </p>
       <p>
-        It has to be reported as it stands. An audit that only corrects in the direction that
-        suits its author is not an audit.
+        That goes on the page as it stands. An audit that only corrects in its author's favour
+        is not an audit.
       </p>
     </Callout>
   </Section>
 
   <Section n="3" title="The claims that do not hold">
     <p>
-      This is a taxonomy of the statements circulating in the category, assessed against the
-      European common criteria for the justification of cosmetic claims. It assesses
-      <strong>the statements, never who makes them</strong>: no operator, brand or author is
-      named, and no intent is attributed to anyone.
+      Below are the statements doing the rounds in this category, held against the European
+      common criteria for justifying cosmetic claims. It judges <strong>the statements, never
+      the people making them</strong>. No operator, brand or author is named, and no intent is
+      attributed to anyone.
       <DataTag kind="fonte" label="Regulation (EU) 655/2013, common criteria for the justification of claims used in relation to cosmetic products. Taxonomy built in research track 7 v2, section 7." />
     </p>
     <ClaimTable rows={claims} lang={lang} />
     <Callout tone="honest" title="The rule this table imposes on us">
       <p>
-        A site that publishes a taxonomy of indefensible claims cannot use any of them. None of
-        the six rows above appears anywhere else on this site, in any form and under any synonym.
-        If you find one, it is a mistake and we would like to hear about it.
+        A site that publishes a list of claims that do not hold cannot then use one. None of the
+        six rows above turns up anywhere else on this site, in any form, under any synonym. If
+        you find one, it is a mistake, and we would rather hear about it than not.
       </p>
     </Callout>
 
-    <h3 class="sub-h">The context in which these claims circulate</h3>
+    <h3 class="sub-h">Where these claims circulate</h3>
     <p class="measure">
-      A cross-sectional analysis published in a peer-reviewed journal examined 200 social media
-      items across several platforms.
+      A cross-sectional analysis in a peer-reviewed journal went through 200 social media posts
+      across several platforms.
     </p>
     <div class="tbl-wrap">
       <table class="tbl">
@@ -303,28 +304,27 @@ const bar = [
           <tr><th scope="row">Recommendation rate among dermatologists</th><td class="num">7%</td></tr>
           <tr><th scope="row">Items with a commercial interest, on one platform</th><td class="num">92%</td></tr>
           <tr><th scope="row">Items with a commercial interest, on a second platform</th><td class="num">74%</td></tr>
-          <tr><th scope="row">Items citing a scientific source</th><td class="num">16% of videos on one platform, 0% on others</td></tr>
+          <tr><th scope="row">Items citing a scientific source</th><td class="num">16% of videos on one platform, none on the others</td></tr>
         </tbody>
       </table>
     </div>
     <p class="note">
       <DataTag kind="fonte" label="Almatroud L, Choi S, Libson K, Ashack K. Beef Tallow-Based Skincare Claims in Social Media. J Cosmet Dermatol 2025;24(12):e70544. DOI 10.1111/jocd.70544. The values reported here are those confirmed by v4.0 of the research consolidation: a 7% recommendation rate among dermatologists, a commercial interest in 92% of items on one platform and 74% on another. Two declared qualifications: an aggregate share of items with a commercial interest, given as 61% by an earlier internal synthesis, is not confirmed by v4.0 and is not used here; and our internal syntheses disagree on the number of platforms sampled, three or four, so we do not state it." />
-      The same work finds that commercial interest significantly increases the probability of
-      recommending tallow. The most cited conditions are acne, eczema and psoriasis, that is,
-      three diseases.
+      The same paper finds that commercial interest significantly raises the odds of a post
+      recommending tallow. The three conditions cited most often are acne, eczema and psoriasis.
+      All three are diseases.
     </p>
     <p class="note">
-      This is the noise from which a rigorous supplier inherits reputational risk, and the reason
-      our differentiation cannot be a better claim: it has to be the absence of claims and the
-      presence of data.
+      That is the noise a careful supplier inherits reputational risk from, and it is why our
+      difference cannot be a better claim. It has to be no claims and some data.
     </p>
   </Section>
 
   <Section n="4" title="The virtuous chain, and where it breaks">
     <p>
-      The dominant rhetorical pattern of the category is a four-link chain. The strength of the
-      first two links is used to make the third acceptable, and the third has no data. Seeing it
-      clearly is how you avoid repeating it.
+      The category runs on a four-link chain. The first two links are strong, and their strength
+      is borrowed to wave the third one through. The third has no data behind it. Seeing the trick
+      is how you avoid pulling it yourself.
     </p>
     <div class="tbl-wrap">
       <table class="tbl">
@@ -344,26 +344,26 @@ const bar = [
       <DataTag kind="fonte" label="Analysis of the virtuous chain and its four links, research track 7 v2, section 8." />
     </p>
 
-    <Callout tone="honest" title="Where this hits us">
+    <Callout tone="honest" title="Where this lands on us">
       <p>
-        Link 3 is undemonstrated for the market <strong>and for OdE</strong>. That supply-chain
-        quality produces a superior cutaneous outcome cannot be shown with existing data, for us
-        as for anyone else.
+        Link 3 is unproven for the market <strong>and for OdE</strong>. Nobody can show, on
+        existing data, that supply-chain quality produces a better outcome on skin. Not them, not
+        us.
       </p>
       <p>
-        Our advantage, if there is one, sits on links 1 and 2, that is, on documented traceability
-        and composition, and on the fact that we measure and declare them batch by batch. We do
-        not spend link 3 until it exists. What we do measure is in <a href={r.amsa}>AMSA</a>;
-        what we would like to measure is in <a href={r.evidenza}>Open evidence</a>.
+        Our advantage, if we have one, sits on links 1 and 2: traceability and composition,
+        documented, measured and declared batch by batch. We do not spend link 3 before it
+        exists. What we measure today is in <a href={r.amsa}>AMSA</a>, and what we would like to
+        measure is in <a href={r.evidenza}>Open questions</a>.
       </p>
     </Callout>
   </Section>
 
   <Section n="5" title="The evidential bar we have to clear">
     <p>
-      The barrier to adoption of this material is not only cultural: it is evidential, and it can
-      be quantified. The plant comparators tallow is measured against already have controlled
-      studies with measured outcomes.
+      The barrier to adoption is not only cultural. It is evidential, and you can put a number on
+      it. The plant oils tallow gets compared with already have controlled studies with measured
+      outcomes behind them.
     </p>
     <div class="tbl-wrap">
       <table class="tbl">
@@ -381,10 +381,10 @@ const bar = [
       <DataTag kind="fonte" label="Comparison of evidential thresholds reconstructed in research track 5 v3.0, section 6.10, from Sataray-Rodriguez et al. 2025, Dermis 5(3):39, DOI 10.35702/Derm.10039, read in full." />
     </p>
     <p class="measure">
-      One operational consequence follows, and this site applies it everywhere:
-      <strong>the experimental design is not a research option, it is a commercial
-      prerequisite</strong>. Until it exists, the only honest thing we can sell is the
-      qualification of the material, not its efficacy.
+      One consequence follows, and this site applies it everywhere:
+      <strong>running the studies is not a research option, it is the price of entry</strong>.
+      Until they exist, the only honest thing we can sell is the qualification of the material,
+      not what it does.
     </p>
   </Section>
 
@@ -392,8 +392,8 @@ const bar = [
     lang={lang}
     links={[
       { href: r.tesi, label: 'The Thesis: the parameter that decides' },
-      { href: r.evidenza, label: 'Open evidence: what we want to measure' },
-      { href: r.posizione, label: 'Position: where we can exist' },
+      { href: r.evidenza, label: 'Open questions: what we still want to measure' },
+      { href: r.posizione, label: 'Position: where we can compete' },
     ]}
   />
 </OdeV2Layout>
@@ -408,8 +408,8 @@ const bar = [
     padding-top: 1.1rem;
     border-top: 1px solid var(--rule);
   }
-  .basins { list-style: none; margin: 0.8rem 0 0.9rem; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem; }
-  .basins li {
+  .databases { list-style: none; margin: 0.8rem 0 0.9rem; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .databases li {
     font-family: var(--ode-font-mono);
     font-size: 0.74rem;
     color: var(--ink);

@@ -1,0 +1,337 @@
+---
+import OdeV2Layout from '../../../layouts/OdeV2Layout.astro';
+import Section from '../../../components/ode/Section.astro';
+import DataTag from '../../../components/ode-v2/DataTag.astro';
+import Status from '../../../components/ode-v2/Status.astro';
+import Finding from '../../../components/ode-v2/Finding.astro';
+import Callout from '../../../components/ode-v2/Callout.astro';
+import StatCard from '../../../components/ode-v2/StatCard.astro';
+import ReadNext from '../../../components/ode-v2/ReadNext.astro';
+import { odeMeta, odeRoutes } from '../../../i18n/ode-v2';
+
+const lang = 'en' as const;
+const m = odeMeta[lang].posizione;
+const r = odeRoutes[lang];
+
+// The three legs of the verdict. One alone would be enough, and they are independent.
+const legs = [
+  {
+    n: '01',
+    t: 'The principle',
+    d: 'In leave-on products and in brand positioning, what the big groups actually say drives the decision is animal origin itself: consumer values, animal welfare, the climate cost of livestock, certifications that rule animal material out by definition. Traceability does not touch any of that. A traced cow is still a cow.',
+    strength: 'An admittedly weak evidential base. See below.',
+  },
+  {
+    n: '02',
+    t: 'Scale',
+    d: 'The big groups buy lipid ingredients by the tanker, with continuity of supply, dual or triple sourcing, multi-site plant audits and certifications attached. An asset-light outfit can meet neither the volumes nor the audits. If there is a workable relationship here it is co-development, not supply.',
+    strength: 'A solid base, and independent of the first leg.',
+  },
+  {
+    n: '03',
+    t: 'Price',
+    d: 'Mass rinse-off still buys tallow today. Some labels carry an alternation clause between tallow soap and its vegetable equivalent. That little "or" tells you everything: the formula is built to take either, and purchasing follows price and availability. There is no closed door here waiting to be reopened. There is a commodity price list.',
+    strength: 'A solid base, and independent of the first two.',
+  },
+];
+
+// The sizing gaps, declared as such.
+const gaps = [
+  'How much tallow goes to cosmetics rather than feed, biofuels or oleochemicals. Public industry data will not separate it out.',
+  'The split between rinse-off and leave-on volumes for tallow. No public data at all.',
+  'What traced premium leave-on is worth in money. Not determinable.',
+  'The bulk price of grass-fed cosmetic tallow. The main suppliers do not publish it.',
+  'Explicit animal origin policies for three of the six big groups. We could not find them.',
+];
+
+// The risks. A closed list, none softened.
+const risks = [
+  { t: 'An attention cycle between peak and ebb', d: 'Coverage is still wide, but the tone has soured, and the clinical community is mostly hostile. Anyone entering now is riding a cycle that could turn. The practical answer is to build an argument, documentary rigour, that outlives the fashion instead of surfing it.' },
+  { t: 'The vegan trend excludes tallow by definition', d: 'It is the fastest growing segment, and no technical argument makes a dent in it. This is not a risk you mitigate. It is a market that is getting smaller.' },
+  { t: 'Reputational contamination from other parties’ claims', d: 'A market built on claims that do not hold drags the careful operator down with it. The only defence is to use none of them and to say publicly why, which is what the Audit does.' },
+  { t: 'A competitor could publish a primary datum first', d: 'A verified gap is an asset with a shelf life. One instrumental study from somebody else shuts the window. That is why this site publishes what the verification work found and not how we intend to run the experiments.' },
+  { t: 'The non-palm argument could be captured by other sources', d: 'The paperwork exemption tallow enjoys is not ours alone. Coconut, shea, rapeseed and sunflower get the same relief, and they are vegan compatible into the bargain. A formulator who wants rid of that burden has an easier road than tallow, and will probably take it.' },
+  { t: 'The process is not defensible', d: 'Fractionating and refining tallow is prior art, and largely public domain. Present ourselves as holding a distinctive process and technical due diligence would take it apart in an afternoon. What stays defensible is the proprietary datum, the supply chain dataset and the batch document.' },
+  { t: 'Dependence on the upstream flow', d: 'Tallow is a by-product of rendering, and for processors cosmetics is a rounding error next to biofuels and feed. We depend on a flow that energy demand governs, and we have no leverage over it.' },
+];
+---
+<OdeV2Layout title={m.title} description={m.description} lang={lang} active="posizione">
+  <header class="pg">
+    <p class="ode-eyebrow">Position</p>
+    <h1>Where we can compete, and where we cannot</h1>
+    <p class="lede">
+      There is no market estimate on this page. The public data will not support a reliable one,
+      and a made-up number would be worse than an admitted gap. What is here instead is the
+      structural constraint on the project, stated in full.
+    </p>
+  </header>
+
+  <Section n="1" title="The squeeze">
+    <div class="pincer">
+      <div class="pincer-side">
+        <span class="pincer-k">Where tallow is bought in volume</span>
+        <p>
+          Mass rinse-off still buys tallow, on price, with formulas built to take the vegetable
+          alternative instead. <strong>We cannot compete there, and we should not try.</strong>
+        </p>
+      </div>
+      <span class="pincer-x" aria-hidden="true">×</span>
+      <div class="pincer-side">
+        <span class="pincer-k">Where the differential counts</span>
+        <p>
+          Premium leave-on products with a supply chain story will pay for batch-level
+          characterisation. <strong>But the volumes are tiny, and no public data will size
+          them.</strong>
+        </p>
+      </div>
+    </div>
+    <p class="ev-line"><Status kind="dimostrato" lang={lang} /> <Finding kind="contro" lang={lang} /></p>
+    <p class="measure">
+      None of the seven research tracks gets us out of this, and it is the structural constraint
+      on the whole project. On a page written for investors the temptation is to soften it. We
+      are not going to, for a practical reason before an ethical one: an investor who finds an
+      undeclared limit on their own stops believing anything else you told them.
+      <DataTag kind="fonte" label="Volume versus differential constraint, unresolved by any track. Track 7 v2, sec. 4.6.1 and 13bis; OdE research consolidation, sec. A.3." />
+    </p>
+    <p class="measure">
+      Only one conclusion survives it. OdE has to stop selling itself as a volume producer and
+      become <strong>a supplier of documentation and analysis to a narrow set of European premium
+      formulators</strong>. Which is exactly what the <a href={r.tesi}>Thesis</a> describes.
+    </p>
+  </Section>
+
+  <Section n="2" title="The verdict on the large groups, on three legs">
+    <p>
+      The story you hear in this category is that the big groups keep tallow out because it cannot
+      be traced, so a traced supply chain reopens the market. <strong>The evidence does not
+      support that.</strong> The verdict stands on three independent legs, and any one of them
+      would hold it up alone.
+    </p>
+    <ol class="legs">
+      {legs.map((l) => (
+        <li>
+          <span class="leg-n">{l.n}</span>
+          <div>
+            <h3>{l.t}</h3>
+            <p>{l.d}</p>
+            <p class="leg-s">{l.strength}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+    <p class="note">
+      <DataTag kind="fonte" label="Published sourcing policies and INCI lists verified at source; alternation clause documented on a mass product label. Track 7 v2, sec. 4.6, 4.6.1 and 13bis." />
+    </p>
+
+    <Callout tone="honest" title="How weak the first leg is, said by us">
+      <p>
+        <strong>This is negative evidence, not proof.</strong> The verdict on the principle rests
+        largely on the fact that no published policy says tallow is avoided for want of
+        traceability. But companies almost never publish their reasons for what they
+        <em>do not</em> use. That silence is consistent with three different states of the world,
+        and nothing we found tells them apart.
+      </p>
+      <p>
+        <strong>We only have three groups out of six.</strong> On the other three the research
+        came back empty. And one of the three we do have reads <em>neutral</em> rather than
+        against us: its published commitment lists "circular processes" among the acceptable
+        routes without ever defining the term. The door is not declared shut, but it is not
+        declared open either. It is simply not described, and "not described" is nothing for an
+        investor to build on.
+      </p>
+      <p>
+        <strong>Does it change what we do? No.</strong> Even in the best case, where traceability
+        really is the deciding criterion, scale and price are still there. The weak evidence
+        concerns the <em>why</em>, not the <em>what to do about it</em>.
+        <Status kind="costruzione" lang={lang} />
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="3" title="Who got here first">
+    <p>
+      The traceability space <strong>is not empty ground</strong>. At least one operator is
+      already sitting on traceability and sustainability explicitly, alongside several United
+      States operators built around grass-fed, some of whom render their own fat and sell it on
+      as an ingredient.
+      <DataTag kind="fonte" label="Mapping of the direct competitive set, with location, commercial form, documentation and degree of verification for each operator. Track 7 v2, sec. 4.2." />
+    </p>
+    <p class="ev-line"><Status kind="dimostrato" lang={lang} /> <Finding kind="contro" lang={lang} /></p>
+    <p class="measure">
+      None of them offers what <a href={r.amsa}>AMSA</a> describes: documented supply chain
+      traceability, an oxidative risk index and batch-level characterisation in one document. But
+      let us be exact about it. <strong>The difference is depth of documentation and analysis, not
+      being first.</strong> OdE walks into a space where "traced and clean" is already taken, and
+      has to defend a thinner margin than the supply chain story suggests.
+    </p>
+
+    <Callout tone="warn" title="And the space is occupied upstream too, on the process">
+      <p>
+        <strong>Fractionating and refining tallow is prior art</strong>, sitting under patent
+        families that have largely expired and are therefore public domain. Tallow derivative
+        nomenclatures are already listed for cosmetic use, too.
+        <DataTag kind="fonte" label="Prior art mapping on USPTO patents concerning tallow fractionation and animal fat refining, and a census of derivative nomenclatures already registered for cosmetic use. OdE research consolidation v4.0, sec. C.6 and threat M5. It is a map, not a patent opinion." />
+      </p>
+      <p>
+        Which means <strong>the advantage cannot be in how we make it</strong>. Anyone can
+        fractionate this material without paying a licence or inventing a thing. What stays
+        defensible is the proprietary datum, the supply chain dataset and the batch document. The
+        full picture is in <a href={r.investitori}>Investors</a>.
+        <Status kind="dimostrato" lang={lang} /> <Finding kind="contro" lang={lang} />
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="4" title="Who the realistic customer is">
+    <p>
+      The trend is loud enough to make the market look bigger than the part we can reach. Most of
+      the visible brands are hard to convert, for three reasons worth keeping apart. Some render
+      their own fat, which makes them competitors rather than customers. Some have a declared
+      supply chain that is part of what the brand is, so swapping it would mean rewriting the
+      product story. The rest buy at volumes and on terms we cannot meet.
+    </p>
+    <Callout tone="note" title="The consequence, which is the most useful thing on this page">
+      <p>
+        If what rules the visible brands out is mostly the story and the geography rather than
+        vertical integration, then the constraint is one of positioning and not structure.
+        <strong>The realistic customer is not the brand that already has a supply chain story. It
+        is the one that still needs one</strong>, or the one working in a market where that story
+        is not on offer.
+      </p>
+      <p>
+        That moves the target towards European formulators and brands still in development, and
+        towards contract formulation houses, rather than towards the established names riding the
+        trend. Europe is immature here: very few brands put tallow in a leave-on product at all.
+        That is a risk, because demand has to be built rather than met, and it is also the only
+        real opening we have.
+      </p>
+    </Callout>
+    <p class="note">
+      A second direction came out of the regulatory review rather than the trend: European
+      oleochemical processors and soap makers, for whom the question is not tallow at all but
+      where their fatty acids can be shown to come from. The picture, and its limits, is in
+      <a href={r.normativa}>Regulation</a>.
+    </p>
+  </Section>
+
+  <Section n="5" title="What we cannot tell you">
+    <p>
+      Public data will not give a reliable size for the market we can reach. Here are the gaps,
+      so you can weigh them yourself.
+    </p>
+    <ul class="gapl">
+      {gaps.map((g) => <li><Status kind="lacuna" lang={lang} /><span>{g}</span></li>)}
+    </ul>
+    <p class="note">
+      <DataTag kind="fonte" label="Sizing gaps declared item by item, with the databases searched. Track 7 v2, sec. 11 and 12." />
+      In the research behind this page, a volume figure that looked like it filled the first gap
+      was withdrawn once we checked the context. It turned out to be a reporting artefact, a
+      questionnaire box filled in by a varying number of respondents, not the size of a market. A
+      cautious conclusion resting on nothing is still a conclusion resting on nothing.
+    </p>
+    <p class="measure">
+      Here is what we can say honestly. The eligible animal fat category runs to millions of
+      tonnes in Europe. It goes to biofuels, feed, petfood, oleochemicals and combustion, with
+      biofuels well out in front. Cosmetics is a real destination, and no public statistic we
+      found puts a number on it. The verified figures are in <a href={r.filiera}>Supply
+      chain</a>.
+    </p>
+  </Section>
+
+  <Section n="6" title="What the end customer thinks">
+    <p>
+      There is measured friction around animal origin in cosmetics, and it is worth looking at
+      squarely.
+    </p>
+    <div class="grid">
+      <StatCard value="49.4% against 68.9%" caption="Share of respondents stating they would buy a cosmetic containing ovine tallow, against the same share for a comparison vegetable oil. An acceptance gap of roughly twenty points." kind="fonte" source="Kowalska M, Woźniak M, Golec K, et al. Consumer preferences for the development of new emulsion products based on vegetable and animal fats. PLoS One 2026;21(1):e0336602. DOI 10.1371/journal.pone.0336602. Survey of 1,000 respondents, a single country, stated intention and not behaviour." />
+      <StatCard value="22.8%" caption="Share that does not buy skin products with animal ingredients, against 12.4% for food. Rejection is almost twice as high for topical products." kind="fonte" source="Kowalska 2026, DOI 10.1371/journal.pone.0336602." />
+      <StatCard value="43.7%" caption="Share stating that the decision depends on the type of animal raw material. It is the only segment traceability can address." kind="fonte" source="Kowalska 2026, DOI 10.1371/journal.pone.0336602." />
+    </div>
+    <Callout tone="warn" title="The single most important finding of that survey">
+      <p>
+        The thing respondents said mattered most when buying a skin product was whether their
+        skin was better afterwards: hydration, and less water lost through the barrier. That is
+        the number one driver, and it is
+        <strong>precisely the endpoint on which tallow has no data at all</strong>.
+      </p>
+      <p>
+        In the same survey, the younger respondents came out <em>less</em> willing to buy
+        cosmetics containing tallow, which cuts against the story of a trend driven by the young,
+        at least in that country. Bear in mind this is stated intention rather than behaviour, in
+        one national market, so it does not travel without care.
+        <Status kind="costruzione" lang={lang} />
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="7" title="The risks, in full">
+    <div class="risks">
+      {risks.map((x) => (
+        <article class="risk">
+          <Finding kind="contro" lang={lang} />
+          <h3>{x.t}</h3>
+          <p>{x.d}</p>
+        </article>
+      ))}
+    </div>
+  </Section>
+
+  <ReadNext
+    lang={lang}
+    links={[
+      { href: r.investitori, label: 'Investors: the verdict and the stopping criteria' },
+      { href: r.normativa, label: 'Regulation: the one lever that helps, and its limits' },
+      { href: r.audit, label: 'The Audit: why rigour is the differentiator' },
+    ]}
+  />
+</OdeV2Layout>
+
+<style>
+  .ev-line { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1.2rem; }
+
+  .pincer {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.2rem 0 1.4rem;
+  }
+  .pincer-side {
+    background: var(--pink-soft);
+    border: 1px solid var(--pink);
+    border-radius: var(--ode-radius);
+    padding: 1.2rem 1.3rem;
+  }
+  .pincer-k {
+    display: block;
+    font-family: var(--ode-font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--pink-ink);
+    margin-bottom: 0.6rem;
+  }
+  .pincer-side p { margin: 0; font-size: 0.93rem; line-height: 1.58; color: var(--ink); }
+  .pincer-x { font-size: 1.6rem; color: var(--pink-ink); font-weight: 300; }
+  @media (max-width: 720px) {
+    .pincer { grid-template-columns: 1fr; }
+    .pincer-x { justify-self: center; }
+  }
+
+  .legs { list-style: none; margin: 1.3rem 0; padding: 0; display: flex; flex-direction: column; gap: 1.2rem; }
+  .legs > li { display: grid; grid-template-columns: 2.6rem 1fr; gap: 1rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--rule); }
+  .legs > li:last-child { border-bottom: 0; padding-bottom: 0; }
+  .leg-n { font-family: var(--ode-font-mono); font-size: 1.15rem; color: var(--accent); }
+  .legs h3 { font-size: 1.05rem; font-weight: 500; color: var(--ink); margin: 0 0 0.45rem; }
+  .legs p { font-size: 0.93rem; line-height: 1.6; color: var(--body); margin: 0; max-width: 42rem; }
+  .leg-s { margin-top: 0.5rem !important; font-size: 0.82rem !important; color: var(--muted) !important; font-style: italic; }
+
+  .gapl { list-style: none; margin: 1.2rem 0; padding: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+  .gapl li { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; }
+  .gapl span { font-size: 0.9rem; line-height: 1.55; color: var(--body); flex: 1 1 18rem; }
+
+  .risks { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: 1.4rem 1.8rem; margin: 1.2rem 0; }
+  .risk h3 { font-size: 1rem; font-weight: 500; color: var(--ink); margin: 0.55rem 0 0.4rem; line-height: 1.35; }
+  .risk p { font-size: 0.89rem; line-height: 1.58; color: var(--body); margin: 0; }
+</style>

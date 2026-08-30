@@ -12,25 +12,25 @@ const r = odeRoutes[lang];
 
 const doors = [
   {
-    who: 'Investor',
-    question: 'Is there a defensible position, and which risks are already stated?',
+    who: 'Investors',
+    question: 'Is there a defensible position here, and which risks are already on the table?',
     href: r.investitori,
-    cta: 'The verdict, in two parts',
-    next: 'Then: Position, where OdE can and cannot exist.',
+    cta: 'The verdict, in two halves',
+    next: 'Then Position: where OdE can compete, and where it cannot.',
   },
   {
-    who: 'Research partner',
-    question: 'Are the questions real, does the method hold, and is there something to publish?',
+    who: 'Research partners',
+    question: 'Are these questions real, does the method hold up, and is there a paper in it?',
     href: r.evidenza,
-    cta: 'The open questions',
-    next: 'Then: the Audit, that is, what we have already verified.',
+    cta: 'What we still cannot answer',
+    next: 'Then the Audit: what we have already checked.',
   },
   {
-    who: 'Commercial partner',
-    question: 'What am I actually buying, and what can I claim without exposing myself?',
+    who: 'Formulators and buyers',
+    question: 'What am I actually buying, and what can I say about it without landing in trouble?',
     href: r.tesi,
     cta: 'The parameter that decides',
-    next: 'Then: AMSA and Regulation.',
+    next: 'Then AMSA and Regulation.',
   },
 ];
 
@@ -38,82 +38,84 @@ const limits = [
   {
     kind: 'contro' as const,
     t: 'There is no clinical evidence on topical tallow',
-    d: 'No high-grade study of the cutaneous effect of tallow applied as such. This is not a shortcoming of our search: it is the state of the field, and it applies to us too.',
+    d: 'Not one high-grade study of what tallow does to skin when you put it on. That is not a hole in our search. It is the state of the field, and it counts against us as much as anyone.',
   },
   {
     kind: 'contro' as const,
-    t: 'Our material changes on the skin, and we do not know in which direction',
-    d: 'Skin bacteria secrete lipases that cleave triglycerides. Petrolatum, mineral oil, squalane and dimethicone have none: they are inert, we are not. What is released is a mixture, and for its two main components the evidence points in opposite directions. The net effect has never been measured.',
+    t: 'Our material changes on the skin, and we do not know which way',
+    d: 'Skin bacteria make lipases, and lipases split triglycerides. Petrolatum, mineral oil, squalane and dimethicone give them nothing to work on: those are inert, ours is not. What comes off is a mixture, and its two main components have evidence pointing in opposite directions. Nobody has measured the net effect.',
   },
   {
     kind: 'contro' as const,
-    t: 'The market where the difference matters is small, and we cannot size it',
-    d: 'Where tallow is bought in volume we cannot compete on price. Where qualification matters, volumes are small and no public data separates them.',
+    t: 'The market that would pay for the difference is small, and we cannot size it',
+    d: 'Where tallow moves in volume, we lose on price. Where qualification is worth paying for, the volumes are tiny and no public dataset breaks them out.',
   },
 ];
 ---
 <OdeV2Layout title={m.title} description={m.description} lang={lang}>
   <section class="hero">
     <p class="ode-eyebrow hero-eyebrow">
-      Systematic search across twelve bibliographic basins, in six languages
+      Twelve databases searched, in six languages
     </p>
     <h1>
       There is no clinical study measuring what tallow does to human skin.
     </h1>
     <p class="hero-lede">
-      None. Not a weak one, not an old one, not one in a language nobody reads. We searched
-      twelve databases in six languages before accepting it, and before building a company on
-      top of it.
-      <DataTag kind="fonte" label="Gap verified by searching twelve basins: PubMed, EMBASE, Europe PMC, Scopus, Web of Science, Google Scholar, Semantic Scholar, ClinicalTrials.gov, CIR, CosIng, EUR-Lex and the FAO Codex Alimentarius. Targeted searches in Polish, Russian, Chinese, Japanese and Turkish in addition to English. Research track 5 v3.0, sections 1.3 and 8." />
+      Not one. Not a weak study, not an old one, not one buried in a language nobody reads. We
+      went through twelve databases in six languages before we accepted that, and well before we
+      built a company on it.
+      <DataTag kind="fonte" label="Gap verified across twelve databases: PubMed, EMBASE, Europe PMC, Scopus, Web of Science, Google Scholar, Semantic Scholar, ClinicalTrials.gov, CIR, CosIng, EUR-Lex and the FAO Codex Alimentarius. Targeted searches in Polish, Russian, Chinese, Japanese and Turkish alongside English. Research track 5 v3.0, sections 1.3 and 8." />
     </p>
     <p class="hero-status"><Status kind="lacuna" lang={lang} /></p>
 
     <div class="thesis">
       <p class="thesis-line">
         If nothing is known and nobody is measuring, the value is not in the tallow.
-        <strong>It is in being able to qualify it.</strong>
+        <strong>It is in being able to vouch for it.</strong>
       </p>
       <p class="thesis-sub">
-        OdE does not sell tallow. It sells certainty about what is inside a batch of tallow.
-        In a market where nobody measures, whoever measures first defines the standard.
-        We are a laboratory before we are a producer.
+        OdE does not sell tallow. It sells certainty about what is inside the drum. In a market
+        where nobody measures, whoever measures first writes the standard. We are a laboratory
+        first and a producer second.
       </p>
     </div>
   </section>
 
-  <section class="block" aria-label="Three doors">
-    <p class="ode-eyebrow block-eyebrow">Three audiences, three different questions</p>
+  <section class="block" aria-label="Where to start">
+    <p class="ode-eyebrow block-eyebrow">Three readers, three different questions</p>
     <Doors doors={doors} />
   </section>
 
   <section class="block" aria-label="The verification work">
-    <p class="ode-eyebrow block-eyebrow">What we verified</p>
+    <p class="ode-eyebrow block-eyebrow">What we checked</p>
     <div class="verif">
       <div class="verif-text">
         <p>
-          Before describing a product we spent months trying to break the idea. The result is an
-          evidence library with graded records, persistent identifiers, and gaps documented with
-          the query and the basin that produced them. It includes an audit of the most cited
-          review in the field, which anyone can repeat in an afternoon.
+          Before we described a product, we spent months trying to break the idea. What came out
+          is an evidence library: every record graded, every source given a persistent
+          identifier, every gap logged with the query and the database that produced it. It
+          includes an audit of the most cited review in the field, which anyone can repeat in an
+          afternoon.
         </p>
         <p class="note">
-          It is the work no competitor can copy without redoing it, and the only reason we
-          believe we are entitled to talk about this material at all.
+          No competitor can copy that without doing it again themselves, and it is the only
+          reason we think we have earned the right to talk about this material.
         </p>
       </div>
       <a class="verif-cta" href={r.audit}>
         <span class="verif-cta-k">The Audit</span>
-        <span class="verif-cta-d">The evidence gap, the matrix error in the most cited review, the taxonomy of claims that do not hold.</span>
+        <span class="verif-cta-d">The hole in the evidence, the wrong-material errors in the most cited review, and the claims that would not survive scrutiny.</span>
         <span class="verif-cta-a" aria-hidden="true">→</span>
       </a>
     </div>
   </section>
 
-  <section class="block" aria-label="Stated limits">
+  <section class="block" aria-label="Limits we state up front">
     <p class="ode-eyebrow block-eyebrow">Three limits, before you find them yourself</p>
     <p class="measure block-intro">
-      A stated risk raises the credibility of everything else. A limit discovered alone destroys
-      it. These three are the most serious, and they are on the home page on purpose.
+      A risk you own makes everything else more credible. A limit the reader turns up on their
+      own destroys the lot. These three are the worst of them, and they are on the home page on
+      purpose.
     </p>
     <ul class="limits">
       {limits.map((l) => (
@@ -125,7 +127,7 @@ const limits = [
       ))}
     </ul>
     <p class="note">
-      The full picture, unsoftened, is in <a href={r.posizione}>Position</a> and
+      The whole picture, with nothing softened, is in <a href={r.posizione}>Position</a> and
       <a href={r.investitori}>Investors</a>.
     </p>
   </section>

@@ -19,10 +19,12 @@ oltre a Python 3.
 
 **Fallimenti: 0. Avvisi: 3, tutti attesi e spiegati sotto.**
 
-I numeri qui sotto sono quelli dopo l’allineamento alla versione 4.0 del
-consolidamento della ricerca e dopo il completamento della versione inglese,
-entrambi riassunti in fondo a questo documento e registrati nelle sezioni 15 e
-16 di `PLAN.md`.
+I numeri qui sotto sono quelli dopo tre passaggi successivi, tutti riassunti in
+fondo a questo documento e registrati nelle sezioni 15, 16 e 17 di `PLAN.md`:
+l’allineamento alla versione 4.0 del consolidamento, il completamento della
+versione inglese, e il rovesciamento della lingua sorgente, che rende
+**l’inglese la lingua in cui il sito è scritto** e l’italiano la sua
+traduzione.
 
 | # | Verifica | Esito |
 |---|---|---|
@@ -137,7 +139,7 @@ regole di risoluzione lavorano per sottostringa.
 Ereditato: `Fonte`, `Stima`, `Benchmark`, con badge numerato cliccabile e nota
 in calce a fondo pagina. Meccanismo identico all'originale.
 
-Formalizzato in componente: `Dimostrato`, `In costruzione`, `Scommessa`, più
+Formalizzato in componente: `Dimostrato`, `Non ancora testato`, `Scommessa`, più
 **`Lacuna verificata`**, che è l'estensione approvata al checkpoint e senza la
 quale l'affermazione più importante del sito resterebbe senza etichetta.
 
@@ -298,6 +300,91 @@ passata sotto gli occhi di un madrelingua tecnico. Su un testo che vive di
 distinzioni epistemiche (dimostrato contro traslato, lacuna verificata contro
 assenza di dati) vale la pena farlo prima della pubblicazione.
 
+## L'inglese come lingua sorgente
+
+Il sito è ora concepito e scritto in inglese, e l'italiano è la traduzione. Il
+registro delle modifiche è nella sezione 17 di `PLAN.md`. Qui interessa che cosa
+è verificabile.
+
+### Le rotte inglesi hanno slug inglesi
+
+| Chiave | Italiano | Inglese |
+|---|---|---|
+| `tesi` | `/OdE-v2/tesi` | `/OdE-v2/en/thesis` |
+| `filiera` | `/OdE-v2/filiera` | `/OdE-v2/en/supply-chain` |
+| `posizione` | `/OdE-v2/posizione` | `/OdE-v2/en/position` |
+| `normativa` | `/OdE-v2/normativa` | `/OdE-v2/en/regulation` |
+| `evidenza` | `/OdE-v2/evidenza` | `/OdE-v2/en/open-evidence` |
+| `investitori` | `/OdE-v2/investitori` | `/OdE-v2/en/investors` |
+| `glossario` | `/OdE-v2/glossario` | `/OdE-v2/en/glossary` |
+
+Le **chiavi non cambiano**: sono identificatori, e il selettore di lingua
+continua a trovare la stessa pagina nell'altra lingua perché lavora sulle chiavi
+e non sugli slug. Un lettore inglese che vedeva `/en/filiera` capiva subito di
+essere su un sito tradotto, ed è esattamente ciò che questa revisione elimina.
+
+### Il difetto più rivelatore, e la sua correzione
+
+`DataTag` stampava **"Fonte" e "Stima" anche sulle pagine inglesi**. Il
+componente non aveva un parametro di lingua, e le circa 150 chiamate non lo
+passavano. Ora il badge segue la lingua della rotta, letta da
+`Astro.url.pathname`, e rende `Source` ed `Estimate` in inglese. Verifica:
+
+```bash
+grep -o 'ode-tag--fonte[^>]*>[A-Za-z]*' dist/OdE-v2/en/thesis/index.html | head -1
+# deve finire con ">Source"
+```
+
+### Una sezione che mancava del tutto
+
+La versione inglese di Investitori aveva **nove sezioni contro le dieci
+italiane**: mancava la traiettoria in quattro fasi. È stata scritta, con i suoi
+stili, e la pagina inglese ha ora le stesse dieci sezioni.
+
+### Allineamenti di etichetta
+
+Due nomi cambiano in entrambe le lingue, perché l'inglese naturale ha imposto la
+formulazione e l'italiano la segue:
+
+| Prima | Adesso, in inglese | Adesso, in italiano |
+|---|---|---|
+| Evidenza aperta / Open evidence | **Open questions** | **Domande aperte** |
+| In costruzione / Under construction | **Not yet tested** | **Non ancora testato** |
+
+Il secondo è il più importante: la definizione condivisa dei due sistemi di
+etichette dice "inferenza plausibile non ancora testata", e ora l'etichetta dice
+la stessa cosa nelle due lingue invece di dirne due diverse.
+
+### Calchi rimossi
+
+Il più diffuso era **"basin" per "bacino"**: in inglese una ricerca
+bibliografica si fa su *databases*, non su bacini. Ricorreva in quattro pagine.
+Tolti anche `that is` come calco di "cioè", le costruzioni impersonali del tipo
+"it must be said", `perimeter` per "perimetro" di mercato, `translated evidence`
+per "evidenza traslata" (in inglese *borrowed evidence*), `matrix error` per
+"errore di matrice" (*wrong-material error*), e le unità scritte all'italiana
+(`2,3 mln t` reso `2.3 million t`).
+
+### Che cosa NON è stato fatto, ed è deliberato
+
+**L'italiano non è stato ritradotto dall'inglese riga per riga.** Il significato
+è invariante: la revisione ha cambiato il modo di dire le cose in inglese, non
+le cose dette. L'italiano resta quindi un parallelo fedele, e ritradurlo
+integralmente avrebbe peggiorato una prosa italiana già buona senza cambiare un
+solo contenuto. Dove la revisione inglese ha davvero spostato qualcosa (i due
+nomi della tabella qui sopra), l'italiano è stato allineato.
+
+**La lingua di default del sito non è stata cambiata.** `/OdE-v2` serve ancora
+l'italiano e `/OdE-v2/en` l'inglese, come il sito originale. Se l'inglese è la
+lingua sorgente, si può sostenere che debba essere anche quella di default, con
+l'italiano sotto `/it`: è però una decisione sul pubblico primario del progetto,
+non sulla lingua, e va presa dal committente. È l'unica cosa di questa revisione
+che ho lasciato aperta.
+
+**Il divieto di trattino lungo è stato esteso all'inglese**, come scelta di
+stile della casa. In inglese il trattino lungo sarebbe idiomatico, ma non costa
+nulla farne a meno e la regola resta una sola per tutto il sito.
+
 ## Che cosa resta da fare
 
 - **Rispondere alla domanda di P2**, che è tecnica e non amministrativa: che
@@ -306,6 +393,8 @@ assenza di dati) vale la pena farlo prima della pubblicazione.
 - **Sciogliere P4**, che blocca la pubblicazione.
 - **Rileggere le tre righe della tassonomia** segnalate dalla verifica 7 a ogni
   revisione dei contenuti.
-- **Rileggere la versione inglese con un madrelingua tecnico.** È una traduzione
-  fedele e completa, non una revisione redazionale di un parlante nativo, e su
-  un testo che vive di sfumature epistemiche la differenza può contare.
+- **Far leggere l'inglese a un madrelingua tecnico.** La revisione ha portato il
+  testo dalla traduzione fedele alla scrittura inglese, ma un lettore nativo del
+  settore resta il controllo finale.
+- **Decidere se l'inglese debba diventare anche la lingua di default**, cioè se
+  `/OdE-v2` debba servire l'inglese e l'italiano spostarsi sotto `/it`.
