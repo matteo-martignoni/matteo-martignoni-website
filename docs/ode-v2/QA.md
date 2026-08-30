@@ -19,6 +19,10 @@ oltre a Python 3.
 
 **Fallimenti: 0. Avvisi: 3, tutti attesi e spiegati sotto.**
 
+I numeri qui sotto sono quelli dopo l’allineamento alla versione 4.0 del
+consolidamento della ricerca, documentato nella sezione 15 di `PLAN.md` e
+riassunto in fondo a questo documento.
+
 | # | Verifica | Esito |
 |---|---|---|
 | 0 | Pagine generate | 22 (11 IT, 11 EN) |
@@ -30,9 +34,9 @@ oltre a Python 3.
 | 6 | Nessun trattino lungo nel testo italiano | **Superata**, 11 su 11 |
 | 7 | Claim vietate | **Superata con 3 avvisi**, vedi sotto |
 | 8 | Link interni | **Superata**, nessun link rotto |
-| 9 | Note in calce | **Superata**, 108 note, ogni riferimento ha la sua voce |
+| 9 | Note in calce | **Superata**, 119 note, ogni riferimento ha la sua voce |
 | 10 | Responsività | **Superata**, nessuna larghezza fissa, tabelle scorrevoli |
-| 11 | Peso delle pagine | Max 55 KB, nessuna pagina oltre la soglia |
+| 11 | Peso delle pagine | Max 62,5 KB, nessuna pagina oltre la soglia |
 | 12 | Placeholder in pagina | 9, elencati sotto |
 
 ### I tre avvisi della verifica 7
@@ -146,7 +150,7 @@ abbiano lo stesso peso tipografico di quelli favorevoli.
 | Risultato | Pagina | Posizione |
 |---|---|---|
 | Zero studi clinici sul sego topico | Home, Audit | Titolo della home |
-| Il dato meccanicistico favorevole è eroso dall'idrolisi lipasica | Tesi | Sezione 3, subito dopo il fondamento |
+| L'idrolisi cutanea produce una miscela, e l'effetto netto non è mai stato misurato: la direzione è ignota, non sfavorevole né favorevole | Tesi, Home | Sezione 3 della Tesi, limite 2 della Home |
 | Petrolato, olio minerale, squalano e dimeticone sono immuni a quel meccanismo | Tesi | Stessa sezione |
 | Non si batte il petrolato sull'occlusione né i ceramidi sulla riparazione | Tesi | Sezione 5, elenco chiuso |
 | L'appiccicosità è un difetto sull'endpoint primario, misurato su sego bovino | Tesi | Sezione 5 |
@@ -165,6 +169,14 @@ abbiano lo stesso peso tipografico di quelli favorevoli.
 | Le tesi favorevoli poggiano su una traccia, le sfavorevoli su tre | Investitori | Sezione 4, in riquadro |
 | L'Oxidative Risk Score non è un predittore di esito cutaneo | AMSA | Sezione 3, in riquadro |
 | Il divario di accettazione consumer | Posizione | Sezione 6 |
+| Nessuna proprietà intellettuale difendibile sul frazionamento: è arte nota pubblica e scaduta | Investitori, Posizione, AMSA | Sezione 5 di Investitori, dedicata |
+| Il compromesso del frazionamento non ha un ottimo unico | Tesi | Sezione 2, in riquadro |
+| Se il grasso solido misurato a 32 °C è sotto il 15%, cade l'argomento della classe fisica | Tesi, Evidenza aperta | Sezione 4 della Tesi, condizioni di fallimento |
+| La stima del grasso solido sta sull'estremità alta della forbice attesa | Tesi | Nella nota della stima stessa |
+| Un concorrente che pubblichi per primo azzera la narrativa del primo arrivato | Evidenza aperta | Condizioni di fallimento |
+| Il tasso di raccomandazione fra i dermatologi è del 7% | Audit | Sezione 3, tabella dei contenuti social |
+| Cinque bacini di letteratura non sono stati interrogati, ed è dichiarato quali | Audit | Sezione 1, in riquadro |
+| Due errori di lettura commessi da noi, ricostruiti fino alla fonte | Audit, Tesi | Sezione 1 dell'Audit, sezione 1 della Tesi |
 
 ## Placeholder che richiedono input del committente
 
@@ -192,7 +204,10 @@ esperto. Quattro punti corretti:
    come quote di composizione dei promotori. Sommano a 103, quindi quella
    lettura è aritmeticamente impossibile. Riformulati come tassi di
    raccomandazione per categoria, con nota che dichiara la discordanza fra le
-   due sintesi interne e rimanda alla riverifica sul testo primario.
+   due sintesi interne e rimanda alla riverifica sul testo primario. **La
+   versione 4.0 del consolidamento ha poi confermato che la correzione era
+   giusta**, e ha fatto cadere sia il 96% sia il 61%: i valori pubblicati oggi
+   sono 82%, 7% fra i dermatologi, 92% e 74% per piattaforma.
 2. **"Eguaglia un corticosteroide"** era più forte del dato. Lo studio riporta
    assenza di differenza statisticamente significativa a 28 giorni, che non è
    una dimostrazione di equivalenza. Riformulato.
@@ -201,6 +216,43 @@ esperto. Quattro punti corretti:
 4. **Il calendario del regolamento sulla deforestazione** ometteva che la data
    del 30 dicembre 2026 copre anche i micro e piccoli operatori già coperti dal
    regolamento sul legname. Aggiunto.
+
+## Allineamento alla versione 4.0 del consolidamento
+
+Il registro completo è nella **sezione 15 di `PLAN.md`**. Qui interessa che cosa
+ne è seguito per la verifica.
+
+**Che cosa è cambiato nella sostanza.** Tre revisioni. Il fondamento
+meccanicistico riguarda una molecola precisa, l'acido oleico, e non la classe
+degli acidi grassi liberi. L'idrolisi cutanea smette di essere un rischio
+direzionale e diventa una domanda quantitativa aperta, con l'effetto netto mai
+misurato. L'anello fra provenienza e composizione acquista un primo candidato
+misurabile, che però **non viene usato come vantaggio** perché la ricerca
+prescrive di riverificarlo prima di portarlo in comunicazione.
+
+**Che cosa si è stretto.** Il processo non è un fossato: frazionamento e
+raffinazione del sego sono arte nota con famiglie brevettuali in gran parte
+scadute. È pubblicato in una sezione dedicata di Investitori, in un riquadro di
+Posizione e in uno di AMSA, non in nota.
+
+**Effetto sulle verifiche automatiche.** Nessuna verifica ha cambiato esito.
+Le note in calce passano da 108 a 119, la pagina più pesante da 55 a 62,5 KB, i
+placeholder restano nove, i tre avvisi della verifica 7 restano gli stessi tre e
+sempre dentro la tabella della tassonomia. Le pagine restano ventidue e i file
+del sito originale toccati restano zero.
+
+**Effetto sull'onestà pubblicata.** La tabella dei risultati sfavorevoli qui
+sopra cresce di otto righe, e una riga preesistente è stata riscritta perché la
+formulazione precedente, "il dato favorevole è eroso dall'idrolisi", oggi
+sarebbe più pessimistica del dato. La direzione dell'effetto è ignota, ed è così
+che viene dichiarata.
+
+**Una trappola registrata perché non si ripeta.** Lo studio che qualifica il
+rischio dell'idrolisi è di grado B1, su cute umana ex vivo e danneggiata, con
+acidi grassi isolati e non con il sego. Un risultato che va nella nostra
+direzione è esattamente il caso in cui il controllo va stretto, non allentato:
+il riquadro che lo introduce dichiara per esteso che cosa il dato **non**
+autorizza a dire, e il claim di barriera resta fra quelli vietati.
 
 ## Che cosa resta da fare
 

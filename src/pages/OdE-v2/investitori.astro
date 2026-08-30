@@ -17,11 +17,11 @@ const r = odeRoutes[lang];
 const scenarios = [
   {
     k: 'Minimo',
-    cost: '17.000-39.000 €',
-    pct: '5-11%',
+    cost: '18.000-41.000 €',
+    pct: '5-12%',
     dur: '4-6 mesi',
-    what: 'Verifiche a costo zero, analitica per lotto, pacchetto documentale, dossier di sicurezza, quantificazione dell’epitopo alpha-gal.',
-    say: 'Ingrediente tracciato, qualificato per lotto, sicuro secondo dossier, non derivato da olio di palma, con profilo e stato ossidativo certificati. Nessun claim di efficacia.',
+    what: 'Verifiche a costo zero, panel analitico completo, analitica per lotto, pacchetto documentale, dossier di sicurezza, quantificazione dell’epitopo alpha-gal.',
+    say: 'Ingrediente tracciato, qualificato per lotto, sicuro secondo dossier, non derivato da olio di palma, con profilo acidi grassi, contenuto di grasso solido a temperatura cutanea e stato ossidativo misurati e certificati. Nessun claim di efficacia.',
     v: 'Punto di partenza obbligato',
   },
   {
@@ -30,7 +30,7 @@ const scenarios = [
     pct: '16-26%',
     dur: '8-12 mesi',
     what: 'Il minimo, più l’in vitro su idrolisi, il braccio di sicurezza barriera e il modulo sensoriale.',
-    say: 'Aggiunge cinetica di idrolisi caratterizzata, comportamento di barriera in applicazione singola documentato, profilo sensoriale misurato. È il primo dato proprietario.',
+    say: 'Aggiunge cinetica e composizione del rilascio caratterizzate, comportamento di barriera in applicazione singola documentato, profilo sensoriale misurato. È il primo dato proprietario.',
     v: 'Tetto ragionevole',
   },
   {
@@ -48,28 +48,33 @@ const scenarios = [
 const swot = {
   f: [
     'Il principio della forma esterificata e del basso numero di acidità è il claim scientifico più difendibile disponibile, e poggia su uno studio su cute umana.',
-    'A temperatura cutanea il materiale è semisolido, cioè nella classe fisica del petrolato: la predizione sfavorevole stabilita su un olio liquido non è automaticamente trasferibile.',
-    'Gli ossisteroli sono un marcatore che nessuna matrice vegetale possiede, con una leva di processo documentata.',
+    'I due acidi grassi saturi dominanti del materiale, insieme circa il 46% del profilo, hanno evidenza ex vivo di ricostruzione della barriera. Grado B1, su cute danneggiata e con acidi grassi isolati: qualifica il rischio, non autorizza un claim.',
+    'A temperatura cutanea il materiale è semisolido e completamente fuso solo a 46 °C: classe fisica del petrolato, con un ranking termico ora documentato su fonte primaria.',
+    'Gli ossisteroli sono un marcatore che nessuna matrice vegetale possiede, con una leva di processo documentata e un target numerico definibile.',
     'La tracciabilità e la circolarità sono verificabili e non narrative, il che è più di quanto offra la media del mercato.',
     'La dichiarazione di non derivazione da olio di palma è un campo a costo quasi nullo, verificabile e non contestabile.',
+    'L’audit di due errori di attribuzione documentati nella letteratura del settore, ricostruiti fino alla fonte, è un asset di credibilità a costo zero.',
   ],
   d: [
     'Assenza totale di evidenza di grado alto sul sego topico: non raggiunge la soglia minima che un formulatore si aspetta.',
     'Appiccicosità documentata strumentalmente, sulla matrice bovina, sull’endpoint primario della categoria in cui il materiale va collocato.',
-    'Vulnerabilità strutturale all’idrolisi lipasica, asimmetrica rispetto ai comparatori idrocarburici e siliconici.',
+    'Esposizione all’idrolisi lipasica in situ, asimmetrica rispetto ai comparatori idrocarburici e siliconici. Qualificata: la direzione dell’effetto netto è ignota, non negativa.',
     'Impossibilità di competere su occlusione e su riparazione della barriera.',
+    'Nessuna proprietà intellettuale difendibile sul frazionamento e sulla raffinazione: l’arte nota è pubblica e in gran parte scaduta.',
     'Struttura molto piccola, capacità di rendicontazione limitata, nessun laboratorio interno.',
   ],
   o: [
     'Nessun operatore offre oggi la combinazione di tracciabilità documentata, indice di rischio ossidativo e caratterizzazione per lotto in un solo documento.',
     'Sull’asse emolliente l’esito di uno studio è genuinamente ignoto e la letteratura è poco indicizzata: il valore marginale di un dato nuovo è alto.',
+    'La finestra per chi arriva per primo con un dato clinico è ancora aperta alla data dell’ultima verifica bibliografica.',
     'L’asimmetria documentale sulla deforestazione apre un argomento di conformità presso trasformatori e saponifici europei.',
     'La restrizione su alcuni ciclosilossani apre un asse di domanda, condizionato e con la sua precisazione.',
   ],
   m: [
-    'Il ciclo di attenzione mediatica è fra picco e riflusso, con la comunità clinica prevalentemente critica.',
+    'Il ciclo di attenzione mediatica è fra picco e riflusso: fra i contenuti social analizzati, i dermatologi raccomandano il sego nel 7% dei casi.',
     'Il trend che esclude gli ingredienti animali per definizione è il segmento in maggiore crescita.',
     'Contaminazione reputazionale da claim altrui indifendibili e dagli errori di attribuzione che circolano in letteratura.',
+    'Esistono già nomenclature di derivati del sego censite per uso cosmetico: il perimetro non è vergine nemmeno sul piano della nomenclatura.',
     'Un concorrente potrebbe pubblicare per primo un dato primario, azzerando il vantaggio della lacuna.',
   ],
 };
@@ -86,8 +91,8 @@ const phases = [
 const pivots = [
   { t: 'La piattaforma di qualificazione lipidica, indipendente dal sego', d: 'Spettroscopia più chemiometria più modelli predittivi è applicabile a qualunque lipide. È l’asset più trasferibile e il riposizionamento più difendibile.' },
   { t: 'L’infrastruttura di tracciabilità su altre materie prime della stessa filiera', d: 'Il Passaporto e la logica di catena di custodia si applicano ad altri sottoprodotti dello stesso territorio.' },
-  { t: 'La libreria di evidenza come asset autonomo', d: 'Position paper, due diligence documentale, consulenza di posizionamento scientifico per altri operatori della categoria.' },
-  { t: 'Da produttore a fornitore di servizio analitico', d: 'Certificare per lotto il sego di terzi, inclusi i concorrenti, invece di produrlo. Evita il vincolo di volume e di prezzo.' },
+  { t: 'La libreria di evidenza come asset autonomo', d: 'Position paper, due diligence documentale, consulenza di posizionamento scientifico per altri operatori della categoria. L’audit di due errori di attribuzione ricostruiti fino alla fonte rende questo scenario più concreto di quanto apparisse prima.' },
+  { t: 'Da produttore a fornitore di servizio analitico', d: 'Certificare per lotto il sego di terzi, inclusi i concorrenti, invece di produrlo. Evita il vincolo di volume e di prezzo, e il fatto che l’arte nota sul frazionamento sia pubblica lo rafforza: se il processo non è difendibile, il servizio di qualificazione lo è di più.' },
 ];
 ---
 <OdeV2Layout title={m.title} description={m.description} lang={lang} active="investitori">
@@ -131,7 +136,7 @@ const pivots = [
       <li><span class="c-n">01</span><p>Che le tre verifiche a costo quasi nullo diano esito positivo: almeno un formulatore chiede un campione, l’argomento documentale sulla provenienza non-palma ha sostanza commerciale, e i preventivi confermano gli ordini di grandezza.</p></li>
       <li><span class="c-n">02</span><p>Che si accetti lo scenario minimo o al più intermedio, tenendo la maggior parte del capitale per produzione, relazione e mercato, non per esperimenti.</p></li>
       <li><span class="c-n">03</span><p>Che la competenza regolatoria e di rendicontazione sia acquisita come consulenza puntuale, perché il fabbisogno è discontinuo e la competenza mancante più critica non è tecnica ma regolatoria.</p></li>
-      <li><span class="c-n">04</span><p>Che si generi un solo dato proprietario difendibile, la cinetica di idrolisi in vitro, <strong>prima</strong> di divulgare l’intera libreria di evidenza.</p></li>
+      <li><span class="c-n">04</span><p>Che si generi un solo dato proprietario difendibile <strong>prima</strong> di divulgare l’intera libreria di evidenza. La revisione più recente della ricerca ne precisa l’identità: <strong>il dato è la composizione del rilascio, non la sua velocità</strong>. La velocità dice quanto il materiale si idrolizza; la composizione dice se ciò che rilascia sia dannoso, neutro o benefico. Solo la seconda risponde all’obiezione che un formulatore informato solleverebbe, e solo la seconda è un dato che nessuno possiede.</p></li>
     </ol>
     <p class="note">
       Sono condizioni raggiungibili con le risorse disponibili. Non sono un elenco di buoni
@@ -228,7 +233,9 @@ const pivots = [
         sono quasi tutte sostenute da una sola traccia di ricerca, mentre le tesi sfavorevoli sono
         spesso sostenute da tre tracce convergenti</strong>. Questa asimmetria di supporto
         probatorio non va appiattita nella lettura: significa che le buone notizie sono più
-        fragili delle cattive.
+        fragili delle cattive. L’ultima revisione della ricerca la <strong>attenua
+        leggermente</strong>, perché aggiunge supporto indipendente a tre tesi favorevoli, ma non
+        la ribalta.
       </p>
       <p>
         Se ne trae una conseguenza operativa: la mossa a più alto rapporto fra valore e costo non
@@ -238,7 +245,50 @@ const pivots = [
     </Callout>
   </Section>
 
-  <Section n="5" title="La leva della finanza agevolata cambia il costo, non il verdetto">
+  <Section n="5" title="Il fossato non può essere il processo">
+    <p>
+      È la restrizione più recente alla tesi, ed è sfavorevole. La mappa dell’arte nota mostra
+      che il <strong>frazionamento e la raffinazione del sego sono pubblico dominio</strong>:
+      quattro famiglie brevettuali sul frazionamento e almeno sei su raffinazione e
+      deodorizzazione applicabili ai grassi animali, le più antiche scadute da decenni.
+      <DataTag kind="fonte" label="Mappatura di arte nota su brevetti USPTO relativi al frazionamento del sego e alla raffinazione dei grassi animali. Consolidamento della ricerca OdE v4.0, sez. C.6. È una mappa, non un parere: la verifica di libertà di operare richiede consulenza brevettuale qualificata." />
+    </p>
+    <p class="ev-line"><Status kind="dimostrato" lang={lang} /> <Finding kind="contro" lang={lang} /></p>
+    <div class="grid-2">
+      <article class="fin">
+        <h3>Il lato favorevole</h3>
+        <p>
+          OdE ha ampia libertà di operare sul frazionamento e sulla raffinazione, senza rischio
+          di contraffazione e senza costi di licenza. E l’ipotesi di correggere l’appiccicosità
+          per frazionamento ha <strong>precedenti tecnici documentati</strong>: non è una
+          scommessa tecnologica, è l’applicazione di un processo noto.
+        </p>
+      </article>
+      <article class="fin">
+        <h3>Il lato sfavorevole, che pesa di più</h3>
+        <p class="fin-c">
+          <strong>Chiunque può frazionare il sego</strong>, e l’arte nota descrive già frazioni
+          semisolide adatte a uso cosmetico. Restano difendibili soltanto il dato proprietario,
+          il dataset di filiera e il Passaporto come infrastruttura. <strong>Non il come si
+          produce.</strong>
+        </p>
+      </article>
+    </div>
+    <Callout tone="warn" title="La conseguenza, detta come la direbbe una due diligence">
+      <p>
+        Se OdE si presentasse come detentore di un processo distintivo, <strong>la posizione non
+        reggerebbe a una due diligence tecnica</strong>. Lo scriviamo qui perché è esattamente il
+        genere di cosa che un investitore scoprirebbe al secondo incontro, e perché una tesi che
+        regge solo finché nessuno controlla non è una tesi.
+      </p>
+      <p>
+        Il rovescio è che questo rafforza uno dei riposizionamenti della sezione 8: se il
+        processo non è difendibile, il servizio di qualificazione lo è di più.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="6" title="La leva della finanza agevolata cambia il costo, non il verdetto">
     <p>
       Due strumenti sono realisticamente accessibili, e non sono equivalenti.
     </p>
@@ -300,7 +350,7 @@ const pivots = [
     </p>
   </Section>
 
-  <Section n="6" title="Incentivi per chi investe, subordinati alla stessa condizione">
+  <Section n="7" title="Incentivi per chi investe, subordinati alla stessa condizione">
     <p>
       L’ordinamento italiano incentiva l’investimento nel capitale delle startup innovative. Le
       agevolazioni sono reali e significative, e sono <strong>tutte condizionate all’iscrizione
@@ -321,7 +371,7 @@ const pivots = [
     </p>
   </Section>
 
-  <Section n="7" title="Se la tesi principale fallisse">
+  <Section n="8" title="Se la tesi principale fallisse">
     <p>
       Quattro riposizionamenti abilitati dagli asset già costruiti, in ordine di prontezza. Non
       sono un piano B retorico: sono la ragione per cui il capitale investito nella misura non è a
@@ -340,7 +390,7 @@ const pivots = [
     </p>
   </Section>
 
-  <Section n="8" title="La traiettoria, dichiarata come ipotesi">
+  <Section n="9" title="La traiettoria, dichiarata come ipotesi">
     <p>
       Quattro fasi. La prima è il presente; le altre tre sono una direzione ragionata e
       sequenziale, non una tappa già raggiunta, e sono etichettate come tali.
@@ -358,7 +408,7 @@ const pivots = [
     </ol>
   </Section>
 
-  <Section n="9" title="Che cosa serve sapere prima di parlarci">
+  <Section n="10" title="Che cosa serve sapere prima di parlarci">
     <p class="measure">
       Ci sono tre cose che non possiamo dirvi e che scoprireste comunque, quindi le diciamo qui.
       Non esiste alcuna evidenza clinica sul materiale. Il mercato dove il nostro differenziale

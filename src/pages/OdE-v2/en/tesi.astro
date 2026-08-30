@@ -69,11 +69,11 @@ const cannot = [
     </p>
   </header>
 
-  <Section n="1" title="The principle: bound or free is not the same molecule">
+  <Section n="1" title="The principle is about one molecule, not a class">
     <p>
-      A fatty acid locked into a triglyceride behaves like a brick in a wall. The same fatty
-      acid unbound behaves like a loose brick: it slides between the ordered layers of the
-      skin's own barrier and disturbs them.
+      A fatty acid locked into a triglyceride behaves like a brick in a wall.
+      <strong>Oleic acid</strong> unbound behaves like a loose brick: it slides between the
+      ordered layers of the skin's own barrier and disturbs them.
     </p>
     <p>
       This has been measured directly. In a study on the human forearm, applying the substances
@@ -82,9 +82,32 @@ const cannot = [
       24 hours, while the corresponding triglyceride at 100% produced no statistically detectable
       change.
       <DataTag kind="fonte" label="Mack Correa MC, Mao G, Saad P, Flach CR, Mendelsohn R, Walters RM. Molecular interactions of plant oil components with stratum corneum lipids. Exp Dermatol 2014;23(1):39-44. DOI 10.1111/exd.12296. Human volar forearm in vivo, neat substances, no propylene glycol." />
-      The mechanism is well established and converges from at least three independent lines.
     </p>
     <p class="ev-line"><Status kind="dimostrato" lang={lang} /> <Finding kind="pro" lang={lang} /></p>
+
+    <Callout tone="warn" title="A correction that concerns us, and that runs opposite to what we expected">
+      <p>
+        Until the most recent revision of our research this principle was stated in general
+        form: "a free fatty acid disturbs the barrier, the esterified form does not."
+        <strong>It was wrong through lack of precision.</strong> The study tests oleic acid
+        against its triglyceride: the result concerns oleic acid, not the class of free fatty
+        acids, and it does not extend to the saturated ones.
+      </p>
+      <p>
+        The distinction matters because the two dominant saturated fatty acids in tallow,
+        palmitic and stearic, together make up roughly 46% of the profile, and for them the
+        evidence points the other way: applied topically to human skin ex vivo they increase
+        lipid production and transport in the stratum corneum.
+        <DataTag kind="fonte" label="Nip J et al., Unilever R&amp;D. International Journal of Cosmetic Science 2024. DOI 10.1111/ics.12961. Human skin ex vivo, tape-stripped, isolated fatty acids rather than tallow. Grade B1, evidence translated from damaged skin to the maintenance of healthy skin; authors with a declarable commercial interest." />
+      </p>
+      <p>
+        <strong>What this does NOT license us to say.</strong> Not that tallow strengthens or
+        repairs the barrier: the study is on damaged skin, ex vivo, with isolated fatty acids
+        rather than with tallow, and its authors have a commercial interest. The correct use is
+        narrow and singular: <strong>it removes the assumption that everything released by
+        hydrolysis is harmful</strong>. That is the premise of section 3, and nothing more.
+      </p>
+    </Callout>
 
     <p>
       In tallow the fatty acid is <strong>bound</strong>. The question that matters, therefore,
@@ -152,6 +175,22 @@ const cannot = [
       antioxidant activity between methods are <strong>not</strong> statistically significant.
       The rendering method affects acidity and peroxides, not antioxidant activity.
     </p>
+    <Callout tone="honest" title="And a tension with no single answer">
+      <p>
+        The same work shows that the softer fraction of tallow has more unsaturates and higher
+        measured antioxidant activity. But more unsaturates also means
+        <strong>greater susceptibility to oxidation over time</strong> and a
+        <strong>lower solid fat content at skin temperature</strong>, that is, less of the
+        physical class we discuss in section 4.
+      </p>
+      <p>
+        The fraction that optimises in vitro antioxidant activity is not the one that optimises
+        shelf stability, and not the one that optimises persistence on skin.
+        <strong>Fractionation has no single optimum: it has a trade-off curve, and that curve
+        has to be mapped rather than asserted.</strong> It is one of the experiments listed in
+        <a href={r.evidenza}>Open evidence</a>, and among the most expensive.
+      </p>
+    </Callout>
     <p class="ev-line"><Status kind="dimostrato" lang={lang} /> <Finding kind="pro" lang={lang} /></p>
 
     <Callout tone="warn" title="A detail that reverses how the existing evidence reads">
@@ -200,6 +239,21 @@ const cannot = [
     </p>
     <p class="ev-line"><Status kind="dimostrato" lang={lang} /> <Finding kind="contro" lang={lang} /></p>
     <p class="measure">
+      The mechanism is certain. <strong>The direction of its effect is not</strong>, and this is
+      a recent revision of our research that has to be stated in full, because it changes the
+      nature of the problem. What lipases release is not one substance: it is a
+      <strong>mixture</strong>, roughly 38% oleic acid, which section 1 identifies as
+      unfavourable, and roughly 46% palmitic and stearic, for which the available evidence runs
+      the other way. <strong>The net effect has never been measured.</strong>
+    </p>
+    <p class="measure">
+      This is not good news in disguise: it is the move from a conflict between sources to a
+      defined experimental gap, which is a better position only because it is solvable. The
+      operational consequence is precise, and it is in
+      <a href={r.evidenza}>Open evidence</a>: the experiment must not measure how fast the
+      material hydrolyses, it must measure <strong>what</strong> it releases.
+    </p>
+    <p class="measure">
       The chain holds in every documentable link: skin lipases are characterised, the
       triglycerides of the fatty acids present in tallow are their substrates, and an intact
       triglyceride offered to a skin bacterium is cleaved with release of the corresponding fatty
@@ -219,7 +273,7 @@ const cannot = [
     <div class="grid">
       <StatCard value="about 25%" caption="Hydrolysed fraction on the surface of intact skin, in the same study that measures roughly 90% inside the comedo." kind="fonte" source="Nicolaides N, Wells GC, et al. Lipid composition of comedones compared with that of human skin surface. J Invest Dermatol 1970;54:487-495. PMID 5454099." />
       <StatCard value="at most half" caption="Share of the surface free fatty acid load attributable to bacteria: eliminating 99% of them reduces it by only 50%." kind="fonte" source="Marples RR, Downing DT, Kligman AM. Control of free fatty acids in human surface lipids by Corynebacterium acnes. J Invest Dermatol 1971;56:127-131. PMID 4997367." />
-      <StatCard value="not measured" caption="The kinetics and extent of in situ hydrolysis on OdE material. No study has measured the time course of free fatty acid appearance after applying an intact triglyceride to human skin." kind="bench" />
+      <StatCard value="not measured" caption="The composition of the mixture released from OdE material, which is the datum that decides the sign of the effect. No study has measured which fatty acids appear, and in what proportion, after applying an intact triglyceride to human skin." kind="bench" />
     </div>
     <p class="note">
       <Status kind="costruzione" lang={lang} />
@@ -260,13 +314,16 @@ const cannot = [
         comparators.
       </p>
       <p>
-        Two qualifications define its boundaries, and both are needed so as not to overstate it.
-        First: <strong>vegetable oils share the vulnerability</strong>, so the asymmetry does not
-        exist on the ground of "tallow versus vegetable oils"; it exists only against the
-        hydrocarbon and silicone block. Second:
+        Three qualifications define its boundaries, and all are needed so as neither to overstate
+        nor to understate it. First: <strong>vegetable oils share the vulnerability</strong>, so
+        the asymmetry does not exist on the ground of "tallow versus vegetable oils"; it exists
+        only against the hydrocarbon and silicone block. Second:
         <strong>the comparators' immunity is not a benefit, it is the absence of a
         mechanism</strong>. Petrolatum and dimethicone do not generate free fatty acids, but they
-        do not generate anything: they are inert.
+        do not generate anything: they are inert. Third: <strong>the asymmetry concerns whether
+        the mechanism exists, not the sign of its outcome</strong>. That we are exposed and they
+        are not is a fact; that the exposure is harmful is precisely what has not been
+        measured.
       </p>
     </Callout>
 
@@ -278,8 +335,11 @@ const cannot = [
         therefore like every vegetable oil it is compared with, it is a substrate for microbial
         skin lipases: a share of it hydrolyses in situ. The available data on intact skin
         indicate that this process is markedly less extensive than what happens in an enclosed
-        follicular environment, but its kinetics and extent on our material have not yet been
-        measured, and we are designing the experiment that would measure them. Compared with
+        follicular environment. What is released is a mixture, and for its two main components
+        the evidence runs in opposite directions: unfavourable for oleic acid, favourable for
+        palmitic and stearic. <strong>The net effect on our material has never been measured, and
+        we do not claim to know it.</strong> We are designing the experiment that would measure
+        its composition, not only its rate. Compared with
         hydrocarbon and silicone comparators, which have no ester bonds and are therefore inert to
         this mechanism, our material is exposed and theirs is not: our thesis is not that we are
         as inert as they are, but that what we release is physiologically compatible and
@@ -295,10 +355,17 @@ const cannot = [
 
   <Section n="4" title="Physical state: the one genuinely favourable element, with its limits">
     <p>
-      At skin surface temperature, around 32 °C, tallow is semisolid, with a solid fat content of
-      roughly 21%. It does not belong to the physical class of liquid oils but to that of
-      petrolatum, whose melting range begins above skin temperature.
-      <DataTag kind="stima" label="Solid fat content at 32 °C obtained by linear interpolation between 24.0% at 30 °C and 17.3% at 35 °C, pNMR measurements per AOCS Cd 16b-93. [DERIVED CALCULATION], not a direct measurement. Research track 4 v2, section 2.1." />
+      At skin surface temperature, around 32 °C, tallow is semisolid, with an estimated solid fat
+      content of roughly 21%. It does not belong to the physical class of liquid oils but to that
+      of petrolatum, whose melting range begins above skin temperature.
+      <DataTag kind="stima" label="Solid fat content at 32 °C obtained by linear interpolation between 24.0% at 30 °C and 17.3% at 35 °C, pNMR measurements per AOCS Cd 16b-93. [DERIVED CALCULATION], not a direct measurement. The estimate is plausible but at the high end of the expected range, which is 15-25% at 32 °C: no publication reports an explicit numerical value for native tallow at that temperature, only curves in figures. Research track 4 v2 section 2.1, qualified by the multilingual library." />
+    </p>
+    <p class="measure">
+      On this axis there is also a measured and citable datum rather than an estimate: tallow is
+      <strong>fully melted only at 46 °C</strong>, whereas cocoa butter is already liquid between
+      35 and 37 °C. At skin temperature the order is palm stearin, then beef tallow, then cocoa
+      butter.
+      <DataTag kind="fonte" label="Osborn HT, Akoh CC. Journal of Food Science 2002. DOI 10.1111/j.1365-2621.2002.tb08762.x. Comparison of melting profiles. It is the primary datum anchoring the thermal positioning of the material." />
     </p>
     <p class="ev-line"><Status kind="costruzione" lang={lang} /> <Finding kind="pro" lang={lang} /></p>
     <p class="measure">
@@ -332,6 +399,13 @@ const cannot = [
           slowing is not preventing.
         </li>
       </ul>
+      <p>
+        This is why the threshold is written <strong>now, before the measurement</strong>: if the
+        solid fat content measured at 32 °C came out below 15%, the argument about a physical
+        class akin to petrolatum falls, and the material has to be repositioned among the
+        semi-liquid oils. The measurement costs a few hundred euros and is the first analytical
+        spend of the plan, not the last.
+      </p>
     </Callout>
     <p class="note">
       That the semisolid state slows hydrolysis <strong>is a hypothesis</strong>, built by analogy

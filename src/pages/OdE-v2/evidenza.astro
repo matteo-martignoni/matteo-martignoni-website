@@ -21,8 +21,8 @@ const gaps = [
     q: 'Bacini: PubMed, ScienceDirect, Karger. Query dichiarate sulla relazione dose-risposta fra concentrazione di acido grasso libero e disruzione dello strato corneo.',
   },
   {
-    t: 'Nessuna cinetica di comparsa degli acidi grassi liberi dopo applicazione topica',
-    d: 'Nessuno studio applica un trigliceride intatto sulla cute umana e misura la curva temporale di comparsa degli acidi grassi liberi. L’evidenza umana esistente è inversa, cioè per deplezione batterica, e la prova diretta di rilascio è in vitro.',
+    t: 'Nessuna cinetica, e soprattutto nessuna composizione, del rilascio dopo applicazione topica',
+    d: 'Nessuno studio applica un trigliceride intatto sulla cute umana e misura la curva temporale di comparsa degli acidi grassi liberi, e nessuno ne misura la composizione. La seconda parte è quella che decide il segno dell’effetto, perché la miscela attesa contiene sia acidi grassi con evidenza sfavorevole sia acidi grassi con evidenza favorevole. L’evidenza umana esistente è inversa, cioè per deplezione batterica, e la prova diretta di rilascio è in vitro.',
     q: 'Bacini: PubMed, Google Scholar. È la lacuna più seria della libreria, e quella che il primo esperimento chiude.',
   },
   {
@@ -49,7 +49,10 @@ const gaps = [
 
 // Il programma sperimentale. Domanda, costo, durata, categoria. NON il protocollo.
 const experiments = [
-  { n: '1', t: 'In vitro su stato fisico e idrolisi lipasica', q: 'La classe semisolida rallenta l’idrolisi microbica, e quanto rapidamente si idrolizza il nostro materiale?', cost: '8.000-18.000 €', dur: '2-4 mesi', cat: 'Asset e conoscenza', crit: true },
+  { n: '0a', t: 'Misura del contenuto di grasso solido', q: 'Qual è il valore reale a temperatura cutanea, contro la stima del 21% che usiamo oggi?', cost: '500-1.500 €', dur: '2-4 settimane', cat: 'Asset e conoscenza', crit: false },
+  { n: '0b', t: 'Profilo acidi grassi con quantificazione dei polinsaturi', q: 'Il nostro materiale mostra il differenziale compositivo che la dieta dovrebbe produrre?', cost: 'circa 190 € per campione', dur: '1-2 settimane', cat: 'Asset commerciale', crit: true },
+  { n: '0c', t: 'Panel ossidativo e ossisteroli', q: 'Il materiale regge il target di ultrapurezza che ci siamo dati?', cost: '800-2.000 €', dur: '3-5 settimane', cat: 'Asset e licenza', crit: false },
+  { n: '1', t: 'In vitro su idrolisi lipasica, con composizione del rilascio', q: 'La classe semisolida rallenta l’idrolisi, e soprattutto CHE COSA viene rilasciato?', cost: '8.000-18.000 €', dur: '2-4 mesi', cat: 'Asset e conoscenza', crit: true },
   { n: '2', t: 'Caratterizzazione analitica per lotto', q: 'Qual è il profilo, l’acidità e lo stato ossidativo del materiale reale?', cost: '500-1.000 € per lotto', dur: 'continuo', cat: 'Licenza e asset', crit: false },
   { n: '3', t: 'Quantificazione dell’epitopo alpha-gal', q: 'Quanto ne contiene un sego ultrapurificato?', cost: '2.000-5.000 €', dur: '1-2 mesi', cat: 'Asset, due diligence', crit: false },
   { n: '4', t: 'Batteria di saggi di sensibilizzazione, oppure read-across', q: 'Il materiale è sensibilizzante?', cost: '8.000-15.000 €', dur: '2-3 mesi', cat: 'Licenza a operare', crit: false },
@@ -63,6 +66,24 @@ const experiments = [
 // I gate, con criterio numerico scritto prima dei dati.
 const gates = [
   {
+    f: 'Contenuto di grasso solido',
+    go: 'Valore misurato a 32 °C pari o superiore al 15%.',
+    stop: 'Nessuna soglia di arresto: la misura non ferma il progetto, ne sposta il posizionamento.',
+    turn: 'Sotto il 15%: cade l’argomento della classe fisica affine al petrolato, e il materiale va riposizionato nella fascia degli oli semiliquidi.',
+  },
+  {
+    f: 'Profilo compositivo',
+    go: 'Polinsaturi del materiale pari o inferiori al 2,5%.',
+    stop: 'Nessuna soglia di arresto.',
+    turn: 'Sopra il 2,5%: il differenziale legato alla dieta non è dimostrato sul materiale reale. Si rimuove l’argomento dalla comunicazione e si rivede la specifica di approvvigionamento.',
+  },
+  {
+    f: 'Ultrapurezza',
+    go: 'Ossisteroli totali sotto 1 μg/g, e indice di ossidazione totale in linea con gli esteri cosmetici premium.',
+    stop: 'Ossisteroli sopra 5 μg/g: il claim di ultrapurezza non regge e va rivisto il processo di rendering.',
+    turn: 'Fra 1 e 5 μg/g: claim ridimensionato, si ottimizza il rendering prima di comunicare.',
+  },
+  {
     f: 'Verifiche a costo zero, novanta giorni',
     go: 'Almeno un formulatore europeo richiede un campione; oppure almeno due richiedono la scheda tecnica e almeno uno di essi accetta una seconda conversazione tecnica.',
     stop: 'Zero richieste di campione e meno di due richieste di scheda tecnica dopo otto-dieci contatti qualificati.',
@@ -73,6 +94,12 @@ const gates = [
     go: 'La velocità iniziale di rilascio di acidi grassi liberi differisce fra i livelli estremi di stato fisico oltre il 20%.',
     stop: 'La differenza è sotto il 20%, oppure si annulla entro due ore. In quel caso il profilo di fusione NON entra nel posizionamento come fattore protettivo.',
     turn: 'La cinetica risulta rapida ed estesa: il claim di sicurezza va riformulato senza attenuanti.',
+  },
+  {
+    f: 'Composizione del rilascio',
+    go: 'La frazione di acido oleico fra gli acidi grassi liberati a quattro ore è pari o inferiore alla sua quota nel trigliceride di partenza, cioè non c’è arricchimento selettivo.',
+    stop: 'La frazione di oleico rilasciato supera del 50% la sua quota di partenza: idrolisi selettiva sfavorevole.',
+    turn: 'Arricchimento intermedio: si quantifica e si dichiara, invece di occultarlo.',
   },
   {
     f: 'Braccio di sicurezza barriera',
@@ -94,6 +121,8 @@ const failures = [
   { c: 'L’idrolisi in situ risulta rapida ed estesa', k: 'Il controllo del numero di acidità perderebbe valore comunicabile. Resterebbero il dato in vitro come primo dato proprietario e la piattaforma di qualificazione.' },
   { c: 'Nessun formulatore europeo mostra interesse dopo otto-dieci contatti qualificati', k: 'Il mercato accessibile sarebbe confermato troppo piccolo. Resterebbero l’opzione sul perimetro esteso e il passaggio a servizio analitico.' },
   { c: 'L’appiccicosità risulta non correggibile per frazionamento', k: 'Il sego resterebbe penalizzato sull’endpoint primario emolliente. Resterebbe la collocazione come veicolo lipidico dentro sistemi formulati da terzi.' },
+  { c: 'Il contenuto di grasso solido misurato a 32 °C risulta sotto il 15%', k: 'Cadrebbe l’argomento della classe fisica affine al petrolato. Resterebbero il profilo compositivo, la tracciabilità e l’asse emolliente puro.' },
+  { c: 'Un concorrente pubblica per primo uno studio controllato sul sego lasciato sulla pelle', k: 'Cadrebbe la narrativa di chi arriva per primo. Resterebbe la differenziazione di qualità, cioè tracciabilità, ultrapurezza misurata e dataset di filiera: una narrativa più debole, non nulla.' },
 ];
 
 // Forme di collaborazione, con il compromesso dichiarato.
@@ -161,7 +190,7 @@ const collab = [
 
   <Section n="2" title="Il programma, e quanto costa">
     <p>
-      Nove voci. Le tre categorie non sono decorative: confondere una
+      Dodici voci, di cui tre nuove e in testa. Le tre categorie non sono decorative: confondere una
       <strong>licenza a operare</strong>, che va fatta comunque e non produce vantaggio, con un
       <strong>asset commerciale</strong>, che produce un dato che nessuno possiede, porta a
       spendere su adempimenti credendo di costruire posizionamento.
@@ -190,31 +219,60 @@ const collab = [
     <p class="note">
       <DataTag kind="stima" label="Ordini di grandezza, non preventivi. I laboratori di ricerca a contratto tossicologici e clinici non pubblicano listini e operano su preventivo. Le sole cifre verificate su listino pubblico sono quelle analitiche di routine. Consolidamento della ricerca OdE, parte C.1 e nota metodologica." />
       Somma delle voci discrete: <strong>115.000-240.000 euro</strong> per il programma completo,
-      prima di qualsiasi spesa di produzione, formulazione, personale o mercato. È la cifra che
-      governa tutto il piano, e il suo peso sul capitale è dichiarato in
-      <a href={r.investitori}>Investitori</a>.
+      prima di qualsiasi spesa di produzione, formulazione, personale o mercato. Le tre voci
+      analitiche nuove pesano insieme fra 1.500 e 3.700 euro e rientrano nell’arrotondamento
+      dell’intervallo. È la cifra che governa tutto il piano, e il suo peso sul capitale è
+      dichiarato in <a href={r.investitori}>Investitori</a>.
     </p>
 
-    <Callout tone="note" title="Perché il primo nodo è quello, e non lo studio clinico">
+    <Callout tone="note" title="Perché si comincia da tre misure da poche centinaia di euro">
       <p>
-        L’in vitro su stato fisico e idrolisi è il primo nodo del cammino critico per quattro
-        ragioni che si sommano: costa un ordine di grandezza meno dello studio clinico,
-        <strong>definisce i tempi di campionamento</strong> di tutto ciò che viene dopo, non
-        richiede soggetti umani né approvazione etica, e
-        <strong>produce valore in entrambi gli esiti</strong>.
+        Le prime tre voci costano insieme <strong>meno di 3.000 euro</strong>, cioè meno dell’1%
+        del capitale e meno del 5% dell’esperimento più caro. Convertono tre stime che oggi
+        usiamo su questo sito in tre dati primari, e attraversano tre gate a soglia numerica
+        secca. Non esiste altro passo del piano con un rapporto fra informazione e costo
+        paragonabile, e per questo stanno prima di tutto il resto.
       </p>
       <p>
-        Se l’ipotesi regge, otteniamo un parametro protettivo certificabile e un dato che nessuno
-        possiede. Se non regge, chiudiamo comunque la lacuna cinetica, che è la più seria della
-        libreria, e sappiamo che cosa non dobbiamo affermare. Invertire l’ordine significherebbe
-        progettare i tempi di campionamento di uno studio clinico al buio.
+        <strong>Il cammino critico parte dal profilo acidi grassi</strong>, non dall’in vitro.
+        La ragione è logica prima che economica: per interpretare quali acidi grassi vengono
+        rilasciati durante l’idrolisi serve conoscere il profilo di partenza del materiale
+        specifico. Centonovanta euro prevengono un’ambiguità interpretativa su un esperimento da
+        ottomila.
+      </p>
+      <p>
+        L’in vitro resta il secondo nodo e la spesa che decide, per quattro ragioni che si
+        sommano: costa un ordine di grandezza meno dello studio clinico,
+        <strong>definisce i tempi di campionamento</strong> di tutto ciò che viene dopo, non
+        richiede soggetti umani né approvazione etica, e
+        <strong>produce valore in entrambi gli esiti</strong>. Se l’ipotesi regge, otteniamo un
+        dato che nessuno possiede. Se non regge, chiudiamo comunque la lacuna più seria della
+        libreria e sappiamo che cosa non dobbiamo affermare.
+      </p>
+    </Callout>
+
+    <Callout tone="warn" title="Una modifica di protocollo che cambia la domanda">
+      <p>
+        Nella versione precedente del nostro piano, l’in vitro misurava
+        <strong>quanto in fretta</strong> il materiale si idrolizza. Ora deve misurare anche
+        <strong>che cosa</strong> rilascia, cioè il profilo degli acidi grassi liberati nel
+        tempo. Senza questa modifica l’esperimento risponde a una domanda mal posta, perché
+        tratta gli acidi grassi liberi come una classe omogenea che due fonti indipendenti
+        mostrano non essere.
+      </p>
+      <p>
+        L’aggiunta è un’analisi gascromatografica sui campioni già prelevati e incide sul costo
+        in modo marginale. Trasforma però un esperimento difensivo, che serviva a sapere quanto
+        siamo esposti, in un esperimento potenzialmente dimostrativo. Il perché è nella
+        <a href={r.tesi}>Tesi</a>, sezione 3.
       </p>
     </Callout>
   </Section>
 
   <Section n="3" title="La sequenza, ordinata per costo dell’informazione">
     <p>
-      Il criterio è esplicito: viene prima ciò che costa meno e riduce più incertezza. Un
+      Tredici passi. Il criterio è esplicito: viene prima ciò che costa meno e riduce più
+      incertezza. Un
       esperimento vale quanto la decisione che consente di prendere, moltiplicata per la
       probabilità che ne cambi l’esito. Un esperimento il cui risultato non cambierebbe alcuna
       decisione non va fatto, per quanto sia scientificamente interessante.
@@ -223,9 +281,12 @@ const collab = [
       <li><span class="s-c">circa 0 €</span><span class="s-t">Domanda di capitolato a interlocutori che hanno visto i capitolati dall’interno: quando un grande gruppo qualifica un fornitore lipidico, che cosa chiede sull’origine?</span></li>
       <li><span class="s-c">circa 0 €</span><span class="s-t">Verifica presso trasformatori europei e saponifici se l’onere documentale sugli input di palma sia un problema reale o un adempimento di routine.</span></li>
       <li><span class="s-c">circa 0 €</span><span class="s-t">Preventivi ai laboratori, per sostituire le stime con costi reali.</span></li>
-      <li><span class="s-c">1.000-3.000 €</span><span class="s-t">Pacchetto documentale per una prima conversazione esplorativa credibile, e otto-dieci contatti qualificati con formulatori europei. <strong>È il gate che decide.</strong></span></li>
+      <li><span class="s-c">circa 190 €</span><span class="s-t">Profilo acidi grassi con quantificazione dei polinsaturi. Dice se il materiale mostra il differenziale compositivo che la dieta dovrebbe produrre.</span></li>
+      <li><span class="s-c">500-1.500 €</span><span class="s-t">Misura del contenuto di grasso solido a temperatura cutanea, che oggi è una stima. <strong>Attraversa il primo gate a soglia numerica.</strong></span></li>
+      <li><span class="s-c">800-2.000 €</span><span class="s-t">Panel ossidativo e ossisteroli, che verifica il target di ultrapurezza.</span></li>
+      <li><span class="s-c">1.000-3.000 €</span><span class="s-t">Pacchetto documentale per una prima conversazione esplorativa credibile, ora comprensivo dei dati analitici primari, e otto-dieci contatti qualificati con formulatori europei. <strong>È il gate che decide.</strong></span></li>
       <li><span class="s-c">2.000-4.000 €</span><span class="s-t">Caratterizzazione analitica dei primi lotti reali.</span></li>
-      <li><span class="s-c">8.000-18.000 €</span><span class="s-t">In vitro su stato fisico e idrolisi lipasica. Primo dato proprietario.</span></li>
+      <li><span class="s-c">8.000-18.000 €</span><span class="s-t">In vitro su idrolisi lipasica con composizione del rilascio. Primo dato proprietario.</span></li>
       <li><span class="s-c">2.000-5.000 €</span><span class="s-t">Quantificazione dell’epitopo alpha-gal.</span></li>
       <li><span class="s-c">8.000-15.000 €</span><span class="s-t">Dossier di sensibilizzazione, oppure read-across giustificato.</span></li>
       <li><span class="s-c">15.000-30.000 €</span><span class="s-t">Braccio di sicurezza barriera.</span></li>

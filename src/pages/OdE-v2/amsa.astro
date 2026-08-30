@@ -46,10 +46,10 @@ const passport = [
       { label: 'Stimato', kind: 'stima' as const, fields: 'Oxidative Risk Score, come metrica di qualità del materiale' },
     ],
   },
-  { n: '06', title: 'Comportamento fisico', fields: 'Curva di contenuto di grasso solido, punto di scorrimento, insaponificabile, umidità' },
+  { n: '06', title: 'Comportamento fisico', fields: 'Curva di contenuto di grasso solido misurata a temperatura cutanea, punto di scorrimento, insaponificabile, umidità' },
   { n: '07', title: 'Parametri di processo', fields: 'Tempo fra macellazione e rendering, temperatura massima, tempo sopra 65 °C, tempo sopra 120 °C, antiossidanti e dosaggio, condizioni di stoccaggio' },
   { n: '08', title: 'Conformità e dichiarazioni', fields: 'Categoria 3 ai sensi del regolamento sui sottoprodotti animali, dichiarazione BSE e TSE, allergeni, dichiarazione di non derivazione da olio di palma, metalli pesanti' },
-  { n: '09', title: 'Che cosa NON è stato testato', fields: 'Comedogenicità: non testata. Esito cutaneo strumentale: non testato. Cinetica di idrolisi in situ: non misurata. Contenuto di alpha-gal: non quantificato' },
+  { n: '09', title: 'Che cosa NON è stato testato', fields: 'Comedogenicità: non testata. Esito cutaneo strumentale: non testato. Cinetica e composizione del rilascio in situ: non misurate. Contenuto di alpha-gal: non quantificato' },
 ];
 ---
 <OdeV2Layout title={m.title} description={m.description} lang={lang} active="amsa">
@@ -185,6 +185,14 @@ const passport = [
         dichiara il metodo e i parametri di processo associati, e lascia il giudizio al
         formulatore. Una soglia inventata sarebbe peggio di nessuna soglia.
       </p>
+      <p>
+        Quello che invece ci siamo dati è un <strong>obiettivo interno, dichiarato come
+        tale</strong>: ossisteroli totali sotto 1 μg/g. Non è una norma e non lo diventa perché
+        lo scriviamo noi: è la soglia con cui giudicheremo il nostro stesso processo di
+        rendering, scritta prima della misura. Sopra i 5 μg/g il claim di ultrapurezza non
+        reggerebbe e sarebbe il processo a dover cambiare, non il claim ad ammorbidirsi.
+        <DataTag kind="stima" label="Target interno derivato dal riscontro che gli ossisteroli si formano in quantità trascurabili nel sego processato con raffinazione controllata, con limite di quantificazione dei metodi disponibili intorno a 0,1 μg/g. Consolidamento della ricerca OdE v4.0, tesi 9 e gate di ultrapurezza. Nessuna soglia normativa esiste per questo parametro in alcun settore." />
+      </p>
     </Callout>
   </Section>
 
@@ -245,6 +253,20 @@ const passport = [
       <strong>da costruire</strong>, non uno già costruito, e il suo anello causale è oggi
       indimostrato: vedi la catena virtuosa nell’<a href={r.audit}>Audit</a>.
     </p>
+    <Callout tone="warn" title="E non è nemmeno di processo">
+      <p>
+        Va detto qui, perché è il posto dove un lettore tecnico se lo chiederebbe: il
+        <strong>frazionamento e la raffinazione del sego sono arte nota e in gran parte pubblico
+        dominio</strong>. Chiunque può frazionare questo materiale, e i brevetti scaduti
+        descrivono già frazioni semisolide adatte a uso cosmetico.
+      </p>
+      <p>
+        Per noi ha un lato buono, cioè libertà di operare senza costi di licenza, e un lato che
+        pesa di più: <strong>il come si produce non è difendibile</strong>. Restano il dato
+        proprietario, il dataset di filiera e questo documento come infrastruttura. Il quadro
+        completo è in <a href={r.investitori}>Investitori</a>.
+      </p>
+    </Callout>
   </Section>
 
   <ReadNext

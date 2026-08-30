@@ -36,7 +36,7 @@ const errors = [
     t: 'Un grasso vegetale letto come animale',
     what: 'Gli esteri di grasso Engkabang, cioè il grasso di Shorea stenoptera, sono descritti come derivati principalmente dal sego, e i loro dati di idratazione sono riportati come prova del beneficio del sego.',
     why: 'L’Engkabang è un grasso vegetale. La conseguenza è netta: l’unico dato quantitativo di idratazione presente in tutta la rassegna, la progressione dal 4,7% al 47,2% fra i 30 e i 180 minuti, non riguarda il sego e non è un benchmark per il sego. Questo dato circola.',
-    src: 'Abd Rahman et al. 2011, Bioresour Technol, DOI 10.1016/j.biortech.2010.10.034. Verifica su testo integrale, Traccia 5 v3.0 sez. 6.9.1.',
+    src: 'Abd Rahman et al. 2011, Bioresour Technol 102(3):2168-76, DOI 10.1016/j.biortech.2010.10.034. La catena citazionale è stata risalita fino alla fonte vegetale reale, Abd Gani et al. 2010, PubMed 20530909. Verifica su testo integrale, Traccia 5 v3.0 sez. 6.9.1 e consolidamento v4.0 parte A.4.',
   },
   {
     t: 'Un tensioattivo per erbicidi letto come sego',
@@ -157,8 +157,26 @@ const bar = [
       In polacco è emerso solo materiale commerciale; in russo una tradizione aneddotica; in
       cinese fonti cliniche che sconsigliano il lardo sulle ustioni per rischio infettivo; in
       giapponese il grasso compare solo come base oleosa, quindi come veicolo e non come
-      principio.
+      principio. La lacuna è stata <strong>riconfermata al 28 agosto 2026</strong> da una
+      revisione successiva della libreria.
     </p>
+
+    <Callout tone="honest" title="E i bacini che NON abbiamo interrogato">
+      <p>
+        Un sito che pubblica il proprio metodo deve pubblicare anche i propri buchi, altrimenti
+        la lacuna diventa un’affermazione di comodo. Questi sono i bacini rimasti fuori:
+        <strong>CNKI, il testo integrale di J-STAGE, KoreaScience e KISS, DIALNET e SciELO</strong>.
+        Scopus e Web of Science non sono stati accessibili in forma diretta e sono stati
+        interrogati solo per aggregatori.
+      </p>
+      <p>
+        Che cosa questo significa, detto con precisione: la lacuna è un esito negativo
+        <strong>nei bacini interrogati</strong>, che sono dodici e coprono sei lingue. Non è la
+        prova che in nessun archivio del mondo esista uno studio. Chi volesse smentirci sa
+        esattamente dove cercare, ed è giusto così.
+        <DataTag kind="fonte" label="Copertura documentale mancante dichiarata come verifica ancora aperta nel consolidamento della ricerca OdE v4.0, punto 13. Le curve SFC di due lavori cinesi restano da digitalizzare per i valori a temperatura cutanea." />
+      </p>
+    </Callout>
 
     <h3 class="sub-h">Che cosa esiste davvero, ripulito</h3>
     <p class="measure">
@@ -249,6 +267,14 @@ const bar = [
       con esito cutaneo è di <strong>cinque studi su diciannove dichiarati</strong>.
       <DataTag kind="fonte" label="Riclassificazione voce per voce dei 19 studi inclusi, Traccia 5 v3.0, sez. 6.9 e 6.9.4. [CALCOLO DERIVATO]" />
     </p>
+    <p class="measure">
+      Di questa pagina fanno parte <strong>due errori ricostruiti fino alla fonte</strong>, non
+      uno: l’attribuzione al sego di dati misurati su un grasso vegetale, con la catena
+      citazionale risalita fino al lavoro originale, e l’attribuzione al sego di risultati
+      ottenuti su un derivato amminico usato negli erbicidi. Sono la parte del nostro lavoro
+      che un formulatore può verificare per primo e a costo zero, ed è la ragione per cui la
+      teniamo in vista invece che in nota.
+    </p>
 
     <Callout tone="warn" title="La conclusione della rassegna che è sfavorevole a noi">
       <p>
@@ -286,25 +312,24 @@ const bar = [
     <h3 class="sub-h">Il contesto in cui queste claim circolano</h3>
     <p class="measure">
       Un’analisi trasversale pubblicata su rivista peer-reviewed ha esaminato 200 contenuti
-      social, cinquanta ciascuno da quattro piattaforme.
+      social distribuiti su più piattaforme.
     </p>
     <div class="tbl-wrap">
       <table class="tbl">
         <thead><tr><th scope="col">Misura</th><th scope="col">Valore</th></tr></thead>
         <tbody>
           <tr><th scope="row">Contenuti che raccomandano il sego</th><td class="num">82%</td></tr>
-          <tr><th scope="row">Contenuti con bias finanziario dichiarabile</th><td class="num">61%</td></tr>
-          <tr><th scope="row">Tasso di raccomandazione fra i profili di marchi di bellezza e skincare</th><td class="num">96%</td></tr>
           <tr><th scope="row">Tasso di raccomandazione fra i dermatologi</th><td class="num">7%</td></tr>
-          <tr><th scope="row">Contenuti che citano una fonte scientifica</th><td class="num">16% dei video su una piattaforma, 0% su due altre</td></tr>
+          <tr><th scope="row">Contenuti con interesse commerciale, su una prima piattaforma</th><td class="num">92%</td></tr>
+          <tr><th scope="row">Contenuti con interesse commerciale, su una seconda piattaforma</th><td class="num">74%</td></tr>
+          <tr><th scope="row">Contenuti che citano una fonte scientifica</th><td class="num">16% dei video su una piattaforma, 0% su altre</td></tr>
         </tbody>
       </table>
     </div>
     <p class="note">
-      <DataTag kind="fonte" label="Almatroud L, Choi S, Libson K, Ashack K. Beef Tallow-Based Skincare Claims in Social Media. J Cosmet Dermatol 2025;24(12):e70544. DOI 10.1111/jocd.70544. Ripresa in Traccia 5 v3.0 sez. 6.1 e Traccia 7 v2 sez. 7. Nota di lettura: le due sintesi interne formulano il 96% e il 7% in modo diverso, come quote di composizione dei promotori oppure come tassi di raccomandazione per categoria. Poiché 96 più 7 supera il 100, la sola lettura aritmeticamente coerente è la seconda, ed è quella adottata qui. Da riverificare sul testo primario prima di qualunque uso esterno." />
-      Lo stesso lavoro rileva che il bias finanziario aumenta in modo statisticamente
-      significativo la probabilità di raccomandare il sego, e che per piattaforma la quota di
-      contenuti con interesse commerciale arriva al 92%. Le condizioni più citate sono acne,
+      <DataTag kind="fonte" label="Almatroud L, Choi S, Libson K, Ashack K. Beef Tallow-Based Skincare Claims in Social Media. J Cosmet Dermatol 2025;24(12):e70544. DOI 10.1111/jocd.70544. I valori riportati sono quelli confermati dal consolidamento v4.0 della ricerca: tasso di raccomandazione del 7% fra i dermatologi, interesse commerciale nel 92% dei contenuti su una piattaforma e nel 74% su un’altra. Due qualificazioni dichiarate: una quota aggregata di contenuti con interesse commerciale, riportata al 61% da una sintesi interna precedente, non è confermata dalla v4.0 e non è usata qui; e le sintesi interne indicano il numero di piattaforme campionate in modo discordante, tre oppure quattro, quindi non lo riportiamo." />
+      Lo stesso lavoro rileva che l’interesse commerciale aumenta in modo statisticamente
+      significativo la probabilità di raccomandare il sego. Le condizioni più citate sono acne,
       eczema e psoriasi, cioè tre patologie.
     </p>
     <p class="note">

@@ -51,6 +51,7 @@ const risks = [
   { t: 'Contaminazione reputazionale da claim altrui', d: 'Un mercato costruito su affermazioni indifendibili espone anche l’operatore rigoroso. La sola difesa è non usarne nessuna e rendere pubblico il perché, come fa l’Audit.' },
   { t: 'Un concorrente potrebbe pubblicare per primo un dato primario', d: 'La lacuna verificata è un asset con scadenza. Un solo studio strumentale pubblicato da un altro operatore chiude la finestra. È la ragione per cui questo sito pubblica l’esito del lavoro di verifica e non il protocollo sperimentale.' },
   { t: 'L’argomento non-palma potrebbe essere catturato da altre fonti', d: 'L’esenzione documentale di cui il sego gode non è esclusiva del sego: cocco, karité, colza e girasole ne beneficiano allo stesso modo, e in più sono compatibili con il vegan. Un formulatore che voglia liberarsi di quell’onere ha una via più semplice del sego, e probabilmente la sceglierà.' },
+  { t: 'Il processo non è difendibile', d: 'Frazionamento e raffinazione del sego sono arte nota e in gran parte pubblico dominio. Presentarsi come detentori di un processo distintivo non reggerebbe a una due diligence tecnica: restano difendibili solo il dato proprietario, il dataset di filiera e il documento di lotto.' },
   { t: 'Dipendenza dal flusso a monte', d: 'Il sego è un sottoprodotto del rendering, e per i trasformatori la cosmetica è una destinazione marginale rispetto a biocarburanti e mangimi. OdE dipende da un flusso governato dalla domanda energetica, su cui non ha leva.' },
 ];
 ---
@@ -167,6 +168,22 @@ const risks = [
       spazio già presidiato sul concetto "tracciato e pulito" e deve difendere un differenziale
       più sottile di quanto la narrazione di filiera suggerisca.
     </p>
+
+    <Callout tone="warn" title="E lo spazio è presidiato anche a monte, sul processo">
+      <p>
+        Il <strong>frazionamento e la raffinazione del sego sono arte nota</strong>, coperta da
+        famiglie brevettuali in gran parte scadute e quindi in pubblico dominio. Esistono inoltre
+        nomenclature di derivati del sego già censite per uso cosmetico.
+        <DataTag kind="fonte" label="Mappatura dell’arte nota su brevetti USPTO relativi al frazionamento del sego e alla raffinazione dei grassi animali, e censimento di nomenclature di derivati già registrate a uso cosmetico. Consolidamento della ricerca OdE v4.0, sez. C.6 e minaccia M5. È una mappa, non un parere brevettuale." />
+      </p>
+      <p>
+        La conseguenza è che <strong>il vantaggio non può stare nel come si produce</strong>:
+        chiunque può frazionare questo materiale, senza pagare licenze e senza inventare nulla.
+        Restano difendibili il dato proprietario, il dataset di filiera e il documento di lotto.
+        Il quadro completo è in <a href={r.investitori}>Investitori</a>.
+        <Status kind="dimostrato" lang={lang} /> <Finding kind="contro" lang={lang} />
+      </p>
+    </Callout>
   </Section>
 
   <Section n="4" title="Chi è il cliente realistico">

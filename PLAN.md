@@ -664,6 +664,76 @@ Prese in data 28 agosto 2026, prima dell'inizio della Fase 3.
 Restano aperti i placeholder **P2, P4, P5, P6, P7, P8** della sezione 11, gestiti
 con le assunzioni provvisorie dichiarate e raccolti nella Pull Request.
 
+---
+
+## 15. Allineamento alla v4.0 del consolidamento
+
+Il consolidamento della ricerca è passato alla **versione 4.0**, che integra una libreria
+di intelligence scientifica multilingue. Il sito è stato riallineato. La tesi non
+cambia. Cambiano il fondamento tecnico, che diventa più preciso e meno pessimistico di
+come il sito lo raccontava, e il perimetro del fossato, che si stringe.
+
+### Le tre revisioni sostanziali, e dove incidono
+
+| # | Revisione | Pagine toccate |
+|---|---|---|
+| 1 | Il principio di Mack Correa riguarda **l'acido oleico**, non la classe degli acidi grassi liberi, e non è estendibile ai saturi. I due saturi dominanti del sego, insieme circa il 46% del profilo, hanno evidenza ex vivo di segno opposto | `tesi` §1 e §5, Home, `audit` |
+| 2 | L'idrolisi lipasica passa da **rischio direzionale a domanda quantitativa aperta**: la miscela rilasciata è circa 38% oleico e circa 46% palmitico e stearico, e l'effetto netto è ignoto. Il dato proprietario diventa la **composizione** del rilascio, non la velocità | `tesi` §3, Home, `evidenza`, `investitori`, `amsa` |
+| 3 | L'anello provenienza verso composizione ha un **primo candidato misurabile**, il differenziale di polinsaturi legato alla dieta. Fonte divulgativa non peer-reviewed, da riverificare su campione proprio prima di ogni uso in comunicazione | `filiera`, `evidenza` |
+
+### Le due aggiunte pesanti
+
+**Tre misure analitiche in testa alla sequenza**, per meno di 3.000 euro complessivi:
+profilo acidi grassi con polinsaturi, contenuto di grasso solido via risonanza
+magnetica pulsata, panel ossidativo con ossisteroli. Convertono tre stime che il sito
+usava in tre dati primari, e il **primo nodo del cammino critico si sposta** dall'in
+vitro al profilo acidi grassi.
+
+**Il processo non è un fossato.** Frazionamento e raffinazione del sego sono arte nota,
+coperta da famiglie brevettuali in gran parte scadute. È la debolezza D6 della nuova
+SWOT e va pubblicata con lo stesso peso delle altre: se OdE si presentasse come
+detentore di un processo distintivo, la posizione non reggerebbe a una due diligence
+tecnica.
+
+### Correzioni di dato
+
+| Voce | Prima | Dopo |
+|---|---|---|
+| Scenario minimo | 17.000-39.000 €, 5-11% | **18.000-41.000 €, 5-12%** |
+| Numeri sull'analisi dei contenuti social | 82%, 61% con interesse commerciale, 96% marchi, 7% dermatologi, quattro piattaforme | **82%, 7% dermatologi, 92% e 74% per piattaforma.** Il 61% e il 96% non sono confermati dalla v4.0 e cadono; il numero di piattaforme è discordante fra le sintesi interne e non viene dichiarato |
+| Contenuto di grasso solido a 32 °C | stima 21,3%, marcata come calcolo derivato | invariata, ma con la **forbice attesa 15-25%** e la nota che nessuna tabella primaria pubblica quel valore |
+| Programma sperimentale | nove voci | **dodici voci**, sequenza a tredici passi |
+| Gate | quattro | **otto**, con tre soglie analitiche nuove e il gate sulla composizione del rilascio |
+| Condizioni di fallimento | quattro | **sei** |
+
+### Aggiunte favorevoli, con la loro cautela
+
+Il ranking termico è ora ancorato a una fonte primaria: il sego è completamente fuso
+solo a 46 °C, il burro di cacao è già liquido fra 35 e 37 °C, e a temperatura cutanea
+l'ordine è palm stearin, sego, burro di cacao. Sostituisce in `tesi` §4 un calcolo
+derivato con un fatto stabilito. L'audit conta ora **due** errori di attribuzione
+ricostruiti fino alla fonte, non uno.
+
+### La trappola, registrata perché non si ripeta
+
+Lo studio che qualifica il rischio dell'idrolisi è di grado B1, su cute umana **ex vivo
+e danneggiata**, con acidi grassi isolati e non con il sego, e con autori di provenienza
+industriale. **Non autorizza in alcun modo un claim di barriera**, che resta fra le
+affermazioni vietate. Il suo uso sul sito è stretto e uno solo: toglie il presupposto
+che tutto ciò che si libera per idrolisi sia dannoso.
+
+Analogamente, il differenziale compositivo legato alla dieta **non compare come
+vantaggio** in `filiera`. Compare in `evidenza` come misura da fare, con la soglia già
+scritta, perché la ricerca prescrive di riverificarlo prima di portarlo in
+comunicazione e questo sito è comunicazione.
+
+### Onestà aggiunta
+
+`audit` dichiara ora anche i **bacini non interrogati** (CNKI, testo integrale di
+J-STAGE, KoreaScience e KISS, DIALNET, SciELO, con Scopus e Web of Science accessibili
+solo per aggregatori). L'affermazione più prominente del sito poggia su quella lacuna,
+quindi il sito deve dichiararne il perimetro.
+
 **Conseguenza operativa della soglia dell'Audit su `/evidenza`.** La pagina
 pubblica per ogni esperimento: la domanda a cui risponde, la categoria (licenza a
 operare, asset commerciale, conoscenza interna), l'ordine di grandezza del costo,
