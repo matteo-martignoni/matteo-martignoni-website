@@ -662,7 +662,8 @@ Prese in data 28 agosto 2026, prima dell'inizio della Fase 3.
 | **P3, concorrenti** | **Non nominati.** La formulazione è "esiste almeno un operatore già posizionato esplicitamente su tracciabilità e sostenibilità, oltre a più operatori statunitensi sul grass-fed". L'ammissione resta integra, il nome no |
 
 Restano aperti i placeholder **P2, P4, P5, P6, P7, P8** della sezione 11, gestiti
-con le assunzioni provvisorie dichiarate e raccolti nella Pull Request.
+con le assunzioni provvisorie dichiarate e raccolti nella Pull Request. La
+sezione 16 registra lo scioglimento di P1 e il cambiamento di natura di P2.
 
 ---
 
@@ -741,3 +742,65 @@ la durata, la posizione nella sequenza e il gate collegato. Non pubblica:
 concentrazioni, temperature, enzimi specifici, punti di campionamento, numerosità
 campionaria per braccio. La riga di confine è quella fra "che cosa vogliamo
 sapere e quanto costa saperlo" e "come esattamente lo misuriamo".
+
+---
+
+## 16. Decisioni del committente su P1 e P2, e completamento della versione inglese
+
+### P1, capitale: sciolto
+
+**350.000 euro**, confermato. Il chip `Da confermare` è stato tolto dalle pagine
+Investitori in entrambe le lingue, e la nota dichiara che il sito attualmente
+online, con 300.000, riporta la cifra superata. Le percentuali di scenario
+restano quelle del consolidamento, ora calcolate su una base non più
+provvisoria.
+
+### P2, startup innovativa: non sciolto, ma cambia natura
+
+Il committente ha chiarito che l'iscrizione alla sezione speciale è un
+**obiettivo**, non una condizione acquisita, e che l'asset innovativo candidato
+a sostenerla è l'intelligenza artificiale dentro AMSA. Resta aperta una domanda
+che il committente sta valutando: **se l'uso dell'intelligenza artificiale in
+AMSA sia sostanziale o marginale**.
+
+Questo sposta P2 da una casella amministrativa a una **questione di prodotto**, e
+il sito la tratta come tale. Due interventi:
+
+1. **AMSA, fondo della sezione 5.** Una sottosezione nuova, "Quanto pesa davvero
+   l'intelligenza artificiale, qui dentro", pone la domanda per primi e le dà una
+   forma verificabile: che cosa fa un modello appreso che l'analisi in componenti
+   principali e la regressione ai minimi quadrati parziali non farebbero da sole,
+   su una matrice prevalentemente satura e con il numero di lotti che avremo. Se
+   la risposta è "produce lo stesso risultato con più complessità", la cosa
+   corretta è dirlo e togliere il modello, non tenerlo per il nome.
+2. **Investitori, sezione 6.** Un riquadro dichiara che lo status è un obiettivo
+   e non un fatto, e che dipende da quella domanda tecnica. La sezione 7 apre ora
+   dicendo che **a oggi nessuna agevolazione fiscale è disponibile**.
+
+**L'incentivo perverso è pubblicato in entrambe le pagine.** Uno status con
+benefici fiscali reali spinge a rispondere di sì a una domanda tecnica prima di
+averla misurata. La regola interna di AMSA, scritta prima, dice l'opposto: un
+modello avanzato che non batte la linea di base chemiometrica non entra in
+produzione. Un sito che pubblica la tassonomia delle claim che non reggono non
+può fare un'eccezione quando la claim non sostenuta converrebbe a sé.
+
+### Versione inglese: completata
+
+Tradotte le sei pagine che mancavano (AMSA, Filiera, Posizione, Normativa,
+Evidenza aperta, Glossario), a partire dai sorgenti già allineati alla v4.0.
+Le note in calce passano da 119 a 148 e sono ora identiche pagina per pagina
+nelle due lingue, il che è anche il controllo più rapido di allineamento.
+
+Due pulizie conseguenti: il componente `Pending`, che serviva a dichiarare in
+pagina una rotta non tradotta, **è stato rimosso** insieme alle stringhe `todo`
+e `todoEn`, perché non ha più consumatori; e gli ancoraggi del glossario restano
+identici nelle due lingue, perché un ancoraggio è un identificatore e non testo.
+
+Resta da fare, e non è stato fatto: una rilettura della versione inglese da parte
+di un madrelingua tecnico. La traduzione è fedele e completa, ma su un testo che
+vive di distinzioni epistemiche vale la pena.
+
+### Una correzione trovata strada facendo
+
+La sezione 5 di `evidenza` annunciava "Quattro" condizioni di fallimento mentre
+la tabella ne conteneva sei dalla v4.0. Corretta.

@@ -20,8 +20,9 @@ oltre a Python 3.
 **Fallimenti: 0. Avvisi: 3, tutti attesi e spiegati sotto.**
 
 I numeri qui sotto sono quelli dopo l’allineamento alla versione 4.0 del
-consolidamento della ricerca, documentato nella sezione 15 di `PLAN.md` e
-riassunto in fondo a questo documento.
+consolidamento della ricerca e dopo il completamento della versione inglese,
+entrambi riassunti in fondo a questo documento e registrati nelle sezioni 15 e
+16 di `PLAN.md`.
 
 | # | Verifica | Esito |
 |---|---|---|
@@ -34,10 +35,10 @@ riassunto in fondo a questo documento.
 | 6 | Nessun trattino lungo nel testo italiano | **Superata**, 11 su 11 |
 | 7 | Claim vietate | **Superata con 3 avvisi**, vedi sotto |
 | 8 | Link interni | **Superata**, nessun link rotto |
-| 9 | Note in calce | **Superata**, 119 note, ogni riferimento ha la sua voce |
+| 9 | Note in calce | **Superata**, 148 note, ogni riferimento ha la sua voce |
 | 10 | Responsività | **Superata**, nessuna larghezza fissa, tabelle scorrevoli |
 | 11 | Peso delle pagine | Max 62,5 KB, nessuna pagina oltre la soglia |
-| 12 | Placeholder in pagina | 9, elencati sotto |
+| 12 | Placeholder in pagina | 10, cioè 5 voci in due lingue, elencati sotto |
 
 ### I tre avvisi della verifica 7
 
@@ -69,7 +70,6 @@ src/components/ode-v2/DataTag.astro
 src/components/ode-v2/Doors.astro
 src/components/ode-v2/Finding.astro
 src/components/ode-v2/KeyValue.astro
-src/components/ode-v2/Pending.astro
 src/components/ode-v2/ReadNext.astro
 src/components/ode-v2/Sources.astro
 src/components/ode-v2/StatCard.astro
@@ -177,6 +177,9 @@ abbiano lo stesso peso tipografico di quelli favorevoli.
 | Il tasso di raccomandazione fra i dermatologi è del 7% | Audit | Sezione 3, tabella dei contenuti social |
 | Cinque bacini di letteratura non sono stati interrogati, ed è dichiarato quali | Audit | Sezione 1, in riquadro |
 | Due errori di lettura commessi da noi, ricostruiti fino alla fonte | Audit, Tesi | Sezione 1 dell'Audit, sezione 1 della Tesi |
+| Non sappiamo se l'intelligenza artificiale in AMSA sia sostanziale o marginale, e da quella risposta dipendono due strumenti di finanza agevolata su tre e tutti gli incentivi fiscali | AMSA, Investitori | Fine della sezione 5 di AMSA, sezione 6 di Investitori |
+| L'incentivo perverso a rispondere di sì a quella domanda prima di averla misurata | AMSA, Investitori | Negli stessi due riquadri |
+| A oggi nessuna agevolazione fiscale per chi investe è disponibile | Investitori | Apertura della sezione 7 |
 
 ## Placeholder che richiedono input del committente
 
@@ -184,16 +187,28 @@ Segnalati in pagina con un chip tratteggiato "Da confermare".
 
 | # | Pagina | Che cosa serve | Blocca la pubblicazione? |
 |---|---|---|---|
-| P1 | Investitori, IT ed EN | Capitale di riferimento. Il sito usa 350.000 euro, coerente con tutti i calcoli della ricerca. Il sito attuale ne dichiara 300.000 | **Sì** |
-| P2 | Investitori, IT ed EN | Status di startup innovativa. Condiziona due strumenti di finanza agevolata su tre e tutti gli incentivi fiscali della sezione 6 | **Sì** |
-| P4 | Evidenza aperta | Indirizzo di contatto. Le tre porte usano tutte quello attuale. Servono recapiti distinti per pubblico? | **Sì** |
-| P6 | Normativa | Data di riferimento della ricognizione normativa, oggi 27 agosto 2026. Va aggiornata a ogni revisione | No |
+| P2 | Investitori e AMSA, IT ed EN | Se l'uso dell'intelligenza artificiale in AMSA sia sostanziale o marginale, e quale sia il percorso di iscrizione alla sezione speciale una volta che la prima domanda abbia risposta | **Sì**, per la sezione 7 |
+| P4 | Evidenza aperta, IT ed EN | Indirizzo di contatto. Le tre porte usano tutte quello attuale. Servono recapiti distinti per pubblico? | **Sì** |
+| P6 | Normativa, IT ed EN | Data di riferimento della ricognizione normativa, oggi 27 agosto 2026. Va aggiornata a ogni revisione | No |
 | P7 | Investitori, IT ed EN | Scheda del fondatore. Il sito non ne ha una, e la credibilità della persona è fra le domande dell'investitore | No |
-| P9 | Normativa | Decisione aperta sul grado alimentare del materiale. Se dichiarato, cambia la tabella requisito contro differenziale | No |
+| P9 | Normativa, IT ed EN | Decisione aperta sul grado alimentare del materiale. Se dichiarato, cambia la tabella requisito contro differenziale | No |
+
+**P1 è sciolto.** Il capitale di riferimento è **350.000 euro**, confermato dal
+committente. Le pagine Investitori in entrambe le lingue non portano più il chip
+e dichiarano che il sito attualmente online, con i suoi 300.000, riporta la
+cifra superata.
+
+**P2 non è sciolto, ma ha cambiato natura, e la differenza conta.** Non è più
+una verifica amministrativa in sospeso: lo status di startup innovativa è un
+**obiettivo dichiarato**, e l'asset innovativo candidato a sostenerlo è
+l'intelligenza artificiale dentro AMSA. Se quell'uso sia sostanziale o marginale
+è una domanda **tecnica**, ancora aperta e in corso di valutazione. Il sito la
+pubblica come tale, in fondo alla sezione 5 di AMSA e nella sezione 6 di
+Investitori, insieme all'incentivo perverso che la circonda.
 
 Decisi al checkpoint e non più aperti: la rotta e la soluzione di isolamento,
 l'architettura a dieci pagine, la soglia di pubblicazione dell'Audit, la cifra
-di capitale a 350.000 euro con nota, e la scelta di non nominare i concorrenti.
+di capitale a 350.000 euro, e la scelta di non nominare i concorrenti.
 
 ## Correzioni applicate nella rilettura ostile
 
@@ -254,12 +269,43 @@ direzione è esattamente il caso in cui il controllo va stretto, non allentato:
 il riquadro che lo introduce dichiara per esteso che cosa il dato **non**
 autorizza a dire, e il claim di barriera resta fra quelli vietati.
 
+## La versione inglese, completata
+
+Tutte e undici le pagine esistono ora in inglese come traduzioni integrali. Le
+sei che mancavano (AMSA, Filiera, Posizione, Normativa, Evidenza aperta,
+Glossario) sono state tradotte a partire dai sorgenti italiani allineati alla
+v4.0, quindi non c'è disallineamento fra le due lingue.
+
+**Conseguenze verificabili.** Le note in calce salgono da 119 a 148, e le due
+lingue hanno ora lo stesso numero di note pagina per pagina: 6 su AMSA, 14
+sull'Audit, 5 su Evidenza aperta, 7 su Filiera, 13 su Investitori, 4 su
+Normativa, 7 su Posizione, 17 sulla Tesi, 1 sulla home. È il controllo più
+rapido per accorgersi se una delle due versioni perde un riferimento.
+
+**Il componente `Pending` è stato rimosso**, insieme alle due stringhe `todo` e
+`todoEn` del dizionario. Esisteva per dichiarare in pagina che una rotta inglese
+non era ancora tradotta, e non ha più consumatori: lasciarlo sarebbe stato
+codice morto in un progetto che pubblica una tassonomia delle affermazioni non
+sostenute.
+
+**Gli ancoraggi del glossario sono identici nelle due lingue** (`#acidita`,
+`#ffa`, `#oleico` e così via, anche dove il termine inglese è diverso). Serve a
+tenere allineate le due versioni e a non rompere link futuri: un ancoraggio è un
+identificatore, non testo.
+
+**Che cosa NON è stato fatto.** La traduzione è fedele e completa, ma non è
+passata sotto gli occhi di un madrelingua tecnico. Su un testo che vive di
+distinzioni epistemiche (dimostrato contro traslato, lacuna verificata contro
+assenza di dati) vale la pena farlo prima della pubblicazione.
+
 ## Che cosa resta da fare
 
-- **Traduzione inglese** di AMSA, Filiera, Posizione, Normativa, Evidenza
-  aperta e Glossario. Le rotte esistono e portano un avviso esplicito con
-  rimando alla versione italiana, quindi la navigazione non si rompe mai.
-  Tradotte integralmente: Home, Audit, Tesi, Investitori e AMSA Live.
-- **Sciogliere P1, P2 e P4**, che bloccano la pubblicazione.
+- **Rispondere alla domanda di P2**, che è tecnica e non amministrativa: che
+  cosa fa l'intelligenza artificiale in AMSA che la chemiometria matura non
+  farebbe da sola. Blocca la sezione 7 di Investitori.
+- **Sciogliere P4**, che blocca la pubblicazione.
 - **Rileggere le tre righe della tassonomia** segnalate dalla verifica 7 a ogni
   revisione dei contenuti.
+- **Rileggere la versione inglese con un madrelingua tecnico.** È una traduzione
+  fedele e completa, non una revisione redazionale di un parlante nativo, e su
+  un testo che vive di sfumature epistemiche la differenza può contare.

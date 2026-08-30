@@ -1,16 +1,353 @@
 ---
 import OdeV2Layout from '../../../layouts/OdeV2Layout.astro';
-import Pending from '../../../components/ode-v2/Pending.astro';
+import Section from '../../../components/ode/Section.astro';
+import NormCard from '../../../components/ode/NormCard.astro';
+import DataTag from '../../../components/ode-v2/DataTag.astro';
+import Status from '../../../components/ode-v2/Status.astro';
+import Finding from '../../../components/ode-v2/Finding.astro';
+import Callout from '../../../components/ode-v2/Callout.astro';
+import ReadNext from '../../../components/ode-v2/ReadNext.astro';
 import { odeMeta, odeRoutes } from '../../../i18n/ode-v2';
 
 const lang = 'en' as const;
 const m = odeMeta[lang].normativa;
-const itHref = odeRoutes.it.normativa;
+const r = odeRoutes[lang];
+
+// Neutral labels: the old "why OdE wins" wording was too assertive for a
+// documentary survey.
+const L = {
+  req: 'What it requires',
+  perde: 'Where it bites',
+  vince: 'What it means for OdE',
+};
+
+const vigenti = [
+  {
+    code: 'Reg. (EC) 1069/2009',
+    title: 'Animal by-products',
+    status: 'vigente' as const,
+    statusLabel: 'In force',
+    requisito: 'Fat for cosmetic use must be Category 3 material, from animals subjected to ante and post mortem inspection. Article 33 sets the end point: once the cosmetic stage is reached, the product leaves this regime and enters the cosmetic regulation.',
+    perde: 'Whoever cannot document the exact point at which the fat leaves the by-products regime. It is the main compliance bottleneck, and it has to be validated with the competent veterinary authority.',
+    vince: 'An obligation, not an advantage: plant registration or approval, commercial documentation, traceability. The Digital Lipid Passport is the instrument with which OdE documents the transition, but the documentation is owed regardless.',
+  },
+  {
+    code: 'Reg. (EU) 142/2011',
+    title: 'Implementation and documentary traceability',
+    status: 'vigente' as const,
+    statusLabel: 'In force',
+    requisito: 'Operating rules for the previous regulation: permitted uses, processing, commercial documents, registers and approval of the establishment by the competent authority.',
+    vince: 'The documentary traceability required largely coincides with what AMSA produces for every batch. It is a useful overlap, not a differentiator: anyone operating lawfully has to produce it.',
+  },
+  {
+    code: 'Reg. (EC) 1223/2009',
+    title: 'European cosmetic regulation',
+    status: 'vigente' as const,
+    statusLabel: 'In force',
+    requisito: 'Responsible person, product information file, safety report signed by a qualified assessor, nomenclature compliance, good manufacturing practice. Article 20 prohibits attributing characteristics the product does not possess.',
+    perde: 'Whoever makes unsupported efficacy claims. A statement describing the treatment of a pathology risks reclassification as a medicinal claim.',
+    vince: 'For triglyceride tallow, safety evidence exists only as derived from constituents, not as primary data. A robust dossier needs data on the real material, or a documented and justified read-across whose adequacy is for the qualified assessor to judge. It is a licence-to-operate cost OdE has to bear anyway.',
+  },
+  {
+    code: 'Reg. (EU) 655/2013',
+    title: 'Common criteria for cosmetic claims',
+    status: 'vigente' as const,
+    statusLabel: 'In force',
+    requisito: 'Six common criteria: legal compliance, truthfulness, evidential support, honesty, fairness and informed decision making. Every claim must be justifiable with adequate evidence.',
+    perde: 'Many current statements about this material would not be defensible under these criteria, in particular on evidential support and truthfulness.',
+    vince: 'It is the yardstick used to build the taxonomy published in the Audit, and it is the reason this site uses none of the claims it lists. A supplier who brings a formulator an honest audit of category claims stands out without asserting anything more.',
+  },
+  {
+    code: 'Codex CXS 211-1999',
+    title: 'Standard for named animal fats',
+    status: 'vigente' as const,
+    statusLabel: 'Reference',
+    requisito: 'Commercial quality limits: peroxide value not above 10 meq O₂/kg; acid value not above 2.5 mg KOH/g for edible tallow and 1.3 for pure rendered lard. Plus comparative physical parameters.',
+    vince: 'It is the reference to which we anchor the Passport thresholds, and it can be anchored to because it is standardised and auditable. It has to be read for what it is, though: a food-grade commercial threshold, not a cutaneous safety threshold. Nobody has ever tied these limits to a skin outcome.',
+  },
+  {
+    code: 'ISO 22716 and sector GMP',
+    title: 'Good manufacturing practice',
+    status: 'vigente' as const,
+    statusLabel: 'Standard',
+    requisito: 'Good manufacturing practice for cosmetics and cosmetic ingredients, with strong emphasis on batch traceability.',
+    vince: 'They are access keys to the professional customer. The batch traceability they require is the same one OdE produces, which reduces the marginal cost of complying, it does not remove it.',
+  },
+];
+
+const arrivo = [
+  {
+    code: 'Reg. (EU) 2023/1115 and 2025/2650',
+    title: 'Deforestation: tallow is out of scope',
+    status: 'arrivo' as const,
+    statusLabel: 'Coming into application',
+    requisito: 'For relevant products, the operator placing them on the market for the first time must exercise due diligence and submit a declaration with geolocation of the plots. The obligations apply from 30 December 2026 for large and medium operators and for micro and small operators already covered by the timber regulation, and from 30 June 2027 for the other micro and small operators.',
+    perde: 'Whoever places on the market fatty acids, glycerol or fatty alcohols derived from palm oil, and from 30 December 2027 palm soap as well.',
+    vince: 'Nothing in the strict sense: the customs code for fats of bovine, ovine and caprine animals does not appear among the relevant products, so tallow generates no obligation for OdE. What follows is a declaration of non-derivation from palm oil, a field at almost zero cost and of growing value to the European customer. The three mandatory qualifications are in the next section.',
+  },
+  {
+    code: 'Reg. (EU) 2024/1781',
+    title: 'Ecodesign and the Digital Product Passport',
+    status: 'arrivo' as const,
+    statusLabel: 'Scope to be defined',
+    requisito: 'The regulation introduces the Digital Product Passport, with progressive roll-out by product group through delegated acts.',
+    perde: 'Not determinable until the scope is defined.',
+    vince: 'It has to be said precisely, because it is easy to over-read: the scope of product groups is set by delegated acts, and no delegated act found concerns cosmetic lipid ingredients. The Lipid Passport is therefore a voluntary differentiator today, and only potentially a future obligation. Presenting it as anticipating a certain obligation would be an inference passed off as a fact.',
+  },
+  {
+    code: 'Directive (EU) 2024/825',
+    title: 'Environmental claims and commercial practices',
+    status: 'arrivo' as const,
+    statusLabel: 'Being transposed',
+    requisito: 'Environmental claims will have to be verifiable and substantiated, with added weight for third-party certifications.',
+    vince: 'It pushes in the direction of what this site already does, that is declaring the source and grade of every statement. But it does not create demand for tallow, and must not be used as if it did.',
+  },
+  {
+    code: 'REACH restriction on cyclosiloxanes',
+    title: 'D4, D5 and D6 out from 6 June 2026',
+    status: 'arrivo' as const,
+    statusLabel: 'A conditional axis',
+    requisito: 'Restriction on placing certain cyclosiloxanes on the market in rinse-off and leave-on cosmetic products.',
+    vince: 'It opens a demand axis for substitutes of some silicones, but it has to be handled with a qualification that greatly reduces its reach: the restriction concerns cyclosiloxanes D4, D5 and D6, NOT dimethicone, which remains the real comparator for tallow in most formulations. Stating that silicones are banned and that tallow replaces them is not defensible.',
+  },
+];
+
+// Requirement or differentiator: the distinction that decides where to spend.
+const params = [
+  { p: 'Trace heavy metals', amb: 'Cosmetic', role: 'Requirement', why: 'Technically unavoidable traces under the cosmetic regulation; pharmacopoeia monographs for the raw material.' },
+  { p: 'Veterinary residues', amb: 'Supply chain and food', role: 'Requirement', why: 'They follow from the livestock chain and from the legislation on veterinary medicine residues.' },
+  { p: 'Sensitisation dossier', amb: 'Cosmetic', role: 'Requirement', why: 'Needed for the safety report, through a battery of validated assays or a justified read-across. It produces no competitive advantage.' },
+  { p: '3-MCPD and glycidyl esters', amb: 'Food, and only for vegetable, fish and marine oils', role: 'Differentiator', why: 'The terrestrial animal fat matrix is not among those listed. Monitoring them is positioning, not compliance. But they are the contaminants most relevant to the process, because they form in the high temperature refining stage.' },
+  { p: 'Polycyclic aromatic hydrocarbons', amb: 'Food', role: 'Differentiator', why: 'A strong process rationale, no binding cosmetic limit for this matrix.' },
+  { p: 'Phthalates', amb: 'No limit for this matrix', role: 'Differentiator', why: 'Measurable, not regulated for this matrix.' },
+  { p: 'Oxidative state', amb: 'No statutory cosmetic limit', role: 'Differentiator', why: 'This is the Oxidative Risk Score. No rule imposes it, which makes it positioning and not a compliance cost.' },
+];
 ---
 <OdeV2Layout title={m.title} description={m.description} lang={lang} active="normativa">
   <header class="pg">
     <p class="ode-eyebrow">Regulation</p>
     <h1>The frame, without forcing it</h1>
+    <p class="lede">
+      The rules are less hostile than the noise suggests. Tallow is not banned in Europe: it
+      requires documentation as an animal by-product and a safety report signed by a qualified
+      assessor. That is cost and process, not prohibition.
+    </p>
+    <p class="sub">
+      What the rules do <strong>not</strong> allow is much of what is currently being stated in
+      this category.
+    </p>
   </header>
-  <Pending itHref={itHref} summary="A documentary survey rather than legal advice: animal by-products, the cosmetic regulation, the common criteria for claims, the deforestation asymmetry with its three mandatory qualifications, and the requirement-versus-differentiator table." />
+
+  <Callout tone="note" title="What this page is, and what it is not">
+    <p>
+      The assessments that follow are <strong>documentary surveys, not legal advice</strong>.
+      Eligibility, cumulability and scope require professional verification, and the safety report
+      for a cosmetic product is the responsibility of a qualified assessor. Where an act has been
+      adopted but not yet published in final form, we say so.
+    </p>
+    <p class="phline">
+      <span class="ph">To be confirmed</span> Reference date of the survey: 27 August 2026. It has
+      to be updated at every revision of the site.
+    </p>
+  </Callout>
+
+  <Section n="1" title="The rules that apply today">
+    <div class="norms">
+      {vigenti.map((n) => (
+        <NormCard
+          code={n.code}
+          title={n.title}
+          status={n.status}
+          statusLabel={n.statusLabel}
+          requisito={n.requisito}
+          perde={n.perde}
+          vince={n.vince}
+          labelRequisito={L.req}
+          labelPerde={L.perde}
+          labelVince={L.vince}
+        />
+      ))}
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Texts consulted on EUR-Lex: Reg. (EC) 1069/2009, Reg. (EU) 142/2011, Reg. (EC) 1223/2009 and Reg. (EU) 655/2013." />
+      <DataTag kind="fonte" label="FAO/WHO Codex Alimentarius, Standard for Named Animal Fats CXS 211-1999, Section 3 and Appendix, primary text." />
+    </p>
+  </Section>
+
+  <Section n="2" title="The rules coming, or whose scope is undefined">
+    <div class="norms">
+      {arrivo.map((n) => (
+        <NormCard
+          code={n.code}
+          title={n.title}
+          status={n.status}
+          statusLabel={n.statusLabel}
+          requisito={n.requisito}
+          perde={n.perde}
+          vince={n.vince}
+          labelRequisito={L.req}
+          labelPerde={L.perde}
+          labelVince={L.vince}
+        />
+      ))}
+    </div>
+  </Section>
+
+  <Section n="3" title="The deforestation asymmetry, and its three qualifications">
+    <p>
+      It is the only genuinely favourable regulatory element to emerge from the research, and it
+      has to be presented with its qualifications, or it becomes exactly the kind of logical leap
+      the <a href={r.audit}>Audit</a> holds against the rest of the market.
+    </p>
+    <p><strong>The fact.</strong> The customs code for fats of bovine, ovine and caprine animals
+      does not appear among the relevant products in Annex I to the deforestation regulation.
+      Under the palm oil commodity, by contrast, palmitic and stearic acid, glycerol, industrial
+      fatty acids and industrial fatty alcohols already appear today, and a delegated act adds
+      oleic acid, specific fatty alcohols and, from 30 December 2027, soap. The same products
+      obtained from a non-palm source are not relevant products and generate no obligation.
+      <DataTag kind="fonte" label="Check of Annex I to Reg. (EU) 2023/1115 as amended, with the linguistic qualification «synthesised using palm oil» and the definition of relevant product in art. 2 point 2. Application calendar deferred by Reg. (EU) 2025/2650. Track 7 v2, sec. 4.6.2." />
+    </p>
+    <p class="ev-line"><Status kind="dimostrato" lang={lang} /> <Finding kind="pro" lang={lang} /></p>
+
+    <ol class="quals">
+      <li>
+        <span class="q-n">01</span>
+        <div>
+          <h3>It is a compliance argument, never one of environmental superiority</h3>
+          <p>
+            The legitimate chain is: palm is in scope, tallow is not, therefore a tallow derivative
+            generates no due diligence obligations for the customer. The illegitimate chain, which
+            we will never build, is: palm is under environmental pressure, therefore tallow is more
+            sustainable, therefore tallow is better. The second and third steps have no data, and
+            the second is contestable on the merits, because tallow is itself a derivative of
+            bovine livestock farming, which the climate literature treats as environmental pressure
+            in its own right.
+          </p>
+        </div>
+      </li>
+      <li>
+        <span class="q-n">02</span>
+        <div>
+          <h3>The exemption is not exclusive to tallow</h3>
+          <p>
+            All raw materials not included among the listed commodities enjoy the same exemption:
+            coconut, shea, rapeseed, sunflower, plus minerals and synthetics. Coconut in particular
+            is the most direct substitute for palm in soap oleochemistry, it is out of scope and it
+            is vegan compatible. A formulator wanting to shed the burden has an easier route than
+            tallow, and will probably take it.
+            <strong> This regulation creates demand for "non-palm", not for "traced" and not for
+            "animal" either.</strong>
+          </p>
+        </div>
+      </li>
+      <li>
+        <span class="q-n">03</span>
+        <div>
+          <h3>The dates and codes of the extended scope must be reconfirmed</h3>
+          <p>
+            The delegated act extending the list has been adopted but is subject to a scrutiny
+            period before entry into force, and the document consulted is marked as a provisional
+            version. Until final publication the binding annex remains the one in the base
+            regulation. Any commercial use of this argument must carry that caution.
+            <Status kind="costruzione" lang={lang} />
+          </p>
+        </div>
+      </li>
+    </ol>
+
+    <Callout tone="note" title="The practical consequence, which is small and concrete">
+      <p>
+        A <strong>declaration of non-derivation from palm oil</strong> in the commercial
+        documentation, alongside the spongiform encephalopathy declaration. Almost zero cost,
+        growing value for the European customer, and above all a statement that is
+        <strong>verifiable and not contestable</strong>, which is the opposite of the efficacy
+        claims crowding this category.
+      </p>
+      <p>
+        The open question is whether the documentary burden on palm inputs is perceived as a real
+        problem or as routine compliance by European processors. It is a verification at almost
+        zero cost, made of a few conversations, and it should be done before investing in that
+        direction. Its place is among the gates in <a href={r.investitori}>Investors</a>.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="4" title="Requirement or differentiator: where spending makes sense">
+    <p>
+      The most useful distinction on this page, and the one the market confuses most often. A
+      requirement has to be satisfied anyway and produces no competitive advantage. A
+      differentiator is discretionary and produces advantage only if communicated. Spending on
+      compliance while believing you are building positioning is the most expensive mistake
+      available.
+    </p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr><th scope="col">Parameter</th><th scope="col">Scope of the limit</th><th scope="col">Role</th><th scope="col">Why</th></tr>
+        </thead>
+        <tbody>
+          {params.map((p) => (
+            <tr>
+              <th scope="row">{p.p}</th>
+              <td>{p.amb}</td>
+              <td><span class:list={['role', p.role === 'Requirement' ? 'role--req' : 'role--diff']}>{p.role}</span></td>
+              <td>{p.why}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Scope verified: the relevant subsections of Reg. (EU) 2023/915 on 3-MCPD and glycidyl esters concern vegetable oils and fats, fish oils and oils of other marine organisms; animal fats of terrestrial origin do not appear among the listed matrices. Track 6 v2, sec. 5.10 and 8.3." />
+    </p>
+    <Callout tone="warn" title="The other side of it, which has to be said">
+      <p>
+        The fact that almost everything we measure is a differentiator and not a requirement is a
+        strategic advantage <strong>and a risk at the same time</strong>. An advantage, because
+        monitoring them is positioning. A risk, because <strong>absence of a limit is not absence
+        of liability</strong>: in a dispute the defence would rest entirely on the voluntary
+        documentation OdE produces, and on nothing else.
+      </p>
+      <p class="phline">
+        <span class="ph">To be confirmed</span> A decision still open changes this table: if OdE
+        declared the material to be food grade, food limits would become applicable for the
+        matrices that provide for them. It has to be settled before fixing the per-batch analytical
+        plan.
+      </p>
+    </Callout>
+  </Section>
+
+  <ReadNext
+    lang={lang}
+    links={[
+      { href: r.amsa, label: 'AMSA: what we measure and under which standard' },
+      { href: r.audit, label: 'The Audit: the taxonomy of claims' },
+      { href: r.posizione, label: 'Position: what this lever is really worth' },
+    ]}
+  />
 </OdeV2Layout>
+
+<style>
+  .ev-line { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1.2rem; }
+  .norms { display: grid; grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); gap: 1.1rem; margin: 1.3rem 0; }
+  .quals { list-style: none; margin: 1.4rem 0; padding: 0; display: flex; flex-direction: column; gap: 1.3rem; }
+  .quals > li { display: grid; grid-template-columns: 2.6rem 1fr; gap: 1rem; padding-bottom: 1.3rem; border-bottom: 1px solid var(--rule); }
+  .quals > li:last-child { border-bottom: 0; padding-bottom: 0; }
+  .q-n { font-family: var(--ode-font-mono); font-size: 1.15rem; color: var(--accent); }
+  .quals h3 { font-size: 1.02rem; font-weight: 500; color: var(--ink); margin: 0 0 0.45rem; line-height: 1.35; }
+  .quals p { font-size: 0.93rem; line-height: 1.6; color: var(--body); margin: 0; max-width: 42rem; }
+  .role {
+    display: inline-block;
+    font-family: var(--ode-font-mono);
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.15em 0.45em;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .role--req { background: var(--lav-soft); color: var(--lav-ink); }
+  .role--diff { background: var(--green-soft); color: var(--green); }
+  .phline { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem; }
+</style>

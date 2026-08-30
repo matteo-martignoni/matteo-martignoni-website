@@ -179,8 +179,7 @@ src/pages/OdE-v2/            IT default (/OdE-v2) + EN mirror under /OdE-v2/en
 src/layouts/OdeV2Layout.astro  isolated layout (own header/footer/nav, noindex)
 src/styles/ode-v2-theme.css    v2-only additions, scoped under .ode-v2
 src/components/ode-v2/         DataTag, Sources, StatCard, Status, Finding,
-                               Callout, ClaimTable, Doors, KeyValue, ReadNext,
-                               Pending
+                               Callout, ClaimTable, Doors, KeyValue, ReadNext
 src/i18n/ode-v2.ts             route map, UI strings, per-page meta
 src/lib/ode-v2/sources.ts      footnote source resolver (DOIs, EUR-Lex, FAO)
 PLAN.md                        the redesign plan and the checkpoint decisions
@@ -202,17 +201,18 @@ would have changed how `/OdE` renders its own footnotes.
 | `/OdE-v2` | `/OdE-v2/en` | Opens with the verified fact, not the promise. Three doors, three stated limits |
 | `/OdE-v2/audit` | `/OdE-v2/en/audit` | The evidence gap, the matrix errors in the most cited review, the claim taxonomy |
 | `/OdE-v2/tesi` | `/OdE-v2/en/tesi` | Acid value, the hydrolysis complication, where OdE cannot compete |
-| `/OdE-v2/amsa` | *pending* | The instrument, the measured parameters, the Digital Lipid Passport |
-| `/OdE-v2/filiera` | *pending* | Provenance as documented input, and where traceability breaks |
-| `/OdE-v2/posizione` | *pending* | The pincer, the three-legged verdict, the sizing gaps |
-| `/OdE-v2/normativa` | *pending* | Documentary survey, the EUDR asymmetry with its qualifications |
-| `/OdE-v2/evidenza` | *pending* | Gaps, experiments with costs, gates and stopping criteria |
+| `/OdE-v2/amsa` | `/OdE-v2/en/amsa` | The instrument, the measured parameters, the Digital Lipid Passport |
+| `/OdE-v2/filiera` | `/OdE-v2/en/filiera` | Provenance as documented input, and where traceability breaks |
+| `/OdE-v2/posizione` | `/OdE-v2/en/posizione` | The pincer, the three-legged verdict, the sizing gaps |
+| `/OdE-v2/normativa` | `/OdE-v2/en/normativa` | Documentary survey, the EUDR asymmetry with its qualifications |
+| `/OdE-v2/evidenza` | `/OdE-v2/en/evidenza` | Gaps, experiments with costs, gates and stopping criteria |
 | `/OdE-v2/investitori` | `/OdE-v2/en/investitori` | The two-part verdict, the real numbers, the failure conditions |
-| `/OdE-v2/glossario` | *pending* | Seven groups of terms |
+| `/OdE-v2/glossario` | `/OdE-v2/en/glossario` | Seven groups of terms |
 | `/OdE-v2/amsa-live` | `/OdE-v2/en/amsa-live` | The demonstration dashboard |
 
-Pages marked *pending* exist as routes and carry an explicit "translation
-pending" notice with a link to the Italian version, so navigation never breaks.
+Both languages are complete: every page exists as a full translation, and the
+two versions carry the same number of footnotes page by page, which is the
+quickest way to spot a reference lost on one side.
 
 ### Isolation (five independent mechanisms)
 
@@ -292,10 +292,12 @@ entry, remove the `noindex`, and drop the sitemap `filter` line.
 
 ### What still needs client input
 
-Nine placeholders are marked in-page with a hatched "Da confermare" chip and
-listed in `docs/ode-v2/QA.md`. The three that block publication are the
-reference capital figure, the innovative-startup registration status, and
-whether the three doors need separate contact addresses.
+Five placeholders (in both languages) are marked in-page with a hatched "Da
+confermare" chip and listed in `docs/ode-v2/QA.md`. The reference capital figure
+is settled at 350,000 euros. Two items still gate publication: whether the use
+of artificial intelligence in AMSA is substantial or marginal, which is what the
+innovative-startup classification would rest on, and whether the three doors
+need separate contact addresses.
 
 ### Data honesty
 

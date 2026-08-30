@@ -62,6 +62,7 @@ const swot = {
     'Impossibilità di competere su occlusione e su riparazione della barriera.',
     'Nessuna proprietà intellettuale difendibile sul frazionamento e sulla raffinazione: l’arte nota è pubblica e in gran parte scaduta.',
     'Struttura molto piccola, capacità di rendicontazione limitata, nessun laboratorio interno.',
+    'Due strumenti di finanza agevolata su tre e tutti gli incentivi fiscali dipendono da uno status non ancora acquisito, che a sua volta dipende da una domanda aperta: se l’intelligenza artificiale in AMSA sia sostanziale o marginale.',
   ],
   o: [
     'Nessun operatore offre oggi la combinazione di tracciabilità documentata, indice di rischio ossidativo e caratterizzazione per lotto in un solo documento.',
@@ -195,12 +196,11 @@ const pivots = [
         </tbody>
       </table>
     </div>
-    <p class="note phline">
+    <p class="note">
       <DataTag kind="stima" label="Composizione degli scenari ricostruita voce per voce, con rimando alla riga di origine di ciascuna. Nessuna cifra è un preventivo. Consolidamento della ricerca OdE, parti C.1, C.5 e C.5bis." />
-      <span class="ph">Da confermare</span>
-      Le percentuali sono calcolate su un capitale di riferimento di 350.000 euro, coerente con
-      tutti i calcoli della ricerca. Il valore va allineato al piano economico prima della
-      pubblicazione.
+      Le percentuali sono calcolate su un capitale di riferimento di <strong>350.000
+      euro</strong>, confermato dal committente e coerente con tutti i calcoli della ricerca. Il
+      sito attualmente online ne dichiara 300.000: la cifra corretta è questa.
     </p>
     <Callout tone="warn" title="La lettura, senza sconti">
       <p>
@@ -341,12 +341,37 @@ const pivots = [
         <Status kind="costruzione" lang={lang} />
       </p>
     </Callout>
+    <Callout tone="honest" title="Lo status di startup innovativa è un obiettivo, non un fatto, e dipende da una domanda sul prodotto">
+      <p>
+        Entrambi gli strumenti presuppongono l’iscrizione alla sezione speciale del registro
+        delle imprese. Quella iscrizione è un <strong>obiettivo dichiarato di OdE</strong>, non
+        una condizione già acquisita, e l’asset innovativo candidato a sostenerla è
+        l’intelligenza artificiale dentro <a href={r.amsa}>AMSA</a>.
+      </p>
+      <p>
+        Il punto delicato è che <strong>non sappiamo ancora se l’uso dell’intelligenza
+        artificiale in AMSA sia sostanziale o marginale</strong>. La domanda è tecnica prima che
+        amministrativa: che cosa fa l’intelligenza artificiale che la chemiometria matura non
+        farebbe da sola, su questa matrice e con il numero di lotti che avremo. È in corso di
+        valutazione, e la risposta non è scritta.
+      </p>
+      <p>
+        <strong>Registriamo qui l’incentivo perverso, perché esiste.</strong> Uno status con
+        benefici fiscali reali spinge a rispondere di sì a una domanda tecnica prima di averla
+        misurata. La regola interna di <a href={r.amsa}>AMSA</a> dice l’opposto, ed è scritta da
+        prima: un modello avanzato che non batte la linea di base chemiometrica non entra in
+        produzione. Se la risposta risultasse "marginale", il modo corretto di procedere è
+        cercare la classificazione su un’altra base o non averla, non riscrivere il prodotto
+        attorno a un requisito.
+        <Status kind="scommessa" lang={lang} />
+      </p>
+    </Callout>
     <p class="note phline">
       <span class="ph">Da confermare</span>
-      Entrambi gli strumenti presuppongono l’iscrizione alla sezione speciale del registro delle
-      imprese. Alla data della ricerca lo status risulta <strong>ancora da verificare</strong>, ed
-      è la prima riga del piano a novanta giorni. Gli incentivi fiscali della sezione seguente
-      hanno lo stesso prerequisito.
+      Restano da sciogliere due cose distinte: se l’uso dell’intelligenza artificiale in AMSA sia
+      sostanziale, che è la domanda qui sopra, e quale sia il percorso di iscrizione una volta
+      che la prima abbia risposta. Gli incentivi fiscali della sezione seguente hanno lo stesso
+      prerequisito.
     </p>
   </Section>
 
@@ -354,8 +379,10 @@ const pivots = [
     <p>
       L’ordinamento italiano incentiva l’investimento nel capitale delle startup innovative. Le
       agevolazioni sono reali e significative, e sono <strong>tutte condizionate all’iscrizione
-      alla sezione speciale</strong>, che è la verifica aperta della sezione precedente. Le
-      riportiamo con questa premessa, non senza.
+      alla sezione speciale</strong>, che è l’obiettivo ancora aperto della sezione precedente,
+      subordinato a una domanda tecnica sul prodotto. Le riportiamo con questa premessa, non
+      senza: <strong>a oggi nessuna di queste agevolazioni è disponibile</strong>, e presentarle
+      come acquisite sarebbe la stessa cosa che il sito rimprovera al mercato.
     </p>
     <div class="grid">
       <StatCard value="30%" caption="Detrazione per le persone fisiche, su un massimo investibile annuo, con detenzione minima triennale." kind="fonte" source="Regime di agevolazioni per investimenti in startup innovative, art. 29 DL 179/2012 e successive modifiche. Aliquote e massimali da riverificare alla data di pubblicazione." />
