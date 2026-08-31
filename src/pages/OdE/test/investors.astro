@@ -428,7 +428,89 @@ const pivots = [
     </ol>
   </Section>
 
-  <Section n="10" title="What you should know before you talk to us">
+  <Section n="10" title="Who is behind this, and what he has not done before">
+    <p>
+      A page that asks for capital without naming anybody is asking you to take a stranger's word
+      for it. OdE is Matteo Martignoni, and this section gets the same treatment the site gives
+      every other input: what the background covers, and what it does not.
+    </p>
+    <div class="bio">
+      <div class="bio-half bio-half--yes">
+        <h3>What this background covers</h3>
+        <ul>
+          <li>
+            <h4>Four years inside A&#275;sop</h4>
+            <p>An eighteen-country cosmetics company, at the time turning over more than 80
+            million Australian dollars and growing 30% a year. Three of them at the Melbourne
+            headquarters as General Manager Marketing, Creativity and Product Development,
+            then a year founding the Italian branch. The role owned the internal laboratory:
+            its chemists formulated the products he and his peers decided to take forward, and
+            international compliance and supplier relations sat in the same team.</p>
+          </li>
+          <li>
+            <h4>A category widened, not created</h4>
+            <p>Dennis Paphitis had created and tested A&#275;sop's fragrances years earlier. The
+            work here was to study the market and the brand's olfactory signature and then,
+            with Paphitis and the CEO, to widen the category and lay the groundwork for what
+            it has since become, alongside IFF and its perfumers.</p>
+          </li>
+          <li>
+            <h4>What that means for this page</h4>
+            <p>The programme costed in section 3 has to be commissioned, not merely planned.
+            Somebody has to pick the laboratory, read the result and decide whether it clears
+            the gate or kills the line. That is the job he held for four years, one level up:
+            the brief to the chemists, the clearance across eighteen markets, the supplier
+            seen inside their own plant.</p>
+          </li>
+          <li>
+            <h4>Twenty-five years of brand work before that</h4>
+            <p>Four roles at Diesel, a company doing 1.3 billion euros, including the first
+            Diesel fragrance with L'Or&#233;al out of Paris. EMEA marketing at Eastpak, inside
+            VF Corporation. His own Paris consultancy, with Uniqlo, Louis Vuitton and
+            L'Or&#233;al Luxe among the clients. Today the Italian branch of Reflex.</p>
+          </li>
+          <li>
+            <h4>An AI product already built</h4>
+            <p>Co-founder and CEO of Nova since 2024, on a proprietary platform. That does not
+            settle whether the artificial intelligence inside AMSA is substantial rather than
+            marginal, which is still open on this page. It does mean the person asking the
+            question has taken an AI product from intuition to platform once.</p>
+          </li>
+        </ul>
+      </div>
+      <div class="bio-half bio-half--no">
+        <h3>What it does not cover</h3>
+        <ul>
+          <li>
+            <h4>He is not a chemist</h4>
+            <p>At A&#275;sop the chemists were on his team: the brief and the judgement were his,
+            the bench work was theirs. The programme is costed to be commissioned from
+            laboratories outside the company, which is how it can start at all, but a
+            proprietary dataset eventually needs somebody whose job is the data.</p>
+          </li>
+          <li>
+            <h4>Cosmetic compliance is not the byproduct pathway</h4>
+            <p>Regulation (EC) 1069/2009, and the route this material has to travel, are set out
+            under <a href={r.normativa}>Regulation</a>. Clearing a finished cosmetic across
+            eighteen markets is a different road, and nobody here has taken a material down this
+            one before.</p>
+          </li>
+          <li>
+            <h4>Industrial process is not chemical process</h4>
+            <p>Diesel put him alongside apparel manufacturing, which is industrial process
+            experience. A lipid processing plant is another thing, and it is new.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">
+      These career facts are self-declared, and stated here as such. Everything else on this site
+      resolves to a document or a measurement. This section does not, and it should be weighed
+      accordingly.
+    </p>
+  </Section>
+
+  <Section n="11" title="What you should know before you talk to us">
     <p class="measure">
       Three things we cannot tell you, and that you would find out anyway, so here they are.
       There is no clinical evidence on this material. The market where our difference counts
@@ -440,11 +522,6 @@ const pivots = [
     </p>
     <p class="contact">
       <a href="mailto:mm@matteomartignoni.com?subject=OdE%20-%20investor%20conversation">mm@matteomartignoni.com</a>
-    </p>
-    <p class="note phline">
-      <span class="ph">To be confirmed</span>
-      There is no founder profile on the site. If the credibility of the person is part of what an
-      investor weighs, that section has to be written, and somebody has to supply the material.
     </p>
   </Section>
 
@@ -531,6 +608,37 @@ const pivots = [
   .phases li { display: grid; grid-template-columns: 7rem 1fr; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--rule); }
   .phases li:last-child { border-bottom: 0; padding-bottom: 0; }
   .ph-k { font-family: var(--ode-font-mono); font-size: 0.8rem; color: var(--accent); }
+
+  /* Scheda del fondatore: due blocchi impilati, non due colonne. Con cinque
+     voci di prosa da un lato e tre dall'altro, una griglia a due colonne
+     livellerebbe le righe sull'elemento piu' alto e stringerebbe la misura,
+     che e' il difetto corretto in Normativa. Impilati, i due blocchi tengono
+     la misura piena e l'ordine di lettura resta quello giusto: prima cio' che
+     il percorso copre, poi cio' che non copre. Il codice visivo e' quello che
+     la SWOT usa gia' su questa pagina: pieno per cio' che gioca a favore,
+     tratteggiato per cio' che gioca contro. */
+  .bio { display: flex; flex-direction: column; gap: 1rem; margin: 1.3rem 0; }
+  .bio-half {
+    box-sizing: border-box;
+    max-width: var(--ode-box);
+    border: 1px solid var(--rule);
+    border-radius: var(--ode-radius);
+    padding: 1.2rem 1.3rem;
+    background: var(--panel);
+  }
+  .bio-half--no { background: transparent; border-style: dashed; border-color: var(--ink); }
+  .bio-half h3 {
+    font-size: 0.72rem;
+    font-family: var(--ode-font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 0 0 0.8rem;
+  }
+  .bio-half--yes h3 { color: var(--green); }
+  .bio-half--no h3 { color: var(--pink-ink); }
+  .bio-half ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1rem; }
+  .bio-half h4 { font-size: 0.98rem; font-weight: 500; color: var(--ink); line-height: 1.35; margin: 0 0 0.3rem; }
+  .bio-half p { font-size: 0.9rem; line-height: 1.58; color: var(--body); margin: 0; }
 
   .contact { margin: 1rem 0 0; font-size: 1.02rem; }
   .contact a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; font-family: var(--ode-font-mono); }
