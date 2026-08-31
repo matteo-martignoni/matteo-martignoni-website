@@ -1,7 +1,8 @@
 ---
 import OdeV2Layout from '../../../../layouts/OdeV2Layout.astro';
-import Section from '../../../../components/ode/Section.astro';
+import Section from '../../../../components/ode-v2/Section.astro';
 import DataTag from '../../../../components/ode-v2/DataTag.astro';
+import ScaleFigure from '../../../../components/ode-v2/ScaleFigure.astro';
 import Status from '../../../../components/ode-v2/Status.astro';
 import Finding from '../../../../components/ode-v2/Finding.astro';
 import Callout from '../../../../components/ode-v2/Callout.astro';
@@ -148,6 +149,26 @@ const cannot = [
       È misurabile, è economico, è il parametro da cui dipende la sicurezza secondo la chimica
       della sezione 1. E quasi nessuno, in questo mercato, lo dichiara.
     </p>
+
+    <ScaleFigure
+      max={20}
+      unit="mg KOH/g"
+      band={true}
+      refs={[
+        { value: 1.3, display: '1,3' },
+        { value: 2.5, display: '2,5' },
+      ]}
+      bars={[
+        { label: 'Sego di vitello grezzo e sbiancato', value: 0.8, display: '0,8', tone: 'ok' },
+        { label: 'Sego interesterificato chimicamente, miscela 9:1', value: 17.4, display: '17,4', tone: 'against' },
+      ]}
+    >
+      Le due linee tratteggiate sono i limiti pubblicati: <strong>1,3</strong> per il lardo puro
+      reso, <strong>2,5</strong> per il sego edibile. La materia prima sta sotto entrambi. Il
+      materiale su cui poggia davvero la scarsa evidenza umana sta a <strong>sette volte</strong>
+      il più alto dei due. I valori completi, acidi grassi liberi compresi, sono nella tabella
+      qui sotto.
+    </ScaleFigure>
 
     <div class="tbl-wrap">
       <table class="tbl">

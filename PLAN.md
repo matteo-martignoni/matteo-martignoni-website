@@ -1094,3 +1094,98 @@ dichiara quattro: finche' i due non concordano, il sito non conta.
 
 Il cappello sta ora in quattro righe, esattamente l'altezza del riquadro del
 ritratto, in entrambe le lingue.
+
+## 21. Prima passata sulla leggibilita': figure, diagrammi, navigazione
+
+Il committente ha chiesto di rendere il sito piu' godibile e piu' facile da
+percorrere, nominando grafici, algoritmi e tab. Il censimento ha detto qual e'
+il problema vero: **undici pagine, cinquantuno sezioni numerate e zero ancore**,
+quindici tabelle, trentanove callout, cinquantotto tag di fonte e quindici sole
+StatCard, con quasi tutto il testo fra 0,9 e 0,93rem in una colonna sola. Il
+sito non e' brutto, e' **uniformemente denso**: graficamente il dato che regge
+la tesi pesa quanto una nota a margine.
+
+Di qui la scelta dei primi tre interventi, uno per linguaggio nuovo: una
+figura, un diagramma, una navigazione.
+
+### Perche' niente libreria di grafici
+
+I dati stanno gia' in trentadue array tipizzati dentro le pagine, e la pagina
+AMSA live usa gia' un SVG in linea. Le figure si generano quindi **in build**,
+in HTML e CSS: nessuna dipendenza nuova, nessun JavaScript a runtime, si
+stampano in PDF (un investitore stampa), e le etichette restano testo vero,
+selezionabile e cercabile, invece che glifi dentro un `<text>`. Su barre
+orizzontali il CSS fa tutto, ed e' fluido senza il viewBox che scalerebbe anche
+i caratteri. E' la motivazione tecnica che il mandato chiede per non aggiungere
+stack.
+
+### La figura: il valore di acidita' (Tesi, sezione 2)
+
+Quattro valori in tabella diventano una scala sola: la materia prima a 0,8, i
+due limiti pubblicati come linee tratteggiate a 1,3 e 2,5, e il materiale su cui
+poggia la scarsa evidenza umana a 17,4. Il "sette volte il limite" che in
+tabella va calcolato a mente, qui si vede.
+
+Due regole che la figura si porta dietro, e che valgono per tutte le prossime:
+il **fondo scala e' esplicito** (una barra senza fondo scala e' una proporzione
+senza unita', non un dato), e la figura **non sostituisce la tabella**, le sta
+accanto. I numeri restano leggibili uno per uno li', quindi il disegno e'
+marcato come decorativo e non raddoppia il contenuto per chi usa uno screen
+reader.
+
+### Il diagramma: la catena virtuosa (Audit, sezione 4)
+
+In una tabella a cinque colonne "si interrompe qui" e' una cella come le altre.
+Disegnata, la catena mostra la cosa che la tabella nasconde: che non sono
+quattro righe equivalenti ma una concatenazione, e che a un anello preciso il
+filo si spezza. L'etichetta sull'interruzione non ripete il verdetto
+dell'anello, nomina il passaggio retorico che la sezione descrive nel testo, la
+solidita' dei primi due anelli prestata al terzo.
+
+In colonna e non in orizzontale: quattro nodi affiancati dentro la misura del
+sito darebbero colonne da dieci caratteri, difetto gia' corretto due volte in
+questa consegna.
+
+### La navigazione: ancore su tutte le sezioni, e la guida laterale
+
+Nessuna sezione era raggiungibile con un link, e i rimandi interni che dicono
+"sezione 3" erano testo morto. Ora ogni sezione ha la sua ancora, ricavata dal
+numero e non dal titolo, quindi **identica nelle due lingue**:
+`/investors#sec-3` e `/it/investitori#sec-3` puntano allo stesso punto
+dell'argomentazione. Il numero di sezione e' il permalink.
+
+La guida laterale si costruisce dal DOM e non da una lista passata dalla pagina:
+con cinquantuno sezioni su due lingue una lista parallela sarebbe sbagliata alla
+prima modifica. Sta fissa nel margine destro, fuori dal flusso, quindi non
+sposta di un pixel il contenuto esistente, e compare solo sopra i 1200px, dove
+il margine libero accanto ai 64rem di colonna basta a non sovrapporsi al testo.
+Senza JavaScript non compare e la pagina non cambia.
+
+Il componente `Section` e' stato duplicato in `components/ode-v2/` invece di
+essere modificato: quello originale sta in `components/ode/`, che l'isolamento
+protegge.
+
+### Sui tab, che il committente aveva nominato
+
+Un tab nasconde meta' del contenuto dietro un clic, e su questo sito la meta'
+nascosta e' quasi sempre quella sfavorevole. Metterla dietro un clic **e'**
+attenuarla, che e' cio' che il mandato vieta. Niente tab quindi su copre e non
+copre, sulla tassonomia delle claim, sulle lacune, su cio' che fa cadere la
+tesi. Restano ammissibili dove le alternative sono simmetriche e si escludono a
+vicenda, come i tre scenari di investimento, e in quel caso con radio e CSS,
+tutti i pannelli nel DOM e uno stile di stampa che li apre: cosi' la ricerca
+nella pagina e il PDF continuano a funzionare.
+
+### Verifiche
+
+Le ventidue pagine passate al setaccio nel browser: ogni sezione ha la sua
+ancora (51 per lingua), la guida ha tanti numeri quante sezioni, nessuna pagina
+scorre in orizzontale, la guida non si sovrappone mai alla colonna di testo,
+zero errori JavaScript. Ancore verificate sia dal clic sul numero sia da link
+diretto in entrambe le lingue. Su 390px la guida sparisce e i numeri dei
+riferimenti si sfalsano su due righe invece di scriversi addosso.
+
+La verifica 10 dello script QA e' stata resa **piu' precisa**: la soglia di una
+media query non e' la larghezza di un elemento, e' il meccanismo con cui il
+layout si adatta. Ora le occorrenze dentro `@media` sono escluse, e la verifica
+resta severa su tutto il resto.

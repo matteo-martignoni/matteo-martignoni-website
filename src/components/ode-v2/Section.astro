@@ -1,0 +1,51 @@
+---
+// Sezione numerata per /OdE/test.
+//
+// Perche' non riusa components/ode/Section.astro: quel componente e' del sito
+// originale e non va toccato. La differenza e' una sola, ma vale per tutte le
+// cinquantuno sezioni della consegna: qui la sezione ha un'ancora.
+//
+// Prima nessuna sezione era raggiungibile con un link, e i rimandi interni che
+// dicono "sezione 3" erano testo morto. L'ancora si ricava dal numero e non dal
+// titolo, cosi' e' la stessa nelle due lingue: /investors#sec-3 e
+// /it/investitori#sec-3 puntano alla stessa sezione. Il numero diventa il
+// permalink, che e' l'affordance meno invadente possibile.
+interface Props {
+  n?: string;       // es. "1", "2.1"
+  title: string;
+  id?: string;
+}
+const { n, title, id } = Astro.props;
+const anchor = id ?? (n ? `sec-${n}` : undefined);
+---
+<section class="sec" id={anchor} data-sec={n}>
+  <header class="sec-head">
+    {n && (anchor
+      ? <a class="sec-n" href={`#${anchor}`} aria-label={`Link to section ${n}`}>{n}</a>
+      : <span class="sec-n">{n}</span>)}
+    <h2>{title}</h2>
+  </header>
+  <div class="sec-body">
+    <slot />
+  </div>
+</section>
+
+<style>
+  /* L'ancora deve fermarsi sotto il bordo superiore, non incollata. */
+  .sec { margin: 3rem 0; scroll-margin-top: 1.5rem; }
+  .sec-head { display: flex; align-items: baseline; gap: 0.7rem; margin-bottom: 1.1rem; }
+  .sec-n {
+    font-family: var(--ode-font-mono);
+    font-size: 0.95rem;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  /* Il numero e' un link, ma non deve sembrarlo finche' non ci passi sopra:
+     il sito e' pieno di link nel testo e uno in piu' nell'intestazione
+     rumoreggerebbe. */
+  a.sec-n { text-decoration: none; }
+  a.sec-n:hover, a.sec-n:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
+  .sec h2 { font-size: clamp(1.3rem, 2.6vw, 1.7rem); }
+  .sec-body :global(p) { margin: 0 0 0.9rem; max-width: 42rem; }
+  .sec-body :global(p:last-child) { margin-bottom: 0; }
+</style>
