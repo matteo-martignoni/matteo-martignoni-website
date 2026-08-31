@@ -1,0 +1,464 @@
+---
+import OdeV2Layout from '../../../../layouts/OdeV2Layout.astro';
+import Section from '../../../../components/ode/Section.astro';
+import DataTag from '../../../../components/ode-v2/DataTag.astro';
+import Status from '../../../../components/ode-v2/Status.astro';
+import Finding from '../../../../components/ode-v2/Finding.astro';
+import Callout from '../../../../components/ode-v2/Callout.astro';
+import ClaimTable from '../../../../components/ode-v2/ClaimTable.astro';
+import ReadNext from '../../../../components/ode-v2/ReadNext.astro';
+import { odeMeta, odeRoutes } from '../../../../i18n/ode-v2';
+
+const lang = 'it' as const;
+const m = odeMeta[lang].audit;
+const r = odeRoutes[lang];
+
+// I dodici bacini interrogati, elencati perché la lacuna sia verificabile.
+const basins = [
+  'PubMed', 'EMBASE', 'Europe PMC', 'Scopus', 'Web of Science', 'Google Scholar',
+  'Semantic Scholar', 'ClinicalTrials.gov', 'CIR', 'CosIng', 'EUR-Lex', 'FAO Codex Alimentarius',
+];
+
+// Che cosa esiste davvero, ripulito. Nucleo probatorio con esito misurato su
+// grasso animale trigliceridico applicato per via topica.
+const corpus = [
+  { g: 'A1', n: '0', what: 'Studi controllati su cute umana in vivo, con misura strumentale, campione adeguato e comparatore attivo.', note: 'Nessuno.' },
+  { g: 'A2', n: '0', what: 'Studi su cute umana in vivo con misura strumentale ma disegno o campione più deboli.', note: 'Nessuno.' },
+  { g: 'B1', n: '0', what: 'Cute umana ex vivo con misura strumentale.', note: 'Nessuno su grasso animale.' },
+  { g: 'B2', n: '4', what: 'Modelli animali e in vitro.', note: 'Un lardo su edema di ratto, una miscela a sette componenti su topo, un in vitro su cheratinociti, e uno studio su 95 suinetti in cui il lardo puro non ha dato alcun beneficio.' },
+  { g: 'C', n: '2', what: 'Esito umano soggettivo, verificato.', note: 'Due studi su emulsioni di sego ovino interesterificato in miscela con olio vegetale, 83 e 78 partecipanti, esito riferito e non strumentale, dello stesso gruppo di ricerca.' },
+  { g: 'C', n: '2', what: 'Esito attribuito ma non verificabile sui soli abstract.', note: 'Due studi citati dalla rassegna come portatori di esito idratante, la cui attribuzione non è stata possibile verificare.' },
+];
+
+// I quattro errori di attribuzione, verificabili da chiunque.
+const errors = [
+  {
+    t: 'Un grasso vegetale letto come animale',
+    what: 'Gli esteri di grasso Engkabang, cioè il grasso di Shorea stenoptera, sono descritti come derivati principalmente dal sego, e i loro dati di idratazione sono riportati come prova del beneficio del sego.',
+    why: 'L’Engkabang è un grasso vegetale. La conseguenza è netta: l’unico dato quantitativo di idratazione presente in tutta la rassegna, la progressione dal 4,7% al 47,2% fra i 30 e i 180 minuti, non riguarda il sego e non è un benchmark per il sego. Questo dato circola.',
+    src: 'Abd Rahman et al. 2011, Bioresour Technol 102(3):2168-76, DOI 10.1016/j.biortech.2010.10.034. La catena citazionale è stata risalita fino alla fonte vegetale reale, Abd Gani et al. 2010, PubMed 20530909. Verifica su testo integrale, Traccia 5 v3.0 sez. 6.9.1 e consolidamento v4.0 parte A.4.',
+  },
+  {
+    t: 'Un tensioattivo per erbicidi letto come sego',
+    what: 'Fra gli studi sugli effetti avversi del sego figurano lavori sulle ammine di sego etossilate, i tensioattivi usati nelle formulazioni di erbicidi al glifosato.',
+    why: 'Le ammine di sego etossilate derivano dal sego per amminazione ed etossilazione: sono tensioattivi cationici e non condividono con il trigliceride né la struttura né il comportamento tossicologico. Da qui discendono due affermazioni che circolano: che il sego sia sensibilizzante secondo un saggio GARD, e che il sego non sia sicuro per gli ecosistemi marini. Entrambe misurano un’altra molecola.',
+    src: 'Lindberg et al. 2020, J Proteomics, DOI 10.1016/j.jprot.2020.103647. Traccia 6 v2, sez. 6 e scheda R23.',
+  },
+  {
+    t: 'Una via sistemica letta come applicazione cutanea',
+    what: 'Fra gli studi inclusi figurano un’infusione endovenosa di emulsione di sego in bovine da latte e un’infusione abomasale, oltre a un’emulsione di trigliceridi somministrata per via endovenosa.',
+    why: 'Sono vie di somministrazione sistemiche. Non dicono nulla sul comportamento di un lipide applicato sulla cute, che è la domanda della rassegna.',
+    src: 'Pires et al. 2007 e Brickner et al. 2009, mappati nella tabella di audit della Traccia 5 v3.0, sez. 6.9.',
+  },
+  {
+    t: 'Una fonte compositiva che non concorda con le caratterizzazioni dirette',
+    what: 'La composizione del sego e il suo contenuto vitaminico, cioè l’intero argomento di biocompatibilità, sono attribuiti a un lavoro su sego alimentare ossidato termicamente a 180 °C e somministrato per via dietetica a conigli.',
+    why: 'Il profilo acidico riportato in quel lavoro è anomalo: acido linoleico fra 18,7 e 23,7 g/100 g, senza oleico fra i maggioritari. Due caratterizzazioni GC-FID lette per intero danno linoleico allo 0,50% e all’1,3%. La discrepanza è di circa quaranta volte.',
+    src: 'Zeb & Akbar 2018, DOI 10.1155/2018/7408370, confrontato con Limmatvapirat 2021 (DOI 10.7324/JAPS.2021.110903) e Kowalska 2020 (DOI 10.3390/biom10010115). Traccia 5 v3.0, sez. 6.9.1.',
+  },
+];
+
+// La tassonomia delle claim di mercato. Valuta l'affermazione, mai chi la formula.
+const claims = [
+  {
+    claim: '"Simile al sebo o ai lipidi umani"',
+    says: 'Somiglianza compositiva con il sebo umano, spesso in forma superlativa contro classi intere di ingredienti.',
+    evidence: 'Vera per la sola frazione trigliceridica. Il sebo umano contiene circa il 25% di esteri cerosi e il 12-15% di squalene, entrambi assenti nel sego, e il suo acido grasso caratteristico, il sapienico, è esclusivo della specie umana.',
+    ok: 'parziale' as const,
+    criterion: 'Veridicità; supporto probatorio',
+  },
+  {
+    claim: '"Ricco di vitamine A, D, E, K"',
+    says: 'Composizione, con implicazione di beneficio.',
+    evidence: 'Presenza in tracce, mai standardizzata. Il fatto compositivo non sostiene l’implicazione funzionale.',
+    ok: 'parziale' as const,
+    criterion: 'Supporto probatorio',
+  },
+  {
+    claim: '"Rafforza la barriera cutanea"',
+    says: 'Riparazione della funzione barriera.',
+    evidence: 'Il sego è classificato emolliente. Non fornisce ceramidi né colesterolo in rapporto fisiologico, e nessuno studio strumentale ne documenta un effetto di riparazione.',
+    ok: 'no' as const,
+    criterion: 'Veridicità',
+  },
+  {
+    claim: '"Cura acne, eczema o dermatite"',
+    says: 'Trattamento di condizioni patologiche nominate.',
+    evidence: 'Nessuna. E una dichiarazione che descrive il trattamento di una patologia rischia la riqualificazione come dichiarazione medicinale.',
+    ok: 'no' as const,
+    criterion: 'Onestà; confine con il medicinale',
+  },
+  {
+    claim: '"Non comedogenico" oppure "comedogenico 2"',
+    says: 'Un valore su una scala di comedogenicità.',
+    evidence: 'Il valore è estrapolato da dati su acidi grassi in forma libera e sui loro esteri di alcoli monovalenti, cioè da molecole in una forma chimica diversa da quella presente nel sego. Sul sego non è mai stato misurato.',
+    ok: 'no' as const,
+    criterion: 'Supporto probatorio',
+  },
+  {
+    claim: '"Naturale e ancestrale"',
+    says: 'Origine e tradizione d’uso.',
+    evidence: 'Non probatoria. Descrive una provenienza, non una prestazione, e non va usata per suggerirne una.',
+    ok: 'neutra' as const,
+    criterion: 'Onestà; scelta informata',
+  },
+];
+
+// La catena virtuosa e dove si interrompe.
+const chain = [
+  { n: '1', t: 'La pratica di allevamento produce un animale diverso', ev: 'Letteratura zootecnica sul grass-fed', g: 'Media', v: 'Regge parzialmente' },
+  { n: '2', t: 'Quell’animale produce un grasso di composizione diversa', ev: 'Profilo in acidi grassi e CLA documentati', g: 'Buona', v: 'Regge sul dato compositivo' },
+  { n: '3', t: 'Quella composizione produce un esito cutaneo superiore', ev: 'Nessuno studio strumentale', g: 'Nulla', v: 'Si interrompe qui' },
+  { n: '4', t: 'Il tutto comporta un beneficio ambientale', ev: 'Letteratura contestata sul pascolo rigenerativo', g: 'Debole e contestata', v: 'Regge solo in parte' },
+];
+
+// La soglia probatoria che i comparatori vegetali hanno già superato.
+const bar = [
+  { i: 'Olio di cocco vergine', d: 'Trial controllato in doppio cieco, dermatite atopica negli adulti', o: 'Colonizzazione da S. aureus, 5% contro 50% (RR 0,10; p = 0,0028); indice SCORAD oggettivo p = 0,004' },
+  { i: 'Olio di argan', d: 'Studio randomizzato controllato, donne in postmenopausa', o: 'Elasticità cutanea R2, R5, R7 con p < 0,001; resilienza p = 0,002 per via topica' },
+  { i: 'Olio di jojoba', d: 'Modelli sperimentali', o: 'Riduzione significativa di TNF-alfa e IL-6' },
+  { i: 'Sego bovino', d: 'nessuno', o: 'nessun dato' },
+];
+---
+<OdeV2Layout title={m.title} description={m.description} lang={lang} active="audit">
+  <header class="pg">
+    <p class="ode-eyebrow">L’Audit</p>
+    <h1>Che cosa abbiamo verificato, e come</h1>
+    <p class="lede">
+      Questa è la pagina che spiega perché riteniamo di poter parlare di questo materiale.
+      Non contiene affermazioni su che cosa il sego faccia alla pelle: contiene il risultato
+      di mesi passati a cercare di demolire l’idea prima di costruirci sopra un’azienda.
+    </p>
+    <p class="sub">
+      Tutto ciò che segue è verificabile da chiunque abbia accesso alla letteratura, in un
+      pomeriggio. È la sua caratteristica principale.
+    </p>
+  </header>
+
+  <Section n="1" title="Il vuoto di evidenza">
+    <p>
+      Il numero di studi che misurano un esito cutaneo strumentale su sego bovino tal quale
+      applicato sulla cute umana è <strong>zero</strong>. Nessuno studio randomizzato, nessuna
+      misura quantitativa di perdita d’acqua transepidermica, nessun dato corneometrico
+      controllato, nessun confronto diretto con un comparatore attivo.
+      <DataTag kind="fonte" label="Lacuna verificata interrogando dodici bacini: PubMed, EMBASE, Europe PMC, Scopus, Web of Science, Google Scholar, Semantic Scholar, ClinicalTrials.gov, CIR, CosIng, EUR-Lex e FAO Codex Alimentarius. Ricerche mirate in polacco, russo, cinese, giapponese e turco oltre all’inglese. Traccia 5 v3.0, sezioni 1.3 e 8." />
+    </p>
+    <p class="ev-line"><Status kind="lacuna" lang={lang} /> <Finding kind="contro" lang={lang} /></p>
+
+    <p class="measure">
+      Una lacuna non è un’assenza di ricerca: è un esito negativo, e come tale va documentato
+      con i bacini interrogati e le lingue coperte. Questi sono i dodici bacini.
+    </p>
+    <ul class="basins">
+      {basins.map((b) => <li>{b}</li>)}
+    </ul>
+    <p class="note">
+      Più ricerche mirate in polacco, russo, cinese, giapponese e turco, oltre all’inglese.
+      In polacco è emerso solo materiale commerciale; in russo una tradizione aneddotica; in
+      cinese fonti cliniche che sconsigliano il lardo sulle ustioni per rischio infettivo; in
+      giapponese il grasso compare solo come base oleosa, quindi come veicolo e non come
+      principio. La lacuna è stata <strong>riconfermata al 28 agosto 2026</strong> da una
+      revisione successiva della libreria.
+    </p>
+
+    <Callout tone="honest" title="E i bacini che NON abbiamo interrogato">
+      <p>
+        Un sito che pubblica il proprio metodo deve pubblicare anche i propri buchi, altrimenti
+        la lacuna diventa un’affermazione di comodo. Questi sono i bacini rimasti fuori:
+        <strong>CNKI, il testo integrale di J-STAGE, KoreaScience e KISS, DIALNET e SciELO</strong>.
+        Scopus e Web of Science non sono stati accessibili in forma diretta e sono stati
+        interrogati solo per aggregatori.
+      </p>
+      <p>
+        Che cosa questo significa, detto con precisione: la lacuna è un esito negativo
+        <strong>nei bacini interrogati</strong>, che sono dodici e coprono sei lingue. Non è la
+        prova che in nessun archivio del mondo esista uno studio. Chi volesse smentirci sa
+        esattamente dove cercare, ed è giusto così.
+        <DataTag kind="fonte" label="Copertura documentale mancante dichiarata come verifica ancora aperta nel consolidamento della ricerca OdE v4.0, punto 13. Le curve SFC di due lavori cinesi restano da digitalizzare per i valori a temperatura cutanea." />
+      </p>
+    </Callout>
+
+    <h3 class="sub-h">Che cosa esiste davvero, ripulito</h3>
+    <p class="measure">
+      Il nucleo probatorio conta otto record. Nessuno di essi è sego bovino puro su cute umana
+      con misura strumentale.
+    </p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr><th scope="col">Grado</th><th scope="col">N</th><th scope="col">Che cosa sarebbe</th><th scope="col">Che cosa c’è</th></tr>
+        </thead>
+        <tbody>
+          {corpus.map((c) => (
+            <tr>
+              <th scope="row" class="num">{c.g}</th>
+              <td class="num">{c.n}</td>
+              <td>{c.what}</td>
+              <td>{c.note}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Distribuzione dei gradi ricalcolata record per record. Traccia 5 v3.0, sez. 3.1 e 4; confermata in Traccia 1 sez. 7, Traccia 3 v4 sez. 2 e Traccia 6 v2 sez. 2.1." />
+      La scala dei gradi è quella usata in tutta la libreria: A1 è uno studio controllato su
+      cute umana in vivo con misura strumentale e comparatore attivo, D è una fonte commerciale
+      senza valore probatorio.
+    </p>
+
+    <Callout tone="honest" title="Il risultato più scomodo di questa sezione">
+      <p>
+        Fra i quattro record di grado B2, uno ha <strong>esito negativo</strong>: su 95 suinetti,
+        il lardo puro usato come braccio comparatore su ferite da castrazione non ha prodotto
+        alcun beneficio di guarigione, e la colonizzazione fungina è risultata pari al non
+        trattato.
+        <DataTag kind="fonte" label="Prokop et al. 2022, Planta Med 88:300-312, DOI 10.1055/a-1646-2959. Accesso ad abstract. Traccia 5 v3.0, sez. 5 e 13.3." />
+      </p>
+      <p>
+        Lo riportiamo per intero e con la sua pesatura corretta: il contesto è la ferita
+        chirurgica aperta, non la cute integra, quindi il risultato esclude in modo solido
+        l’area ferita e medicazione dal perimetro rivendicabile, e dice poco sull’uso cosmetico.
+        Ma è un dato con comparatore, controllo e campione decoroso, e va sul tavolo.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="2" title="L’audit della rassegna più citata">
+    <p>
+      Il documento che il campo cita quando si parla di sego e pelle è una rassegna di tipo
+      scoping del 2024. Ha vagliato 147 studi e ne ha inclusi 19, su due sole banche dati, e
+      dichiara essa stessa quel limite. La sua conclusione principale, che non esista alcuno
+      studio randomizzato sul sego lasciato sulla cute umana, è la stessa a cui siamo arrivati
+      per via indipendente.
+      <DataTag kind="fonte" label="Russell MF, Sandhu M, Vail M, Haran C, Batool U, Leo J. Tallow, Rendered Animal Fat, and Its Biocompatibility With Skin: A Scoping Review. Cureus 2024;16(5):e60981. DOI 10.7759/cureus.60981. Percorso PRISMA-ScR verificato su testo integrale." />
+    </p>
+
+    <Callout tone="note" title="Come leggere questa sezione">
+      <p>
+        Quanto segue è una constatazione documentale, non una denuncia. Non ci interessa la
+        disattenzione di nessuno: ci interessa che cosa questo dice sullo stato del campo.
+        Il documento che tutti citano è un documento che nessuno ha controllato. Questa non è
+        una lacuna nella letteratura: è l’assenza di una letteratura.
+      </p>
+      <p>
+        Ogni voce qui sotto è verificabile confrontando la rassegna con lo studio primario che
+        cita. Abbiamo indicato quale.
+      </p>
+    </Callout>
+
+    <ol class="findings">
+      {errors.map((e, i) => (
+        <li>
+          <span class="f-n">{String(i + 1).padStart(2, '0')}</span>
+          <span class="f-t">{e.t}</span>
+          <p class="f-b">{e.what}</p>
+          <p class="f-b"><strong>Perché conta.</strong> {e.why}</p>
+          <p class="f-b note"><DataTag kind="fonte" label={e.src} /> Fonte primaria e riferimento di verifica in nota.</p>
+        </li>
+      ))}
+    </ol>
+
+    <h3 class="sub-h">Il verdetto dell’audit</h3>
+    <p class="measure">
+      La conclusione generale della rassegna regge, ma nonostante il metodo e non grazie a
+      esso. Dei 19 studi inclusi, sei hanno pertinenza all’applicazione topica di grasso
+      animale trigliceridico, e di questi uno non misura alcun esito biologico. Il corpus reale
+      con esito cutaneo è di <strong>cinque studi su diciannove dichiarati</strong>.
+      <DataTag kind="fonte" label="Riclassificazione voce per voce dei 19 studi inclusi, Traccia 5 v3.0, sez. 6.9 e 6.9.4. [CALCOLO DERIVATO]" />
+    </p>
+    <p class="measure">
+      Di questa pagina fanno parte <strong>due errori ricostruiti fino alla fonte</strong>, non
+      uno: l’attribuzione al sego di dati misurati su un grasso vegetale, con la catena
+      citazionale risalita fino al lavoro originale, e l’attribuzione al sego di risultati
+      ottenuti su un derivato amminico usato negli erbicidi. Sono la parte del nostro lavoro
+      che un formulatore può verificare per primo e a costo zero, ed è la ragione per cui la
+      teniamo in vista invece che in nota.
+    </p>
+
+    <Callout tone="warn" title="La conclusione della rassegna che è sfavorevole a noi">
+      <p>
+        Nelle sue conclusioni la stessa rassegna afferma che altri composti studiati negli
+        studi comparativi, in particolare l’olio di semi di zucca e l’acido linoleico, offrono
+        benefici idratanti ed emollienti <strong>superiori</strong> al sego. Riporta inoltre
+        che il sego è significativamente più appiccicoso dell’olio di semi di zucca, il che
+        potrebbe dissuadere dall’applicazione, e che lascia una pellicola oleosa superficiale
+        potenzialmente sgradita a pelli grasse o acneiche.
+      </p>
+      <p>
+        Va riportata così com’è. Un audit che corregge solo nella direzione che conviene a chi
+        lo firma non è un audit.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="3" title="Le claim che non reggono">
+    <p>
+      Questa è una tassonomia delle affermazioni che circolano nella categoria, valutate contro
+      i criteri comuni europei per le dichiarazioni dei prodotti cosmetici. Valuta
+      <strong>le affermazioni, mai chi le formula</strong>: nessun operatore, marchio o autore
+      è nominato, e nessuna intenzione è attribuita a nessuno.
+      <DataTag kind="fonte" label="Regolamento (UE) 655/2013, criteri comuni per la giustificazione delle dichiarazioni relative ai prodotti cosmetici. Tassonomia costruita nella Traccia 7 v2, sez. 7." />
+    </p>
+    <ClaimTable rows={claims} lang={lang} />
+    <Callout tone="honest" title="La regola che questa tabella impone a noi">
+      <p>
+        Un sito che pubblica una tassonomia delle claim indifendibili non può usarne nessuna.
+        Nessuna delle sei righe qui sopra compare altrove su questo sito, in nessuna forma e
+        con nessun sinonimo. Se ne trovate una, è un errore da segnalarci.
+      </p>
+    </Callout>
+
+    <h3 class="sub-h">Il contesto in cui queste claim circolano</h3>
+    <p class="measure">
+      Un’analisi trasversale pubblicata su rivista peer-reviewed ha esaminato 200 contenuti
+      social distribuiti su più piattaforme.
+    </p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th scope="col">Misura</th><th scope="col">Valore</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Contenuti che raccomandano il sego</th><td class="num">82%</td></tr>
+          <tr><th scope="row">Tasso di raccomandazione fra i dermatologi</th><td class="num">7%</td></tr>
+          <tr><th scope="row">Contenuti con interesse commerciale, su una prima piattaforma</th><td class="num">92%</td></tr>
+          <tr><th scope="row">Contenuti con interesse commerciale, su una seconda piattaforma</th><td class="num">74%</td></tr>
+          <tr><th scope="row">Contenuti che citano una fonte scientifica</th><td class="num">16% dei video su una piattaforma, 0% su altre</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Almatroud L, Choi S, Libson K, Ashack K. Beef Tallow-Based Skincare Claims in Social Media. J Cosmet Dermatol 2025;24(12):e70544. DOI 10.1111/jocd.70544. I valori riportati sono quelli confermati dal consolidamento v4.0 della ricerca: tasso di raccomandazione del 7% fra i dermatologi, interesse commerciale nel 92% dei contenuti su una piattaforma e nel 74% su un’altra. Due qualificazioni dichiarate: una quota aggregata di contenuti con interesse commerciale, riportata al 61% da una sintesi interna precedente, non è confermata dalla v4.0 e non è usata qui; e le sintesi interne indicano il numero di piattaforme campionate in modo discordante, tre oppure quattro, quindi non lo riportiamo." />
+      Lo stesso lavoro rileva che l’interesse commerciale aumenta in modo statisticamente
+      significativo la probabilità di raccomandare il sego. Le condizioni più citate sono acne,
+      eczema e psoriasi, cioè tre patologie.
+    </p>
+    <p class="note">
+      Questo è il rumore da cui un fornitore rigoroso eredita un rischio reputazionale, e la
+      ragione per cui la nostra differenziazione non può essere una claim migliore: deve essere
+      l’assenza di claim e la presenza di dati.
+    </p>
+  </Section>
+
+  <Section n="4" title="La catena virtuosa, e dove si interrompe">
+    <p>
+      Il pattern retorico dominante della categoria è una catena a quattro anelli. La solidità
+      dei primi due viene usata per far accettare il terzo, che non ha dati. Vederlo con
+      chiarezza è il modo per non ripeterlo.
+    </p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr><th scope="col">Anello</th><th scope="col">Affermazione</th><th scope="col">Evidenza</th><th scope="col">Grado</th><th scope="col">Verdetto</th></tr>
+        </thead>
+        <tbody>
+          {chain.map((c) => (
+            <tr class:list={[c.n === '3' && 'is-break']}>
+              <th scope="row" class="num">{c.n}</th>
+              <td>{c.t}</td>
+              <td>{c.ev}</td>
+              <td>{c.g}</td>
+              <td>{c.v}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Analisi della catena virtuosa e dei suoi quattro anelli, Traccia 7 v2, sez. 8." />
+    </p>
+
+    <Callout tone="honest" title="Dove questo colpisce noi">
+      <p>
+        L’anello 3 è indimostrato per il mercato <strong>e per OdE</strong>. Che la qualità
+        della filiera produca un esito cutaneo superiore è oggi indimostrabile con i dati
+        esistenti, per noi come per chiunque altro.
+      </p>
+      <p>
+        Il nostro vantaggio, se c’è, sta sugli anelli 1 e 2, cioè su tracciabilità e
+        composizione documentate, e sul fatto che li misuriamo e li dichiariamo lotto per lotto.
+        Non spendiamo l’anello 3 finché non esiste. Il quadro completo di che cosa
+        misuriamo sta in <a href={r.amsa}>AMSA</a>, quello di che cosa vorremmo misurare in
+        <a href={r.evidenza}>Domande aperte</a>.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="5" title="La soglia probatoria che dobbiamo superare">
+    <p>
+      La barriera all’adozione di questo materiale non è soltanto culturale: è probatoria, ed è
+      quantificabile. I comparatori vegetali con cui il sego viene messo a confronto hanno già
+      studi controllati con esito misurato.
+    </p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th scope="col">Ingrediente</th><th scope="col">Disegno</th><th scope="col">Esito misurato</th></tr></thead>
+        <tbody>
+          {bar.map((b) => (
+            <tr class:list={[b.i === 'Sego bovino' && 'is-gap']}>
+              <th scope="row">{b.i}</th>
+              <td>{b.d}</td>
+              <td>{b.o}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Confronto delle soglie probatorie ricostruito in Traccia 5 v3.0, sez. 6.10, a partire da Sataray-Rodriguez et al. 2025, Dermis 5(3):39, DOI 10.35702/Derm.10039, letto per intero." />
+    </p>
+    <p class="measure">
+      Ne discende una conseguenza operativa che questo sito applica ovunque: <strong>il disegno
+      sperimentale non è un’opzione di ricerca, è un prerequisito commerciale</strong>. E fino
+      a che non esiste, l’unica cosa onesta che possiamo vendere è la qualificazione del
+      materiale, non la sua efficacia.
+    </p>
+  </Section>
+
+  <ReadNext
+    lang={lang}
+    links={[
+      { href: r.tesi, label: 'La Tesi: il parametro che decide' },
+      { href: r.evidenza, label: 'Domande aperte: che cosa vogliamo misurare' },
+      { href: r.posizione, label: 'Posizione: dove possiamo esistere' },
+    ]}
+  />
+</OdeV2Layout>
+
+<style>
+  .ev-line { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1.2rem; }
+  .sub-h {
+    font-size: 1.12rem;
+    font-weight: 400;
+    color: var(--accent);
+    margin: 2.2rem 0 0.8rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--rule);
+  }
+  .basins {
+    list-style: none;
+    margin: 0.8rem 0 0.9rem;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .basins li {
+    font-family: var(--ode-font-mono);
+    font-size: 0.74rem;
+    color: var(--ink);
+    background: var(--pill);
+    border: 1px solid var(--rule);
+    border-radius: var(--ode-radius-sm);
+    padding: 0.22rem 0.55rem;
+  }
+  /* The row where the chain breaks, and the row where the evidence is absent,
+     both carry the dashed treatment of the "verified gap" status. */
+  .is-break td, .is-break th,
+  .is-gap td, .is-gap th {
+    background: transparent;
+    border-bottom-style: dashed;
+    border-bottom-color: var(--ink);
+    color: var(--ink);
+  }
+  .is-break th, .is-gap th { font-weight: 500; }
+</style>

@@ -1,0 +1,145 @@
+---
+import OdeV2Layout from '../../../../layouts/OdeV2Layout.astro';
+import { odeMeta, odeRoutes } from '../../../../i18n/ode-v2';
+
+const lang = 'it' as const;
+const m = odeMeta[lang].glossario;
+const r = odeRoutes[lang];
+
+// Glossario raggruppato. `id` è l'ancora per i link inline dalle altre pagine.
+// Le definizioni sono brevi e dichiarano il limite quando ne hanno uno.
+const groups = [
+  {
+    group: 'Il parametro che decide',
+    terms: [
+      { id: 'acidita', t: 'Numero di acidità', d: 'Milligrammi di idrossido di potassio necessari a neutralizzare gli acidi grassi liberi contenuti in un grammo di grasso. Determinazione per titolazione secondo EN ISO 660. È il parametro da cui dipende, secondo la chimica nota, la sicurezza di barriera di un lipide topico, e costa poche decine di euro. Nessuna soglia di acidità è però mai stata validata contro un esito cutaneo: i limiti esistenti sono soglie di grado commerciale.' },
+      { id: 'ffa', t: 'Acidi grassi liberi', d: 'Acidi grassi non più legati al glicerolo. Si generano per idrolisi, cioè per rottura del legame estere a opera di enzimi, umidità, calore o luce. Sono la forma chimica che disturba l’ordine lamellare della barriera cutanea, a differenza della forma legata.' },
+      { id: 'trigliceride', t: 'Trigliceride', d: 'Tre acidi grassi legati a una molecola di glicerolo. È la forma in cui gli acidi grassi si trovano nel sego. La distinzione fra forma legata e forma libera è il fondamento tecnico di OdE.' },
+      { id: 'lipasi', t: 'Lipasi', d: 'Enzima che idrolizza il legame estere dei lipidi. I batteri della pelle ne producono, e possono quindi liberare acidi grassi da un trigliceride applicato sulla cute. È la complicazione principale della tesi di OdE, ed è descritta per esteso nella pagina Tesi.' },
+      { id: 'idrolisi', t: 'Idrolisi in situ', d: 'La scissione del trigliceride che avviene sulla pelle, dopo l’applicazione, per opera delle lipasi microbiche. Né la sua cinetica né la sua composizione sono mai state misurate sul materiale di OdE: è la lacuna più seria della libreria di evidenza.' },
+      { id: 'composizione-rilascio', t: 'Composizione del rilascio', d: 'Quali acidi grassi vengono liberati dall’idrolisi, e in che proporzione, distinti dalla semplice velocità con cui il materiale si idrolizza. È la distinzione che decide il segno dell’effetto, perché la miscela attesa contiene sia acidi grassi con evidenza sfavorevole sia acidi grassi con evidenza favorevole. È il dato proprietario che OdE deve generare.' },
+      { id: 'oleico', t: 'Acido oleico', d: 'Monoinsaturo a diciotto atomi di carbonio, circa il 38-45% del profilo del sego. In forma libera è la molecola su cui è stabilito il principio di disgregazione della barriera. Il risultato riguarda l’oleico e non è estendibile alla classe degli acidi grassi liberi.' },
+      { id: 'saturi-dominanti', t: 'Palmitico e stearico', d: 'I due acidi grassi saturi dominanti del sego, insieme circa il 46% del profilo. Applicati per via topica su cute umana ex vivo danneggiata aumentano la produzione e il trasporto di lipidi nello strato corneo. È evidenza di grado B1, traslata da cute danneggiata a cute sana, con autori di provenienza industriale: qualifica il rischio dell’idrolisi, non autorizza alcun claim sul sego.' },
+    ],
+  },
+  {
+    group: 'Materia prima e processo',
+    terms: [
+      { id: 'sego', t: 'Sego', d: 'Grasso bovino o ovino fuso e raffinato. Nomenclatura internazionale degli ingredienti cosmetici: Tallow. È la matrice primaria di OdE. Non esiste alcuno studio clinico che ne misuri l’effetto sulla pelle umana.' },
+      { id: 'lardo', t: 'Lardo e grasso suino', d: 'Grasso suino fuso. Il limite di acidità di riferimento per il lardo puro reso è più stringente di quello del sego, e riflette la selezione della materia prima, non una proprietà della specie.' },
+      { id: 'rendering', t: 'Rendering', d: 'Processo termico di estrazione del grasso dai sottoprodotti animali. Le sue condizioni determinano acidità, perossidi e ossisteroli del prodotto finale. Un rendering a bassa temperatura è una leva di processo documentata e misurabile.' },
+      { id: 'soa', t: 'Sottoprodotti di origine animale', d: 'Materiali animali non destinati al consumo umano. Il grasso per uso cosmetico deve essere di Categoria 3, cioè a basso rischio, da animali sottoposti a controllo ante e post mortem.' },
+      { id: 'cat3', t: 'Categoria 3', d: 'La sola categoria di sottoprodotti idonea a mangimi e cosmetica. Non richiede marcatore chimico per i grassi fusi, il che rende la separazione documentale dalle altre categorie particolarmente critica.' },
+      { id: 'custodia', t: 'Catena di custodia', d: 'Sistema di accordi e registrazioni che segrega i lotti per origine lungo macello, rendering e trasporto. Serve a documentare la provenienza del grasso nel punto in cui l’identità individuale dell’animale si dissolve nella partita.' },
+    ],
+  },
+  {
+    group: 'Misura e stato ossidativo',
+    terms: [
+      { id: 'perossidi', t: 'Numero di perossidi', d: 'Misura dell’ossidazione primaria, in milliequivalenti di ossigeno per chilogrammo. La soglia di riferimento del Codex per i grassi animali denominati è 10 meq O₂/kg. È un indicatore transitorio: i perossidi si formano e poi si decompongono.' },
+      { id: 'anisidina', t: 'Valore di p-anisidina', d: 'Misura dell’ossidazione secondaria, cioè dei prodotti che si accumulano dopo la decomposizione dei perossidi. Complementare al numero di perossidi proprio perché non è transitorio.' },
+      { id: 'totox', t: 'TOTOX', d: 'Indice composito: due volte il numero di perossidi più il valore di p-anisidina. Combina ossidazione primaria e secondaria in un solo numero.' },
+      { id: 'ors', t: 'Oxidative Risk Score', d: 'Punteggio sintetico di AMSA che riassume lo stato ossidativo di un lotto a partire da parametri normati. È una metrica di qualità e stabilità del materiale, non un predittore di esito cutaneo: il ponte fra stato ossidativo misurato ed esito sulla pelle non esiste in letteratura per i trigliceridi.' },
+      { id: 'cops', t: 'Ossisteroli', d: 'Prodotti di ossidazione del colesterolo. Il colesterolo è l’unico substrato di ossidazione presente nel sego e assente per costruzione negli oli vegetali. Quelli che si formano per via termica appartengono alla classe con profilo biologico sfavorevole, mentre altri ossisteroli hanno effetti opposti: per questo il Passaporto riporta la speciazione e non un totale.' },
+      { id: 'sfc', t: 'Contenuto di grasso solido', d: 'La frazione di un grasso che è in fase solida a una data temperatura, misurata per risonanza magnetica a bassa risoluzione. A temperatura cutanea il sego è semisolido, cioè nella classe fisica del petrolato e non degli oli liquidi. Il valore per il sego a 32 °C è un calcolo derivato per interpolazione, non una misura diretta.' },
+      { id: 'pufa', t: 'Polinsaturi', d: 'Acidi grassi con più doppi legami. Meno polinsaturi significa maggiore stabilità ossidativa. La quota nel sego dovrebbe dipendere dalla dieta dell’animale, ed è il primo punto in cui la provenienza produrrebbe una proprietà misurabile del materiale invece di una storia. Il dato di riferimento proviene però da fonte divulgativa e va riverificato su campione proprio prima di qualsiasi uso.' },
+      { id: 'gc', t: 'Gascromatografia', d: 'Con rivelatore a ionizzazione di fiamma quantifica il profilo in acidi grassi; con spettrometria di massa conferma la struttura, ed è il metodo usato per la speciazione degli ossisteroli.' },
+    ],
+  },
+  {
+    group: 'Effetti cutanei e categorie',
+    terms: [
+      { id: 'tewl', t: 'Perdita d’acqua transepidermica', d: 'Il flusso d’acqua che attraversa la barriera cutanea, misurato per evaporimetria. È l’endpoint più validato per valutare l’integrità della barriera. Nessuna misura su sego puro applicato tal quale è stata reperita in letteratura.' },
+      { id: 'emolliente', t: 'Emolliente', d: 'Ingrediente che riempie gli spazi fra i corneociti in desquamazione e restituisce alla superficie morbidezza, flessibilità e lubricità. È la categoria in cui il sego rientra per meccanismo. I suoi endpoint sono strumentali: indice di desquamazione, microtopografia, elasticità, coefficiente di attrito.' },
+      { id: 'occlusivo', t: 'Occlusivo', d: 'Ingrediente che rallenta la perdita d’acqua formando un film sulla superficie. Il riferimento della categoria è il petrolato. Nessun trigliceride vi si avvicina, e OdE non rivendica superiorità occlusiva.' },
+      { id: 'appiccicosita', t: 'Appiccicosità', d: 'Misurata come forza di adesione con analizzatore di texture. Per un emolliente è un difetto sull’endpoint primario della categoria, perché produce il profilo di attrito opposto a quello desiderato. È documentata strumentalmente sul sego bovino.' },
+      { id: 'comedogenicita', t: 'Comedogenicità', d: 'Tendenza a favorire la formazione di comedoni. Il valore che circola per il sego è estrapolato da dati su acidi grassi in forma libera e sui loro esteri di alcoli monovalenti, cioè da molecole in una forma chimica diversa. Sul sego non è mai stato misurato: non è provato comedogenico né provato non comedogenico, è non testato.' },
+      { id: 'sebo', t: 'Sebo umano', d: 'Secrezione delle ghiandole sebacee. Contiene circa il 25% di esteri cerosi e il 12-15% di squalene, entrambi assenti nel sego, e un acido grasso caratteristico esclusivo della specie umana. La somiglianza fra sego e sebo è quindi vera per la sola frazione trigliceridica.' },
+      { id: 'alphagal', t: 'Alpha-gal', d: 'Epitopo zuccherino presente nei mammiferi non primati, oggetto di una sindrome allergica la cui sensibilizzazione primaria avviene per morso di zecca. Il contenuto in un sego ultrapurificato non è mai stato quantificato. La sieropositività non equivale alla sindrome, e la prevalenza è fortemente regionale.' },
+    ],
+  },
+  {
+    group: 'Tecnologia',
+    terms: [
+      { id: 'amsa', t: 'AMSA', d: 'Agente spettroscopico multimodale guidato dall’intelligenza artificiale. Non predice che cosa il sego faccia alla pelle, perché nessuno lo sa: misura e dichiara che cosa c’è in un lotto.' },
+      { id: 'passaporto', t: 'Passaporto Lipidico Digitale', d: 'Il documento in nove sezioni che viaggia con il lotto. La nona sezione elenca che cosa NON è stato testato.' },
+      { id: 'spettroscopia', t: 'Spettroscopia NIR e Raman', d: 'Tecniche che leggono l’impronta vibrazionale molecolare. Sui grassi animali sono disturbate da segnali di insaturazione deboli e da fluorescenza, da cui la necessità di controllare attivamente l’acquisizione.' },
+      { id: 'chemiometria', t: 'Chemiometria', d: 'Metodi statistici per estrarre informazione chimica dagli spettri. È la base matura e validata, ed è la linea di riferimento che un modello avanzato deve battere per entrare in produzione.' },
+      { id: 'fewshot', t: 'Apprendimento da pochi esempi', d: 'Strategie che reggono quando le etichette disponibili sono dell’ordine delle decine e non delle migliaia, condizione tipica di un dataset di filiera costoso da caratterizzare.' },
+      { id: 'ood', t: 'Distanza dalla distribuzione', d: 'Punteggio che segnala quando un campione è lontano da ciò che il modello conosce. Innesca cautela, repliche o rinvio a test esterno, non una predizione sicura di sé.' },
+    ],
+  },
+  {
+    group: 'Normativa e claim',
+    terms: [
+      { id: 'cpsr', t: 'Relazione sulla sicurezza del prodotto cosmetico', d: 'Il documento che valuta la sicurezza di un cosmetico, firmato da un valutatore qualificato. Per il sego l’evidenza di sicurezza esistente è derivata dai costituenti e non da dati primari sul materiale.' },
+      { id: 'criteri', t: 'Criteri comuni per le dichiarazioni', d: 'Sei criteri europei che ogni dichiarazione cosmetica deve rispettare: conformità normativa, veridicità, supporto probatorio, onestà, correttezza e possibilità di scelta informata. Sono il metro con cui è costruita la tassonomia delle claim pubblicata nell’Audit.' },
+      { id: 'eudr', t: 'Regolamento sulla deforestazione', d: 'Norma europea che impone dovuta diligenza e geolocalizzazione per una lista chiusa di prodotti pertinenti. Il codice doganale dei grassi di bovini, ovini e caprini non vi figura: il sego è fuori ambito. L’esenzione non è esclusiva del sego, ed è un argomento di conformità documentale, mai di superiorità ambientale.' },
+      { id: 'dpp', t: 'Passaporto Digitale di Prodotto', d: 'Strumento previsto dal regolamento europeo sull’ecodesign, con roll-out per gruppo di prodotto tramite atti delegati. Nessun atto delegato reperito riguarda gli ingredienti lipidici cosmetici: il Passaporto Lipidico è oggi un differenziale volontario e solo potenzialmente un adempimento futuro.' },
+      { id: 'codex', t: 'Codex CXS 211-1999', d: 'Standard internazionale sui grassi animali denominati. Fissa limiti di numero di acidità e di perossidi e parametri fisici comparativi. Sono soglie di grado commerciale alimentare, non soglie di sicurezza cutanea.' },
+      { id: 'gmp', t: 'Buone pratiche di fabbricazione', d: 'Norme di fabbricazione cosmetica che richiedono tracciabilità di lotto. Sono chiavi d’accesso al cliente professionale, e un requisito, non un differenziale.' },
+    ],
+  },
+  {
+    group: 'Metodo ed epistemologia',
+    terms: [
+      { id: 'gradi', t: 'Gradi di evidenza', d: 'Scala usata in tutta la libreria: A1 è uno studio controllato su cute umana in vivo con misura strumentale e comparatore attivo; A2 è più debole per disegno o campione; B1 è ex vivo; B2 è modello animale o in vitro; C è review, linea guida o esito soggettivo; D è fonte commerciale, senza valore probatorio. Sul sego topico i gradi A1 e A2 sono a zero.' },
+      { id: 'lacuna', t: 'Lacuna verificata', d: 'Un esito negativo documentato: si è cercato in modo esaustivo nel bacino pertinente e non si è trovato. Va distinta dall’assenza di dati dimostrata e dall’ipotesi non testata, cioè dal caso in cui il bacino non è stato interrogato affatto. Un bacino inesplorato non è un esito negativo verificato.' },
+      { id: 'errore-matrice', t: 'Errore di matrice', d: 'L’attribuzione a un materiale di dati misurati su un materiale chimicamente diverso. In questa categoria è ricorrente: derivati amminici del sego letti come sego trigliceridico, grassi vegetali letti come animali, vie sistemiche lette come applicazione cutanea. Il dettaglio è nell’Audit.' },
+      { id: 'requisito', t: 'Requisito contro differenziale', d: 'Un requisito va soddisfatto comunque e non produce vantaggio competitivo. Un differenziale è discrezionale e produce vantaggio solo se comunicato. Confonderli porta a spendere su adempimenti credendo di costruire posizionamento.' },
+      { id: 'arte-nota', t: 'Arte nota e libertà di operare', d: 'L’insieme delle soluzioni tecniche già pubblicate, tipicamente in brevetti. Un processo coperto da arte nota scaduta si può usare liberamente e senza licenze, ma per la stessa ragione non può essere un vantaggio competitivo. Per il frazionamento e la raffinazione del sego l’arte nota è pubblica e in gran parte scaduta: il fossato di OdE non può essere il processo.' },
+      { id: 'evidenza-traslata', t: 'Evidenza traslata', d: 'Un risultato ottenuto in un contesto e applicato per analogia a un contesto diverso, per esempio da cute danneggiata a cute sana, o da acidi grassi isolati a una matrice che li contiene. Va dichiarata come tale: è più di niente e molto meno di una dimostrazione.' },
+      { id: 'gate', t: 'Gate decisionale', d: 'Una soglia numerica o un evento osservabile, scritto prima di avere i dati, che stabilisce se proseguire, fermarsi o cambiare direzione. Nessun gate può essere superato da un segnale che non costa nulla all’interlocutore.' },
+    ],
+  },
+];
+---
+<OdeV2Layout title={m.title} description={m.description} lang={lang} pageKey="glossario">
+  <header class="pg">
+    <p class="ode-eyebrow">Glossario</p>
+    <h1>I termini, spiegati</h1>
+    <p class="lede">
+      Il vocabolario usato in tutto il sito, dalla chimica del grasso alla normativa al metodo.
+      Dove una definizione ha un limite, il limite fa parte della definizione.
+    </p>
+  </header>
+
+  <nav class="toc" aria-label="Indice del glossario">
+    {groups.map((grp) => <a href={`#${grp.terms[0].id}`}>{grp.group}</a>)}
+  </nav>
+
+  {groups.map((grp) => (
+    <section class="grp">
+      <h2 class="grp-title">{grp.group}</h2>
+      <dl class="terms">
+        {grp.terms.map((term) => (
+          <div class="term" id={term.id}>
+            <dt>{term.t}</dt>
+            <dd>{term.d}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  ))}
+
+  <p class="note back">
+    Torna a <a href={r.home}>la home</a>, all’<a href={r.audit}>Audit</a> o alla
+    <a href={r.tesi}>Tesi</a>.
+  </p>
+</OdeV2Layout>
+
+<style>
+  .toc { display: flex; flex-wrap: wrap; gap: 0.5rem 1.2rem; margin: 1.5rem 0 2.5rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--rule); }
+  .toc a { font-size: 0.85rem; color: var(--accent); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+
+  .grp { margin: 2.5rem 0; }
+  .grp-title { font-size: 1.15rem; font-weight: 500; color: var(--ink); margin: 0 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--rule); }
+  .terms { margin: 0; display: grid; gap: 1.1rem; }
+  .term { scroll-margin-top: 1.5rem; }
+  .term dt { font-weight: 500; color: var(--ink); margin-bottom: 0.2rem; }
+  .term dd { margin: 0; font-size: 0.93rem; line-height: 1.55; color: var(--body); max-width: 46rem; }
+  .term:target dt { color: var(--accent); }
+  .term:target { border-left: 3px solid var(--green-border); padding-left: 0.9rem; margin-left: -1.2rem; }
+  .back { margin-top: 2.5rem; }
+</style>

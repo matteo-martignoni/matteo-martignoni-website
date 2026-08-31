@@ -1,0 +1,327 @@
+---
+import OdeV2Layout from '../../../../layouts/OdeV2Layout.astro';
+import Section from '../../../../components/ode/Section.astro';
+import CowGlyph from '../../../../components/ode/CowGlyph.astro';
+import LifecycleFlow from '../../../../components/ode/LifecycleFlow.astro';
+import DataTag from '../../../../components/ode-v2/DataTag.astro';
+import Status from '../../../../components/ode-v2/Status.astro';
+import Finding from '../../../../components/ode-v2/Finding.astro';
+import Callout from '../../../../components/ode-v2/Callout.astro';
+import StatCard from '../../../../components/ode-v2/StatCard.astro';
+import ReadNext from '../../../../components/ode-v2/ReadNext.astro';
+import { odeMeta, odeRoutes } from '../../../../i18n/ode-v2';
+
+const lang = 'it' as const;
+const m = odeMeta[lang].filiera;
+const r = odeRoutes[lang];
+const g = r.glossario;
+
+const layers = [
+  {
+    k: 'Strato cogente',
+    glyph: 'calf' as const,
+    title: 'Anagrafe bovina',
+    body: 'Ogni capo ha un’identità individuale: doppia marca auricolare e codice di quattordici caratteri, invariato dalla nascita alla morte. Nascita, movimentazioni e macellazione sono registrate per obbligo di legge.',
+    refs: 'Reg. UE 2016/429, Reg. di esecuzione UE 2021/520, D.Lgs 134/2022',
+  },
+  {
+    k: 'Strato volontario ma vincolante',
+    glyph: 'cow' as const,
+    title: 'Disciplinare della denominazione',
+    body: 'Il disciplinare lega l’animale a un territorio e a una dieta certificati: foraggi della zona, divieto assoluto di insilati, zona delimitata a cinque province. È una carta d’identità nutrizionale della mandria.',
+    refs: 'Reg. UE 1151/2012, Reg. di esecuzione UE 2025/661',
+  },
+];
+
+const gaps = [
+  {
+    n: '01',
+    problema: 'L’identità individuale si dissolve nel lotto',
+    body: 'La marca auricolare identifica il singolo capo fino al macello. Al rendering i tessuti adiposi di più animali confluiscono in partite: il documento commerciale traccia il lotto di grasso fuso, non più il singolo animale né l’allevamento.',
+    presidio: 'Accordi di catena di custodia con macelli e impianti che segregano i lotti per origine e ne documentano la provenienza geografica.',
+  },
+  {
+    n: '02',
+    problema: 'Il disciplinare non copre il grasso',
+    body: 'La denominazione riguarda latte e formaggio. Nessuna certificazione si estende al sego: OdE non può fregiarsi della denominazione per il grasso, né lasciare intendere che il prodotto lipidico sia certificato.',
+    presidio: 'Comunicare la provenienza dal comprensorio, mai una certificazione del prodotto lipidico. Il rigore nel claim è la sola forma di credibilità disponibile.',
+  },
+  {
+    n: '03',
+    problema: 'La vacca a fine carriera può uscire prima',
+    body: 'Una bovina che ha prodotto latte può essere venduta, alimentata diversamente e movimentata fuori comprensorio prima dell’abbattimento, con eventi comunque registrati. "Da bovina che ha prodotto latte" non equivale a "alimentata a disciplinare fino al macello".',
+    presidio: 'Definire il claim con precisione e vincolare l’approvvigionamento ad animali macellati direttamente dal circuito.',
+  },
+  {
+    n: '04',
+    problema: 'La categoria va provata, non asserita',
+    body: 'Il grasso per uso cosmetico deve essere materiale di Categoria 3, da animali sottoposti a controllo ante e post mortem. I grassi fusi di Categoria 3 non richiedono marcatore chimico, il che rende la separazione documentale ancora più cruciale.',
+    presidio: 'Provare documentalmente la categoria e la separazione fisica e documentale lungo trasporto e lavorazione: registro partite, documento commerciale, riconoscimento dell’impianto.',
+  },
+  {
+    n: '05',
+    problema: 'Nessuna norma lega il lotto all’origine',
+    body: 'Il vuoto fra l’identità individuale cogente e la partita anonima resta aperto. Nessuna norma lo colma, e nessun operatore è obbligato a colmarlo.',
+    presidio: 'Il Passaporto Lipidico Digitale poggia su un sistema contrattuale e informativo costruito da OdE, che colma volontariamente il vuoto lasciato dalla norma. È lavoro, non una proprietà del territorio.',
+  },
+];
+
+// Bovino contro suino, quattro assi. Nessuno favorisce il suino.
+const species = [
+  { ax: 'Fisico, occlusività', bov: 'Punto di solidificazione 40-49 °C, numero di iodio 40-53. Semisolido a 32 °C', sui: 'Punto di solidificazione 32-45 °C, numero di iodio 55-65. Al limite inferiore a 32 °C', v: 'Bovino favorito', g: 'Solido, fonte primaria' },
+  { ax: 'Barriera, acidità', bov: 'Limite di riferimento 2,5 mg KOH/g; grezzo misurato a 0,8', sui: 'Limite 1,3 mg KOH/g per il lardo puro reso. Nessun valore misurato reperito', v: 'Indeterminato', g: 'Debole' },
+  { ax: 'Evidenza cutanea diretta', bov: 'Nessuno studio su bovino puro', sui: 'Tre studi primari, uno con esito negativo', v: 'Il suino ha più studi, esito misto', g: 'Debole' },
+  { ax: 'Culturale e commerciale', bov: 'Vincolo induista e buddhista', sui: 'Vincolo halal, più oneroso nei mercati di destinazione della cosmetica europea', v: 'Bovino favorito', g: 'Media' },
+];
+---
+<OdeV2Layout title={m.title} description={m.description} lang={lang} active="filiera">
+  <header class="pg">
+    <p class="ode-eyebrow">Filiera</p>
+    <h1>La provenienza è un input, non una promessa</h1>
+    <p class="lede">
+      Le bovine da latte del comprensorio del Parmigiano Reggiano sono fra i capi più documentati
+      e regolati d’Europa. Questo è un fatto verificabile, e questa pagina lo usa per quello che
+      vale: <strong>un input documentato del processo di qualificazione</strong>, non una
+      dichiarazione di superiorità del prodotto.
+    </p>
+    <p class="sub">
+      La pagina dice anche, con la stessa evidenza, dove quella tracciabilità si interrompe e che
+      cosa la provenienza <em>non</em> dimostra.
+    </p>
+  </header>
+
+  <Section n="1" title="Il doppio strato normativo">
+    <p>
+      Due sistemi indipendenti si sovrappongono sullo stesso animale: uno cogente, che ne fissa
+      l’identità individuale, e uno volontario ma vincolante, che ne certifica territorio e dieta.
+    </p>
+    <div class="layers">
+      {layers.map((l) => (
+        <article class="layer">
+          <div class="layer-head">
+            <CowGlyph variant={l.glyph} size={40} class="layer-glyph" />
+            <span class="layer-k">{l.k}</span>
+          </div>
+          <h3>{l.title}</h3>
+          <p>{l.body}</p>
+          <p class="layer-refs">{l.refs}</p>
+        </article>
+      ))}
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Consorzio del Parmigiano Reggiano, disciplinare e piano dei controlli. Testi normativi consultati su EUR-Lex." />
+    </p>
+  </Section>
+
+  <Section n="2" title="Il percorso di vita, e dove si spezza">
+    <p>
+      Dalla nascita alla macellazione la tracciabilità è forte e cogente. Poi, fra l’uscita dalla
+      stalla e il lotto di grasso fuso, l’identità individuale si indebolisce e si dissolve.
+      È in quella zona che il lavoro di OdE ha senso, ed è anche il punto in cui un’affermazione
+      generica di tracciabilità smetterebbe di essere vera.
+    </p>
+    <LifecycleFlow lang={lang} />
+  </Section>
+
+  <Section n="3" title="Dove la tracciabilità si rompe">
+    <p>
+      Cinque punti di rottura, ciascuno con il presidio che lo affronta. Nominarli è la parte del
+      lavoro che il mercato di solito omette.
+    </p>
+    <div class="gaps">
+      {gaps.map((gp) => (
+        <article class="gap">
+          <span class="gap-n">{gp.n}</span>
+          <div class="gap-body">
+            <h3>{gp.problema}</h3>
+            <p>{gp.body}</p>
+            <p class="gap-presidio"><span class="gap-pk">Presidio</span> {gp.presidio}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </Section>
+
+  <Section n="4" title="Tre cose che la provenienza NON dimostra">
+    <Callout tone="honest" title="Primo: non dimostra un esito cutaneo migliore">
+      <p>
+        Che la qualità della filiera produca un esito cutaneo superiore è <strong>indimostrato
+        per OdE come per l’intero mercato</strong>. È il terzo anello della catena virtuosa
+        descritta nell’<a href={r.audit}>Audit</a>, ed è l’anello che non ha dati.
+      </p>
+      <p>
+        Il nostro vantaggio, se c’è, sta sugli anelli precedenti: tracciabilità e composizione,
+        documentate e misurate. Non spendiamo il terzo finché non esiste.
+        <Status kind="lacuna" lang={lang} /> <Finding kind="contro" lang={lang} />
+      </p>
+      <p>
+        Sull’<strong>anello 2</strong>, invece, un candidato è comparso: la dieta dell’animale
+        dovrebbe modificare il profilo lipidico in modo misurabile, con meno polinsaturi
+        nell’alimentazione a foraggio e quindi maggiore stabilità ossidativa. Sarebbe il primo
+        punto in cui la provenienza produce una proprietà del materiale invece di una storia.
+      </p>
+      <p>
+        <strong>Non lo usiamo come argomento, e la ragione è la stessa che governa tutto questo
+        sito.</strong> La fonte del dato è divulgativa e non sottoposta a revisione fra pari, e
+        la nostra stessa ricerca prescrive di riverificarlo su campione proprio
+        <em>prima</em> di portarlo in comunicazione. Questo sito è comunicazione. Quindi il dato
+        non compare qui come vantaggio: compare in <a href={r.evidenza}>Domande aperte</a> come
+        misura da fare, con la soglia già scritta.
+        <DataTag kind="bench" label="Differenziale compositivo attribuito alla dieta, riportato da fonte divulgativa non peer-reviewed e classificato di livello C dalla libreria. Consolidamento della ricerca OdE v4.0, tesi 15 e verifica ancora aperta n. 9: da riverificare su campione OdE prima di qualsiasi uso in comunicazione." />
+      </p>
+    </Callout>
+
+    <Callout tone="honest" title="Secondo: non equivale alla conformità sulla deforestazione">
+      <p>
+        È un errore facile da commettere in un documento commerciale, e va evitato. Il
+        regolamento europeo sulla deforestazione chiede geolocalizzazione degli appezzamenti o
+        degli stabilimenti in cui gli animali sono stati tenuti, e assenza di deforestazione dopo
+        una data. Una denominazione di origine protetta certifica tutt’altro: area geografica,
+        disciplinare di produzione, controllo di filiera. <strong>Le due infrastrutture
+        documentali non coincidono e non sono intercambiabili.</strong>
+      </p>
+      <p>
+        La questione è comunque priva di effetti pratici, perché il sego è fuori dall’ambito di
+        applicazione di quel regolamento. Il quadro completo è in
+        <a href={r.normativa}>Normativa</a>.
+        <DataTag kind="fonte" label="Verifica dell’Allegato I al Reg. (UE) 2023/1115: il codice NC 1502, grassi di bovini, ovini e caprini, non figura fra i prodotti pertinenti. Traccia 7 v2, sez. 4.6.2." />
+      </p>
+    </Callout>
+
+    <Callout tone="honest" title="Terzo: non è una certificazione del prodotto lipidico">
+      <p>
+        Il disciplinare governa latte e formaggio. Il fine vita dell’animale, da cui tipicamente
+        deriva il sego, resta fuori dal suo perimetro: il piano dei controlli copre allevamenti,
+        caseifici, stagionatori, grattugie e porzionatori, mentre macelli e impianti di rendering
+        ricadono sotto la normativa generale.
+      </p>
+      <p>
+        Due piani vanno tenuti distinti, e OdE si colloca con chiarezza sul secondo: il
+        disciplinare vieta il sego come <em>ingrediente della dieta</em> delle bovine, e lascia
+        fuori il sego come <em>prodotto in uscita</em> a fine vita dell’animale.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="5" title="Il fatto verificabile della circolarità">
+    <p>
+      La narrazione di economia circolare, in questa categoria, è quasi sempre retorica. Esiste
+      però un dato di settore che la sostiene senza salti logici, e viene dall’associazione
+      europea dei trasformatori.
+    </p>
+    <div class="grid">
+      <StatCard value="2,3 mln t" caption="Grasso animale di Categoria 3 prodotto in Europa nel 2025, cioè la sola categoria idonea a mangimi e cosmetica." kind="fonte" source="EFPRA, dati 2025 presentati al congresso di associazione, ripresi dalla stampa di settore. Traccia 7 v2, sez. 4.1." />
+      <StatCard value="1,58 mln t" caption="Quota destinata ai biocarburanti nel 2025, in crescita dell’8,9%. È la destinazione dominante, e governa il flusso a monte da cui OdE dipende." kind="fonte" source="EFPRA, dati 2025. Traccia 7 v2, sez. 4.1." />
+      <StatCard value="42.000 t" caption="Grassi di grado alimentare e mangimistico ancora avviati alla combustione nel 2025, in crescita del 28%, con l’associazione di categoria che si domanda pubblicamente se sia la destinazione di maggior valore." kind="fonte" source="EFPRA, dati 2025 via stampa di settore. Traccia 7 v2, sez. 4.1." />
+    </div>
+    <p class="note">
+      Esiste materiale idoneo che oggi viene distrutto, e il volume cresce. È il punto di contatto
+      più concreto fra la circolarità come argomento e un fatto verificabile. Non è un argomento
+      di superiorità del prodotto, ed è tutto ciò che si può dire con onestà su questo asse.
+      <Status kind="dimostrato" lang={lang} /> <Finding kind="pro" lang={lang} />
+    </p>
+    <p class="note">
+      La quota di quel materiale che arriva alla cosmetica <strong>non è isolabile</strong> da
+      alcuna statistica pubblica reperita. Il perché è in <a href={r.posizione}>Posizione</a>.
+    </p>
+  </Section>
+
+  <Section n="6" title="Bovino o suino: perché il bovino viene prima">
+    <p>
+      Il territorio offre due flussi, dalle bovine da latte e dal circuito suinicolo. Non sono
+      equivalenti, e la scelta di priorità è argomentata su quattro assi.
+    </p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr><th scope="col">Asse</th><th scope="col">Bovino</th><th scope="col">Suino</th><th scope="col">Verdetto</th><th scope="col">Solidità</th></tr>
+        </thead>
+        <tbody>
+          {species.map((s) => (
+            <tr><th scope="row">{s.ax}</th><td>{s.bov}</td><td>{s.sui}</td><td>{s.v}</td><td class="num">{s.g}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Parametri fisici comparativi su fonte primaria: FAO/WHO Codex Alimentarius CXS 211-1999, Sezione 3 e Appendice. Confronto a quattro assi in Traccia 5 v3.0, sez. 13." />
+      Nessuno dei quattro assi favorisce il suino. Questa non è una raccomandazione di abbandonare
+      la linea suina: è una raccomandazione di ordine di priorità.
+    </p>
+
+    <Callout tone="warn" title="Una lacuna analitica specifica della linea suina">
+      <p>
+        Nessun valore di numero di acidità <strong>misurato</strong> su lardo è stato reperito in
+        letteratura analitica, a differenza del sego per cui esistono due caratterizzazioni con
+        valore dichiarato. Va colmata internamente prima di qualunque decisione definitiva: è una
+        misura da fare in laboratorio su campioni della filiera reale, non da cercare in
+        letteratura.
+        <Status kind="lacuna" lang={lang} />
+      </p>
+      <p>
+        C’è inoltre una conseguenza operativa che vale la pena dichiarare, perché aumenta i nostri
+        costi e non i nostri argomenti: il grasso di copertura selezionato del circuito suinicolo
+        ricade nella classe merceologica "lardo puro reso", il cui limite di acidità è
+        <strong>1,3 mg KOH/g e non 2,5</strong>. Se lavoriamo il suino, dobbiamo puntare al limite
+        più stringente, e va messo a budget.
+      </p>
+    </Callout>
+  </Section>
+
+  <ReadNext
+    lang={lang}
+    links={[
+      { href: r.amsa, label: 'AMSA: come il dato di filiera entra nel Passaporto' },
+      { href: r.normativa, label: 'Normativa: che cosa si può dichiarare' },
+      { href: r.posizione, label: 'Posizione: e quanto vale sul mercato' },
+    ]}
+  />
+</OdeV2Layout>
+
+<style>
+  .layers { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1.1rem; margin: 1.3rem 0; }
+  .layer {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: var(--ode-radius);
+    padding: 1.2rem 1.3rem;
+  }
+  .layer-head { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.6rem; }
+  .layer-head :global(.cow-glyph) { color: var(--accent); flex: 0 0 auto; }
+  .layer-k {
+    font-family: var(--ode-font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .layer h3 { font-size: 1.05rem; font-weight: 500; color: var(--ink); margin: 0 0 0.5rem; }
+  .layer p { font-size: 0.9rem; line-height: 1.55; color: var(--body); margin: 0; }
+  .layer-refs {
+    font-family: var(--ode-font-mono);
+    font-size: 0.7rem !important;
+    color: var(--muted) !important;
+    margin-top: 0.7rem !important;
+    line-height: 1.5 !important;
+  }
+
+  .gaps { display: flex; flex-direction: column; gap: 1.2rem; margin: 1.3rem 0; }
+  .gap { display: grid; grid-template-columns: 2.4rem 1fr; gap: 1rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--rule); }
+  .gap:last-child { border-bottom: 0; padding-bottom: 0; }
+  .gap-n { font-family: var(--ode-font-mono); font-size: 1.1rem; color: var(--accent); }
+  .gap h3 { font-size: 1rem; font-weight: 500; color: var(--ink); margin: 0 0 0.45rem; }
+  .gap p { font-size: 0.9rem; line-height: 1.58; color: var(--body); margin: 0; max-width: 40rem; }
+  .gap-presidio { margin-top: 0.6rem !important; }
+  .gap-pk {
+    display: inline-block;
+    font-family: var(--ode-font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--green);
+    background: var(--green-soft);
+    border-radius: 3px;
+    padding: 0.12em 0.4em;
+    margin-right: 0.4rem;
+  }
+</style>

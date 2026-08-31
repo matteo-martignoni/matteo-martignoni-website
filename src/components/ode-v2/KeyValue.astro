@@ -1,0 +1,36 @@
+---
+// Generic definition-style table: a term or parameter on the left, its
+// description on the right, with optional slot markup per row is not
+// supported (rows are plain strings) — use a real table when a row needs a
+// tag inside. Kept deliberately small.
+export interface KVRow {
+  k: string;
+  v: string;
+}
+interface Props {
+  rows: KVRow[];
+  head?: [string, string];
+}
+const { rows, head } = Astro.props;
+---
+<div class="tw">
+  <table class="kv">
+    {head && (
+      <thead><tr><th scope="col">{head[0]}</th><th scope="col">{head[1]}</th></tr></thead>
+    )}
+    <tbody>
+      {rows.map((r) => (
+        <tr><th scope="row">{r.k}</th><td>{r.v}</td></tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .tw { overflow-x: auto; margin: 1.3rem 0; }
+  .kv { border-collapse: collapse; width: 100%; min-width: 28rem; }
+  .kv th, .kv td { padding: 0.7rem 0.9rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--rule); }
+  .kv thead th { color: var(--accent); font-weight: 500; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .kv tbody th { color: var(--ink); font-weight: 500; font-size: 0.88rem; width: 34%; }
+  .kv td { color: var(--body); font-size: 0.88rem; line-height: 1.55; }
+</style>

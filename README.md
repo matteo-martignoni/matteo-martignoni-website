@@ -153,6 +153,181 @@ remove the `noindex` meta in `src/layouts/OdeLayout.astro` and drop the
 `filter` line in `astro.config.mjs` so the pages re-enter the sitemap. No other
 change is required.
 
+## OdE test site (`/OdE/test`)
+
+A **redesign of the OdE microsite, published side by side with the original** for
+comparison. It lives at `/OdE/test` (EN, the default) and `/OdE/test/it` (IT). The original `/OdE`
+is untouched: not one of its files is modified, and neither is
+`astro.config.mjs`.
+
+### Why the route is named `/OdE/test`
+
+Because the sitemap filter already covers it. `astro.config.mjs` contains
+
+```js
+filter: (page) => !page.includes('/OdE'),
+```
+
+and `/OdE/test` sits under `/OdE`, so every page of the test area is
+already excluded from the sitemap **without touching the config**. Any other
+name would have required editing a shared file.
+
+### Structure
+
+```
+src/pages/OdE/test/          EN default (/OdE/test) + IT under /OdE/test/it
+src/layouts/OdeV2Layout.astro  isolated layout (own header/footer/nav, noindex)
+src/styles/ode-v2-theme.css    v2-only additions, scoped under .ode-v2
+src/components/ode-v2/         DataTag, Sources, StatCard, Status, Finding,
+                               Callout, ClaimTable, Doors, KeyValue, ReadNext
+src/i18n/ode-v2.ts             route map, UI strings, per-page meta
+src/lib/ode-v2/sources.ts      footnote source resolver (DOIs, EUR-Lex, FAO)
+PLAN.md                        the redesign plan and the checkpoint decisions
+docs/ode-v2/QA.md              the delivery checklist and how to re-run it
+```
+
+The v2 site **imports the original OdE brand tokens unchanged**
+(`src/styles/ode-theme.css`) and reuses several original components read-only
+(`Section`, `BarChart`, `ControlLoop`, `PassportSections`, `LifecycleFlow`,
+`CowGlyph`, `DropMark`) plus the AMSA Live simulation engine in `src/lib/ode/`.
+`DataTag`, `Sources` and `StatCard` are duplicated rather than reused, because
+they resolve against an extended source list; extending the original in place
+would have changed how `/OdE` renders its own footnotes.
+
+### Pages
+
+| IT | EN | What it does |
+|---|---|---|
+| `/OdE/test/it` | `/OdE/test` | Opens with the verified fact, not the promise. Three doors, three stated limits |
+| `/OdE/test/it/audit` | `/OdE/test/audit` | The evidence gap, the matrix errors in the most cited review, the claim taxonomy |
+| `/OdE/test/it/tesi` | `/OdE/test/thesis` | Acid value, the hydrolysis complication, where OdE cannot compete |
+| `/OdE/test/it/amsa` | `/OdE/test/amsa` | The instrument, the measured parameters, the Digital Lipid Passport |
+| `/OdE/test/it/filiera` | `/OdE/test/supply-chain` | Provenance as documented input, and where traceability breaks |
+| `/OdE/test/it/posizione` | `/OdE/test/position` | The squeeze, the three-legged verdict, the sizing gaps |
+| `/OdE/test/it/normativa` | `/OdE/test/regulation` | Documentary survey, the EUDR asymmetry with its caveats |
+| `/OdE/test/it/evidenza` | `/OdE/test/open-evidence` | Gaps, experiments with costs, gates and stopping criteria |
+| `/OdE/test/it/investitori` | `/OdE/test/investors` | The two-part verdict, the real numbers, the failure conditions |
+| `/OdE/test/it/glossario` | `/OdE/test/glossary` | Seven groups of terms |
+| `/OdE/test/it/amsa-live` | `/OdE/test/amsa-live` | The demonstration dashboard |
+
+**English is the source language.** Copy is written in English and rendered into
+Italian, which is why the English routes carry English slugs while the route
+keys that address them stay stable and language-neutral: the language switch
+resolves on keys, so it always lands on the same page in the other language.
+`DataTag` reads the locale from the route, so a source badge says "Source" in
+English and "Fonte" in Italian.
+
+Both languages are complete, and the two versions carry the same number of
+footnotes page by page, which is the quickest way to spot a reference lost on
+one side.
+
+**English is also the default locale**, matching the host site: `/OdE/test`
+serves English and Italian sits under `/OdE/test/it`, exactly as the host site
+puts English at `/` and Italian at `/it`.
+
+### Isolation (five independent mechanisms)
+
+1. **Separate layout** — `OdeV2Layout` renders its own header and footer; the
+   host `Header.astro` / `Navigation.astro` are never used.
+2. **No inbound links** — nothing in the host site or in `/OdE` mentions
+   `/OdE/test`.
+3. **No outbound links** — nothing in `/OdE/test` links to the original `/OdE` pages.
+4. **`noindex, nofollow`** — on every page, plus an explicit `googlebot` tag.
+5. **Sitemap exclusion** — inherited from the existing filter, no config change.
+
+All five are verified automatically. See `docs/ode-v2/QA.md`.
+
+### Browsing it offline
+
+To get a copy that opens in a browser with a double click, no server involved:
+
+```bash
+npm run build
+python3 docs/ode-v2/export-static.py     # -> sito-ode-v2/
+```
+
+The exporter rewrites the absolute paths Astro emits (`/OdE/test/...`,
+`/_astro/...`) into relative ones, points directory links at their `index.html`,
+and turns the ES module scripts into classic ones, because Chrome blocks modules
+over `file://`. The AMSA Live dashboard is inlined so it still runs. Content is
+identical to what the server serves; only the referencing changes. The folder
+gets an `index.html` of its own listing both languages, plus a short `LEGGIMI.txt`.
+
+Both `sito-ode-v2/` and `sito-ode-v2.zip` are gitignored.
+
+### Comparing the two versions
+
+```bash
+npm install
+npm run dev
+```
+
+Then open the two side by side:
+
+| | Original | Test site |
+|---|---|---|
+| Home | http://localhost:4321/OdE | http://localhost:4321/OdE/test/it |
+| English | http://localhost:4321/OdE/en | http://localhost:4321/OdE/test |
+| Dashboard | http://localhost:4321/OdE/amsa-live | http://localhost:4321/OdE/test/amsa-live |
+
+Both are built from the same `main`, so a single `npm run dev` serves both. The
+test site carries a black bar at the top of every page saying it is a test
+version; that bar is the first thing to remove on promotion.
+
+### Verifying the isolation yourself
+
+```bash
+git diff --name-only main           # nothing under src/pages/OdE/, src/lib/ode/,
+                                    # src/components/ode/, src/i18n/ode.ts,
+                                    # src/styles/ode-theme.css, astro.config.mjs
+npm run build
+python3 docs/ode-v2/qa.py           # the full Phase 6 checklist
+```
+
+### Promoting the test site, if approved
+
+The promotion is a rename plus three deletions. Nothing else changes: the
+sitemap filter and the `noindex` stay valid for `/OdE` as they are.
+
+```bash
+git checkout -b promote-ode-v2
+
+# 1. Park the current site in the local recycle bin (git-ignored, outside src/)
+mkdir -p _trash/OdE-v1
+git mv src/pages/OdE            _trash/OdE-v1/pages-OdE
+git mv src/layouts/OdeLayout.astro _trash/OdE-v1/
+git mv src/i18n/ode.ts          _trash/OdE-v1/
+
+# 2. Promote the test site into the live route
+git mv src/pages/OdE/test src/pages/OdE
+
+# 3. Rename the v2 modules to the plain names and update the imports
+git mv src/layouts/OdeV2Layout.astro src/layouts/OdeLayout.astro
+git mv src/i18n/ode-v2.ts            src/i18n/ode.ts
+#    then, in src/i18n/ode.ts, replace every '/OdE/test' with '/OdE'
+#    and, across src/pages/OdE/ and src/components/ode-v2/, replace
+#    'OdeV2Layout' with 'OdeLayout' and 'i18n/ode-v2' with 'i18n/ode'
+
+# 4. Remove the test banner
+#    in src/layouts/OdeLayout.astro delete the <p class="testbar"> line
+#    and the .testbar rule in src/styles/ode-v2-theme.css
+
+npm run build                        # must end with "[build] Complete!"
+```
+
+Only after the client decides the site should also become **visible** from the
+personal site do the existing instructions in the section above apply: add a nav
+entry, remove the `noindex`, and drop the sitemap `filter` line.
+
+### What still needs client input
+
+Five placeholders (in both languages) are marked in-page with a hatched "Da
+confermare" chip and listed in `docs/ode-v2/QA.md`. The reference capital figure
+is settled at 350,000 euros. Two items still gate publication: whether the use
+of artificial intelligence in AMSA is substantial or marginal, which is what the
+innovative-startup classification would rest on, and whether the three doors
+need separate contact addresses.
+
 ### Data honesty
 
 The AMSA LIVE dashboard is a **demonstration simulation**, labelled as such in

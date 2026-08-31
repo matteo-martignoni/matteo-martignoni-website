@@ -1,0 +1,467 @@
+---
+import OdeV2Layout from '../../../layouts/OdeV2Layout.astro';
+import Section from '../../../components/ode/Section.astro';
+import DataTag from '../../../components/ode-v2/DataTag.astro';
+import Status from '../../../components/ode-v2/Status.astro';
+import Finding from '../../../components/ode-v2/Finding.astro';
+import Callout from '../../../components/ode-v2/Callout.astro';
+import ReadNext from '../../../components/ode-v2/ReadNext.astro';
+import { odeMeta, odeRoutes } from '../../../i18n/ode-v2';
+
+const lang = 'en' as const;
+const m = odeMeta[lang].evidenza;
+const r = odeRoutes[lang];
+
+// The verified gaps, by track. With the query and the database, because a gap
+// without a method is an opinion.
+const gaps = [
+  {
+    t: 'No acid value threshold validated against a cutaneous outcome',
+    d: 'There are dose-response anchors for pure oleic acid, and for oleic acid in penetration-enhancing vehicles, but never for the acid value of a finished product. That is the research space we are claiming.',
+    q: 'Searched: PubMed, ScienceDirect, Karger. Declared queries on the dose-response relationship between free fatty acid concentration and stratum corneum disruption.',
+  },
+  {
+    t: 'No kinetics, and above all no composition, of the release after topical application',
+    d: 'Nobody has put an intact triglyceride on human skin and tracked free fatty acids appearing over time, and nobody has measured what those acids are. The second half is what decides which way the effect goes, because the expected mixture holds fatty acids with evidence against them and fatty acids with evidence for them. The human evidence we have runs backwards, by wiping out the bacteria, and the direct proof of release is in vitro.',
+    q: 'Searched: PubMed, Google Scholar. The worst gap in the library, and the one the first experiment closes.',
+  },
+  {
+    t: 'No bridge between measured oxidative state and cutaneous outcome for triglycerides',
+    d: 'Nobody has oxidised a triglyceride to a stated value, put it on skin, and regressed a measured outcome against that value. That is why the Oxidative Risk Score is not a predictor.',
+    q: 'Searched: PubMed and PMC, ScienceDirect, Wiley, MDPI, Springer, CIR, FAO Codex.',
+  },
+  {
+    t: 'No comedogenicity data on triglyceride tallow',
+    d: 'The number in circulation is extrapolated from free-form fatty acids and their monohydric alcohol esters. On whole tallow, and on glyceryl trioleate, there is no primary data at all. Tallow is not proven comedogenic and not proven non-comedogenic. It is untested.',
+    q: 'Searched: PubMed, Google Scholar.',
+  },
+  {
+    t: 'No data on the effect of physical state on the rate of hydrolysis by cutaneous lipases',
+    d: 'Everything we have on physical state comes from digestive lipases in simulated digestion models. On the microbial lipases that live on skin, nothing.',
+    q: 'Searched: PubMed, Google Scholar. The first experiment would close this one alongside the second.',
+  },
+  {
+    t: 'No study has ever measured tallow on an emollient category endpoint',
+    d: 'No desquamation index, no microtopography, no corneocyte morphometry, no elasticity, no friction coefficient, for topical tallow on human skin. The gap is total.',
+    q: 'Searched: the indexed dermatological literature and the patchily indexed cosmetic science literature. That asymmetry in indexing is itself a finding.',
+  },
+];
+
+// The experimental programme. Question, cost, duration, category. NOT the protocol.
+const experiments = [
+  { n: '0a', t: 'Solid fat content measurement', q: 'What is the real number at skin temperature, against the 21% we currently estimate?', cost: '500-1,500 €', dur: '2-4 weeks', cat: 'Asset and knowledge', crit: false },
+  { n: '0b', t: 'Fatty acid profile with polyunsaturate quantification', q: 'Does our material actually show the compositional difference diet is supposed to produce?', cost: 'about 190 € per sample', dur: '1-2 weeks', cat: 'Commercial asset', crit: true },
+  { n: '0c', t: 'Oxidative panel and oxysterols', q: 'Does the material clear the ultrapurity target we set ourselves?', cost: '800-2,000 €', dur: '3-5 weeks', cat: 'Asset and licence', crit: false },
+  { n: '1', t: 'In vitro lipase hydrolysis, with composition of the release', q: 'Does being semi-solid slow hydrolysis down, and above all WHAT comes off?', cost: '8,000-18,000 €', dur: '2-4 months', cat: 'Asset and knowledge', crit: true },
+  { n: '2', t: 'Per-batch analytical characterisation', q: 'What are the profile, acid value and oxidative state of the material we actually have?', cost: '500-1,000 € per batch', dur: 'ongoing', cat: 'Licence and asset', crit: false },
+  { n: '3', t: 'Quantification of the alpha-gal epitope', q: 'How much of it survives in an ultrapurified tallow?', cost: '2,000-5,000 €', dur: '1-2 months', cat: 'Asset, due diligence', crit: false },
+  { n: '4', t: 'Sensitisation assay battery, or read-across', q: 'Is the material sensitising?', cost: '8,000-15,000 €', dur: '2-3 months', cat: 'Licence to operate', crit: false },
+  { n: '5', t: 'Barrier safety arm', q: 'Does low acid value tallow behave like the triglyceride, or like the free fatty acid?', cost: '15,000-30,000 €', dur: '3-4 months', cat: 'Commercial asset', crit: true },
+  { n: '6', t: 'Sensory module and rheology', q: 'Is the friction profile acceptable, and can we fix it if not?', cost: '5,000-15,000 €', dur: '2-3 months', cat: 'Asset and knowledge', crit: false },
+  { n: '7', t: 'Solid fat content curve mapping and fractionation', q: 'Where does the trade-off between tackiness and occlusivity actually sit?', cost: '20,000-50,000 €', dur: '4-8 months', cat: 'Commercial asset', crit: false },
+  { n: '8', t: 'Comparative arm on emollient endpoints', q: 'Does tallow hold its own against mineral oil and dimethicone?', cost: '30,000-60,000 €', dur: '5-7 months', cat: 'Commercial asset', crit: false },
+  { n: '9', t: 'Clinical comedogenicity study', q: 'Is our tallow comedogenic?', cost: '25,000-45,000 €', dur: '4-6 months', cat: 'Licence and asset', crit: false },
+];
+
+// The gates, with numerical criteria written before the data.
+const gates = [
+  {
+    f: 'Solid fat content',
+    go: 'Value measured at 32 °C equal to or above 15%.',
+    stop: 'No stopping threshold: the measurement does not halt the project, it shifts its positioning.',
+    turn: 'Below 15%: the argument of a physical class akin to petrolatum falls, and the material has to be repositioned in the semi-liquid oil band.',
+  },
+  {
+    f: 'Compositional profile',
+    go: 'Polyunsaturates in the material at or below 2.5%.',
+    stop: 'No stopping threshold.',
+    turn: 'Above 2.5%: the diet-linked differential is not demonstrated on the real material. The argument is removed from communication and the sourcing specification is revised.',
+  },
+  {
+    f: 'Ultrapurity',
+    go: 'Total oxysterols below 1 μg/g, and total oxidation index in line with premium cosmetic esters.',
+    stop: 'Oxysterols above 5 μg/g: the ultrapurity claim does not hold and the rendering process has to be revised.',
+    turn: 'Between 1 and 5 μg/g: claim scaled back, rendering optimised before communicating.',
+  },
+  {
+    f: 'Zero-cost checks, ninety days',
+    go: 'At least one European formulator requests a sample; or at least two request the technical data sheet and at least one of them accepts a second technical conversation.',
+    stop: 'Zero sample requests and fewer than two data sheet requests after eight to ten qualified contacts.',
+    turn: 'The only interest is in the non-palm argument or in the wider market, not in the leave-on product itself.',
+  },
+  {
+    f: 'In vitro hydrolysis',
+    go: 'The initial rate of free fatty acid release differs between the extreme physical states by more than 20%.',
+    stop: 'The difference is under 20%, or it disappears within two hours. In that case the melting profile does NOT enter the positioning as a protective factor.',
+    turn: 'The kinetics turn out to be fast and extensive: the safety claim has to be reformulated with no mitigation.',
+  },
+  {
+    f: 'Composition of the release',
+    go: 'At four hours, oleic acid makes up no more of the released fatty acids than it did of the starting triglyceride. In other words, nothing is being enriched selectively.',
+    stop: 'The fraction of released oleic acid exceeds its starting share by 50%: unfavourable selective hydrolysis.',
+    turn: 'Intermediate enrichment: it is quantified and declared, instead of being hidden.',
+  },
+  {
+    f: 'Barrier safety arm',
+    go: 'The change in transepidermal water loss for low acid value tallow differs neither from the reference triglyceride nor from the vehicle at 24 hours.',
+    stop: 'The change increases as it does for the free fatty acid.',
+    turn: 'An intermediate, dose-dependent increase: a maximum certifiable acid value threshold is defined, which is a usable result in any case.',
+  },
+  {
+    f: 'Comparative emollient arm',
+    go: 'Significant improvement on both co-primary endpoints against vehicle, with an acceptable friction profile; or strong improvement on one with non-inferiority on the other.',
+    stop: 'No emollient endpoint beats the vehicle, or friction significantly worse than the comparators.',
+    turn: 'Improvement only on a marginal endpoint: targeted niche positioning.',
+  },
+];
+
+// The conditions under which the thesis fails, and what would remain.
+const failures = [
+  { c: 'The safety arm shows that low acid value tallow still increases transepidermal water loss', k: 'The one strong scientific claim would fall. Traceability, the measurement infrastructure and the evidence library as a service would remain.' },
+  { c: 'In situ hydrolysis turns out to be fast and extensive', k: 'Acid value control would lose communicable value. The in vitro datum as the first proprietary datum and the qualification platform would remain.' },
+  { c: 'No European formulator shows interest after eight to ten qualified contacts', k: 'That confirms the market we can reach is too small. The wider market option and the move to an analytical service would still be there.' },
+  { c: 'Tackiness turns out not to be correctable by fractionation', k: 'Tallow would stay penalised on the primary emollient endpoint. Its placement as a lipid vehicle inside systems formulated by others would remain.' },
+  { c: 'Solid fat content measured at 32 °C comes out below 15%', k: 'The argument of a physical class akin to petrolatum would fall. The compositional profile, traceability and the pure emollient axis would remain.' },
+  { c: 'A competitor publishes the first controlled study on tallow left on the skin', k: 'The first-mover narrative would fall. Quality differentiation would remain, that is traceability, measured ultrapurity and the supply chain dataset: a weaker narrative, not nothing.' },
+];
+
+// Forms of collaboration, with the trade-off declared.
+const collab = [
+  { f: "Master's thesis", cost: 'Very low: materials and supervision', ctl: 'Low, tends towards publication', fit: 'Analytical characterisation, exploratory trials' },
+  { f: 'Doctorate, including industrial', cost: 'A significant full three-year cost', ctl: 'Medium, negotiable by agreement', fit: 'Lipase kinetics, model development' },
+  { f: 'Co-funded research fellowship', cost: 'Full annual cost with charges', ctl: 'Medium-high', fit: 'A targeted proprietary study' },
+  { f: 'Contract research agreement', cost: 'Variable, on quotation', ctl: 'High: results belong to the client', fit: 'In vitro hydrolysis, characterisation, mapping' },
+  { f: 'Partner in an already funded project', cost: 'Partial co-funding', ctl: 'Shared', fit: 'Access to infrastructure without a lead role' },
+];
+---
+<OdeV2Layout title={m.title} description={m.description} lang={lang} active="evidenza">
+  <header class="pg">
+    <p class="ode-eyebrow">Open questions</p>
+    <h1>The questions we cannot answer yet</h1>
+    <p class="lede">
+      This is an invitation, written peer to peer, to research groups in lipid science, skin
+      microbiology, chemometrics and cosmetic science. It lists the gaps we verified, the
+      experiments that would close them and roughly what each would cost, and the criteria that
+      would make us stop.
+    </p>
+    <p class="sub">
+      It also lists the questions whose answers might not be the ones we are hoping for, in the
+      same size type as the rest.
+    </p>
+  </header>
+
+  <Callout tone="note" title="What this page gives away, and what it does not">
+    <p>
+      For every experiment we publish the question it answers, roughly what it costs, how long it
+      takes, where it sits in the sequence, and the criterion that would sink it.
+      <strong>We do not publish the protocol.</strong> Concentrations, enzymes, sampling points
+      and sample size per arm stay out.
+    </p>
+    <p>
+      We will say why, and the reason is not coy: the first proprietary datum does not exist yet,
+      and the gap we are describing has a shelf life. The line we drew runs between what we want
+      to know and what it costs to know it, which is public, and how exactly we measure it, which
+      we discuss with whoever works with us. The criterion that would invalidate a result stays
+      public, because that is the part that shows we are serious, not the part that gives the
+      design away.
+    </p>
+  </Callout>
+
+  <Section n="1" title="The gaps we verified">
+    <p>
+      A gap is not "we found nothing". It is a negative result, and it comes with the databases we
+      searched attached. These six govern the programme.
+    </p>
+    <ol class="gaps">
+      {gaps.map((g, i) => (
+        <li>
+          <span class="g-n">{String(i + 1).padStart(2, '0')}</span>
+          <div>
+            <h3>{g.t}</h3>
+            <p>{g.d}</p>
+            <p class="g-q"><Status kind="lacuna" lang={lang} /> {g.q}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+    <p class="note">
+      <DataTag kind="fonte" label="Gaps verified with the queries and databases stated: Track 1 sec. 7; Track 2 v2.1 sec. 7; Track 3 v4 sec. 8 and 5.10.5; Track 5 v3.0 sec. 8; Track 6 v2 sec. 7." />
+    </p>
+  </Section>
+
+  <Section n="2" title="The programme, and what it costs">
+    <p>
+      Twelve items, three of them new and sitting at the front. The three categories are not
+      decoration. Confuse a <strong>licence to operate</strong>, which has to be done anyway and
+      buys nothing, with a <strong>commercial asset</strong>, which produces a datum nobody else
+      holds, and you end up spending on compliance while thinking you are building a position.
+    </p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th scope="col">Study</th><th scope="col">Question</th>
+            <th scope="col">Order of cost</th><th scope="col">Duration</th><th scope="col">Category</th>
+          </tr>
+        </thead>
+        <tbody>
+          {experiments.map((e) => (
+            <tr class:list={[e.crit && 'is-ode']}>
+              <th scope="row">{e.t}{e.crit && <span class="crit">critical path</span>}</th>
+              <td>{e.q}</td>
+              <td class="num">{e.cost}</td>
+              <td class="num">{e.dur}</td>
+              <td>{e.cat}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="note">
+      <DataTag kind="stima" label="Orders of magnitude, not quotations. Toxicological and clinical contract research laboratories do not publish price lists and work on quotation. The only figures verified against a public price list are the routine analytical ones. OdE research consolidation, part C.1 and methodological note." />
+      Add the line items up and the full programme comes to
+      <strong>115,000 to 240,000 euros</strong>, before a euro of production, formulation,
+      salaries or marketing. The three new analytical items together come to between 1,500 and
+      3,700 euros, which disappears inside the rounding. That total governs the whole plan, and
+      what it does to the capital is set out in <a href={r.investitori}>Investors</a>.
+    </p>
+
+    <Callout tone="note" title="Why we start from three measurements costing a few hundred euros">
+      <p>
+        The first three items cost <strong>under 3,000 euros between them</strong>: less than 1%
+        of the capital, and less than 5% of the most expensive single experiment. They turn three
+        estimates this site currently relies on into three primary measurements, and they clear
+        three gates with hard numbers on them. Nothing else in the plan buys that much
+        information for that little, which is why they come first.
+      </p>
+      <p>
+        <strong>The critical path starts at the fatty acid profile</strong>, not at the in vitro
+        work. The reason is logical before it is financial: to make sense of which fatty acids
+        come off during hydrolysis, you have to know what the material started with. A hundred and
+        ninety euros buys you out of an ambiguity in an eight thousand euro experiment.
+      </p>
+      <p>
+        The in vitro work is still the second node and the spend that decides, for four reasons
+        that stack up. It costs an order of magnitude less than the clinical study. It
+        <strong>sets the sampling times</strong> for everything downstream. It needs no human
+        subjects and no ethics approval. And it <strong>pays off either way</strong>: if the
+        hypothesis holds we have a datum nobody else has, and if it fails we have closed the worst
+        gap in the library and we know what not to claim.
+      </p>
+    </Callout>
+
+    <Callout tone="warn" title="A protocol change that changes the question">
+      <p>
+        In the last version of our plan, the in vitro work measured <strong>how fast</strong> the
+        material hydrolyses. Now it has to measure <strong>what</strong> comes off as well: the
+        profile of fatty acids released over time. Without that change the experiment answers a
+        badly posed question, because it treats free fatty acids as one uniform class, and two
+        independent sources say they are not.
+      </p>
+      <p>
+        The addition is a gas chromatography run on samples we are taking anyway, so it barely
+        moves the cost. What it does is turn a defensive experiment, one that tells us how exposed
+        we are, into one that could actually demonstrate something. Why, in the
+        <a href={r.tesi}>Thesis</a>, section 3.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="3" title="The sequence, ordered by cost of information">
+    <p>
+      Thirteen steps, ordered on a stated rule: whatever costs least and removes most uncertainty
+      goes first. An experiment is worth the decision it unlocks, multiplied by the chance it
+      changes that decision. If the result would change nothing, do not run it, however
+      interesting it looks.
+    </p>
+    <ol class="seq">
+      <li><span class="s-c">about 0 €</span><span class="s-t">Specification question to people who have seen supplier specifications from the inside: when a large group qualifies a lipid supplier, what does it ask about origin?</span></li>
+      <li><span class="s-c">about 0 €</span><span class="s-t">Check with European processors and soap makers whether the documentary burden on palm inputs is a real problem or routine compliance.</span></li>
+      <li><span class="s-c">about 0 €</span><span class="s-t">Quotations from laboratories, to replace estimates with real costs.</span></li>
+      <li><span class="s-c">about 190 €</span><span class="s-t">Fatty acid profile with polyunsaturate quantification. It says whether the material shows the compositional differential that diet should produce.</span></li>
+      <li><span class="s-c">500-1,500 €</span><span class="s-t">Solid fat content measurement at skin temperature, which today is an estimate. <strong>It crosses the first numerical-threshold gate.</strong></span></li>
+      <li><span class="s-c">800-2,000 €</span><span class="s-t">Oxidative panel and oxysterols, which tests the ultrapurity target.</span></li>
+      <li><span class="s-c">1,000-3,000 €</span><span class="s-t">Documentation package for a first credible exploratory conversation, now including the primary analytical data, and eight to ten qualified contacts with European formulators. <strong>This is the gate that decides.</strong></span></li>
+      <li><span class="s-c">2,000-4,000 €</span><span class="s-t">Analytical characterisation of the first real batches.</span></li>
+      <li><span class="s-c">8,000-18,000 €</span><span class="s-t">In vitro lipase hydrolysis with composition of the release. The first proprietary datum.</span></li>
+      <li><span class="s-c">2,000-5,000 €</span><span class="s-t">Quantification of the alpha-gal epitope.</span></li>
+      <li><span class="s-c">8,000-15,000 €</span><span class="s-t">Sensitisation dossier, or justified read-across.</span></li>
+      <li><span class="s-c">15,000-30,000 €</span><span class="s-t">Barrier safety arm.</span></li>
+      <li><span class="s-c">15,000-30,000 €</span><span class="s-t">Sensory module and first stages of fractionation mapping.</span></li>
+    </ol>
+    <p class="note">
+      <DataTag kind="stima" label="Prioritised sequence with cumulative costs and the decision enabled at each step. OdE research consolidation, part C.3. Methodological note: the cumulative figures use the mid-points of each range, not the sum of the minima." />
+      The first three steps produce no experimental data whatsoever, and any one of them could
+      close the project or turn it. That is why they come before everything else.
+    </p>
+    <p class="measure">
+      One experiment is missing from this list on purpose: the head-to-head occlusive comparison
+      against petrolatum. It fails the rule above. We have
+      <a href={r.tesi}>already settled</a> that OdE will not claim to beat petrolatum on
+      occlusion, so whatever the result, nothing changes.
+    </p>
+  </Section>
+
+  <Section n="4" title="The stopping criteria, written before we have the data">
+    <p>
+      They are written now, in a form you can check: a number, or something you can observe, not a
+      judgement call we could reinterpret later. They exist to protect us from our own talent for
+      finding reasons to keep going.
+    </p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr><th scope="col">Phase</th><th scope="col">Continues if</th><th scope="col">Stops if</th><th scope="col">Changes direction if</th></tr>
+        </thead>
+        <tbody>
+          {gates.map((g) => (
+            <tr><th scope="row">{g.f}</th><td>{g.go}</td><td>{g.stop}</td><td>{g.turn}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Decision gates with pre-set numerical criteria. OdE research consolidation, part E.1; in vitro invalidation criterion pre-set in Track 6 v2, sec. 5.11.3." />
+    </p>
+    <Callout tone="note" title="The rule the gates are built on">
+      <p>
+        <strong>No gate opens on a signal that cost the other side nothing.</strong> Somebody asks
+        for a data sheet out of curiosity, and it costs them nothing to ask. Asking for a sample,
+        or agreeing to a second technical call, costs attention, and that makes it a real signal.
+        A gate you can walk through for free is not doing the job it was written for.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="5" title="The conditions under which the thesis fails">
+    <p>
+      Six of them. For each, what would still be worth having, because a thesis failing is not the
+      same as everything failing.
+    </p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th scope="col">If this happens</th><th scope="col">What would remain</th></tr></thead>
+        <tbody>
+          {failures.map((f) => (
+            <tr><th scope="row">{f.c}</th><td>{f.k}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="ev-line"><Finding kind="contro" lang={lang} /> <Status kind="costruzione" lang={lang} /></p>
+    <p class="note">
+      <DataTag kind="fonte" label="Failure conditions of the thesis and usable residuals. OdE research consolidation, part E.2." />
+    </p>
+  </Section>
+
+  <Section n="6" title="What we are looking for in a partner">
+    <p>
+      This needs more than one kind of expertise. Hydrolysis kinetics wants microbiology and
+      enzymology. Characterisation wants lipid chemistry. Skin endpoints want cosmetic science.
+      The models want chemometrics. No single institution has all four, and we are not expecting
+      one to.
+    </p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr><th scope="col">Form</th><th scope="col">Cost to OdE</th><th scope="col">Control over results</th><th scope="col">Suited to</th></tr>
+        </thead>
+        <tbody>
+          {collab.map((c) => (
+            <tr><th scope="row">{c.f}</th><td>{c.cost}</td><td>{c.ctl}</td><td>{c.fit}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <Callout tone="honest" title="The trade-off, on the table before we talk">
+      <p>
+        A thesis is cheap, but the result wants to be published, which is good for credibility and
+        scientific priority and bad if it gives away the one proprietary datum before anything
+        protects it. A contract research agreement costs more and keeps control. We are not going
+        to pretend that tension does not exist, and we would rather settle it before we start than
+        discover it halfway through.
+      </p>
+      <p>
+        There is one cost nobody puts in the budget: an academic collaboration
+        <strong>is not free</strong>. It eats coordination time, which in a very small outfit is
+        the scarcest thing there is. A multi-year arrangement comes with a supervision commitment,
+        and that belongs in the costs, not just the stipend line.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="7" title="If any of this overlaps with your work">
+    <p>
+      Write to us. A thesis, a joint experiment, a grant proposal, or just an argument about
+      method. We are equally interested, maybe more interested, in anyone who thinks one of these
+      hypotheses is wrong. At this stage a well-argued objection is worth more than agreement.
+    </p>
+    <p class="contact">
+      <a href="mailto:mm@matteomartignoni.com?subject=OdE%20research%20collaboration">mm@matteomartignoni.com</a>
+    </p>
+    <p class="note phline">
+      <span class="ph">To be confirmed</span>
+      Placeholder address, carried over from the live site. If the three audiences need separate
+      contacts, that has to be settled before this goes public.
+    </p>
+  </Section>
+
+  <ReadNext
+    lang={lang}
+    links={[
+      { href: r.audit, label: 'The Audit: what we have already checked' },
+      { href: r.tesi, label: 'The Thesis: the chemistry behind these questions' },
+      { href: r.investitori, label: 'Investors: what the answers cost' },
+    ]}
+  />
+</OdeV2Layout>
+
+<style>
+  .ev-line { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1.2rem; }
+  .gaps { list-style: none; margin: 1.3rem 0; padding: 0; display: flex; flex-direction: column; gap: 1.2rem; }
+  .gaps > li { display: grid; grid-template-columns: 2.6rem 1fr; gap: 1rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--rule); }
+  .gaps > li:last-child { border-bottom: 0; padding-bottom: 0; }
+  .g-n { font-family: var(--ode-font-mono); font-size: 1.1rem; color: var(--accent); }
+  .gaps h3 { font-size: 1rem; font-weight: 500; color: var(--ink); margin: 0 0 0.45rem; line-height: 1.35; }
+  .gaps p { font-size: 0.92rem; line-height: 1.58; color: var(--body); margin: 0; max-width: 42rem; }
+  .g-q { margin-top: 0.5rem !important; font-size: 0.8rem !important; color: var(--muted) !important; display: flex; flex-wrap: wrap; gap: 0.45rem; align-items: baseline; }
+
+  .crit {
+    display: block;
+    font-family: var(--ode-font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--green);
+    font-weight: 500;
+    margin-top: 0.25rem;
+  }
+
+  .seq { list-style: none; counter-reset: s; margin: 1.3rem 0; padding: 0; display: flex; flex-direction: column; gap: 0; }
+  .seq li {
+    counter-increment: s;
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    gap: 0.4rem 1.2rem;
+    padding: 0.85rem 0 0.85rem 1.3rem;
+    border-left: 2px solid var(--green-border);
+    position: relative;
+  }
+  .seq li::before {
+    content: counter(s);
+    position: absolute; left: -0.72rem; top: 0.9rem;
+    width: 1.4rem; height: 1.4rem; border-radius: 999px;
+    background: var(--bg); border: 2px solid var(--green-border);
+    font-family: var(--ode-font-mono); font-size: 0.66rem; color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .s-c { font-family: var(--ode-font-mono); font-size: 0.82rem; color: var(--accent); white-space: nowrap; }
+  .s-t { font-size: 0.9rem; line-height: 1.55; color: var(--body); }
+  @media (max-width: 620px) {
+    .seq li { grid-template-columns: 1fr; }
+  }
+
+  .contact { margin: 1rem 0 0; font-size: 1.02rem; }
+  .contact a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; font-family: var(--ode-font-mono); }
+  .phline { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem; }
+</style>

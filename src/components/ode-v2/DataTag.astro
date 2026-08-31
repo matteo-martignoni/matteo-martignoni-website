@@ -1,0 +1,71 @@
+---
+// Data-classification tag for /OdE-v2 — OdE tone rule: every quantitative
+// datum is labelled Source (verified), Estimate (our own) or Benchmark
+// (a proxy taken from a comparable case).
+//
+// English is the source language of this microsite, so the badge word follows
+// the page locale instead of being fixed in Italian. The locale is read from
+// the URL rather than passed as a prop: roughly 150 call sites would otherwise
+// have to repeat what the route already says.
+//
+// Duplicated from the original components/ode/DataTag.astro rather than
+// reused, because it must resolve against lib/ode-v2/sources.ts. It writes
+// into its own Astro.locals key (odeV2Sources) so the two microsites can
+// never interfere.
+//
+// With a `label`, the tag registers its source into the per-page list and
+// renders as a clickable badge carrying a footnote number; the full source,
+// with an external link where one exists, is listed by <Sources /> at the
+// foot of the page. Without a `label` there is nothing to cite, so the tag
+// stays a plain, non-clickable badge and is NOT footnoted.
+import { resolveSource } from '../../lib/ode-v2/sources';
+
+interface Props {
+  kind: 'fonte' | 'stima' | 'bench';
+  label?: string; // source note shown in the footnote list
+}
+const { kind, label } = Astro.props;
+const isIt = Astro.url.pathname.startsWith('/OdE/test/it');
+const text = isIt
+  ? { fonte: 'Fonte', stima: 'Stima', bench: 'Benchmark' }[kind]
+  : { fonte: 'Source', stima: 'Estimate', bench: 'Benchmark' }[kind];
+
+const hasSource = Boolean(label && label.trim());
+
+let n = 0;
+let emitId = false;
+let srcLabel = '';
+if (hasSource) {
+  srcLabel = label!.trim();
+  const href = resolveSource(srcLabel);
+
+  const locals = Astro.locals as Record<string, any>;
+  const list: Array<{ key: string; kind: string; label: string; href?: string; n: number }> =
+    (locals.odeV2Sources ??= []);
+  const emitted: Set<string> = (locals.odeV2RefEmitted ??= new Set());
+
+  const key = `${kind}|${srcLabel}|${href ?? ''}`;
+  let entry = list.find((e) => e.key === key);
+  if (!entry) {
+    entry = { key, kind, label: srcLabel, href, n: list.length + 1 };
+    list.push(entry);
+  }
+  n = entry.n;
+
+  // Only the first tag for a given source carries the back-reference id,
+  // so the footnote can link back without producing duplicate ids.
+  const refId = `odev2-ref-${n}`;
+  emitId = !emitted.has(refId);
+  if (emitId) emitted.add(refId);
+}
+---
+{hasSource ? (
+  <a
+    class={`ode-tag ode-tag--${kind} ode-tag--ref`}
+    href={`#odev2-src-${n}`}
+    id={emitId ? `odev2-ref-${n}` : undefined}
+    aria-label={`${text}, ${srcLabel}`}
+  >{text}<sup class="ode-tag-num">{n}</sup></a>
+) : (
+  <span class={`ode-tag ode-tag--${kind}`}>{text}</span>
+)}

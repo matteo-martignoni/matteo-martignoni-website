@@ -1,0 +1,40 @@
+---
+// Key-figure card: large number, caption, data-classification tag.
+// Duplicated for /OdE-v2 so it uses the v2 DataTag (and therefore the v2
+// footnote registry and source resolver).
+import DataTag from './DataTag.astro';
+interface Props {
+  value: string;   // e.g. "0,8 mg KOH/g", "82%"
+  caption: string; // what the number means
+  kind?: 'fonte' | 'stima' | 'bench';
+  source?: string; // footnote text
+}
+const { value, caption, kind = 'fonte', source } = Astro.props;
+---
+<div class="stat">
+  <div class="stat-value">{value}</div>
+  <p class="stat-caption">{caption}</p>
+  <DataTag kind={kind} label={source} />
+</div>
+
+<style>
+  .stat {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: var(--ode-radius);
+    padding: 1.25rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .stat-value {
+    font-size: clamp(1.5rem, 3.2vw, 2.1rem);
+    font-weight: 300;
+    color: var(--ink);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+  }
+  .stat-caption { font-size: 0.9rem; line-height: 1.45; color: var(--body); margin: 0; }
+  /* :global() so the rule reaches the .ode-tag rendered by the child DataTag */
+  .stat :global(.ode-tag) { align-self: flex-start; margin-top: auto; }
+</style>

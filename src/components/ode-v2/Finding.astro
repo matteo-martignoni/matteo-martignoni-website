@@ -1,0 +1,59 @@
+---
+// Sign of a finding relative to OdE: favourable, unfavourable, neutral.
+//
+// Exists so that unfavourable results are published with the same visual
+// weight as favourable ones, and are legible as such at a glance. This is
+// the visual translation of the project rule that honesty is a product
+// requirement, not a disclaimer.
+import { type OdeLang } from '../../i18n/ode-v2';
+
+type Kind = 'pro' | 'contro' | 'neutro';
+
+interface Props {
+  kind: Kind;
+  lang?: OdeLang;
+}
+const { kind, lang = 'it' } = Astro.props;
+
+const WORDS: Record<OdeLang, Record<Kind, string>> = {
+  it: { pro: 'Favorevole', contro: 'Sfavorevole', neutro: 'Neutro' },
+  en: { pro: 'Favourable', contro: 'Unfavourable', neutro: 'Neutral' },
+};
+const SIGN: Record<Kind, string> = { pro: '+', contro: '−', neutro: '=' };
+---
+<span class:list={['fx', `fx--${kind}`]}>
+  <span class="fx-sign" aria-hidden="true">{SIGN[kind]}</span>{WORDS[lang][kind]}
+</span>
+
+<style>
+  .fx {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    font-family: var(--ode-font-mono);
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.14em 0.5em 0.14em 0.35em;
+    border-radius: 3px;
+    border: 1px solid var(--rule);
+    vertical-align: middle;
+    white-space: nowrap;
+    color: var(--ink);
+    background: var(--pill);
+  }
+  .fx-sign {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.15em;
+    height: 1.15em;
+    border-radius: 2px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .fx--pro .fx-sign { background: var(--green-soft); color: var(--green); }
+  .fx--contro .fx-sign { background: var(--pink-soft); color: var(--pink-ink); }
+  .fx--neutro .fx-sign { background: var(--lav-soft); color: var(--lav-ink); }
+</style>
