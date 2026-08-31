@@ -1071,3 +1071,26 @@ cappello di quattro righe, e sotto i 560px il ritratto passa sopra al testo alla
 larghezza che aveva, invece di allargarsi. Il PNG e' RGBA con fondo trasparente,
 quindi il tratto nero appoggia direttamente sul verde del tema senza un
 rettangolo bianco intorno.
+
+### Titolo e cappello della sezione 10, seconda passata
+
+Il titolo lungo ("Who is behind this, and what he has not done before")
+anticipava quello che le due schede dicono da sole: accorciato a "Who’s behind
+this?" e "Chi c’è dietro?".
+
+Il cappello non era piu' un cappello. Diceva che una pagina senza un nome chiede
+di fidarsi di uno sconosciuto, che era vero finche' il nome mancava davvero, e
+diventava una premessa inutile una volta che il nome e il ritratto stanno li'.
+Sostituito da tre righe di sintesi che introducono le schede: manager e
+imprenditore di formazione internazionale, l'escursione di scala detta con due
+fatti verificabili invece che con un aggettivo (marchi dentro un'azienda da 1,3
+miliardi di euro, tre aziende costruite da zero), e il ponte alle due schede.
+
+Nessun numero inventato: il conto delle aziende fondate e' quello che il sito
+ospitante dichiara gia' (Surface to Air, Nova, Officina degli Estratti), e il
+fatturato Diesel e' quello della scheda progetto. Il numero dei paesi resta
+fuori, perche' le sedi elencate nelle schede sono cinque e il sito ospitante ne
+dichiara quattro: finche' i due non concordano, il sito non conta.
+
+Il cappello sta ora in quattro righe, esattamente l'altezza del riquadro del
+ritratto, in entrambe le lingue.
