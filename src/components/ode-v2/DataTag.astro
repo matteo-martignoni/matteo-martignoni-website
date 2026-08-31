@@ -25,7 +25,7 @@ interface Props {
   label?: string; // source note shown in the footnote list
 }
 const { kind, label } = Astro.props;
-const isIt = !Astro.url.pathname.startsWith('/OdE-v2/en');
+const isIt = Astro.url.pathname.startsWith('/OdE/test/it');
 const text = isIt
   ? { fonte: 'Fonte', stima: 'Stima', bench: 'Benchmark' }[kind]
   : { fonte: 'Source', stima: 'Estimate', bench: 'Benchmark' }[kind];

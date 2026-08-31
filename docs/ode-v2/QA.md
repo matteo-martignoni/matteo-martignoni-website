@@ -1,4 +1,4 @@
-# QA e consegna, sito di test /OdE-v2
+# QA e consegna, sito di test /OdE/test
 
 Documento di Fase 6. Accompagna la Pull Request.
 Convenzione: nessun trattino lungo nella prosa italiana.
@@ -22,7 +22,7 @@ Produce una cartella che si apre in Chrome con un doppio clic su `index.html`,
 senza server e senza rete. Lo script fa tre cose che il build non fa, perché il
 build presume un web server:
 
-1. **Percorsi relativi.** Astro emette `/OdE-v2/...` e `/_astro/...`: sotto
+1. **Percorsi relativi.** Astro emette `/OdE/test/...` e `/_astro/...`: sotto
    `file://` gli assoluti puntano alla radice del disco. Diventano relativi,
    calcolati sulla profondità di ogni pagina.
 2. **Link espliciti a `index.html`.** Un link a una directory non funziona
@@ -107,34 +107,34 @@ src/components/ode-v2/ReadNext.astro
 src/components/ode-v2/Sources.astro
 src/components/ode-v2/StatCard.astro
 src/components/ode-v2/Status.astro
-src/pages/OdE-v2/index.astro
-src/pages/OdE-v2/audit.astro
-src/pages/OdE-v2/tesi.astro
-src/pages/OdE-v2/amsa.astro
-src/pages/OdE-v2/filiera.astro
-src/pages/OdE-v2/posizione.astro
-src/pages/OdE-v2/normativa.astro
-src/pages/OdE-v2/evidenza.astro
-src/pages/OdE-v2/investitori.astro
-src/pages/OdE-v2/glossario.astro
-src/pages/OdE-v2/amsa-live.astro
-src/pages/OdE-v2/en/index.astro
-src/pages/OdE-v2/en/audit.astro
-src/pages/OdE-v2/en/tesi.astro
-src/pages/OdE-v2/en/investitori.astro
-src/pages/OdE-v2/en/amsa-live.astro
-src/pages/OdE-v2/en/amsa.astro
-src/pages/OdE-v2/en/filiera.astro
-src/pages/OdE-v2/en/posizione.astro
-src/pages/OdE-v2/en/normativa.astro
-src/pages/OdE-v2/en/evidenza.astro
-src/pages/OdE-v2/en/glossario.astro
+src/pages/OdE/test/it/index.astro
+src/pages/OdE/test/it/audit.astro
+src/pages/OdE/test/it/tesi.astro
+src/pages/OdE/test/it/amsa.astro
+src/pages/OdE/test/it/filiera.astro
+src/pages/OdE/test/it/posizione.astro
+src/pages/OdE/test/it/normativa.astro
+src/pages/OdE/test/it/evidenza.astro
+src/pages/OdE/test/it/investitori.astro
+src/pages/OdE/test/it/glossario.astro
+src/pages/OdE/test/it/amsa-live.astro
+src/pages/OdE/test/index.astro
+src/pages/OdE/test/audit.astro
+src/pages/OdE/test/tesi.astro
+src/pages/OdE/test/investitori.astro
+src/pages/OdE/test/amsa-live.astro
+src/pages/OdE/test/amsa.astro
+src/pages/OdE/test/filiera.astro
+src/pages/OdE/test/posizione.astro
+src/pages/OdE/test/normativa.astro
+src/pages/OdE/test/evidenza.astro
+src/pages/OdE/test/glossario.astro
 ```
 
 ### File esistenti modificati
 
 **Uno solo: `README.md`.** È documentazione, non codice del sito, e la modifica
-è puramente additiva: una nuova sezione `## OdE test site (/OdE-v2)` inserita
+è puramente additiva: una nuova sezione `## OdE test site (/OdE/test)` inserita
 prima della sottosezione `### Data honesty` già presente. Nessuna riga
 preesistente è stata rimossa o riscritta.
 
@@ -143,7 +143,7 @@ preesistente è stata rimossa o riscritta.
 **Nessuno.** Non è stato modificato alcun file sotto `src/pages/OdE/`,
 `src/components/ode/`, `src/lib/ode/`, né `src/layouts/OdeLayout.astro`,
 `src/styles/ode-theme.css`, `src/i18n/ode.ts`. **Nemmeno `astro.config.mjs`**,
-perché il filtro sitemap esistente copre già la rotta `/OdE-v2`.
+perché il filtro sitemap esistente copre già la rotta `/OdE/test`.
 
 Comando di verifica:
 
@@ -341,13 +341,13 @@ registro delle modifiche è nella sezione 17 di `PLAN.md`. Qui interessa che cos
 
 | Chiave | Italiano | Inglese |
 |---|---|---|
-| `tesi` | `/OdE-v2/tesi` | `/OdE-v2/en/thesis` |
-| `filiera` | `/OdE-v2/filiera` | `/OdE-v2/en/supply-chain` |
-| `posizione` | `/OdE-v2/posizione` | `/OdE-v2/en/position` |
-| `normativa` | `/OdE-v2/normativa` | `/OdE-v2/en/regulation` |
-| `evidenza` | `/OdE-v2/evidenza` | `/OdE-v2/en/open-evidence` |
-| `investitori` | `/OdE-v2/investitori` | `/OdE-v2/en/investors` |
-| `glossario` | `/OdE-v2/glossario` | `/OdE-v2/en/glossary` |
+| `tesi` | `/OdE/test/it/tesi` | `/OdE/test/thesis` |
+| `filiera` | `/OdE/test/it/filiera` | `/OdE/test/supply-chain` |
+| `posizione` | `/OdE/test/it/posizione` | `/OdE/test/position` |
+| `normativa` | `/OdE/test/it/normativa` | `/OdE/test/regulation` |
+| `evidenza` | `/OdE/test/it/evidenza` | `/OdE/test/open-evidence` |
+| `investitori` | `/OdE/test/it/investitori` | `/OdE/test/investors` |
+| `glossario` | `/OdE/test/it/glossario` | `/OdE/test/glossary` |
 
 Le **chiavi non cambiano**: sono identificatori, e il selettore di lingua
 continua a trovare la stessa pagina nell'altra lingua perché lavora sulle chiavi
@@ -362,7 +362,7 @@ passavano. Ora il badge segue la lingua della rotta, letta da
 `Astro.url.pathname`, e rende `Source` ed `Estimate` in inglese. Verifica:
 
 ```bash
-grep -o 'ode-tag--fonte[^>]*>[A-Za-z]*' dist/OdE-v2/en/thesis/index.html | head -1
+grep -o 'ode-tag--fonte[^>]*>[A-Za-z]*' dist/OdE/test/thesis/index.html | head -1
 # deve finire con ">Source"
 ```
 
@@ -405,8 +405,8 @@ integralmente avrebbe peggiorato una prosa italiana già buona senza cambiare un
 solo contenuto. Dove la revisione inglese ha davvero spostato qualcosa (i due
 nomi della tabella qui sopra), l'italiano è stato allineato.
 
-**La lingua di default del sito non è stata cambiata.** `/OdE-v2` serve ancora
-l'italiano e `/OdE-v2/en` l'inglese, come il sito originale. Se l'inglese è la
+**La lingua di default del sito non è stata cambiata.** `/OdE/test` serve ancora
+l'italiano e `/OdE/test` l'inglese, come il sito originale. Se l'inglese è la
 lingua sorgente, si può sostenere che debba essere anche quella di default, con
 l'italiano sotto `/it`: è però una decisione sul pubblico primario del progetto,
 non sulla lingua, e va presa dal committente. È l'unica cosa di questa revisione
@@ -415,6 +415,58 @@ che ho lasciato aperta.
 **Il divieto di trattino lungo è stato esteso all'inglese**, come scelta di
 stile della casa. In inglese il trattino lungo sarebbe idiomatico, ma non costa
 nulla farne a meno e la regola resta una sola per tutto il sito.
+
+## La pubblicazione su matteomartignoni.com/OdE/test
+
+L'area di test è pubblicata sul dominio reale, con l'inglese come lingua di
+default. Il registro della decisione è nella sezione 18 di `PLAN.md`.
+
+### Perché `/OdE/test` e non `/ode/test`
+
+Il committente aveva chiesto `/ode/test` in minuscolo. Una cartella
+`src/pages/ode/` **collide con `src/pages/OdE/`** su qualunque filesystem
+case-insensitive, cioè su quasi tutti i checkout macOS: git le tratterebbe come
+due percorsi distinti, il filesystem come uno solo, e l'albero di lavoro si
+romperebbe. La maiuscola risolve il problema alla radice, ed è anche coerente
+con la rotta che esiste già.
+
+C'è un secondo effetto, altrettanto importante: il filtro sitemap è
+`!page.includes('/OdE')`, e `/OdE/test` sta dentro `/OdE`, quindi **l'area
+resta esclusa dal sitemap senza toccare `astro.config.mjs`**. Con `/ode/test` in
+minuscolo il filtro non avrebbe più agganciato, e l'area di test sarebbe finita
+nel sitemap del sito pubblico.
+
+### La struttura, con l'inglese al default
+
+| | Inglese, default | Italiano |
+|---|---|---|
+| Home | `/OdE/test` | `/OdE/test/it` |
+| Sorgenti | `src/pages/OdE/test/` | `src/pages/OdE/test/it/` |
+
+Rispecchia il sito ospitante, che ha l'inglese su `/` e l'italiano su `/it`.
+
+### L'unica eccezione alla regola di isolamento, e come è verificata
+
+L'area di test vive ora **dentro `src/pages/OdE/`**, che è la cartella protetta.
+La verifica 1 dello script QA è stata resa più precisa invece che più
+permissiva: continua a vietare qualunque modifica sotto `src/pages/OdE/`, con
+una sola eccezione dichiarata, `src/pages/OdE/test/`, che è composta
+esclusivamente da file nuovi. Nessun file preesistente del sito originale
+risulta toccato.
+
+### Verifica sui percorsi reali
+
+Eseguita servendo `dist/` come lo serve Cloudflare, non sull'anteprima:
+
+- 22 rotte, tutte 200, tutte con `noindex, nofollow`;
+- `lang` corretto su ogni pagina, `en` alla radice e `it` sotto `/it`;
+- i badge dei dati seguono la lingua: `Source` in inglese, `Fonte` in italiano;
+- il selettore di lingua risolve alla stessa pagina **nei due versi**,
+  `/OdE/test/thesis` verso `/OdE/test/it/tesi` e ritorno;
+- dashboard AMSA Live popolata in entrambe le lingue;
+- zero link dall'area di test verso le pagine del sito originale;
+- zero menzioni di `/OdE/test` in `/OdE`, `/OdE/en`, `/` e `/it`;
+- zero errori JavaScript, zero overflow orizzontale.
 
 ## Che cosa resta da fare
 
@@ -427,5 +479,5 @@ nulla farne a meno e la regola resta una sola per tutto il sito.
 - **Far leggere l'inglese a un madrelingua tecnico.** La revisione ha portato il
   testo dalla traduzione fedele alla scrittura inglese, ma un lettore nativo del
   settore resta il controllo finale.
-- **Decidere se l'inglese debba diventare anche la lingua di default**, cioè se
-  `/OdE-v2` debba servire l'inglese e l'italiano spostarsi sotto `/it`.
+- **Rimuovere l'area di test** quando avrà esaurito la sua funzione: basta
+  cancellare `src/pages/OdE/test/`, e nulla del sito originale ne risente.

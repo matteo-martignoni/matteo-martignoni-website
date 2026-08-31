@@ -1,6 +1,6 @@
 ---
-import OdeV2Layout from '../../layouts/OdeV2Layout.astro';
-import { odeMeta, odeRoutes } from '../../i18n/ode-v2';
+import OdeV2Layout from '../../../../layouts/OdeV2Layout.astro';
+import { odeMeta, odeRoutes } from '../../../../i18n/ode-v2';
 
 const lang = 'it' as const;
 const m = odeMeta[lang].live;
@@ -85,7 +85,7 @@ const r = odeRoutes[lang];
 </OdeV2Layout>
 
 <script>
-  import { initDashboard } from '../../lib/ode/dashboard-ui';
+  import { initDashboard } from '../../../../lib/ode/dashboard-ui';
   initDashboard({
     lang: 'it',
     fatNames: { beef_tallow: 'Sego bovino', pork_lard: 'Grasso suino' },

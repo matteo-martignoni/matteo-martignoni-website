@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
-"""QA del sito di test /OdE-v2. Esegue le verifiche della Fase 6 sul build."""
+"""QA dell'area di test /OdE/test. Esegue le verifiche della Fase 6 sul build.
+
+L'inglese e' la lingua di default e sta alla radice dell'area; l'italiano sta
+sotto /it, come nel sito ospitante.
+"""
 import re, sys, pathlib, subprocess, html as htmlmod
 
 ROOT = pathlib.Path('.')
 DIST = ROOT / 'dist'
-V2 = DIST / 'OdE-v2'
+V2 = DIST / 'OdE' / 'test'
+SRC = pathlib.Path('src/pages/OdE/test')
 fails, warns = [], []
 
 def ok(msg): print(f'  OK   {msg}')
@@ -24,7 +29,10 @@ PROTECTED = ('src/pages/OdE/', 'src/layouts/OdeLayout.astro', 'src/styles/ode-th
              'src/i18n/ode.ts', 'src/components/ode/', 'src/lib/ode/', 'astro.config.mjs',
              'src/components/Header.astro', 'src/components/Navigation.astro',
              'src/layouts/BaseLayout.astro')
-viol = [f for f in touched if f.startswith(PROTECTED)]
+# L'area di test vive dentro src/pages/OdE/test/: e' l'unica eccezione
+# ammessa sotto quel prefisso, ed e' tutta composta da file nuovi.
+ALLOWED = ('src/pages/OdE/test/',)
+viol = [f for f in touched if f.startswith(PROTECTED) and not f.startswith(ALLOWED)]
 for f in touched: print('  ', f)
 if viol: bad(f'file protetti modificati: {viol}')
 else: ok('nessun file del sito originale, del layout host o della config e toccato')
@@ -36,30 +44,30 @@ missing = [str(p.relative_to(DIST)) for p in pages
 if missing: bad(f'noindex mancante su: {missing}')
 else: ok(f'presente su tutte le {len(pages)} pagine')
 
-# 3. Nessun link in ingresso verso /OdE-v2 dal sito ospitante o da /OdE
+# 3. Nessun link in ingresso verso /OdE/test dal sito ospitante o da /OdE
 print('\n=== 3. Nessun link in ingresso ===')
 inbound = []
 for p in DIST.rglob('*.html'):
-    rel = str(p.relative_to(DIST))
-    if rel.startswith('OdE-v2/'): continue
-    if 'OdE-v2' in p.read_text(encoding='utf-8'): inbound.append(rel)
-if inbound: bad(f'link o menzioni verso /OdE-v2 in: {inbound}')
-else: ok('nessuna pagina del sito ospitante o di /OdE menziona /OdE-v2')
+    rel = str(p.relative_to(DIST)).replace('\\', '/')
+    if rel.startswith('OdE/test/') or rel == 'OdE/test.html': continue
+    if '/OdE/test' in p.read_text(encoding='utf-8'): inbound.append(rel)
+if inbound: bad(f'link o menzioni verso /OdE/test in: {inbound}')
+else: ok('nessuna pagina del sito ospitante o di /OdE menziona /OdE/test')
 
-# 4. Nessun link in uscita da /OdE-v2 verso /OdE
+# 4. Nessun link in uscita da /OdE/test verso il sito originale /OdE
 print('\n=== 4. Nessun link in uscita verso /OdE ===')
 outbound = []
 for p in pages:
-    for m in re.finditer(r'href="(/OdE(?!-v2)[^"]*)"', p.read_text(encoding='utf-8')):
+    for m in re.finditer(r'href="(/OdE(?!/test)[^"]*)"', p.read_text(encoding='utf-8')):
         outbound.append((str(p.relative_to(DIST)), m.group(1)))
 if outbound: bad(f'link verso il sito originale: {outbound}')
-else: ok('nessuna pagina di /OdE-v2 linka /OdE')
+else: ok('nessuna pagina di /OdE/test linka /OdE')
 
 # 5. Sitemap
 print('\n=== 5. Esclusione dal sitemap ===')
 sm = list(DIST.glob('sitemap*.xml'))
 hits = [str(f) for f in sm if 'OdE' in f.read_text(encoding='utf-8')]
-if hits: bad(f'/OdE o /OdE-v2 presenti nel sitemap: {hits}')
+if hits: bad(f'/OdE o /OdE/test presenti nel sitemap: {hits}')
 else: ok(f'{len(sm)} file sitemap, nessuna occorrenza di OdE')
 
 def visible_text(h):
@@ -70,7 +78,7 @@ def visible_text(h):
 
 # 6. Trattini lunghi nella prosa italiana
 print('\n=== 6. Nessun trattino lungo nel testo italiano ===')
-it_pages = [p for p in pages if '/en/' not in str(p).replace('\\','/')]
+it_pages = [p for p in pages if '/test/it/' in str(p).replace('\\','/')]
 dash = []
 for p in it_pages:
     txt = visible_text(p.read_text(encoding='utf-8'))
@@ -143,7 +151,7 @@ else: ok('ogni riferimento ha la sua voce e ogni voce il suo riferimento')
 
 # 10. Responsivita: nessuna larghezza fissa in px sul contenitore
 print('\n=== 10. Responsivita ===')
-srcfiles = list(pathlib.Path('src/pages/OdE-v2').rglob('*.astro')) + \
+srcfiles = list(SRC.rglob('*.astro')) + \
            list(pathlib.Path('src/components/ode-v2').rglob('*.astro')) + \
            [pathlib.Path('src/layouts/OdeV2Layout.astro'), pathlib.Path('src/styles/ode-v2-theme.css')]
 fixed = []

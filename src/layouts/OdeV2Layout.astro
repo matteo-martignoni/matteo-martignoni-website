@@ -1,6 +1,6 @@
 ---
 // ──────────────────────────────────────────────────────────────
-// OdeV2Layout — isolated layout for the /OdE-v2 TEST microsite.
+// OdeV2Layout — isolated layout for the /OdE/test microsite.
 //
 // New file. It does not touch, import from, or link to the live /OdE
 // microsite, and it never uses the host site's Header/Footer/Navigation.
@@ -9,7 +9,7 @@
 //   1. own header/footer (below) — no entry in any host navigation array
 //   2. <meta name="robots" content="noindex, nofollow"> on every page
 //   3. excluded from the sitemap — astro.config.mjs already filters any URL
-//      containing "/OdE", and "/OdE-v2" contains it, so no config change
+//      containing "/OdE", and "/OdE/test" sits under it, so no config change
 //      was needed
 //   4. no inbound link from the host site or from /OdE
 //   5. no outbound link to /OdE
@@ -35,7 +35,7 @@ interface Props {
   pageKey?: OdeRouteKey;
 }
 
-const { title, description = '', lang = 'it', active, pageKey } = Astro.props;
+const { title, description = '', lang = 'en', active, pageKey } = Astro.props;
 const t = odeUI[lang];
 const r = odeRoutes[lang];
 

@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Esporta /OdE-v2 come sito statico apribile in Chrome con un doppio clic.
+"""Esporta /OdE/test come sito statico apribile in Chrome con un doppio clic.
 
     npm run build
     python3 docs/ode-v2/export-static.py            # -> sito-ode-v2/
     python3 docs/ode-v2/export-static.py /altro/percorso
 
-Il build di Astro usa percorsi assoluti (/OdE-v2/..., /_astro/...) e script
+Il build di Astro usa percorsi assoluti (/OdE/test/..., /_astro/...) e script
 ES module. Nessuna delle due cose funziona sotto file://, quindi qui:
   - i percorsi assoluti diventano relativi, calcolati sulla profondita' della pagina;
   - i link a directory diventano link espliciti a index.html;
@@ -21,8 +21,8 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 DIST = ROOT / 'dist'
 OUT = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / 'sito-ode-v2'
 
-if not (DIST / 'OdE-v2').is_dir():
-    sys.exit('dist/OdE-v2 non esiste: esegui prima `npm run build`')
+if not (DIST / 'OdE' / 'test').is_dir():
+    sys.exit('dist/OdE/test non esiste: esegui prima `npm run build`')
 
 # ── I due file che accompagnano l'esportazione ──────────────────────────────
 # L'indice locale usa i token di OdE_Brand_System, come il resto del sito.
@@ -78,7 +78,7 @@ LANDING = """<!doctype html>
 </style>
 </head>
 <body>
-<p class="bar">Versione di prova &middot; non indicizzata &middot; copia locale del sito di test /OdE-v2</p>
+<p class="bar">Versione di prova &middot; non indicizzata &middot; copia locale dell&rsquo;area di test /OdE/test</p>
 <div class="wrap">
   <h1>Officina degli Estratti, sito di prova</h1>
   <p class="lede">
@@ -87,12 +87,12 @@ LANDING = """<!doctype html>
   </p>
 
   <div class="doors">
-    <a class="door" href="OdE-v2/en/index.html">
+    <a class="door" href="OdE/test/index.html">
       <span class="door-k">Source language</span>
       <span class="door-t">English</span>
       <span class="door-d">There is no clinical study measuring what tallow does to human skin.</span>
     </a>
-    <a class="door" href="OdE-v2/index.html">
+    <a class="door" href="OdE/test/it/index.html">
       <span class="door-k">Traduzione</span>
       <span class="door-t">Italiano</span>
       <span class="door-d">Non esiste uno studio clinico che misuri l&rsquo;effetto del sego sulla pelle umana.</span>
@@ -101,32 +101,32 @@ LANDING = """<!doctype html>
 
   <h2>English</h2>
   <ul class="pages">
-    <li><a href="OdE-v2/en/index.html">Home</a></li>
-    <li><a href="OdE-v2/en/audit/index.html">The Audit</a></li>
-    <li><a href="OdE-v2/en/thesis/index.html">The Thesis</a></li>
-    <li><a href="OdE-v2/en/amsa/index.html">AMSA</a></li>
-    <li><a href="OdE-v2/en/supply-chain/index.html">Supply chain</a></li>
-    <li><a href="OdE-v2/en/position/index.html">Position</a></li>
-    <li><a href="OdE-v2/en/regulation/index.html">Regulation</a></li>
-    <li><a href="OdE-v2/en/open-evidence/index.html">Open questions</a></li>
-    <li><a href="OdE-v2/en/investors/index.html">Investors</a></li>
-    <li><a href="OdE-v2/en/glossary/index.html">Glossary</a></li>
-    <li><a href="OdE-v2/en/amsa-live/index.html">AMSA Live</a></li>
+    <li><a href="OdE/test/index.html">Home</a></li>
+    <li><a href="OdE/test/audit/index.html">The Audit</a></li>
+    <li><a href="OdE/test/thesis/index.html">The Thesis</a></li>
+    <li><a href="OdE/test/amsa/index.html">AMSA</a></li>
+    <li><a href="OdE/test/supply-chain/index.html">Supply chain</a></li>
+    <li><a href="OdE/test/position/index.html">Position</a></li>
+    <li><a href="OdE/test/regulation/index.html">Regulation</a></li>
+    <li><a href="OdE/test/open-evidence/index.html">Open questions</a></li>
+    <li><a href="OdE/test/investors/index.html">Investors</a></li>
+    <li><a href="OdE/test/glossary/index.html">Glossary</a></li>
+    <li><a href="OdE/test/amsa-live/index.html">AMSA Live</a></li>
   </ul>
 
   <h2>Italiano</h2>
   <ul class="pages">
-    <li><a href="OdE-v2/index.html">Home</a></li>
-    <li><a href="OdE-v2/audit/index.html">L&rsquo;Audit</a></li>
-    <li><a href="OdE-v2/tesi/index.html">La Tesi</a></li>
-    <li><a href="OdE-v2/amsa/index.html">AMSA</a></li>
-    <li><a href="OdE-v2/filiera/index.html">Filiera</a></li>
-    <li><a href="OdE-v2/posizione/index.html">Posizione</a></li>
-    <li><a href="OdE-v2/normativa/index.html">Normativa</a></li>
-    <li><a href="OdE-v2/evidenza/index.html">Domande aperte</a></li>
-    <li><a href="OdE-v2/investitori/index.html">Investitori</a></li>
-    <li><a href="OdE-v2/glossario/index.html">Glossario</a></li>
-    <li><a href="OdE-v2/amsa-live/index.html">AMSA Live</a></li>
+    <li><a href="OdE/test/it/index.html">Home</a></li>
+    <li><a href="OdE/test/it/audit/index.html">L&rsquo;Audit</a></li>
+    <li><a href="OdE/test/it/tesi/index.html">La Tesi</a></li>
+    <li><a href="OdE/test/it/amsa/index.html">AMSA</a></li>
+    <li><a href="OdE/test/it/filiera/index.html">Filiera</a></li>
+    <li><a href="OdE/test/it/posizione/index.html">Posizione</a></li>
+    <li><a href="OdE/test/it/normativa/index.html">Normativa</a></li>
+    <li><a href="OdE/test/it/evidenza/index.html">Domande aperte</a></li>
+    <li><a href="OdE/test/it/investitori/index.html">Investitori</a></li>
+    <li><a href="OdE/test/it/glossario/index.html">Glossario</a></li>
+    <li><a href="OdE/test/it/amsa-live/index.html">AMSA Live</a></li>
   </ul>
 
   <h2>Come si legge</h2>
@@ -136,7 +136,7 @@ LANDING = """<!doctype html>
     il sito ripiega sul carattere di sistema e resta leggibile.
   </p>
   <p class="note">
-    La dashboard <a href="OdE-v2/en/amsa-live/index.html">AMSA Live</a> &egrave; una simulazione
+    La dashboard <a href="OdE/test/amsa-live/index.html">AMSA Live</a> &egrave; una simulazione
     dimostrativa, e lo dichiara in ogni schermata: le assegnazioni delle bande spettrali sono
     corrette, intensit&agrave; e punteggi sono euristiche calibrate per chiarezza.
   </p>
@@ -149,8 +149,8 @@ LANDING = """<!doctype html>
 </html>
 """
 
-README = """OdE, sito di prova /OdE-v2, copia statica locale
-================================================
+README = """OdE, area di test /OdE/test, copia statica locale
+===============================================
 
 COME APRIRLO
   Doppio clic su index.html. Si apre in Chrome e funziona subito:
@@ -162,8 +162,8 @@ COME APRIRLO
 
 CHE COSA CONTIENE
   index.html          l'indice locale, con le due lingue e tutte le pagine
-  OdE-v2/             le 11 pagine italiane
-  OdE-v2/en/          le 11 pagine inglesi
+  OdE/test/           le 11 pagine inglesi, che sono il default
+  OdE/test/it/        le 11 pagine italiane
   _astro/             fogli di stile e script
   images/ode/         la favicon
 
@@ -197,8 +197,8 @@ if OUT.exists():
 OUT.mkdir(parents=True)
 
 # ── 1. le pagine ──
-shutil.copytree(DIST / 'OdE-v2', OUT / 'OdE-v2')
-pages = sorted((OUT / 'OdE-v2').rglob('index.html'))
+shutil.copytree(DIST / 'OdE' / 'test', OUT / 'OdE' / 'test')
+pages = sorted((OUT / 'OdE' / 'test').rglob('index.html'))
 print(f'pagine: {len(pages)}')
 
 # ── 2. gli asset realmente referenziati ──
@@ -257,9 +257,9 @@ for p in pages:
             frag = '#' + frag
         if url.startswith('/_astro/') or url.startswith('/images/'):
             target = url.lstrip('/')
-        elif url == '/OdE-v2':
-            target = 'OdE-v2/index.html'
-        elif url.startswith('/OdE-v2/'):
+        elif url == '/OdE/test':
+            target = 'OdE/test/index.html'
+        elif url.startswith('/OdE/test/'):
             target = url.lstrip('/').rstrip('/') + '/index.html'
         else:
             return m.group(0)                          # esterno o sconosciuto: invariato

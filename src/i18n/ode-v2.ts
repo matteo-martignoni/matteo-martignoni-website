@@ -5,10 +5,18 @@
 // import from src/i18n/ode.ts: the original microsite must keep working
 // untouched, and a shared module would couple the two.
 //
-// ENGLISH IS THE SOURCE LANGUAGE of this microsite. Italian is the translation.
-// Copy is drafted in English and rendered into Italian, not the other way
-// round, which is why the English routes carry English slugs while the keys
-// that address them stay stable and language-neutral.
+// ENGLISH IS THE SOURCE LANGUAGE of this microsite, and it is also the default
+// locale: English sits at the root of the test area and Italian lives under
+// /it, exactly as the host site does. Copy is drafted in English and rendered
+// into Italian, not the other way round, which is why the English routes carry
+// English slugs while the keys that address them stay stable and
+// language-neutral.
+//
+// The area lives at /OdE/test rather than /ode/test on purpose. A lowercase
+// `ode` folder would collide with the existing `OdE` one on a case-insensitive
+// filesystem, which is most macOS checkouts, and the collision would break the
+// working tree. Capitalising it also keeps the existing sitemap filter,
+// !page.includes('/OdE'), excluding the test area with no config change.
 //
 // House style, both languages: NO em-dash in body copy. Use commas, colons or
 // parentheses instead. The em-dash is allowed only in code comments.
@@ -22,35 +30,35 @@ export const ODE_LANGS: OdeLang[] = ['it', 'en'];
 // localised, so the language switch can always find the same page in the
 // other language.
 export const odeRoutes = {
-  it: {
-    home: '/OdE-v2',
-    audit: '/OdE-v2/audit',
-    tesi: '/OdE-v2/tesi',
-    amsa: '/OdE-v2/amsa',
-    filiera: '/OdE-v2/filiera',
-    posizione: '/OdE-v2/posizione',
-    normativa: '/OdE-v2/normativa',
-    evidenza: '/OdE-v2/evidenza',
-    investitori: '/OdE-v2/investitori',
-    glossario: '/OdE-v2/glossario',
-    live: '/OdE-v2/amsa-live',
-  },
   en: {
-    home: '/OdE-v2/en',
-    audit: '/OdE-v2/en/audit',
-    tesi: '/OdE-v2/en/thesis',
-    amsa: '/OdE-v2/en/amsa',
-    filiera: '/OdE-v2/en/supply-chain',
-    posizione: '/OdE-v2/en/position',
-    normativa: '/OdE-v2/en/regulation',
-    evidenza: '/OdE-v2/en/open-evidence',
-    investitori: '/OdE-v2/en/investors',
-    glossario: '/OdE-v2/en/glossary',
-    live: '/OdE-v2/en/amsa-live',
+    home: '/OdE/test',
+    audit: '/OdE/test/audit',
+    tesi: '/OdE/test/thesis',
+    amsa: '/OdE/test/amsa',
+    filiera: '/OdE/test/supply-chain',
+    posizione: '/OdE/test/position',
+    normativa: '/OdE/test/regulation',
+    evidenza: '/OdE/test/open-evidence',
+    investitori: '/OdE/test/investors',
+    glossario: '/OdE/test/glossary',
+    live: '/OdE/test/amsa-live',
+  },
+  it: {
+    home: '/OdE/test/it',
+    audit: '/OdE/test/it/audit',
+    tesi: '/OdE/test/it/tesi',
+    amsa: '/OdE/test/it/amsa',
+    filiera: '/OdE/test/it/filiera',
+    posizione: '/OdE/test/it/posizione',
+    normativa: '/OdE/test/it/normativa',
+    evidenza: '/OdE/test/it/evidenza',
+    investitori: '/OdE/test/it/investitori',
+    glossario: '/OdE/test/it/glossario',
+    live: '/OdE/test/it/amsa-live',
   },
 } as const;
 
-export type OdeRouteKey = keyof (typeof odeRoutes)['it'];
+export type OdeRouteKey = keyof (typeof odeRoutes)['en'];
 
 export const odeUI = {
   it: {

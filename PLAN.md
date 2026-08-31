@@ -23,10 +23,10 @@ pagina:
 > OdE non vende sego. Vende la certezza su cosa c'è dentro un lotto di sego.
 > In un mercato dove nessuno misura, chi misura per primo definisce lo standard.
 
-Il sito di test vive sotto `/OdE-v2`, in un albero di file **interamente nuovo**.
+Il sito di test vive sotto `/OdE/test`, in un albero di file **interamente nuovo**.
 Nessun file del sito originale viene modificato, e nemmeno `astro.config.mjs`
 (sezione 2). Le due versioni si confrontano affiancate agli indirizzi `/OdE` e
-`/OdE-v2`.
+`/OdE/test`.
 
 ---
 
@@ -86,29 +86,29 @@ Due meccanismi, oggi non formalizzati allo stesso modo:
 
 ## 2. Soluzione tecnica per l'isolamento
 
-### Scelta: rotta parallela `/OdE-v2`, albero di file interamente nuovo
+### Scelta: rotta parallela `/OdE/test`, albero di file interamente nuovo
 
 **Nessun file esistente viene modificato**, con la sola eccezione documentata di
 `README.md` (documentazione, non codice del sito) e dell'aggiunta di `PLAN.md` e
 `docs/ode-v2/`. La prova sarà fornita in consegna con `git diff --stat`.
 
 Il punto tecnico che rende questa soluzione pulita: **il filtro sitemap esistente
-copre già `/OdE-v2` senza modifiche**. La riga in `astro.config.mjs` è
+copre già `/OdE/test` senza modifiche**. La riga in `astro.config.mjs` è
 
 ```js
 filter: (page) => !page.includes('/OdE'),
 ```
 
-e la stringa `/OdE-v2` contiene la sottostringa `/OdE`, quindi tutte le pagine
-del sito di test sono già escluse dal sitemap. È la ragione per cui `/OdE-v2` è
+e la stringa `/OdE/test` contiene la sottostringa `/OdE`, quindi tutte le pagine
+del sito di test sono già escluse dal sitemap. È la ragione per cui `/OdE/test` è
 preferibile a nomi alternativi come `/ode-lab` o `/OdE2`: qualunque altro nome
 avrebbe richiesto di toccare `astro.config.mjs`.
 
 ### Struttura dei file nuovi
 
 ```
-src/pages/OdE-v2/              10 pagine IT
-src/pages/OdE-v2/en/           mirror EN (Fase 5)
+src/pages/OdE/test/it/              10 pagine IT
+src/pages/OdE/test/           mirror EN (Fase 5)
 src/layouts/OdeV2Layout.astro  layout isolato, noindex, navigazione nuova
 src/styles/ode-v2-theme.css    @import dei token esistenti + estensioni v2
 src/components/ode-v2/         componenti nuovi (DataTag2, Sources2, Status,
@@ -123,9 +123,9 @@ docs/ode-v2/                   piano, mappatura tracce, checklist QA
 | # | Meccanismo | Come si verifica |
 |---|---|---|
 | 1 | Layout proprio `OdeV2Layout`, nessun uso di `Header.astro` o `Navigation.astro` | grep sui file host |
-| 2 | Nessun link in ingresso dal sito ospitante né da `/OdE` | `grep -r "OdE-v2" src/pages/OdE src/components src/layouts/BaseLayout.astro` deve dare zero |
-| 3 | Nessun link in uscita da `/OdE-v2` verso `/OdE` | `grep -rn 'href="/OdE[^-]' src/pages/OdE-v2` deve dare zero |
-| 4 | `<meta name="robots" content="noindex, nofollow">` su ogni pagina | conteggio nell'HTML di `dist/OdE-v2/**` |
+| 2 | Nessun link in ingresso dal sito ospitante né da `/OdE` | `grep -r "OdE/test" src/pages/OdE src/components src/layouts/BaseLayout.astro` deve dare zero |
+| 3 | Nessun link in uscita da `/OdE/test` verso `/OdE` | `grep -rn 'href="/OdE[^-]' src/pages/OdE/test` deve dare zero |
+| 4 | `<meta name="robots" content="noindex, nofollow">` su ogni pagina | conteggio nell'HTML di `dist/OdE/test/it/**` |
 | 5 | Esclusione dal sitemap ereditata dal filtro esistente | ispezione di `dist/sitemap-0.xml` |
 
 A questi si aggiunge la verifica cardine: **nessun file sotto `src/pages/OdE/`,
@@ -136,7 +136,7 @@ A questi si aggiunge la verifica cardine: **nessun file sotto `src/pages/OdE/`,
 
 Documentata nel README. In sintesi: rinominare `src/pages/OdE` in `_trash/`
 (cestino locale git-ignored già previsto dal repository), rinominare
-`src/pages/OdE-v2` in `src/pages/OdE`, aggiornare `odeRoutes` nel nuovo
+`src/pages/OdE/test` in `src/pages/OdE`, aggiornare `odeRoutes` nel nuovo
 `ode-v2.ts`, ricostruire. Nessun'altra modifica richiesta, perché il filtro
 sitemap e il `noindex` restano validi.
 
@@ -147,16 +147,16 @@ sitemap e il `noindex` restano validi.
 | Rotta attuale | Contenuto | Verdetto | Destinazione in v2 |
 |---|---|---|---|
 | `/OdE` Home | Promessa di prodotto, tre idee (Circolarità, Territorio, Tecnologia), tre pilastri, due porte | **Riscrivere** | Nuova Home: apre con il fatto verificato, tre porte per tre pubblici |
-| `/OdE/amsa` | Problema, dato causale provenienza-stabilità, Active Control Loop, Passaporto, fossato | **Riscrivere e rifocalizzare** | `/OdE-v2/amsa`: lo strumento che misura, agganciato alla Tesi. Cade la sezione "fossato" nella forma attuale |
-| `/OdE/amsa/tecnica` | Data ladder, stack modelli, few-shot, tre motori, esperimento decisivo | **Fondere** | Il livello tecnico confluisce in `/OdE-v2/amsa`; l'esperimento si sposta in `Evidenza aperta` e cambia identità (sezione 5, voce 4) |
-| `/OdE/mercato` | CAGR di cinque mercati adiacenti, disponibilità a pagare, bacino DOP, competizione a tre assi, orologio DPP | **Eliminare e sostituire** | `/OdE-v2/posizione`. Il bacino DOP migra in `Filiera`, l'orologio in `Normativa`. I CAGR e la tabella competizione non sopravvivono (sezione 5, voci 1 e 3) |
-| `/OdE/visione` | Tre spazi azzurri, roadmap a quattro fasi, fotografia onesta dello stato | **Fondere e riscrivere** | La fotografia onesta e i tre spazi azzurri migrano in `/OdE-v2/tesi` (parte finale) e in `Investitori`. La roadmap a quattro fasi resta come sezione di `Investitori` |
-| `/OdE/tracciabilita` | Doppio strato normativo, vita della vacca DOP, dove la tracciabilità si rompe, confini del disciplinare, dove OdE si integra | **Conservare con riscrittura di cornice** | `/OdE-v2/filiera`. È già la pagina più onesta del sito (dichiara dove la tracciabilità si rompe). Cambia la cornice: da prova verificabile a input documentato del processo di qualificazione |
-| `/OdE/normativa` | 5 norme vigenti, 2 in arrivo, con schema "cosa richiede, chi attrita, perché OdE vince" | **Conservare e aggiornare** | `/OdE-v2/normativa`. Aggiunte: EUDR con la sua asimmetria e le sue qualificazioni, Reg. 655/2013 sulle claim, Reg. 1223/2009 art. 20. Va rivisto lo schema "perché OdE vince", troppo assertivo su ESPR |
-| `/OdE/ricerca` | Domande aperte, metodo, esperimento pre-registrato, onestà sui limiti, invito | **Conservare l'impianto, riscrivere il contenuto** | `/OdE-v2/evidenza`. La sezione "Onestà sui limiti" è il modello di tutto il sito e va estesa, non conservata come eccezione |
-| `/OdE/investitori` | Tesi in 4 punti, incentivi fiscali, Investor Visa | **Riscrivere** | `/OdE-v2/investitori`. La tesi in 4 punti cade e viene sostituita dal verdetto a tre gambe. Incentivi e visa restano, con le qualificazioni |
-| `/OdE/glossario` | 5 gruppi, circa 35 voci | **Conservare ed estendere** | `/OdE-v2/glossario`. Aggiunte circa 12 voci nuove (sezione 7) |
-| `/OdE/amsa-live` | Dashboard simulativa, motore TypeScript | **Conservare** | `/OdE-v2/amsa-live`. Motore importato in sola lettura, nessuna modifica al codice |
+| `/OdE/amsa` | Problema, dato causale provenienza-stabilità, Active Control Loop, Passaporto, fossato | **Riscrivere e rifocalizzare** | `/OdE/test/it/amsa`: lo strumento che misura, agganciato alla Tesi. Cade la sezione "fossato" nella forma attuale |
+| `/OdE/amsa/tecnica` | Data ladder, stack modelli, few-shot, tre motori, esperimento decisivo | **Fondere** | Il livello tecnico confluisce in `/OdE/test/it/amsa`; l'esperimento si sposta in `Evidenza aperta` e cambia identità (sezione 5, voce 4) |
+| `/OdE/mercato` | CAGR di cinque mercati adiacenti, disponibilità a pagare, bacino DOP, competizione a tre assi, orologio DPP | **Eliminare e sostituire** | `/OdE/test/it/posizione`. Il bacino DOP migra in `Filiera`, l'orologio in `Normativa`. I CAGR e la tabella competizione non sopravvivono (sezione 5, voci 1 e 3) |
+| `/OdE/visione` | Tre spazi azzurri, roadmap a quattro fasi, fotografia onesta dello stato | **Fondere e riscrivere** | La fotografia onesta e i tre spazi azzurri migrano in `/OdE/test/it/tesi` (parte finale) e in `Investitori`. La roadmap a quattro fasi resta come sezione di `Investitori` |
+| `/OdE/tracciabilita` | Doppio strato normativo, vita della vacca DOP, dove la tracciabilità si rompe, confini del disciplinare, dove OdE si integra | **Conservare con riscrittura di cornice** | `/OdE/test/it/filiera`. È già la pagina più onesta del sito (dichiara dove la tracciabilità si rompe). Cambia la cornice: da prova verificabile a input documentato del processo di qualificazione |
+| `/OdE/normativa` | 5 norme vigenti, 2 in arrivo, con schema "cosa richiede, chi attrita, perché OdE vince" | **Conservare e aggiornare** | `/OdE/test/it/normativa`. Aggiunte: EUDR con la sua asimmetria e le sue qualificazioni, Reg. 655/2013 sulle claim, Reg. 1223/2009 art. 20. Va rivisto lo schema "perché OdE vince", troppo assertivo su ESPR |
+| `/OdE/ricerca` | Domande aperte, metodo, esperimento pre-registrato, onestà sui limiti, invito | **Conservare l'impianto, riscrivere il contenuto** | `/OdE/test/it/evidenza`. La sezione "Onestà sui limiti" è il modello di tutto il sito e va estesa, non conservata come eccezione |
+| `/OdE/investitori` | Tesi in 4 punti, incentivi fiscali, Investor Visa | **Riscrivere** | `/OdE/test/it/investitori`. La tesi in 4 punti cade e viene sostituita dal verdetto a tre gambe. Incentivi e visa restano, con le qualificazioni |
+| `/OdE/glossario` | 5 gruppi, circa 35 voci | **Conservare ed estendere** | `/OdE/test/it/glossario`. Aggiunte circa 12 voci nuove (sezione 7) |
+| `/OdE/amsa-live` | Dashboard simulativa, motore TypeScript | **Conservare** | `/OdE/test/it/amsa-live`. Motore importato in sola lettura, nessuna modifica al codice |
 
 Nessuna pagina viene eliminata senza destinazione. Due pagine spariscono come
 rotte (`amsa/tecnica` e `mercato`) e il loro contenuto valido viene ricollocato.
@@ -171,17 +171,17 @@ un'azione è decorativa e non entra.
 
 | # | Rotta | Titolo | Funzione narrativa | Pubblico primario | Azione abilitata |
 |---|---|---|---|---|---|
-| 1 | `/OdE-v2` | Home | Consegna la tesi in una schermata: apre con il fatto verificato, non con la promessa | Tutti e tre | Scegliere la propria porta in meno di dieci secondi |
-| 2 | `/OdE-v2/audit` | L'Audit | Motore di credibilità: che cosa abbiamo verificato e come. Il vuoto di evidenza, l'errore nella rassegna più citata, la tassonomia delle claim che non reggono | Investitore, poi partner scientifico | Verificare da sé, in un pomeriggio, che quanto affermiamo è vero |
-| 3 | `/OdE-v2/tesi` | La Tesi | Il numero di acidità come parametro che decide, la complicazione dell'idrolisi batterica, e perché ne consegue che il prodotto è la qualificazione | Partner commerciale, poi investitore | Capire che cosa si compra davvero, e che cosa non si compra |
-| 4 | `/OdE-v2/amsa` | AMSA | Lo strumento che misura, e i parametri che finiscono nel Passaporto | Partner commerciale, poi scientifico | Leggere l'elenco dei campi che riceve con ogni lotto |
-| 5 | `/OdE-v2/filiera` | Filiera | La provenienza come input documentato del processo, con il punto in cui la tracciabilità si rompe dichiarato | Partner commerciale | Sapere che cosa può dichiarare al proprio cliente senza esporsi |
-| 6 | `/OdE-v2/posizione` | Posizione | Dove OdE può esistere e dove no. La tenaglia volume contro differenziale, dichiarata | Investitore | Valutare se la posizione è reale o costruita per necessità |
-| 7 | `/OdE-v2/normativa` | Normativa | Ricognizione documentale del quadro, incluse le asimmetrie a favore e i loro limiti | Partner commerciale, poi investitore | Capire che cosa è requisito e che cosa è differenziale |
-| 8 | `/OdE-v2/evidenza` | Evidenza aperta | Le domande aperte, gli esperimenti con costi e sequenza, i criteri di arresto, l'invito | Partner scientifico | Proporre una tesi, un contratto conto terzi, una collaborazione |
-| 9 | `/OdE-v2/investitori` | Investitori | Il verdetto a tre gambe, i numeri reali del programma, i criteri di arresto | Investitore | Decidere se aprire una conversazione, con i limiti già noti |
-| 10 | `/OdE-v2/glossario` | Glossario | Infrastruttura di lettura | Tutti | Capire un termine senza uscire dal sito |
-| + | `/OdE-v2/amsa-live` | AMSA Live | Dimostrazione interattiva, dichiarata simulazione | Partner commerciale | Vedere come si legge un Passaporto |
+| 1 | `/OdE/test` | Home | Consegna la tesi in una schermata: apre con il fatto verificato, non con la promessa | Tutti e tre | Scegliere la propria porta in meno di dieci secondi |
+| 2 | `/OdE/test/it/audit` | L'Audit | Motore di credibilità: che cosa abbiamo verificato e come. Il vuoto di evidenza, l'errore nella rassegna più citata, la tassonomia delle claim che non reggono | Investitore, poi partner scientifico | Verificare da sé, in un pomeriggio, che quanto affermiamo è vero |
+| 3 | `/OdE/test/it/tesi` | La Tesi | Il numero di acidità come parametro che decide, la complicazione dell'idrolisi batterica, e perché ne consegue che il prodotto è la qualificazione | Partner commerciale, poi investitore | Capire che cosa si compra davvero, e che cosa non si compra |
+| 4 | `/OdE/test/it/amsa` | AMSA | Lo strumento che misura, e i parametri che finiscono nel Passaporto | Partner commerciale, poi scientifico | Leggere l'elenco dei campi che riceve con ogni lotto |
+| 5 | `/OdE/test/it/filiera` | Filiera | La provenienza come input documentato del processo, con il punto in cui la tracciabilità si rompe dichiarato | Partner commerciale | Sapere che cosa può dichiarare al proprio cliente senza esporsi |
+| 6 | `/OdE/test/it/posizione` | Posizione | Dove OdE può esistere e dove no. La tenaglia volume contro differenziale, dichiarata | Investitore | Valutare se la posizione è reale o costruita per necessità |
+| 7 | `/OdE/test/it/normativa` | Normativa | Ricognizione documentale del quadro, incluse le asimmetrie a favore e i loro limiti | Partner commerciale, poi investitore | Capire che cosa è requisito e che cosa è differenziale |
+| 8 | `/OdE/test/it/evidenza` | Evidenza aperta | Le domande aperte, gli esperimenti con costi e sequenza, i criteri di arresto, l'invito | Partner scientifico | Proporre una tesi, un contratto conto terzi, una collaborazione |
+| 9 | `/OdE/test/it/investitori` | Investitori | Il verdetto a tre gambe, i numeri reali del programma, i criteri di arresto | Investitore | Decidere se aprire una conversazione, con i limiti già noti |
+| 10 | `/OdE/test/it/glossario` | Glossario | Infrastruttura di lettura | Tutti | Capire un termine senza uscire dal sito |
+| + | `/OdE/test/it/amsa-live` | AMSA Live | Dimostrazione interattiva, dichiarata simulazione | Partner commerciale | Vedere come si legge un Passaporto |
 
 ### La singola idea da consegnare in tre minuti
 
@@ -625,7 +625,7 @@ visibile in pagina, marcato e raccolto nella PR.
 |---|---|---|
 | **3, scaffolding** | Layout, tema, i18n, route map, componenti nuovi, dieci pagine IT con struttura e titoli, zero contenuto definitivo | `npm run build` verde; `git diff --name-only main` non contiene alcun file del sito originale; le cinque verifiche di isolamento della sezione 2 passano |
 | **4, contenuti IT** | Scrittura pagina per pagina secondo la mappatura della sezione 6. Ogni dato quantitativo con `DataTag` e nota in calce | Rilettura nei panni di un dermatologo ostile e di un formulatore esperto; nessuna claim vietata; nessun trattino lungo |
-| **5, versione EN** | Mirror sotto `/OdE-v2/en`. Priorità dichiarata dal brief: Home, Audit, Investitori tradotte integralmente; le altre secondo capienza, con segnalazione esplicita di ciò che resta da completare | Ogni pagina IT ha il proprio mirror EN raggiungibile; le pagine non ancora tradotte portano un avviso in pagina |
+| **5, versione EN** | Mirror sotto `/OdE/test`. Priorità dichiarata dal brief: Home, Audit, Investitori tradotte integralmente; le altre secondo capienza, con segnalazione esplicita di ciò che resta da completare | Ogni pagina IT ha il proprio mirror EN raggiungibile; le pagine non ancora tradotte portano un avviso in pagina |
 | **6, QA e consegna** | Isolamento, coerenza estetica, responsività, performance, navigazione, `noindex`, link interni, note in calce. README aggiornato. Pull Request con checklist | Checklist completa in `docs/ode-v2/QA.md`; PR con prova del diff |
 
 **Stima del volume**: circa 10 pagine IT più 10 EN, 8 componenti nuovi, 1 layout,
@@ -655,7 +655,7 @@ Prese in data 28 agosto 2026, prima dell'inizio della Fase 3.
 
 | Questione | Decisione |
 |---|---|
-| **Rotta e isolamento** | `/OdE-v2`, albero di file interamente nuovo, zero file esistenti modificati. Il filtro sitemap esistente copre già la rotta |
+| **Rotta e isolamento** | `/OdE/test`, albero di file interamente nuovo, zero file esistenti modificati. Il filtro sitemap esistente copre già la rotta |
 | **Architettura** | **Approvata come proposta.** Dieci pagine più AMSA Live. `mercato` sparisce come rotta e diventa `posizione`; `amsa/tecnica` si fonde dentro `amsa` e l'esperimento decisivo si sposta in `evidenza` cambiando identità |
 | **Soglia dell'Audit** (rilievo della sezione 10) | **Esito sì, protocollo no.** L'Audit pubblica il vuoto di evidenza, l'errore di matrice nella rassegna più citata e la tassonomia delle claim. `Evidenza aperta` dichiara domanda, costo, sequenza e criterio di arresto di ogni esperimento, **ma non il protocollo sperimentale**. Il criterio di invalidazione dell'in vitro resta pubblicato, perché è la garanzia di serietà, non il disegno |
 | **P1, capitale** | **350.000 euro.** Le percentuali di scenario restano quelle del Consolidamento: MINIMO 5-11%, INTERMEDIO 16-26%, COMPLETO 33-69%. Il valore va comunque marcato `[DA CONFERMARE]` finché il committente non allinea il piano economico |
@@ -867,8 +867,8 @@ Ritradurlo integralmente avrebbe peggiorato una prosa italiana già buona senza
 cambiare un solo contenuto, e avrebbe moltiplicato il rischio di introdurre
 errori in pagine che l'audit dichiara verificabili riga per riga.
 
-**Non ho cambiato la lingua di default.** `/OdE-v2` serve l'italiano,
-`/OdE-v2/en` l'inglese, come il sito originale. Se l'inglese è la lingua
+**Non ho cambiato la lingua di default.** `/OdE/test` serve l'italiano,
+`/OdE/test` l'inglese, come il sito originale. Se l'inglese è la lingua
 sorgente si può sostenere che debba essere anche il default, con l'italiano
 sotto `/it`. Ma quella è una decisione sul **pubblico primario del progetto**,
 non sulla lingua dei testi, e ha conseguenze su SEO, su che cosa vede chi arriva
@@ -878,3 +878,69 @@ lascio al committente, ed è l'unica questione aperta di questa revisione.
 **Ho esteso all'inglese il divieto di trattino lungo.** In inglese sarebbe
 idiomatico, ma farne a meno non costa nulla e tenere una sola regola di stile
 per tutto il sito vale più della sfumatura.
+
+---
+
+## 18. Pubblicazione su matteomartignoni.com/OdE/test
+
+Decisione del committente: l'area di test va pubblicata sul dominio reale, con
+l'inglese come lingua di default.
+
+### La rotta: perche' `/OdE/test` e non `/ode/test`
+
+La richiesta era `/ode/test`, in minuscolo. Non e' praticabile, e la ragione non
+e' estetica:
+
+**Una cartella `src/pages/ode/` collide con `src/pages/OdE/`.** Su qualunque
+filesystem case-insensitive, cioe' su quasi tutti i checkout macOS, sono lo
+stesso percorso. Git ne registrerebbe due, il filesystem ne vedrebbe uno, e
+l'albero di lavoro si romperebbe alla prima checkout, potenzialmente
+sovrascrivendo i file del sito originale. Il rischio ricade esattamente su cio'
+che tutta la consegna ha protetto.
+
+**Il filtro sitemap smetterebbe di agganciare.** Il filtro e'
+`!page.includes('/OdE')`, ed e' l'unica ragione per cui `astro.config.mjs` non e'
+mai stato toccato. `/ode/test` in minuscolo non contiene `/OdE`: l'area di test
+sarebbe finita nel sitemap del sito pubblico, cioe' esattamente il contrario del
+requisito di isolamento.
+
+`/OdE/test` risolve entrambi i problemi e in piu' e' coerente con la
+capitalizzazione della rotta che esiste gia'. Il costo e' che l'URL in minuscolo
+restituisce 404, perche' i percorsi HTTP sono case-sensitive.
+
+### L'inglese diventa anche la lingua di default
+
+| | Inglese, default | Italiano |
+|---|---|---|
+| Home | `/OdE/test` | `/OdE/test/it` |
+| Sorgenti | `src/pages/OdE/test/` | `src/pages/OdE/test/it/` |
+
+Rispecchia il sito ospitante, che ha gia' `defaultLocale: 'en'` e
+`prefixDefaultLocale: false`, cioe' inglese su `/` e italiano su `/it`. Con la
+sezione 17 l'inglese era diventato la lingua sorgente dei testi; qui diventa
+anche quella di default delle rotte, che e' la conseguenza coerente.
+
+Tre punti hanno richiesto un intervento oltre allo spostamento dei file: gli
+import delle pagine italiane, scese di due livelli; il rilevamento della lingua
+in `DataTag`, che ora riconosce l'italiano dal prefisso `/it` invece
+dell'inglese da `/en`; e il valore di default della prop `lang` nel layout, che
+segue il default locale.
+
+### L'eccezione alla regola di isolamento, dichiarata
+
+L'area di test vive ora **dentro `src/pages/OdE/`**, la cartella che tutta la
+consegna ha trattato come intoccabile. La contraddizione e' apparente ma va
+gestita, non taciuta: la verifica 1 dello script QA e' stata resa **piu'
+precisa**, non piu' permissiva. Continua a vietare ogni modifica sotto
+`src/pages/OdE/`, con una sola eccezione dichiarata in codice,
+`src/pages/OdE/test/`, che contiene esclusivamente file nuovi. Nessun file
+preesistente del sito originale risulta toccato, e lo script lo verifica a ogni
+esecuzione.
+
+### Il merge su main, e perche' e' a basso rischio
+
+Pubblicare sul dominio richiede un merge su `main`, che finora la consegna aveva
+escluso. Autorizzato dal committente. Il rischio e' misurato, non presunto:
+fuori dall'area di test il branch tocca **due soli file**, `.gitignore` e
+`README.md`, e il diff del README **non rimuove nemmeno una riga**. Il sito live
+viene quindi ridistribuito identico, con in piu' l'area di test.
