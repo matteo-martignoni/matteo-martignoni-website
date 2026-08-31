@@ -1,7 +1,7 @@
 ---
 import OdeV2Layout from '../../../../layouts/OdeV2Layout.astro';
 import Section from '../../../../components/ode/Section.astro';
-import NormCard from '../../../../components/ode/NormCard.astro';
+import NormRecord from '../../../../components/ode-v2/NormRecord.astro';
 import DataTag from '../../../../components/ode-v2/DataTag.astro';
 import Status from '../../../../components/ode-v2/Status.astro';
 import Finding from '../../../../components/ode-v2/Finding.astro';
@@ -154,7 +154,7 @@ const params = [
   <Section n="1" title="Le regole che si applicano oggi">
     <div class="norms">
       {vigenti.map((n) => (
-        <NormCard
+        <NormRecord
           code={n.code}
           title={n.title}
           status={n.status}
@@ -177,7 +177,7 @@ const params = [
   <Section n="2" title="Le regole in arrivo, o il cui perimetro non è definito">
     <div class="norms">
       {arrivo.map((n) => (
-        <NormCard
+        <NormRecord
           code={n.code}
           title={n.title}
           status={n.status}
@@ -329,7 +329,10 @@ const params = [
 
 <style>
   .ev-line { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1.2rem; }
-  .norms { display: grid; grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); gap: 1.1rem; margin: 1.3rem 0; }
+  /* Una colonna sola: vedi la nota in NormRecord.astro. Su piu' colonne la
+     prosa scendeva a una misura di trenta caratteri e le righe della griglia
+     allineavano ogni scheda all'altezza della piu' lunga. */
+  .norms { margin: 1.3rem 0; }
   .quals { list-style: none; margin: 1.4rem 0; padding: 0; display: flex; flex-direction: column; gap: 1.3rem; }
   .quals > li { display: grid; grid-template-columns: 2.6rem 1fr; gap: 1rem; padding-bottom: 1.3rem; border-bottom: 1px solid var(--rule); }
   .quals > li:last-child { border-bottom: 0; padding-bottom: 0; }
