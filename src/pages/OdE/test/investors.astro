@@ -486,7 +486,29 @@ const pivots = [
   .s-what { display: block; font-weight: 400; font-size: 0.8rem; color: var(--muted); margin-top: 0.3rem; line-height: 1.45; max-width: 16rem; }
   .is-gap td, .is-gap th { border-bottom-style: dashed; border-bottom-color: var(--ink); }
 
-  .swot { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1rem; margin: 1.3rem 0; }
+  /* Quattro quadranti, nell'ordine canonico della matrice: forze in alto a
+     sinistra, debolezze in alto a destra, opportunita' in basso a sinistra,
+     minacce in basso a destra. Le due righe separano cio' che e' interno da
+     cio' che e' esterno, le due colonne cio' che gioca a favore da cio' che
+     gioca contro, ed e' la ragione per cui la colonna destra e' tratteggiata.
+     Con `auto-fit` la griglia trovava spazio per tre colonne e la matrice si
+     srotolava in una sequenza, con le minacce sole su una riga propria. */
+  .swot {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 1.3rem 0;
+  }
+  /* Sotto gli 800px due colonne scendono a una quarantina di caratteri per
+     riga, ed e' anche la larghezza di un tablet in verticale: la matrice si
+     impila, e l'ordine di lettura resta quello dei quadranti. */
+  @media (max-width: 800px) {
+    .swot { grid-template-columns: 1fr; }
+    /* Impilato, il quadrante prenderebbe tutta la colonna e la riga arriverebbe
+       a un centinaio di caratteri. A 0,87rem la misura comoda sta intorno ai
+       settanta, che e' quello che danno 34rem. */
+    .sw { max-width: 34rem; }
+  }
   .sw { border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.1rem 1.2rem; background: var(--panel); }
   .sw h3 { font-size: 0.72rem; font-family: var(--ode-font-mono); letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 0.7rem; }
   .sw ul { margin: 0; padding-left: 1.05rem; display: flex; flex-direction: column; gap: 0.5rem; }
