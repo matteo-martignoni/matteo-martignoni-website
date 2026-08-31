@@ -944,3 +944,50 @@ escluso. Autorizzato dal committente. Il rischio e' misurato, non presunto:
 fuori dall'area di test il branch tocca **due soli file**, `.gitignore` e
 `README.md`, e il diff del README **non rimuove nemmeno una riga**. Il sito live
 viene quindi ridistribuito identico, con in piu' l'area di test.
+
+## 19. Costi del programma: dove stanno, e perche' restano dove sono
+
+Il committente ha chiesto se il punto 2 di Domande aperte, il programma
+sperimentale con i costi, non stia meglio nella pagina Investitori. La risposta
+data e' no, con due correzioni al contorno che sono state applicate.
+
+### Perche' la sezione non si sposta
+
+Le due sezioni non sono lo stesso contenuto ripetuto. Sono lo stesso denaro
+tagliato per due lettori, e chiudono due decisioni diverse.
+
+- **Domande aperte §2** e' il programma voce per voce: dodici righe con domanda,
+  ordine di costo, durata e categoria. Il lettore e' un gruppo di ricerca, e la
+  decisione e' "questo esperimento lo so fare io".
+- **Investitori §3** e' lo stesso denaro aggregato in tre scenari, con quota del
+  capitale, durata e verdetto. Il lettore e' un investitore, e la decisione e'
+  "il piano sta in piedi con 350.000 euro".
+
+Spostare §2 toglierebbe le gambe alla pagina di ricerca. L'occhiello promette
+"the experiments that would close them and roughly what each would cost", e §6,
+le forme di collaborazione, ha una colonna "Cost to OdE" che si regge sui costi
+per singola voce. In cambio caricherebbe dodici righe analitiche su una pagina
+il cui lettore ha bisogno della vista a tre scenari. Peggiorerebbe entrambe.
+
+C'e' anche una ragione di coerenza con la tesi del sito: pubblicare il costo
+degli esperimenti nell'invito alla ricerca e' parte di cio' che il sito predica.
+Chi valuta se collaborare deve vedere gli 8.000 euro dell'in vitro dichiarati,
+non spostati nella sezione di chi mette i soldi.
+
+### Le due correzioni applicate
+
+Il problema reale non era la collocazione della sezione, ma due asimmetrie.
+
+1. **Linguaggio da investitore su una pagina di ricerca.** Il callout di §2
+   diceva che le prime tre voci costano "meno dell'1% del capitale e meno del 5%
+   dell'esperimento piu' caro". La quota sul capitale e' una metrica che serve a
+   chi valuta l'investimento, non a un ricercatore. Rimossa: resta il confronto
+   con l'esperimento piu' caro, che regge da solo e parla al lettore giusto.
+2. **Il rimando esisteva in una direzione sola.** Domande aperte §2 rinviava a
+   Investitori per il peso sul capitale, ma Investitori §3 non aveva alcun link
+   al programma voce per voce: chi leggeva "tra un terzo e piu' di due terzi del
+   capitale" e voleva la derivazione non aveva dove andare. Aggiunto il rimando
+   inverso, in entrambe le lingue.
+
+File toccati: `open-evidence.astro`, `it/evidenza.astro`, `investors.astro`,
+`it/investitori.astro`. Nessun altro. QA: 12 verifiche, 0 fallimenti.
