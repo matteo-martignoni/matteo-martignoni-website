@@ -154,10 +154,16 @@ print('\n=== 10. Responsivita ===')
 srcfiles = list(SRC.rglob('*.astro')) + \
            list(pathlib.Path('src/components/ode-v2').rglob('*.astro')) + \
            [pathlib.Path('src/layouts/OdeV2Layout.astro'), pathlib.Path('src/styles/ode-v2-theme.css')]
+# La soglia di una media query non e' la larghezza di un elemento: e' il
+# meccanismo con cui il layout si adatta, cioe' l'opposto di cio' che questa
+# verifica cerca. Si scartano quindi le occorrenze dentro una @media, e non la
+# verifica: resta severa su tutto il resto.
 fixed = []
 for f in srcfiles:
-    for m in re.finditer(r'(?<!max-)width:\s*(\d{3,})px', f.read_text(encoding='utf-8')):
-        if int(m.group(1)) > 320: fixed.append((str(f), m.group(0)))
+    for line in f.read_text(encoding='utf-8').splitlines():
+        if '@media' in line: continue
+        for m in re.finditer(r'(?<!max-)width:\s*(\d{3,})px', line):
+            if int(m.group(1)) > 320: fixed.append((str(f), m.group(0)))
 if fixed:
     for x in fixed: warn(f'larghezza fissa: {x[0]} :: {x[1]}')
 else: ok('nessuna larghezza fissa oltre 320px nei sorgenti v2')

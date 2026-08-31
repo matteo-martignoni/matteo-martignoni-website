@@ -134,6 +134,13 @@ const testNotice =
       <Sources lang={lang} />
     </main>
 
+    <nav
+      class="secrail"
+      id="secrail"
+      aria-label={lang === 'it' ? 'Sezioni di questa pagina' : 'Sections on this page'}
+      hidden
+    ></nav>
+
     <footer class="ode-footer">
       <span class="ode-copy">
         <span>© {new Date().getFullYear()}</span>
@@ -165,6 +172,39 @@ const testNotice =
         window.addEventListener('keydown', (e) => {
           if (e.key === 'Escape') close();
         });
+      }
+
+      // Guida delle sezioni. Si costruisce dal DOM invece che da una lista
+      // passata dalla pagina: le sezioni sono cinquantuno su undici pagine e
+      // due lingue, e una lista parallela sarebbe sbagliata alla prima
+      // modifica. Senza JavaScript la guida non compare e la pagina non
+      // cambia di una virgola.
+      const rail = document.getElementById('secrail');
+      const secs = Array.from(document.querySelectorAll('main .sec[id]'));
+      if (rail && secs.length > 2) {
+        const links = secs.map((s) => {
+          const a = document.createElement('a');
+          a.href = '#' + s.id;
+          a.textContent = s.getAttribute('data-sec') || '';
+          const h = s.querySelector('h2');
+          if (h) a.title = h.textContent.trim();
+          rail.appendChild(a);
+          return a;
+        });
+        rail.hidden = false;
+        let queued = 0;
+        const mark = () => {
+          queued = 0;
+          let here = 0;
+          for (let k = 0; k < secs.length; k++) {
+            if (secs[k].getBoundingClientRect().top <= 140) here = k;
+          }
+          links.forEach((a, k) => a.classList.toggle('is-here', k === here));
+        };
+        window.addEventListener('scroll', () => {
+          if (!queued) queued = requestAnimationFrame(mark);
+        }, { passive: true });
+        mark();
       }
     </script>
 
@@ -232,6 +272,44 @@ const testNotice =
         padding: 0.15rem 0.45rem;
       }
       .ode-main { max-width: var(--ode-maxw); margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+      /* Guida delle sezioni: fissa nel margine destro, fuori dal flusso, cosi'
+         non sposta di un pixel il contenuto delle pagine esistenti. Compare
+         solo sopra i 1200px, dove il margine libero accanto ai 64rem di
+         colonna e' abbastanza largo da non sovrapporsi al testo. Solo i
+         numeri: il titolo sta nel title e nell'etichetta accessibile, perche'
+         una lista di titoli qui sarebbe piu' larga del margine disponibile. */
+      .secrail {
+        position: fixed;
+        right: 0.9rem;
+        top: 50%;
+        transform: translateY(-50%);
+        display: none;
+        flex-direction: column;
+        gap: 0.1rem;
+        z-index: 5;
+      }
+      @media (min-width: 1200px) {
+        .secrail:not([hidden]) { display: flex; }
+      }
+      .secrail :global(a) {
+        font-family: var(--ode-font-mono);
+        font-size: 0.68rem;
+        line-height: 1;
+        color: var(--ode-muted);
+        text-decoration: none;
+        text-align: right;
+        min-width: 1.6rem;
+        padding: 0.3rem 0.45rem 0.3rem 0;
+        border-right: 2px solid var(--ode-rule);
+      }
+      .secrail :global(a:hover) { color: var(--ode-accent); }
+      .secrail :global(a.is-here) {
+        color: var(--ode-accent);
+        border-right-color: var(--ode-accent);
+      }
+      .secrail :global(a:focus-visible) { outline: 2px solid var(--ode-accent); outline-offset: 2px; }
+      @media print { .secrail { display: none !important; } }
       .ode-footer {
         max-width: var(--ode-maxw);
         margin: 0 auto;

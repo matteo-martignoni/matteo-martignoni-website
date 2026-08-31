@@ -1,7 +1,8 @@
 ---
 import OdeV2Layout from '../../../../layouts/OdeV2Layout.astro';
-import Section from '../../../../components/ode/Section.astro';
+import Section from '../../../../components/ode-v2/Section.astro';
 import DataTag from '../../../../components/ode-v2/DataTag.astro';
+import ChainFigure from '../../../../components/ode-v2/ChainFigure.astro';
 import Status from '../../../../components/ode-v2/Status.astro';
 import Finding from '../../../../components/ode-v2/Finding.astro';
 import Callout from '../../../../components/ode-v2/Callout.astro';
@@ -345,6 +346,22 @@ const bar = [
       dei primi due viene usata per far accettare il terzo, che non ha dati. Vederlo con
       chiarezza è il modo per non ripeterlo.
     </p>
+    <ChainFigure
+      labelEv="Evidenza"
+      labelG="Grado"
+      breakNote="solidità presa in prestito"
+      steps={chain.map((c) => ({
+        ...c,
+        tone: (c.n === '3' ? 'break' : c.n === '4' ? 'part' : 'ok') as 'ok' | 'part' | 'break',
+        breakBefore: c.n === '3',
+      }))}
+    >
+      I primi due anelli reggono, ed è proprio questo che fa funzionare il passaggio: la loro
+      solidità è quella che porta dentro il terzo. <strong>Il terzo anello non ha dietro di sé
+      nessuno studio strumentale.</strong> Il quarto regge solo in parte. Ogni anello è riportato
+      per esteso nella tabella qui sotto.
+    </ChainFigure>
+
     <div class="tbl-wrap">
       <table class="tbl">
         <thead>

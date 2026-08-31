@@ -1,7 +1,8 @@
 ---
 import OdeV2Layout from '../../../layouts/OdeV2Layout.astro';
-import Section from '../../../components/ode/Section.astro';
+import Section from '../../../components/ode-v2/Section.astro';
 import DataTag from '../../../components/ode-v2/DataTag.astro';
+import ChainFigure from '../../../components/ode-v2/ChainFigure.astro';
 import Status from '../../../components/ode-v2/Status.astro';
 import Finding from '../../../components/ode-v2/Finding.astro';
 import Callout from '../../../components/ode-v2/Callout.astro';
@@ -326,6 +327,21 @@ const bar = [
       is borrowed to wave the third one through. The third has no data behind it. Seeing the trick
       is how you avoid pulling it yourself.
     </p>
+    <ChainFigure
+      labelEv="Evidence"
+      labelG="Grade"
+      breakNote="borrowed strength"
+      steps={chain.map((c) => ({
+        ...c,
+        tone: (c.n === '3' ? 'break' : c.n === '4' ? 'part' : 'ok') as 'ok' | 'part' | 'break',
+        breakBefore: c.n === '3',
+      }))}
+    >
+      Links 1 and 2 hold, and that is exactly what makes the move work: their strength is what
+      carries link 3 through. <strong>Link 3 has no instrumental study behind it at all.</strong>
+      Link 4 holds only in part. Each link is set out in full in the table below.
+    </ChainFigure>
+
     <div class="tbl-wrap">
       <table class="tbl">
         <thead>
