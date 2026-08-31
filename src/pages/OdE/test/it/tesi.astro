@@ -515,6 +515,9 @@ const cannot = [
   .claim {
     margin: 1.4rem 0;
     padding: 1.3rem 1.5rem;
+    /* Imbottitura propria, 1,5rem per lato: la cornice la include. */
+    box-sizing: border-box;
+    max-width: calc(var(--ode-measure) + 3rem);
     background: var(--panel-strong);
     border-left: 3px solid var(--accent);
     border-radius: 0 var(--ode-radius) var(--ode-radius) 0;

@@ -17,7 +17,14 @@ const { tone = 'note', title } = Astro.props;
 <style>
   .co {
     margin: 1.5rem 0;
-    padding: 1.1rem 1.3rem;
+    padding: 1.1rem var(--ode-box-pad);
+    /* La cornice segue la misura del testo, non quella del contenitore.
+       Vale anche per i riquadri fuori da una Section, dove il paragrafo non
+       eredita alcun limite e correrebbe fino a 61rem.
+       box-sizing esplicito: senza, l'imbottitura si somma al max-width e la
+       cornice torna piu' larga del testo che deve contenere. */
+    box-sizing: border-box;
+    max-width: var(--ode-box);
     border-radius: var(--ode-radius);
     border: 1px solid var(--rule);
     background: var(--panel);

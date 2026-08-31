@@ -15,6 +15,14 @@
   /* Slightly wider measure than /OdE: the new pages carry more tables. */
   --ode-maxw: 64rem;
   --ode-measure: 42rem;
+  /* Un riquadro che contiene prosa deve incorniciare la stessa misura del
+     testo, non la larghezza del contenitore: la misura utile piu' la propria
+     imbottitura. Senza questo il riquadro arriva a 64rem mentre il testo si
+     ferma a 42rem, e la cornice risulta larga meta' piu' del suo contenuto.
+     Tabelle e griglie di schede restano invece a piena larghezza: e' la
+     ragione per cui --ode-maxw e' piu' largo della misura. */
+  --ode-box-pad: 1.3rem;
+  --ode-box: calc(var(--ode-measure) + 2 * var(--ode-box-pad));
 }
 
 /* ── Page header block, shared by every v2 page ── */
