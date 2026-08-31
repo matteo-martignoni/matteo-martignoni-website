@@ -991,3 +991,64 @@ Il problema reale non era la collocazione della sezione, ma due asimmetrie.
 
 File toccati: `open-evidence.astro`, `it/evidenza.astro`, `investors.astro`,
 `it/investitori.astro`. Nessun altro. QA: 12 verifiche, 0 fallimenti.
+
+## 20. P7 sciolto: la scheda del fondatore
+
+Il placeholder P7 diceva che il sito non conteneva una scheda del fondatore.
+Il controllo ha mostrato qualcosa di piu' netto: **ne' `/OdE` ne' `/OdE/test`
+nominavano una sola volta chi c'e' dietro**. La pagina Investitori chiedeva
+capitale, dichiarava un programma sperimentale fino a due terzi di 350.000 euro,
+e chiudeva con un indirizzo email senza un nome.
+
+### La forma: una scheda che si audita da sola
+
+La sezione e' scritta nel registro del resto del sito, non in quello di una
+biografia: due blocchi affiancati per senso, **che cosa copre questo percorso**
+e **che cosa non copre**, con lo stesso codice visivo che la SWOT usa gia' su
+questa pagina (pieno per cio' che gioca a favore, tratteggiato per cio' che
+gioca contro). Un profilo del fondatore in tono promozionale sarebbe stato
+l'unico punto del sito in cui si predica una cosa e se ne fa un'altra.
+
+Impilati e non affiancati: con cinque voci da un lato e tre dall'altro, due
+colonne avrebbero livellato le righe sull'elemento piu' alto e stretto la
+misura, che e' il difetto corretto in Normativa alla sezione precedente.
+
+### La riga che tiene insieme la sezione
+
+Ad A&#275;sop il fondatore aveva quattro sedie occupate: i chimici, la
+compliance internazionale, la relazione con i fornitori e chi decide che cosa
+portare avanti. OdE oggi e' la stessa struttura con una sedia sola. Detto cosi',
+il punto di forza e il buco stanno nella stessa frase, che e' esattamente il
+modo in cui questo sito tratta ogni altro dato.
+
+### Le correzioni del committente, applicate
+
+1. **La categoria fragranze non e' stata creata da lui.** Dennis Paphitis
+   l'aveva creata e collaudata anni prima. Il contributo e' stato studiare il
+   mercato e l'impronta olfattiva del marchio e, con Paphitis e l'amministratore
+   delegato, ampliare la categoria. Il titolo della voce lo dice per esteso:
+   "A category widened, not created". La stessa scheda sul sito ospitante usa
+   "establishing the fragrance category", che sovrastima: segnalato al
+   committente, non modificato, perche' fuori dal mandato.
+2. **Laboratorio, chimici e compliance.** Il titolo esatto era General Manager
+   Marketing, Creativity and Product Development, e il ruolo comprendeva la
+   direzione del laboratorio interno. Questo ha ristretto due delle mancanze
+   che la prima bozza elencava: resta vero che non e' un chimico e che il
+   percorso dei sottoprodotti di origine animale non e' quello di un cosmetico
+   finito, ma non che manchi esperienza regolatoria o di processo.
+
+### Che cosa la sezione non dice
+
+Su indicazione del committente restano **fuori** tre punti: quanto tempo dedica
+a OdE, se abbia oggi una controparte scientifica, quanto capitale proprio
+investe. Non sono placeholder: sono assenze volute, e per questo la scheda non
+afferma nulla sulla composizione attuale della squadra.
+
+La nota di chiusura dichiara la natura della fonte: dati di percorso
+autodichiarati, mentre tutto il resto del sito risale a un documento o a una
+misura.
+
+File toccati: `investors.astro`, `it/investitori.astro`. La sezione entra come
+numero 10 e "Che cosa serve sapere prima di parlarci" scala a 11; nessun rimando
+interno cita numeri di sezione oltre il nono. QA: 12 verifiche, 0 fallimenti,
+placeholder in pagina da 10 a 8.
