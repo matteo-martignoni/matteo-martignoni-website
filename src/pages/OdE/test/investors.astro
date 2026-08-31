@@ -429,11 +429,23 @@ const pivots = [
   </Section>
 
   <Section n="10" title="Who is behind this, and what he has not done before">
-    <p>
-      A page that asks for capital without naming anybody is asking you to take a stranger's word
-      for it. OdE is Matteo Martignoni, and this section gets the same treatment the site gives
-      every other input: what the background covers, and what it does not.
-    </p>
+    <div class="bio-intro">
+      <figure class="bio-face">
+        <img
+          src="/images/home/portrait.png"
+          alt="Continuous-line portrait of Matteo Martignoni"
+          width="1122"
+          height="1402"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+      <p>
+        A page that asks for capital without naming anybody is asking you to take a stranger's
+        word for it. OdE is Matteo Martignoni, and this section gets the same treatment the site
+        gives every other input: what the background covers, and what it does not.
+      </p>
+    </div>
     <div class="bio">
       <div class="bio-half bio-half--yes">
         <h3>What this background covers</h3>
@@ -617,6 +629,37 @@ const pivots = [
      il percorso copre, poi cio' che non copre. Il codice visivo e' quello che
      la SWOT usa gia' su questa pagina: pieno per cio' che gioca a favore,
      tratteggiato per cio' che gioca contro. */
+  /* Il ritratto a tratto continuo e' lo stesso della home del sito ospitante,
+     riferito e non duplicato: nessun file nuovo, e se il disegno cambia
+     cambia in un posto solo. Riquadrato come le altre schede della consegna
+     (bordo sottile, raggio, fondo pannello) invece che sul disco tondo della
+     home, perche' dentro questo microsito non esistono cerchi. */
+  .bio-intro {
+    display: flex;
+    gap: 1.3rem;
+    align-items: flex-start;
+    box-sizing: border-box;
+    max-width: var(--ode-box);
+    margin: 1.2rem 0 0;
+  }
+  .bio-intro p { margin: 0; }
+  .bio-face {
+    flex: 0 0 6.5rem;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0.55rem;
+    border: 1px solid var(--rule);
+    border-radius: var(--ode-radius);
+    background: var(--panel);
+  }
+  .bio-face img { display: block; width: 100%; height: auto; }
+  /* Sotto i 560px la colonna di testo scenderebbe sotto i quaranta caratteri:
+     il ritratto passa sopra, alla larghezza che aveva, e non si allarga. */
+  @media (max-width: 560px) {
+    .bio-intro { flex-direction: column; gap: 0.9rem; }
+    .bio-face { flex: none; width: 6.5rem; }
+  }
+
   .bio { display: flex; flex-direction: column; gap: 1rem; margin: 1.3rem 0; }
   .bio-half {
     box-sizing: border-box;
