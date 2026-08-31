@@ -105,8 +105,15 @@
   border-bottom: 1px solid var(--rule);
 }
 .ode-v2 .findings > li:last-child { border-bottom: 0; padding-bottom: 0; }
+/* Ogni contenuto sta nella seconda colonna, quante che siano le righe. Con un
+   `grid-row: 1 / span N` sul numero, aggiungere un paragrafo alla voce faceva
+   scivolare l'ultimo elemento nella colonna stretta del numero: il testo si
+   impilava una parola per riga. Fissare la colonna invece di contare le righe
+   rende il blocco indipendente da quanti paragrafi ha una voce. */
+.ode-v2 .findings > li > * { grid-column: 2; }
 .ode-v2 .findings .f-n {
-  grid-row: 1 / span 3;
+  grid-column: 1;
+  grid-row: 1;
   font-family: var(--ode-font-mono);
   font-size: 1.15rem;
   color: var(--accent);
