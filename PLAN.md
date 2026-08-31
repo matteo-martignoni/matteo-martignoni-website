@@ -1052,3 +1052,22 @@ File toccati: `investors.astro`, `it/investitori.astro`. La sezione entra come
 numero 10 e "Che cosa serve sapere prima di parlarci" scala a 11; nessun rimando
 interno cita numeri di sezione oltre il nono. QA: 12 verifiche, 0 fallimenti,
 placeholder in pagina da 10 a 8.
+
+### Il ritratto nella scheda del fondatore
+
+Il ritratto a tratto continuo della home del sito ospitante entra nella sezione
+10, riquadrato accanto al cappello. **Riferito, non duplicato**:
+`/images/home/portrait.png` sta gia' in `public/`, quindi la consegna non
+aggiunge un file e il disegno resta in un posto solo. La verifica 1 dello script
+QA continua a passare: nessun file del sito originale, del layout ospitante o
+della configurazione risulta toccato.
+
+Riquadro e non disco. La home mette il ritratto sopra un cerchio salvia, ma
+dentro questo microsito non esiste un solo cerchio: bordo sottile, raggio del
+sistema e fondo pannello, come ogni altra scheda della consegna.
+
+Misure verificate nel browser: il riquadro sta in 104 per 125 pixel accanto a un
+cappello di quattro righe, e sotto i 560px il ritratto passa sopra al testo alla
+larghezza che aveva, invece di allargarsi. Il PNG e' RGBA con fondo trasparente,
+quindi il tratto nero appoggia direttamente sul verde del tema senza un
+rettangolo bianco intorno.
