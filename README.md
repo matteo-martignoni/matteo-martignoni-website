@@ -238,6 +238,24 @@ client.
 
 All five are verified automatically. See `docs/ode-v2/QA.md`.
 
+### Browsing it offline
+
+To get a copy that opens in a browser with a double click, no server involved:
+
+```bash
+npm run build
+python3 docs/ode-v2/export-static.py     # -> sito-ode-v2/
+```
+
+The exporter rewrites the absolute paths Astro emits (`/OdE-v2/...`,
+`/_astro/...`) into relative ones, points directory links at their `index.html`,
+and turns the ES module scripts into classic ones, because Chrome blocks modules
+over `file://`. The AMSA Live dashboard is inlined so it still runs. Content is
+identical to what the server serves; only the referencing changes. The folder
+gets an `index.html` of its own listing both languages, plus a short `LEGGIMI.txt`.
+
+Both `sito-ode-v2/` and `sito-ode-v2.zip` are gitignored.
+
 ### Comparing the two versions
 
 ```bash

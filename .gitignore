@@ -21,3 +21,7 @@ node_modules/
 
 # Local recycle bin — content removed from the site, decoupled from build and repo
 _trash/
+
+# Esportazione statica del sito di prova (docs/ode-v2/export-static.py)
+sito-ode-v2/
+sito-ode-v2.zip

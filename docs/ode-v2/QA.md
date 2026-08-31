@@ -11,6 +11,37 @@ npm run build          # deve chiudersi con "[build] Complete!"
 python3 docs/ode-v2/qa.py
 ```
 
+## Come ottenere una copia navigabile offline
+
+```bash
+npm run build
+python3 docs/ode-v2/export-static.py     # -> sito-ode-v2/
+```
+
+Produce una cartella che si apre in Chrome con un doppio clic su `index.html`,
+senza server e senza rete. Lo script fa tre cose che il build non fa, perché il
+build presume un web server:
+
+1. **Percorsi relativi.** Astro emette `/OdE-v2/...` e `/_astro/...`: sotto
+   `file://` gli assoluti puntano alla radice del disco. Diventano relativi,
+   calcolati sulla profondità di ogni pagina.
+2. **Link espliciti a `index.html`.** Un link a una directory non funziona
+   sotto `file://`.
+3. **Script classici invece che ES module.** Chrome blocca i moduli su
+   `file://` per via del CORS, quindi la dashboard di AMSA Live non partirebbe.
+   Lo script inlina `dashboard-ui` convertendone l'export in una globale, come
+   fa il bundler dell'anteprima.
+
+Il contenuto è identico a quello servito via HTTP: cambia solo il modo di
+referenziarlo. La cartella riceve anche un proprio `index.html` con l'indice
+delle due lingue e un `LEGGIMI.txt`. Entrambe le uscite sono in `.gitignore`.
+
+**Verifica dell'esportazione**, eseguita in Chromium con la rete disattivata,
+cioè nelle condizioni reali di chi apre il file offline: 23 pagine caricate da
+`file://`, CSS applicato su tutte, zero link assoluti rimasti, i 47 link di una
+pagina campione risolti tutti a file esistenti, dashboard popolata in entrambe
+le lingue, menu a panino funzionante a 390px, zero errori JavaScript.
+
 Lo script esegue dodici controlli sul contenuto di `dist/` e sul diff git, e
 esce con codice diverso da zero al primo fallimento. Non richiede dipendenze
 oltre a Python 3.
