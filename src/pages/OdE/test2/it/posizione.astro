@@ -1,0 +1,343 @@
+---
+import OdeV3Layout from '../../../../layouts/OdeV3Layout.astro';
+import Section from '../../../../components/ode-v3/Section.astro';
+import DataTag from '../../../../components/ode-v3/DataTag.astro';
+import Status from '../../../../components/ode-v3/Status.astro';
+import Finding from '../../../../components/ode-v3/Finding.astro';
+import Callout from '../../../../components/ode-v3/Callout.astro';
+import StatCard from '../../../../components/ode-v3/StatCard.astro';
+import ReadNext from '../../../../components/ode-v3/ReadNext.astro';
+import { odeMeta, odeRoutes } from '../../../../i18n/ode-v3';
+
+const lang = 'it' as const;
+const m = odeMeta[lang].posizione;
+const r = odeRoutes[lang];
+
+// Le tre gambe del verdetto. Basterebbe una sola, e sono indipendenti.
+const legs = [
+  {
+    n: '01',
+    t: 'Il principio',
+    d: 'Nel prodotto che resta sulla pelle e nel posizionamento di marca, il criterio prevalente dichiarato dai grandi gruppi è l’origine animale in quanto tale: valori del consumatore, benessere animale, impatto climatico della zootecnia, certificazioni che escludono l’animale per definizione. La tracciabilità non risolve: un bovino tracciato resta un bovino.',
+    strength: 'Base probatoria dichiaratamente debole. Vedi sotto.',
+  },
+  {
+    n: '02',
+    t: 'La scala',
+    d: 'I grandi gruppi acquistano ingredienti lipidici in volumi elevati, con requisiti di continuità, doppia o tripla fonte, audit di stabilimento multi-sito e certificazioni. Una struttura asset-light non può soddisfare quei volumi né sostenere quegli audit. La relazione praticabile, se mai, è il co-sviluppo, non la fornitura di volume.',
+    strength: 'Base solida, e indipendente dalla prima gamba.',
+  },
+  {
+    n: '03',
+    t: 'Il prezzo',
+    d: 'Nel risciacquo di massa il sego è comprato ancora oggi. Alcune etichette dichiarano una clausola di alternanza fra il sapone di sego e il suo equivalente vegetale. Quella "oppure" dice tutto: la formula è progettata per accettare l’uno o l’altro, e si acquista secondo prezzo e disponibilità. Non c’è una porta chiusa da riaprire, c’è un listino di commodity.',
+    strength: 'Base solida, e indipendente dalle prime due.',
+  },
+];
+
+// Le lacune di dimensionamento, dichiarate come tali.
+const gaps = [
+  'Quota del sego destinata alla cosmetica rispetto a mangimi, biocarburanti e oleochimica: non isolabile dai dati pubblici di settore.',
+  'Ripartizione volumetrica fra risciacquo e leave-on per il sego: nessun dato pubblico.',
+  'Dimensione monetaria affidabile del leave-on premium tracciato: non determinabile.',
+  'Prezzo bulk del sego cosmetico grass-fed: non pubblicato dai fornitori principali.',
+  'Policy esplicite sull’origine animale per tre dei sei grandi gruppi considerati: non reperite.',
+];
+
+// I rischi. Elenco chiuso, nessuno attenuato.
+const risks = [
+  { t: 'Ciclo di attenzione fra picco e riflusso', d: 'La copertura mediatica è ancora ampia ma il tono è virato verso lo scetticismo, con la comunità clinica prevalentemente critica. Chi entra ora dipende da un ciclo che potrebbe invertirsi. La conseguenza operativa è costruire un argomento, il rigore documentale, che sopravviva al riflusso invece di cavalcarlo.' },
+  { t: 'Il trend vegan esclude il sego per definizione', d: 'È il segmento in maggiore crescita, e nessun argomento tecnico lo scalfisce. Non è un rischio mitigabile: è un perimetro di mercato che si restringe.' },
+  { t: 'Contaminazione reputazionale da claim altrui', d: 'Un mercato costruito su affermazioni indifendibili espone anche l’operatore rigoroso. La sola difesa è non usarne nessuna e rendere pubblico il perché, come fa l’Audit.' },
+  { t: 'Un concorrente potrebbe pubblicare per primo un dato primario', d: 'La lacuna verificata è un asset con scadenza. Un solo studio strumentale pubblicato da un altro operatore chiude la finestra. È la ragione per cui questo sito pubblica l’esito del lavoro di verifica e non il protocollo sperimentale.' },
+  { t: 'L’argomento non-palma potrebbe essere catturato da altre fonti', d: 'L’esenzione documentale di cui il sego gode non è esclusiva del sego: cocco, karité, colza e girasole ne beneficiano allo stesso modo, e in più sono compatibili con il vegan. Un formulatore che voglia liberarsi di quell’onere ha una via più semplice del sego, e probabilmente la sceglierà.' },
+  { t: 'Il processo non è difendibile', d: 'Frazionamento e raffinazione del sego sono arte nota e in gran parte pubblico dominio. Presentarsi come detentori di un processo distintivo non reggerebbe a una due diligence tecnica: restano difendibili solo il dato proprietario, il dataset di filiera e il documento di lotto.' },
+  { t: 'Dipendenza dal flusso a monte', d: 'Il sego è un sottoprodotto del rendering, e per i trasformatori la cosmetica è una destinazione marginale rispetto a biocarburanti e mangimi. OdE dipende da un flusso governato dalla domanda energetica, su cui non ha leva.' },
+];
+---
+<OdeV3Layout title={m.title} description={m.description} lang={lang} active="posizione">
+  <header class="pg">
+    <p class="ode-eyebrow">Posizione</p>
+    <h1>Dove possiamo esistere, e dove no</h1>
+    <p class="lede">
+      Questa pagina non contiene una stima di mercato, perché con i dati pubblici disponibili
+      una stima affidabile non si può fare, e una cifra inventata sarebbe peggio di una lacuna
+      dichiarata. Contiene il vincolo strutturale del progetto, dichiarato per intero.
+    </p>
+  </header>
+
+  <Section n="1" title="La tenaglia">
+    <div class="pincer">
+      <div class="pincer-side">
+        <span class="pincer-k">Dove il sego si compra in volume</span>
+        <p>
+          Nel risciacquo di massa, dove il sego è ancora acquistato oggi, il criterio è il prezzo
+          e la formula è progettata per accettare l’alternativa vegetale.
+          <strong>OdE non è competitiva, e non deve provarci.</strong>
+        </p>
+      </div>
+      <span class="pincer-x" aria-hidden="true">×</span>
+      <div class="pincer-side">
+        <span class="pincer-k">Dove il differenziale conta</span>
+        <p>
+          Nel prodotto che resta sulla pelle, di fascia alta e con storia di filiera, la
+          caratterizzazione per lotto ha valore. <strong>Ma i volumi sono minuscoli e non
+          dimensionabili con dati pubblici.</strong>
+        </p>
+      </div>
+    </div>
+    <p class="ev-line"><Status kind="dimostrato" lang={lang} /> <Finding kind="contro" lang={lang} /></p>
+    <p class="measure">
+      Nessuna delle sette tracce di ricerca risolve questa tensione, ed è il vincolo strutturale
+      del progetto. La tentazione, in una pagina rivolta a un investitore, è ammorbidirla.
+      Resistiamo, per una ragione pratica prima che etica: un investitore che scopre da solo un
+      limite non dichiarato smette di credere a tutto il resto.
+      <DataTag kind="fonte" label="Vincolo volume contro differenziale, non risolto da alcuna traccia. Traccia 7 v2, sez. 4.6.1 e 13bis; Consolidamento della ricerca OdE, sez. A.3." />
+    </p>
+    <p class="measure">
+      Ne discende la sola conclusione praticabile: OdE deve smettere di vendersi come produttore
+      di volume e posizionarsi come <strong>fornitore di un pacchetto documentale e analitico a
+      un numero ristretto di formulatori premium europei</strong>. Che è esattamente ciò che
+      descrive la <a href={r.tesi}>Tesi</a>.
+    </p>
+  </Section>
+
+  <Section n="2" title="Il verdetto sui grandi gruppi, su tre gambe">
+    <p>
+      Una tesi ricorrente in questa categoria è che i grandi gruppi escludano il sego per mancata
+      tracciabilità, e che quindi una filiera tracciata riapra quel mercato.
+      <strong>La verifica non la sostiene.</strong> Il verdetto regge su tre gambe indipendenti,
+      e ne basterebbe una sola.
+    </p>
+    <ol class="legs">
+      {legs.map((l) => (
+        <li>
+          <span class="leg-n">{l.n}</span>
+          <div>
+            <h3>{l.t}</h3>
+            <p>{l.d}</p>
+            <p class="leg-s">{l.strength}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+    <p class="note">
+      <DataTag kind="fonte" label="Policy di approvvigionamento pubblicate e liste INCI verificate su fonte diretta; clausola di alternanza documentata su etichetta di prodotto di massa. Traccia 7 v2, sez. 4.6, 4.6.1 e 13bis." />
+    </p>
+
+    <Callout tone="honest" title="Quanto è debole la prima gamba, detto da noi">
+      <p>
+        <strong>Il risultato è evidenza negativa, non prova.</strong> Il verdetto sul principio
+        poggia in misura determinante sul fatto che nessuna policy pubblicata dichiari di evitare
+        il sego per mancata tracciabilità. Ma le aziende non pubblicano quasi mai le ragioni di
+        ciò che <em>non</em> usano. L’assenza di quella menzione è compatibile con tre stati del
+        mondo diversi, e le fonti reperite non permettono di distinguerli.
+      </p>
+      <p>
+        <strong>La copertura è parziale: tre gruppi su sei.</strong> Per gli altri tre la ricerca
+        ha restituito una lacuna. E la riga di uno dei tre documentati è <em>neutra</em>, non
+        contraria: l’impegno pubblicato di quel gruppo nomina i "processi circolari" fra le vie
+        ammesse, senza pubblicarne una definizione. La porta non è dichiarata chiusa, ma non è
+        nemmeno dichiarata aperta: è non descritta. Per un investitore, "non descritta" non è una
+        base su cui costruire.
+      </p>
+      <p>
+        <strong>Effetto sul verdetto operativo: nessuno.</strong> Anche nell’ipotesi più
+        favorevole, in cui la tracciabilità risultasse davvero essere il criterio, restano la
+        scala e il prezzo. L’evidenza debole riguarda il <em>perché</em>, non il
+        <em>che cosa fare</em>.
+        <Status kind="costruzione" lang={lang} />
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="3" title="Chi c’è già">
+    <p>
+      Lo spazio della tracciabilità <strong>non è vergine</strong>. Esiste almeno un operatore
+      già posizionato esplicitamente su tracciabilità e sostenibilità, oltre a più operatori
+      statunitensi posizionati sul grass-fed, alcuni dei quali fondono il proprio grasso e lo
+      rivendono come ingrediente.
+      <DataTag kind="fonte" label="Mappatura dell’insieme competitivo diretto, con sede, forma commerciale, documentazione e grado di verifica per ciascun operatore. Traccia 7 v2, sez. 4.2." />
+    </p>
+    <p class="ev-line"><Status kind="dimostrato" lang={lang} /> <Finding kind="contro" lang={lang} /></p>
+    <p class="measure">
+      Nessuno di questi offre oggi la combinazione che descriviamo in <a href={r.amsa}>AMSA</a>:
+      tracciabilità di filiera documentata, indice di rischio ossidativo e caratterizzazione per
+      lotto in un unico documento. Ma va detto con precisione: <strong>il differenziale è nella
+      profondità documentale e analitica, non nella primogenitura</strong>. OdE entra in uno
+      spazio già presidiato sul concetto "tracciato e pulito" e deve difendere un differenziale
+      più sottile di quanto la narrazione di filiera suggerisca.
+    </p>
+
+    <Callout tone="warn" title="E lo spazio è presidiato anche a monte, sul processo">
+      <p>
+        Il <strong>frazionamento e la raffinazione del sego sono arte nota</strong>, coperta da
+        famiglie brevettuali in gran parte scadute e quindi in pubblico dominio. Esistono inoltre
+        nomenclature di derivati del sego già censite per uso cosmetico.
+        <DataTag kind="fonte" label="Mappatura dell’arte nota su brevetti USPTO relativi al frazionamento del sego e alla raffinazione dei grassi animali, e censimento di nomenclature di derivati già registrate a uso cosmetico. Consolidamento della ricerca OdE v4.0, sez. C.6 e minaccia M5. È una mappa, non un parere brevettuale." />
+      </p>
+      <p>
+        La conseguenza è che <strong>il vantaggio non può stare nel come si produce</strong>:
+        chiunque può frazionare questo materiale, senza pagare licenze e senza inventare nulla.
+        Restano difendibili il dato proprietario, il dataset di filiera e il documento di lotto.
+        Il quadro completo è in <a href={r.investitori}>Investitori</a>.
+        <Status kind="dimostrato" lang={lang} /> <Finding kind="contro" lang={lang} />
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="4" title="Chi è il cliente realistico">
+    <p>
+      La visibilità del trend suggerisce un mercato più grande di quello accessibile. I marchi
+      più visibili sono in larga parte difficili da convertire, per tre motivi che vanno tenuti
+      distinti: alcuni fondono il proprio grasso e sono concorrenti, non clienti; altri hanno una
+      filiera dichiarata che è parte costitutiva della proposta di marca, e sostituirla
+      significherebbe riscrivere la storia del prodotto; altri ancora comprano a volumi e
+      condizioni fuori portata.
+    </p>
+    <Callout tone="note" title="La conseguenza, che è la cosa più utile di questa pagina">
+      <p>
+        Se il motivo prevalente di esclusione dei marchi visibili è l’incompatibilità di racconto
+        e la geografia, e non l’integrazione verticale, allora il vincolo non è strutturale ma di
+        posizionamento. <strong>Il cliente realistico non è il marchio che ha già costruito una
+        storia di filiera: è quello che deve ancora costruirla</strong>, o che opera in un mercato
+        dove quella storia non è disponibile.
+      </p>
+      <p>
+        Questo sposta il bersaglio verso i formulatori e i marchi europei in fase di sviluppo
+        prodotto, e verso le case di formulazione conto terzi, più che verso i marchi consolidati
+        del trend. In Europa la maturità è bassa: pochissimi marchi dichiarano sego nel prodotto
+        che resta sulla pelle. È insieme un rischio, perché la domanda va creata, e l’unica
+        apertura reale.
+      </p>
+    </Callout>
+    <p class="note">
+      Esiste inoltre una seconda direzione, emersa dalla verifica normativa e non dal trend: i
+      trasformatori oleochimici e i saponifici europei, per i quali la questione non è il sego ma
+      la provenienza documentale degli acidi grassi. Il quadro è in
+      <a href={r.normativa}>Normativa</a>, con i suoi limiti.
+    </p>
+  </Section>
+
+  <Section n="5" title="Che cosa non possiamo dirvi">
+    <p>
+      Un dimensionamento numerico affidabile del mercato accessibile non è possibile con i dati
+      pubblici. Queste sono le lacune, elencate perché possiate valutarne il peso.
+    </p>
+    <ul class="gapl">
+      {gaps.map((g) => <li><Status kind="lacuna" lang={lang} /><span>{g}</span></li>)}
+    </ul>
+    <p class="note">
+      <DataTag kind="fonte" label="Lacune di dimensionamento dichiarate voce per voce, con i bacini interrogati. Traccia 7 v2, sez. 11 e 12." />
+      Nella ricerca che sta dietro a questa pagina, un dato di volume che sembrava colmare la
+      prima lacuna è stato ritirato dopo la verifica del contesto: era un artefatto di
+      rendicontazione, cioè una casella di questionario compilata da un numero variabile di
+      soggetti, e non la dimensione di un mercato. Una conclusione prudente costruita su una base
+      inesistente resta una conclusione senza base.
+    </p>
+    <p class="measure">
+      Che cosa si può dire con onestà: che la categoria di grasso animale idonea è dell’ordine di
+      milioni di tonnellate in Europa, che le sue destinazioni sono biocarburanti, mangimi,
+      petfood, oleochimica e combustione, con i biocarburanti nettamente dominanti, e che la
+      cosmetica è una destinazione reale ma non quantificata in alcuna statistica pubblica
+      reperita. I numeri verificati sono in <a href={r.filiera}>Filiera</a>.
+    </p>
+  </Section>
+
+  <Section n="6" title="La domanda a valle, e il suo attrito">
+    <p>
+      L’accettazione dell’origine animale in cosmetica ha un attrito misurato, e va guardato.
+    </p>
+    <div class="grid">
+      <StatCard value="49,4% contro 68,9%" caption="Quota di rispondenti che dichiara che comprerebbe un cosmetico contenente sego ovino, contro la stessa quota per un olio vegetale di confronto. Divario di accettazione di circa venti punti." kind="fonte" source="Kowalska M, Woźniak M, Golec K, et al. Consumer preferences for the development of new emulsion products based on vegetable and animal fats. PLoS One 2026;21(1):e0336602. DOI 10.1371/journal.pone.0336602. Indagine su 1.000 rispondenti, un solo Paese, intenzione dichiarata e non comportamento." />
+      <StatCard value="22,8%" caption="Quota che non acquista prodotti per la cute con ingredienti animali, contro il 12,4% per gli alimenti. Il rifiuto è quasi doppio sul topico." kind="fonte" source="Kowalska 2026, DOI 10.1371/journal.pone.0336602." />
+      <StatCard value="43,7%" caption="Quota che dichiara che la decisione dipende dal tipo di materia prima animale. È il solo segmento aggredibile dalla tracciabilità." kind="fonte" source="Kowalska 2026, DOI 10.1371/journal.pone.0336602." />
+    </div>
+    <Callout tone="warn" title="Il dato singolarmente più importante di questa indagine">
+      <p>
+        Il determinante d’acquisto più votato per un prodotto cutaneo è il miglioramento della
+        condizione della pelle dopo l’applicazione, cioè idratazione e riduzione della perdita
+        d’acqua transepidermica. È il primo driver, ed è
+        <strong>esattamente l’endpoint su cui per il sego non esiste alcun dato</strong>.
+      </p>
+      <p>
+        Nella stessa indagine i rispondenti più giovani risultano <em>meno</em> propensi ad
+        acquistare cosmetici con sego, il che contraddice la narrazione di un trend guidato dalle
+        generazioni più giovani, almeno in quel contesto nazionale. Va detto che si tratta di
+        intenzione dichiarata e non di comportamento, su un solo Paese, e quindi non è
+        estrapolabile senza cautela.
+        <Status kind="costruzione" lang={lang} />
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="7" title="I rischi, elenco chiuso">
+    <div class="risks">
+      {risks.map((x) => (
+        <article class="risk">
+          <Finding kind="contro" lang={lang} />
+          <h3>{x.t}</h3>
+          <p>{x.d}</p>
+        </article>
+      ))}
+    </div>
+  </Section>
+
+  <ReadNext
+    lang={lang}
+    links={[
+      { href: r.investitori, label: 'Investitori: il verdetto e i criteri di arresto' },
+      { href: r.normativa, label: 'Normativa: l’unica leva favorevole, con i suoi limiti' },
+      { href: r.audit, label: 'L’Audit: perché il rigore è la differenziazione' },
+    ]}
+  />
+</OdeV3Layout>
+
+<style>
+  .ev-line { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1.2rem; }
+
+  .pincer {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.2rem 0 1.4rem;
+  }
+  .pincer-side {
+    background: var(--pink-soft);
+    border: 1px solid var(--pink);
+    border-radius: var(--ode-radius);
+    padding: 1.2rem 1.3rem;
+  }
+  .pincer-k {
+    display: block;
+    font-family: var(--ode-font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--pink-ink);
+    margin-bottom: 0.6rem;
+  }
+  .pincer-side p { margin: 0; font-size: 0.93rem; line-height: 1.58; color: var(--ink); }
+  .pincer-x { font-size: 1.6rem; color: var(--pink-ink); font-weight: 300; }
+  @media (max-width: 720px) {
+    .pincer { grid-template-columns: 1fr; }
+    .pincer-x { justify-self: center; }
+  }
+
+  .legs { list-style: none; margin: 1.3rem 0; padding: 0; display: flex; flex-direction: column; gap: 1.2rem; }
+  .legs > li { display: grid; grid-template-columns: 2.6rem 1fr; gap: 1rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--rule); }
+  .legs > li:last-child { border-bottom: 0; padding-bottom: 0; }
+  .leg-n { font-family: var(--ode-font-mono); font-size: 1.15rem; color: var(--accent); }
+  .legs h3 { font-size: 1.05rem; font-weight: 500; color: var(--ink); margin: 0 0 0.45rem; }
+  .legs p { font-size: 0.93rem; line-height: 1.6; color: var(--body); margin: 0; max-width: 42rem; }
+  .leg-s { margin-top: 0.5rem !important; font-size: 0.82rem !important; color: var(--muted) !important; font-style: italic; }
+
+  .gapl { list-style: none; margin: 1.2rem 0; padding: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+  .gapl li { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; }
+  .gapl span { font-size: 0.9rem; line-height: 1.55; color: var(--body); flex: 1 1 18rem; }
+
+  .risks { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: 1.4rem 1.8rem; margin: 1.2rem 0; }
+  .risk h3 { font-size: 1rem; font-weight: 500; color: var(--ink); margin: 0.55rem 0 0.4rem; line-height: 1.35; }
+  .risk p { font-size: 0.89rem; line-height: 1.58; color: var(--body); margin: 0; }
+</style>

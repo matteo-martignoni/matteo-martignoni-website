@@ -1,14 +1,14 @@
 ---
-import OdeV2Layout from '../../../layouts/OdeV2Layout.astro';
-import Section from '../../../components/ode-v2/Section.astro';
-import DataTag from '../../../components/ode-v2/DataTag.astro';
-import ChainFigure from '../../../components/ode-v2/ChainFigure.astro';
-import Status from '../../../components/ode-v2/Status.astro';
-import Finding from '../../../components/ode-v2/Finding.astro';
-import Callout from '../../../components/ode-v2/Callout.astro';
-import ClaimTable from '../../../components/ode-v2/ClaimTable.astro';
-import ReadNext from '../../../components/ode-v2/ReadNext.astro';
-import { odeMeta, odeRoutes } from '../../../i18n/ode-v2';
+import OdeV3Layout from '../../../layouts/OdeV3Layout.astro';
+import Section from '../../../components/ode-v3/Section.astro';
+import DataTag from '../../../components/ode-v3/DataTag.astro';
+import ChainFigure from '../../../components/ode-v3/ChainFigure.astro';
+import Status from '../../../components/ode-v3/Status.astro';
+import Finding from '../../../components/ode-v3/Finding.astro';
+import Callout from '../../../components/ode-v3/Callout.astro';
+import ClaimTable from '../../../components/ode-v3/ClaimTable.astro';
+import ReadNext from '../../../components/ode-v3/ReadNext.astro';
+import { odeMeta, odeRoutes } from '../../../i18n/ode-v3';
 
 const lang = 'en' as const;
 const m = odeMeta[lang].audit;
@@ -114,7 +114,7 @@ const bar = [
   { i: 'Beef tallow', d: 'none', o: 'no data' },
 ];
 ---
-<OdeV2Layout title={m.title} description={m.description} lang={lang} active="audit">
+<OdeV3Layout title={m.title} description={m.description} lang={lang} active="audit">
   <header class="pg">
     <p class="ode-eyebrow">The Audit</p>
     <h1>What we checked, and how</h1>
@@ -412,7 +412,7 @@ const bar = [
       { href: r.posizione, label: 'Position: where we can compete' },
     ]}
   />
-</OdeV2Layout>
+</OdeV3Layout>
 
 <style>
   .ev-line { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1.2rem; }

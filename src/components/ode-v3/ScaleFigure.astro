@@ -1,0 +1,199 @@
+---
+// Figura a scala orizzontale: barre e linee di riferimento sullo stesso asse.
+//
+// Perche' in HTML e CSS e non in SVG, e perche' senza libreria di grafici.
+// I dati stanno gia' in array tipizzati dentro le pagine, quindi la figura si
+// genera in build: nessuna dipendenza nuova, nessun JavaScript a runtime, si
+// stampa, e le etichette restano testo vero (selezionabile, cercabile, letto
+// dagli screen reader) invece che glifi dentro un <text> SVG. Su una figura a
+// barre orizzontali il CSS fa tutto quello che serve, e in piu' e' fluido
+// senza il viewBox che scalerebbe anche i caratteri.
+//
+// La figura non sostituisce la tabella: le sta accanto. I numeri restano
+// leggibili uno per uno li', quindi il disegno e' marcato come decorativo e
+// non raddoppia il contenuto per chi usa uno screen reader.
+//
+// Il fondo scala e' esplicito in fondo alla figura. Una barra senza fondo
+// scala non e' un dato ma una proporzione senza unita': su un sito che
+// pubblica la tassonomia delle claim che non reggono, non si puo' fare.
+interface Bar {
+  label: string;
+  value: number;
+  display: string;                       // il numero come va scritto nella lingua
+  tone?: 'ok' | 'against' | 'neutral';
+}
+interface Ref {
+  value: number;
+  display: string;
+}
+interface Props {
+  max: number;
+  maxDisplay?: string;   // il fondo scala come va scritto nella lingua
+  bars: Bar[];
+  refs?: Ref[];
+  band?: boolean;        // riempie lo spazio fra la prima e l'ultima linea di riferimento
+  unit?: string;         // unita' di misura, accanto al fondo scala
+}
+const { max, maxDisplay, bars, refs = [], band = false, unit } = Astro.props;
+const pc = (v: number) => `${Math.max(0, Math.min(100, (v / max) * 100))}%`;
+const sorted = [...refs].sort((a, b) => a.value - b.value);
+const bandStyle = sorted.length > 1
+  ? `left:${pc(sorted[0].value)};right:calc(100% - ${pc(sorted[sorted.length - 1].value)})`
+  : '';
+---
+<figure class="sfig">
+  <div class="sfig-plot" aria-hidden="true">
+    <div class="sfig-line sfig-head">
+      <span class="sfig-scale">
+        {sorted.map((r) => (
+          <span class="sfig-tick" style={`left:${pc(r.value)}`}>{r.display}</span>
+        ))}
+      </span>
+      <span></span>
+    </div>
+
+    <ol class="sfig-rows">
+      {bars.map((b) => (
+        <li>
+          <span class="sfig-lab">{b.label}</span>
+          <span class="sfig-line">
+            <span class="sfig-track">
+              {band && sorted.length > 1 && <span class="sfig-band" style={bandStyle}></span>}
+              {sorted.map((r) => (
+                <span class="sfig-ref" style={`left:${pc(r.value)}`}></span>
+              ))}
+              <span class={`sfig-bar sfig-bar--${b.tone ?? 'neutral'}`} style={`width:${pc(b.value)}`}></span>
+            </span>
+            <span class="sfig-val">{b.display}</span>
+          </span>
+        </li>
+      ))}
+    </ol>
+
+    <div class="sfig-line sfig-foot">
+      <span class="sfig-axis">
+        <span>0</span>
+        <span>{maxDisplay ?? String(max)}{unit ? ` ${unit}` : ''}</span>
+      </span>
+      <span></span>
+    </div>
+  </div>
+  <figcaption><slot /></figcaption>
+</figure>
+
+<style>
+  .sfig {
+    box-sizing: border-box;
+    max-width: var(--ode-box);
+    margin: 1.4rem 0;
+  }
+
+  /* Una griglia sola per intestazione, righe e asse, cosi' i numeri delle
+     linee di riferimento, le barre e il fondo scala cadono tutti sulla
+     stessa colonna. La seconda colonna tiene i valori incolonnati a destra:
+     appesi in fondo alla barra si scontravano con le linee tratteggiate. */
+  .sfig-line {
+    display: grid;
+    grid-template-columns: 1fr 3.4rem;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .sfig-scale { position: relative; display: block; height: 0.85rem; }
+  .sfig-tick {
+    position: absolute;
+    bottom: 0;
+    transform: translateX(-50%);
+    font-family: var(--ode-font-mono);
+    font-size: 0.62rem;
+    line-height: 1;
+    color: var(--body);
+    white-space: nowrap;
+  }
+
+  .sfig-rows {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .sfig-lab {
+    display: block;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    color: var(--body);
+    margin-bottom: 0.25rem;
+  }
+
+  .sfig-track { position: relative; display: block; height: 0.85rem; }
+  .sfig-ref {
+    position: absolute;
+    top: -0.15rem;
+    bottom: -0.15rem;
+    width: 0;
+    border-left: 1px dashed var(--ink);
+    opacity: 0.5;
+  }
+  .sfig-band {
+    position: absolute;
+    top: -0.15rem;
+    bottom: -0.15rem;
+    background: var(--ink);
+    opacity: 0.06;
+  }
+  .sfig-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    border-radius: 2px;
+    min-width: 2px;
+  }
+  /* Verde scuro per il valore che sta dove deve stare, ruggine per quello che
+     sfonda i limiti: sono i due colori che il sito usa gia' per "regge" e
+     "non regge", non due tinte scelte per il grafico. */
+  .sfig-bar--ok { background: var(--accent); }
+  .sfig-bar--against { background: var(--pink-ink); }
+  .sfig-bar--neutral { background: var(--muted); }
+
+  .sfig-val {
+    text-align: right;
+    font-family: var(--ode-font-mono);
+    font-size: 0.72rem;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .sfig-foot { margin-top: 0.45rem; }
+  .sfig-axis {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--rule);
+    padding-top: 0.25rem;
+    font-family: var(--ode-font-mono);
+    font-size: 0.62rem;
+    color: var(--muted);
+  }
+
+  .sfig figcaption {
+    margin-top: 0.8rem;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+  .sfig figcaption :global(strong) { color: var(--ink); font-weight: 500; }
+
+  /* Su schermo stretto la colonna dei valori mangia troppo dalla scala, e due
+     riferimenti vicini si scrivono addosso: 1,3 e 2,5 distano il 6% della
+     scala, che su 275px sono sedici pixel. I numeri si sfalsano su due righe
+     invece di sparire: sono la calibrazione della figura, non un ornamento. */
+  @media (max-width: 640px) {
+    .sfig-scale { height: 1.75rem; }
+    .sfig-tick:nth-child(even) { bottom: 0.95rem; }
+  }
+  @media (max-width: 480px) {
+    .sfig-line { grid-template-columns: 1fr 2.8rem; gap: 0.35rem; }
+  }
+</style>

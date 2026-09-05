@@ -1,0 +1,56 @@
+---
+// Framed aside. Three tones:
+//   honest  the "what we cannot say" box, the site's signature move
+//   note    neutral methodological note
+//   warn    a limit or risk the reader must not miss
+interface Props {
+  tone?: 'honest' | 'note' | 'warn';
+  title?: string;
+}
+const { tone = 'note', title } = Astro.props;
+---
+<aside class:list={['co', `co--${tone}`]}>
+  {title && <p class="co-t">{title}</p>}
+  <div class="co-b"><slot /></div>
+</aside>
+
+<style>
+  .co {
+    margin: 1.5rem 0;
+    padding: 1.1rem var(--ode-box-pad);
+    /* La cornice segue la misura del testo, non quella del contenitore.
+       Vale anche per i riquadri fuori da una Section, dove il paragrafo non
+       eredita alcun limite e correrebbe fino a 61rem.
+       box-sizing esplicito: senza, l'imbottitura si somma al max-width e la
+       cornice torna piu' larga del testo che deve contenere. */
+    box-sizing: border-box;
+    max-width: var(--ode-box);
+    border-radius: var(--ode-radius);
+    border: 1px solid var(--rule);
+    background: var(--panel);
+  }
+  .co-t {
+    font-family: var(--ode-font-mono);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 0.6rem;
+    color: var(--accent);
+  }
+  .co-b :global(p) { margin: 0 0 0.7rem; font-size: 0.93rem; line-height: 1.6; }
+  .co-b :global(p:last-child) { margin-bottom: 0; }
+  .co-b :global(ul) { margin: 0 0 0.7rem; padding-left: 1.1rem; font-size: 0.93rem; line-height: 1.6; }
+  .co-b :global(li) { margin-bottom: 0.35rem; }
+
+  /* The honesty box carries the dashed border of the "verified gap" status:
+     it is the same epistemic gesture, made at paragraph scale. */
+  .co--honest {
+    background: transparent;
+    border-style: dashed;
+    border-color: var(--ink);
+  }
+  .co--honest .co-t { color: var(--ink); }
+  .co--warn { background: var(--pink-soft); border-color: var(--pink); }
+  .co--warn .co-t { color: var(--pink-ink); }
+</style>

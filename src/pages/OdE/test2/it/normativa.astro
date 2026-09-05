@@ -1,0 +1,356 @@
+---
+import OdeV3Layout from '../../../../layouts/OdeV3Layout.astro';
+import Section from '../../../../components/ode-v3/Section.astro';
+import NormRecord from '../../../../components/ode-v3/NormRecord.astro';
+import DataTag from '../../../../components/ode-v3/DataTag.astro';
+import Status from '../../../../components/ode-v3/Status.astro';
+import Finding from '../../../../components/ode-v3/Finding.astro';
+import Callout from '../../../../components/ode-v3/Callout.astro';
+import ReadNext from '../../../../components/ode-v3/ReadNext.astro';
+import { odeMeta, odeRoutes } from '../../../../i18n/ode-v3';
+
+const lang = 'it' as const;
+const m = odeMeta[lang].normativa;
+const r = odeRoutes[lang];
+
+// Etichette neutre: la vecchia formulazione "perché OdE vince" era troppo
+// assertiva per una ricognizione documentale.
+const L = {
+  req: 'Che cosa richiede',
+  perde: 'Dove attrita',
+  vince: 'Che cosa comporta per OdE',
+};
+
+const vigenti = [
+  {
+    code: 'Reg. (CE) 1069/2009',
+    title: 'Sottoprodotti di origine animale',
+    status: 'vigente' as const,
+    statusLabel: 'Vigente',
+    requisito: 'Il grasso per uso cosmetico deve essere materiale di Categoria 3, da animali sottoposti a controllo ante e post mortem. L’articolo 33 fissa il punto finale: raggiunto lo stadio cosmetico, il prodotto esce da questo regime ed entra sotto il regolamento cosmetico.',
+    perde: 'Chi non sa documentare il punto esatto in cui il grasso esce dal regime dei sottoprodotti. È il principale collo di bottiglia di conformità, e va validato con l’autorità veterinaria competente.',
+    vince: 'Un obbligo, non un vantaggio: registrazione o riconoscimento dell’impianto, documentazione commerciale, tracciabilità. Il Passaporto Lipidico Digitale è lo strumento con cui OdE documenta il passaggio, ma la documentazione è dovuta a prescindere.',
+  },
+  {
+    code: 'Reg. (UE) 142/2011',
+    title: 'Attuazione e tracciabilità documentale',
+    status: 'vigente' as const,
+    statusLabel: 'Vigente',
+    requisito: 'Regole operative del regolamento precedente: usi ammessi, trasformazione, documenti commerciali, registri e riconoscimento dello stabilimento presso l’autorità competente.',
+    vince: 'La tracciabilità documentale richiesta coincide in larga parte con ciò che AMSA produce per ogni lotto. È una sovrapposizione utile, non un differenziale: chiunque operi legalmente deve produrla.',
+  },
+  {
+    code: 'Reg. (CE) 1223/2009',
+    title: 'Regolamento cosmetico europeo',
+    status: 'vigente' as const,
+    statusLabel: 'Vigente',
+    requisito: 'Persona responsabile, fascicolo informativo di prodotto, relazione sulla sicurezza firmata da un valutatore qualificato, conformità della nomenclatura, buone pratiche di fabbricazione. L’articolo 20 vieta di attribuire caratteristiche che il prodotto non possiede.',
+    perde: 'Chi formula claim di efficacia non sostenute. Una dichiarazione che descriva il trattamento di una patologia rischia la riqualificazione come dichiarazione medicinale.',
+    vince: 'Sul sego trigliceridico esiste evidenza di sicurezza solo derivata dai costituenti, non dati primari. Per un dossier robusto servono dati sul materiale reale, oppure un read-across documentato e giustificato, la cui adeguatezza compete al valutatore qualificato. È un costo di licenza a operare che OdE deve sostenere comunque.',
+  },
+  {
+    code: 'Reg. (UE) 655/2013',
+    title: 'Criteri comuni per le dichiarazioni cosmetiche',
+    status: 'vigente' as const,
+    statusLabel: 'Vigente',
+    requisito: 'Sei criteri comuni: conformità normativa, veridicità, supporto probatorio, onestà, correttezza e possibilità di scelta informata. Ogni dichiarazione deve poter essere giustificata con evidenza adeguata.',
+    perde: 'Molte affermazioni correnti su questo materiale non sarebbero difendibili secondo questi criteri, in particolare sul supporto probatorio e sulla veridicità.',
+    vince: 'È il criterio con cui è costruita la tassonomia pubblicata nell’Audit, ed è il motivo per cui questo sito non usa nessuna delle claim che elenca. Un fornitore che porta a un formulatore un audit onesto delle claim di categoria si distingue senza affermare nulla di più.',
+  },
+  {
+    code: 'Codex CXS 211-1999',
+    title: 'Standard sui grassi animali denominati',
+    status: 'vigente' as const,
+    statusLabel: 'Riferimento',
+    requisito: 'Limiti di qualità merceologica: numero di perossidi non superiore a 10 meq O₂/kg; numero di acidità non superiore a 2,5 mg KOH/g per il sego edibile e a 1,3 per il lardo puro reso. Più parametri fisici comparativi.',
+    vince: 'È il riferimento a cui ancoriamo le soglie del Passaporto, ed è ancorabile perché normato e auditabile. Va però letto per quello che è: una soglia di grado commerciale alimentare, non una soglia di sicurezza cutanea. Nessuno ha mai legato questi limiti a un esito sulla pelle.',
+  },
+  {
+    code: 'ISO 22716 e GMP di settore',
+    title: 'Buone pratiche di fabbricazione',
+    status: 'vigente' as const,
+    statusLabel: 'Standard',
+    requisito: 'Buone pratiche di fabbricazione cosmetica e per ingredienti cosmetici, con forte enfasi sulla tracciabilità di lotto.',
+    vince: 'Sono chiavi d’accesso al cliente professionale. La tracciabilità di lotto che richiedono è la stessa che OdE produce, il che riduce il costo marginale di conformarsi, non lo azzera.',
+  },
+];
+
+const arrivo = [
+  {
+    code: 'Reg. (UE) 2023/1115 e 2025/2650',
+    title: 'Deforestazione: il sego è fuori ambito',
+    status: 'arrivo' as const,
+    statusLabel: 'In applicazione',
+    requisito: 'Per i prodotti pertinenti, l’operatore che li immette per la prima volta sul mercato deve esercitare la dovuta diligenza e trasmettere una dichiarazione con geolocalizzazione degli appezzamenti. Gli obblighi si applicano dal 30 dicembre 2026 per grandi e medi operatori e per i micro e piccoli già coperti dal regolamento sul legname, e dal 30 giugno 2027 per gli altri micro e piccoli.',
+    perde: 'Chi immette sul mercato acidi grassi, glicerolo o alcoli grassi derivati da olio di palma, e dal 30 dicembre 2027 anche il sapone di palma.',
+    vince: 'Nulla in senso stretto: il codice doganale dei grassi di bovini, ovini e caprini non figura fra i prodotti pertinenti, quindi il sego non genera alcun obbligo per OdE. Ne discende una dichiarazione di non derivazione da olio di palma, che è un campo a costo quasi nullo e di valore crescente per il cliente europeo. Le tre qualificazioni obbligatorie sono nella sezione seguente.',
+  },
+  {
+    code: 'Reg. (UE) 2024/1781',
+    title: 'Ecodesign e Passaporto Digitale di Prodotto',
+    status: 'arrivo' as const,
+    statusLabel: 'Perimetro da definire',
+    requisito: 'Il regolamento introduce il Passaporto Digitale di Prodotto, con roll-out progressivo per gruppo di prodotto tramite atti delegati.',
+    perde: 'Non determinabile finché il perimetro non è definito.',
+    vince: 'Va detto con precisione, perché è facile sovrainterpretarlo: il perimetro dei gruppi di prodotto è definito da atti delegati, e nessun atto delegato reperito riguarda gli ingredienti lipidici cosmetici. Il Passaporto Lipidico è quindi oggi un differenziale volontario, e solo potenzialmente un adempimento futuro. Presentarlo come anticipazione di un obbligo certo sarebbe un’inferenza spacciata per fatto.',
+  },
+  {
+    code: 'Direttiva (UE) 2024/825',
+    title: 'Dichiarazioni ambientali e pratiche commerciali',
+    status: 'arrivo' as const,
+    statusLabel: 'In recepimento',
+    requisito: 'Le dichiarazioni ambientali dovranno essere verificabili e sostanziate, con valore accresciuto per le certificazioni di terza parte.',
+    vince: 'Spinge nella direzione di ciò che questo sito fa già, cioè dichiarare la fonte e il grado di ogni affermazione. Ma non crea domanda per il sego, e non va usata come se lo facesse.',
+  },
+  {
+    code: 'Restrizione REACH sui ciclosilossani',
+    title: 'D4, D5 e D6 in uscita dal 6 giugno 2026',
+    status: 'arrivo' as const,
+    statusLabel: 'Asse condizionato',
+    requisito: 'Restrizione all’immissione sul mercato di alcuni ciclosilossani nei prodotti cosmetici da sciacquare e da lasciare sulla pelle.',
+    vince: 'Apre un asse di domanda per sostituti di alcuni siliconi, ma va maneggiato con una precisazione che ne riduce molto la portata: la restrizione riguarda i ciclosilossani D4, D5 e D6, NON il dimeticone, che resta il comparatore reale del sego nella maggior parte delle formulazioni. Affermare che i siliconi siano vietati e che il sego li sostituisca non è difendibile.',
+  },
+];
+
+// Requisito o differenziale: la distinzione che decide dove spendere.
+const params = [
+  { p: 'Metalli pesanti in tracce', amb: 'Cosmetico', role: 'Requisito', why: 'Tracce tecnicamente inevitabili ai sensi del regolamento cosmetico; monografie di farmacopea per la materia prima.' },
+  { p: 'Residui veterinari', amb: 'Filiera e alimentare', role: 'Requisito', why: 'Discendono dalla filiera zootecnica e dalla normativa sui residui di medicinali veterinari.' },
+  { p: 'Dossier di sensibilizzazione', amb: 'Cosmetico', role: 'Requisito', why: 'Necessario per la relazione sulla sicurezza, tramite batteria di saggi validati oppure read-across giustificato. Non produce vantaggio competitivo.' },
+  { p: '3-MCPD e glicidil esteri', amb: 'Alimentare, e solo per oli vegetali, di pesce e marini', role: 'Differenziale', why: 'La matrice grasso animale terrestre non figura fra quelle elencate. Monitorarli è posizionamento, non adempimento. Ma sono i contaminanti più pertinenti al processo, perché si formano nella fase di raffinazione ad alta temperatura.' },
+  { p: 'Idrocarburi policiclici aromatici', amb: 'Alimentare', role: 'Differenziale', why: 'Forte razionale di processo, nessun limite cosmetico vincolante per questa matrice.' },
+  { p: 'Ftalati', amb: 'Nessun limite per matrice', role: 'Differenziale', why: 'Misurabili, non regolati per questa matrice.' },
+  { p: 'Stato ossidativo', amb: 'Nessun limite cosmetico di legge', role: 'Differenziale', why: 'È l’Oxidative Risk Score. Nessuna norma lo impone, il che lo rende posizionamento e non costo di conformità.' },
+];
+---
+<OdeV3Layout title={m.title} description={m.description} lang={lang} active="normativa">
+  <header class="pg">
+    <p class="ode-eyebrow">Normativa</p>
+    <h1>Il quadro, senza forzature</h1>
+    <p class="lede">
+      Le regole sono meno ostili di quanto il rumore suggerisca. Il sego non è vietato in Europa:
+      richiede documentazione come sottoprodotto di origine animale e una relazione sulla
+      sicurezza firmata da un valutatore qualificato. È costo e processo, non proibizione.
+    </p>
+    <p class="sub">
+      Ciò che le regole <strong>non</strong> permettono è gran parte di quanto viene oggi
+      affermato in questa categoria.
+    </p>
+  </header>
+
+  <Callout tone="note" title="Che cosa è questa pagina, e che cosa non è">
+    <p>
+      Le valutazioni che seguono sono <strong>ricognizioni documentali, non pareri legali</strong>.
+      Ammissibilità, cumulabilità e perimetro di applicazione richiedono verifica professionale, e
+      la relazione sulla sicurezza di un prodotto cosmetico compete a un valutatore qualificato.
+      Dove un atto è adottato ma non ancora pubblicato in forma definitiva, lo dichiariamo.
+    </p>
+    <p class="phline">
+      <span class="ph">Da confermare</span> Data di riferimento della ricognizione: 27 agosto 2026.
+      Va aggiornata a ogni revisione del sito.
+    </p>
+  </Callout>
+
+  <Section n="1" title="Le regole che si applicano oggi">
+    <div class="norms">
+      {vigenti.map((n) => (
+        <NormRecord
+          code={n.code}
+          title={n.title}
+          status={n.status}
+          statusLabel={n.statusLabel}
+          requisito={n.requisito}
+          perde={n.perde}
+          vince={n.vince}
+          labelRequisito={L.req}
+          labelPerde={L.perde}
+          labelVince={L.vince}
+        />
+      ))}
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Testi consultati su EUR-Lex: Reg. (CE) 1069/2009, Reg. (UE) 142/2011, Reg. (CE) 1223/2009 e Reg. (UE) 655/2013." />
+      <DataTag kind="fonte" label="FAO/WHO Codex Alimentarius, Standard for Named Animal Fats CXS 211-1999, Sezione 3 e Appendice, testo primario." />
+    </p>
+  </Section>
+
+  <Section n="2" title="Le regole in arrivo, o il cui perimetro non è definito">
+    <div class="norms">
+      {arrivo.map((n) => (
+        <NormRecord
+          code={n.code}
+          title={n.title}
+          status={n.status}
+          statusLabel={n.statusLabel}
+          requisito={n.requisito}
+          perde={n.perde}
+          vince={n.vince}
+          labelRequisito={L.req}
+          labelPerde={L.perde}
+          labelVince={L.vince}
+        />
+      ))}
+    </div>
+  </Section>
+
+  <Section n="3" title="L’asimmetria sulla deforestazione, e le sue tre qualificazioni">
+    <p>
+      È l’unico elemento normativo genuinamente favorevole emerso dalla ricerca, e va presentato
+      con le sue qualificazioni, altrimenti diventa esattamente il tipo di salto logico che
+      l’<a href={r.audit}>Audit</a> contesta al resto del mercato.
+    </p>
+    <p><strong>Il fatto.</strong> Il codice doganale dei grassi di bovini, ovini e caprini non
+      figura fra i prodotti pertinenti dell’Allegato I al regolamento sulla deforestazione. Sotto
+      la commodity olio di palma figurano invece già oggi acido palmitico e stearico, glicerolo,
+      acidi grassi industriali e alcoli grassi industriali, e un atto delegato vi aggiunge acido
+      oleico, alcoli grassi specifici e, dal 30 dicembre 2027, il sapone. Gli stessi prodotti
+      ottenuti da fonte non-palma non sono prodotti pertinenti e non generano alcun obbligo.
+      <DataTag kind="fonte" label="Verifica dell’Allegato I al Reg. (UE) 2023/1115 come modificato, con qualificazione linguistica «sintetizzati usando olio di palma» e definizione di prodotto pertinente all’art. 2 punto 2. Calendario di applicazione differito dal Reg. (UE) 2025/2650. Traccia 7 v2, sez. 4.6.2." />
+    </p>
+    <p class="ev-line"><Status kind="dimostrato" lang={lang} /> <Finding kind="pro" lang={lang} /></p>
+
+    <ol class="quals">
+      <li>
+        <span class="q-n">01</span>
+        <div>
+          <h3>È un argomento di conformità, mai di superiorità ambientale</h3>
+          <p>
+            La catena legittima è: la palma è in ambito, il sego no, quindi un derivato da sego
+            non genera obblighi di dovuta diligenza per il cliente. La catena illegittima, che non
+            costruiremo mai, è: la palma è sotto pressione ambientale, quindi il sego è più
+            sostenibile, quindi il sego è migliore. Il secondo e il terzo passaggio non hanno dati,
+            e il secondo è contestabile nel merito, perché il sego è a sua volta un derivato della
+            zootecnia bovina, che la letteratura climatica tratta come pressione ambientale a
+            pieno titolo.
+          </p>
+        </div>
+      </li>
+      <li>
+        <span class="q-n">02</span>
+        <div>
+          <h3>L’esenzione non è esclusiva del sego</h3>
+          <p>
+            Tutte le materie prime non incluse fra le commodity elencate godono della stessa
+            esenzione: cocco, karité, colza, girasole, oltre a minerali e sintetici. Il cocco in
+            particolare è il sostituto più diretto della palma nell’oleochimica del sapone, è fuori
+            ambito ed è compatibile con il vegan. Un formulatore che voglia liberarsi dell’onere ha
+            una via più semplice del sego, e probabilmente la sceglierà.
+            <strong> Questo regolamento crea domanda per il "non-palma", non per il "tracciato" e
+            nemmeno per l’"animale".</strong>
+          </p>
+        </div>
+      </li>
+      <li>
+        <span class="q-n">03</span>
+        <div>
+          <h3>Le date e i codici del perimetro esteso vanno riconfermati</h3>
+          <p>
+            L’atto delegato che estende l’elenco è adottato ma soggetto a periodo di controllo
+            prima dell’entrata in vigore, e il documento consultato reca la dicitura di versione
+            provvisoria. Fino alla pubblicazione definitiva l’allegato vincolante resta quello del
+            regolamento base. Qualunque uso commerciale di questo argomento va accompagnato da
+            questa cautela.
+            <Status kind="costruzione" lang={lang} />
+          </p>
+        </div>
+      </li>
+    </ol>
+
+    <Callout tone="note" title="La conseguenza pratica, che è piccola e concreta">
+      <p>
+        Una <strong>dichiarazione di non derivazione da olio di palma</strong> nella documentazione
+        commerciale, accanto alla dichiarazione sulle encefalopatie spongiformi. Costo quasi nullo,
+        valore crescente per il cliente europeo, e soprattutto un’affermazione
+        <strong>verificabile e non contestabile</strong>, che è l’opposto delle claim di efficacia
+        che affollano questa categoria.
+      </p>
+      <p>
+        La domanda aperta è se l’onere documentale sugli input di palma sia percepito come un
+        problema reale o come un adempimento di routine dai trasformatori europei. È una verifica a
+        costo quasi nullo, fatta di poche conversazioni, e va fatta prima di investire su quella
+        direzione. Il suo posto è fra i gate di <a href={r.investitori}>Investitori</a>.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="4" title="Requisito o differenziale: dove ha senso spendere">
+    <p>
+      La distinzione più utile di questa pagina, e quella che il mercato confonde più spesso. Un
+      requisito va soddisfatto comunque e non produce vantaggio competitivo. Un differenziale è
+      discrezionale e produce vantaggio solo se comunicato. Spendere su adempimenti credendo di
+      costruire posizionamento è l’errore più costoso disponibile.
+    </p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr><th scope="col">Parametro</th><th scope="col">Ambito del limite</th><th scope="col">Ruolo</th><th scope="col">Perché</th></tr>
+        </thead>
+        <tbody>
+          {params.map((p) => (
+            <tr>
+              <th scope="row">{p.p}</th>
+              <td>{p.amb}</td>
+              <td><span class:list={['role', p.role === 'Requisito' ? 'role--req' : 'role--diff']}>{p.role}</span></td>
+              <td>{p.why}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Perimetro di applicabilità verificato: le sottosezioni pertinenti del Reg. (UE) 2023/915 su 3-MCPD e glicidil esteri riguardano oli e grassi vegetali, oli di pesce e oli di altri organismi marini; i grassi animali di origine terrestre non figurano fra le matrici elencate. Traccia 6 v2, sez. 5.10 e 8.3." />
+    </p>
+    <Callout tone="warn" title="Il rovescio della medaglia, che va detto">
+      <p>
+        Il fatto che quasi tutto ciò che misuriamo sia differenziale e non requisito è un vantaggio
+        strategico <strong>e un rischio insieme</strong>. Vantaggio, perché monitorarli è
+        posizionamento. Rischio, perché <strong>l’assenza di un limite non è assenza di
+        responsabilità</strong>: in caso di contestazione la difesa poggerebbe interamente sulla
+        documentazione volontaria che OdE produce, e su nient’altro.
+      </p>
+      <p class="phline">
+        <span class="ph">Da confermare</span> Una decisione ancora aperta modifica questa tabella:
+        se OdE dichiarasse il materiale di grado alimentare, i limiti alimentari diventerebbero
+        applicabili per le matrici che li prevedono. Va decisa prima di fissare il piano analitico
+        per lotto.
+      </p>
+    </Callout>
+  </Section>
+
+  <ReadNext
+    lang={lang}
+    links={[
+      { href: r.amsa, label: 'AMSA: che cosa misuriamo e con quale norma' },
+      { href: r.audit, label: 'L’Audit: la tassonomia delle claim' },
+      { href: r.posizione, label: 'Posizione: quanto vale davvero questa leva' },
+    ]}
+  />
+</OdeV3Layout>
+
+<style>
+  .ev-line { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1.2rem; }
+  /* Una colonna sola: vedi la nota in NormRecord.astro. Su piu' colonne la
+     prosa scendeva a una misura di trenta caratteri e le righe della griglia
+     allineavano ogni scheda all'altezza della piu' lunga. */
+  .norms { margin: 1.3rem 0; }
+  .quals { list-style: none; margin: 1.4rem 0; padding: 0; display: flex; flex-direction: column; gap: 1.3rem; }
+  .quals > li { display: grid; grid-template-columns: 2.6rem 1fr; gap: 1rem; padding-bottom: 1.3rem; border-bottom: 1px solid var(--rule); }
+  .quals > li:last-child { border-bottom: 0; padding-bottom: 0; }
+  .q-n { font-family: var(--ode-font-mono); font-size: 1.15rem; color: var(--accent); }
+  .quals h3 { font-size: 1.02rem; font-weight: 500; color: var(--ink); margin: 0 0 0.45rem; line-height: 1.35; }
+  .quals p { font-size: 0.93rem; line-height: 1.6; color: var(--body); margin: 0; max-width: 42rem; }
+  .role {
+    display: inline-block;
+    font-family: var(--ode-font-mono);
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.15em 0.45em;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .role--req { background: var(--lav-soft); color: var(--lav-ink); }
+  .role--diff { background: var(--green-soft); color: var(--green); }
+  .phline { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem; }
+</style>

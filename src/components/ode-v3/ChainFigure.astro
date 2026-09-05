@@ -1,0 +1,158 @@
+---
+// Catena di passaggi logici, con il punto in cui si spezza.
+//
+// Sostituisce, accanto alla tabella, una lettura che in tabella non si vede:
+// che la catena non e' una lista di quattro righe equivalenti ma una
+// concatenazione, e che a un certo anello si interrompe. In una tabella a
+// cinque colonne "Breaks here" e' una cella come le altre; qui e'
+// un'interruzione visibile del filo.
+//
+// Impaginata in colonna e non in orizzontale: quattro nodi affiancati dentro
+// la misura del sito darebbero colonne da dieci caratteri, che e' il difetto
+// gia' corretto in Normativa e nella scheda del fondatore.
+interface Step {
+  n: string;
+  t: string;                              // l'affermazione
+  ev: string;                             // su che cosa poggia
+  g: string;                              // grado dell'evidenza
+  v: string;                              // verdetto
+  tone?: 'ok' | 'part' | 'break';
+  breakBefore?: boolean;                  // il filo che arriva a questo anello e' spezzato
+}
+interface Props {
+  steps: Step[];
+  labelEv: string;
+  labelG: string;
+  breakNote?: string;                     // etichetta accanto all'interruzione
+}
+const { steps, labelEv, labelG, breakNote } = Astro.props;
+// Il filo appartiene all'anello da cui parte, quindi l'interruzione va marcata
+// sull'anello precedente a quello che si spezza. Il CSS non sa selezionare il
+// fratello precedente, ma qui il calcolo costa una riga.
+const rows = steps.map((s, i) => ({ ...s, cutAfter: Boolean(steps[i + 1]?.breakBefore) }));
+---
+<figure class="chf">
+  <ol class="chf-steps">
+    {rows.map((s) => (
+      <li class:list={['chf-step', `chf-step--${s.tone ?? 'ok'}`, s.cutAfter && 'is-cutafter']}>
+        {s.cutAfter && breakNote && (
+          <span class="chf-cut" aria-hidden="true">{breakNote}</span>
+        )}
+        <span class="chf-n" aria-hidden="true">{s.n}</span>
+        <div class="chf-body">
+          <h4>{s.t}</h4>
+          <p class="chf-meta">
+            <span>{labelEv}: {s.ev}</span>
+            <span>{labelG}: {s.g}</span>
+          </p>
+          <p class="chf-v">{s.v}</p>
+        </div>
+      </li>
+    ))}
+  </ol>
+  <figcaption><slot /></figcaption>
+</figure>
+
+<style>
+  .chf {
+    box-sizing: border-box;
+    max-width: var(--ode-box);
+    margin: 1.4rem 0;
+  }
+  .chf-steps { list-style: none; margin: 0; padding: 0; }
+
+  .chf-step {
+    position: relative;
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 0.9rem;
+    padding-bottom: 1.5rem;
+  }
+  .chf-step:last-child { padding-bottom: 0; }
+
+  /* Il filo scende nella guida dei numeri, da un anello al successivo. */
+  .chf-step::before {
+    content: '';
+    position: absolute;
+    left: calc(1rem - 1px);
+    top: 2rem;
+    bottom: 0;
+    border-left: 2px solid var(--rule);
+  }
+  .chf-step:last-child::before { display: none; }
+
+  /* Dove la catena si spezza il filo diventa tratteggiato e cambia colore, e
+     l'interruzione porta la sua etichetta accanto alla guida. Il tratteggio da
+     solo direbbe "incerto"; l'etichetta dice che cosa e'. */
+  .chf-step.is-cutafter { padding-bottom: 2.5rem; }
+  .chf-step.is-cutafter::before {
+    border-left-style: dashed;
+    border-left-color: var(--pink-ink);
+  }
+  .chf-cut {
+    position: absolute;
+    left: 2.9rem;
+    bottom: 0.55rem;
+    font-family: var(--ode-font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--pink-ink);
+  }
+
+  .chf-n {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    box-sizing: border-box;
+    border-radius: var(--ode-radius);
+    border: 1px solid var(--rule);
+    background: var(--panel);
+    font-family: var(--ode-font-mono);
+    font-size: 0.8rem;
+    color: var(--accent);
+  }
+  .chf-step--ok .chf-n { border-color: var(--green-border); }
+  .chf-step--part .chf-n { border-style: dashed; border-color: var(--ink); color: var(--body); }
+  .chf-step--break .chf-n {
+    border-color: var(--pink-ink);
+    border-style: dashed;
+    background: transparent;
+    color: var(--pink-ink);
+  }
+
+  .chf-body { padding-top: 0.15rem; }
+  .chf-body h4 {
+    font-size: 0.98rem;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.35;
+    margin: 0 0 0.35rem;
+  }
+  .chf-meta {
+    margin: 0 0 0.35rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.15rem 1.1rem;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  .chf-v {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--body);
+  }
+  .chf-step--break .chf-v { color: var(--pink-ink); }
+
+  .chf figcaption {
+    margin-top: 0.9rem;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+  .chf figcaption :global(strong) { color: var(--ink); font-weight: 500; }
+</style>

@@ -1,0 +1,31 @@
+---
+import '../styles/ode-theme.css';
+import '../styles/ode-v3-library.css';
+import '../styles/ode-v3-theme.css';
+import Sources from '../components/ode-v3/Sources.astro';
+import { odeRoutes, type OdeLang } from '../i18n/ode-v3';
+interface Props { title:string; description?:string; lang?:OdeLang; active?:string; pageKey?:string; editorial?:boolean; }
+const { title, description='Batch qualification for animal-derived cosmetic lipids. A development-stage project by Officina degli Estratti.', lang='en', active, pageKey, editorial=false }=Astro.props;
+const it=lang==='it'; const base='/OdE/test2'; const home=base+(it?'/it':'');
+const slugs:Record<string,[string,string]>={offer:['offer','proposta'],passport:['passport','passaporto'],evidence:['evidence','ricerca'],project:['project','progetto'],research:['research','collaborare'],investitori:['investors','investitori'],notes:['investment-notes','note-investimento']};
+const path=Astro.url.pathname.replace(/\/$/,'');
+let key=Object.keys(slugs).find(k=>path===home+'/'+slugs[k][it?1:0]) ?? pageKey ?? active ?? 'home';
+const other=it?'en':'it';
+const otherHref=slugs[key]?base+(it?'':'/it')+'/'+slugs[key][it?0:1]:(odeRoutes[other] as Record<string,string>)[key]??base+(it?'':'/it');
+const nav=[['offer',it?'La proposta':'The offer'],['passport',it?'Il Passaporto':'The Passport'],['evidence',it?'Le evidenze':'The evidence'],['project',it?'Il progetto':'The project']];
+const link=(k:string)=>home+'/'+slugs[k][it?1:0];
+---
+<!doctype html>
+<html lang={lang}>
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="description" content={description}/><meta name="robots" content="noindex, nofollow"/><meta name="googlebot" content="noindex, nofollow"/><link rel="icon" href="/images/ode/favicon.svg"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet"/><title>{title}</title></head>
+<body class:list={['ode','ode-v3', editorial?'editorial':'library']}>
+<div class="v3-test"><span>OdE / 02</span><span>{it?'Versione di confronto · progetto in sviluppo':'Comparison edition · project in development'}</span><a href={'/OdE/test'+(it?'/it':'')}>{it?'Versione precedente':'Previous version'} ↗</a></div>
+<a class="v3-skip" href="#main">{it?'Vai al contenuto':'Skip to content'}</a>
+<header class="v3-header"><a class="v3-brand" href={home} aria-label="Officina degli Estratti"><span class="v3-monogram">OdE<span aria-hidden="true">.</span></span><span>Officina<br/>degli Estratti</span></a><details class="v3-menu"><summary>Menu <span aria-hidden="true">＋</span></summary><nav aria-label={it?'Navigazione mobile':'Mobile navigation'}>{nav.map(([k,label])=><a href={link(k)} aria-current={key===k?'page':undefined}>{label}</a>)}<a href={otherHref} hreflang={other}>{other.toUpperCase()}</a></nav></details><nav class="v3-nav" aria-label={it?'Navigazione principale':'Main navigation'}>{nav.map(([k,label])=><a href={link(k)} aria-current={key===k?'page':undefined}>{label}</a>)}<a class="v3-lang" href={otherHref} hreflang={other}>{other.toUpperCase()}</a></nav></header>
+<main id="main" class="v3-main">
+{!editorial && <aside class="v3-library-bar"><a href={link('evidence')}>← {it?'Biblioteca delle evidenze':'Evidence library'}</a><span>{it?'Approfondimento · ipotesi e obiettivi non sono capacità validate':'Detailed reading · hypotheses and targets are not validated capabilities'}</span></aside>}
+<slot/><Sources lang={lang}/>
+</main>
+<footer class="v3-footer"><div><a class="v3-footer-brand" href={home}>Officina degli Estratti</a><p>{it?'La materia. Le misure. I limiti.':'The material. The measurements. The limits.'}</p></div><nav aria-label={it?'Per chi legge':'For our readers'}><a href={link('offer')}>{it?'Formulatori e acquirenti':'Formulators & buyers'}</a><a href={link('research')}>{it?'Partner di ricerca':'Research partners'}</a><a href={link('investitori')}>{it?'Investitori':'Investors'}</a></nav><nav aria-label={it?'Risorse':'Resources'}><a href={odeRoutes[lang].glossario}>{it?'Glossario':'Glossary'}</a><a href={link('project')+'#contact'}>{it?'Contatti':'Contact'}</a><a href={odeRoutes[lang].live}>{it?'Simulazione spettrale':'Spectral simulation'}</a></nav><div class="v3-footer-bottom"><span>© {new Date().getFullYear()} OdE</span><span>{it?'Proposta di pilota. Nessun lotto commerciale offerto da queste pagine.':'Pilot proposal. These pages do not offer a commercial batch for sale.'}</span></div></footer>
+<script>const menu=document.querySelector('.v3-menu'); window.addEventListener('keydown',e=>{if(e.key==='Escape'&&menu instanceof HTMLDetailsElement&&menu.open){menu.open=false;menu.querySelector('summary')?.focus();}});</script>
+</body></html>

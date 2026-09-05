@@ -1,0 +1,24 @@
+---
+// "Read next" strip. Every content page ends with one: a page that does not
+// hand the reader somewhere is a dead end, and the three audiences arrive
+// with different routes through the site.
+import { odeUI, type OdeLang } from '../../i18n/ode-v3';
+
+export interface NextLink {
+  href: string;
+  label: string;
+}
+interface Props {
+  links: NextLink[];
+  lang?: OdeLang;
+}
+const { links, lang = 'it' } = Astro.props;
+---
+<nav class="next" aria-label={odeUI[lang].readNext}>
+  <p class="next-t">{odeUI[lang].readNext}</p>
+  <div class="next-list">
+    {links.map((l) => (
+      <a href={l.href}>{l.label}<span aria-hidden="true">→</span></a>
+    ))}
+  </div>
+</nav>

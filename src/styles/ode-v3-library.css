@@ -1,0 +1,196 @@
+/* ──────────────────────────────────────────────────────────────
+   OdE v2 theme — additions for the /OdE-v2 test microsite
+   ──────────────────────────────────────────────────────────────
+   Loaded AFTER src/styles/ode-theme.css, which is imported unchanged and
+   carries the official OdE_Brand_System tokens (mint #afdfc7, ink #1c2620,
+   body #243029, accent #2f5a44, grigio-blu and pesca diagram accents,
+   Roboto + Roboto Mono, light weights, hierarchy from size and colour).
+
+   Nothing here redefines a brand token. This file only adds the styles the
+   redesign needs and scopes them under .ode-v3, so it can never affect the
+   live /OdE microsite even if both stylesheets end up in the same bundle.
+   ────────────────────────────────────────────────────────────── */
+
+.ode-v3 {
+  /* Slightly wider measure than /OdE: the new pages carry more tables. */
+  --ode-maxw: 64rem;
+  --ode-measure: 42rem;
+  /* Un riquadro che contiene prosa deve incorniciare la stessa misura del
+     testo, non la larghezza del contenitore: la misura utile piu' la propria
+     imbottitura. Senza questo il riquadro arriva a 64rem mentre il testo si
+     ferma a 42rem, e la cornice risulta larga meta' piu' del suo contenuto.
+     Tabelle e griglie di schede restano invece a piena larghezza: e' la
+     ragione per cui --ode-maxw e' piu' largo della misura. */
+  --ode-box-pad: 1.3rem;
+  --ode-box: calc(var(--ode-measure) + 2 * var(--ode-box-pad));
+}
+
+/* ── Page header block, shared by every v2 page ── */
+.ode-v3 .pg {
+  max-width: 46rem;
+  padding: 0.5rem 0 1.5rem;
+}
+.ode-v3 .pg h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin: 0.45rem 0 1rem;
+}
+.ode-v3 .pg .lede {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--body);
+  margin: 0;
+}
+.ode-v3 .pg .sub {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 0.9rem 0 0;
+}
+
+/* ── Prose helpers ── */
+.ode-v3 .measure { max-width: var(--ode-measure); }
+.ode-v3 .note {
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--muted);
+  max-width: var(--ode-measure);
+}
+.ode-v3 .note a,
+.ode-v3 .lede a,
+.ode-v3 .sec-body a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.ode-v3 .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 0.9rem;
+}
+.ode-v3 .grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  gap: 1.1rem;
+}
+
+/* ── Generic bordered table used across the content pages ── */
+.ode-v3 .tbl-wrap { overflow-x: auto; margin: 1.4rem 0; }
+.ode-v3 table.tbl { border-collapse: collapse; width: 100%; min-width: 38rem; }
+.ode-v3 table.tbl th,
+.ode-v3 table.tbl td {
+  padding: 0.72rem 0.9rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--rule);
+}
+.ode-v3 table.tbl thead th {
+  color: var(--accent);
+  font-weight: 500;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+.ode-v3 table.tbl td,
+.ode-v3 table.tbl tbody th {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--body);
+  font-weight: 400;
+}
+.ode-v3 table.tbl tbody th { color: var(--ink); font-weight: 500; }
+.ode-v3 table.tbl tr.is-ode td,
+.ode-v3 table.tbl tr.is-ode th { background: var(--green-soft); }
+.ode-v3 table.tbl .num { font-family: var(--ode-font-mono); white-space: nowrap; }
+
+/* ── Numbered list of findings, used by the Audit ── */
+.ode-v3 .findings { list-style: none; margin: 1.3rem 0; padding: 0; display: flex; flex-direction: column; gap: 1.1rem; }
+.ode-v3 .findings > li {
+  display: grid;
+  grid-template-columns: 2.2rem 1fr;
+  gap: 0.2rem 1rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid var(--rule);
+}
+.ode-v3 .findings > li:last-child { border-bottom: 0; padding-bottom: 0; }
+/* Ogni contenuto sta nella seconda colonna, quante che siano le righe. Con un
+   `grid-row: 1 / span N` sul numero, aggiungere un paragrafo alla voce faceva
+   scivolare l'ultimo elemento nella colonna stretta del numero: il testo si
+   impilava una parola per riga. Fissare la colonna invece di contare le righe
+   rende il blocco indipendente da quanti paragrafi ha una voce. */
+.ode-v3 .findings > li > * { grid-column: 2; }
+.ode-v3 .findings .f-n {
+  grid-column: 1;
+  grid-row: 1;
+  font-family: var(--ode-font-mono);
+  font-size: 1.15rem;
+  color: var(--accent);
+  line-height: 1.2;
+}
+.ode-v3 .findings .f-t { font-size: 1.02rem; font-weight: 500; color: var(--ink); line-height: 1.35; }
+.ode-v3 .findings .f-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.4rem 0 0; }
+.ode-v3 .findings .f-b { margin: 0.5rem 0 0; font-size: 0.93rem; line-height: 1.6; color: var(--body); }
+.ode-v3 .findings .f-b + .f-b { margin-top: 0.6rem; }
+
+/* ── "Read next" strip at the foot of every content page ── */
+.ode-v3 .next {
+  margin-top: 3rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--rule);
+}
+.ode-v3 .next-t {
+  font-family: var(--ode-font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 0.9rem;
+}
+.ode-v3 .next-list { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.ode-v3 .next-list a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.88rem;
+  color: var(--ink);
+  text-decoration: none;
+  border: 1px solid var(--rule);
+  border-radius: var(--ode-radius-sm);
+  padding: 0.4rem 0.8rem;
+  transition: border-color 160ms ease, color 160ms ease;
+}
+.ode-v3 .next-list a:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Placeholder marker: content that requires client input ── */
+.ode-v3 .ph {
+  display: inline-block;
+  font-family: var(--ode-font-mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.15em 0.45em;
+  border-radius: 3px;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--pink-soft),
+    var(--pink-soft) 6px,
+    rgba(255, 255, 255, 0.55) 6px,
+    rgba(255, 255, 255, 0.55) 12px
+  );
+  color: var(--pink-ink);
+  border: 1px dashed var(--pink);
+}
+
+/* ── The test-version banner. Deliberately unmissable. ── */
+.ode-v3 .testbar {
+  background: var(--ink);
+  color: var(--bg);
+  font-family: var(--ode-font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  line-height: 1.5;
+}

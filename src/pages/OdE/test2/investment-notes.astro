@@ -1,0 +1,689 @@
+---
+import OdeV3Layout from '../../../layouts/OdeV3Layout.astro';
+import Section from '../../../components/ode-v3/Section.astro';
+import DataTag from '../../../components/ode-v3/DataTag.astro';
+import Status from '../../../components/ode-v3/Status.astro';
+import Finding from '../../../components/ode-v3/Finding.astro';
+import Callout from '../../../components/ode-v3/Callout.astro';
+import StatCard from '../../../components/ode-v3/StatCard.astro';
+import ReadNext from '../../../components/ode-v3/ReadNext.astro';
+import { odeMeta, odeRoutes } from '../../../i18n/ode-v3';
+
+const lang = 'en' as const;
+const m = odeMeta[lang].investitori;
+const r = odeRoutes[lang];
+
+const scenarios = [
+  {
+    k: 'Minimum',
+    cost: '18,000-41,000 €',
+    pct: '5-12%',
+    dur: '4-6 months',
+    what: 'Zero-cost checks, the full analytical panel, per-batch analytics, documentary package, safety dossier, alpha-gal quantification.',
+    say: 'A traced ingredient, qualified batch by batch, safe on the dossier, not from palm oil, with fatty acid profile, solid fat content at skin temperature and oxidative state all measured and certified. Nothing about what it does.',
+    v: 'Where you have to start',
+  },
+  {
+    k: 'Intermediate',
+    cost: '55,000-90,000 €',
+    pct: '16-26%',
+    dur: '8-12 months',
+    what: 'The minimum, plus the in vitro hydrolysis study, the barrier safety arm and the sensory module.',
+    say: 'Adds the kinetics AND the composition of what comes off, barrier behaviour documented under single application, and a measured sensory profile. This is where the first proprietary datum arrives.',
+    v: 'A sensible ceiling',
+  },
+  {
+    k: 'Complete',
+    cost: '115,000-240,000 €',
+    pct: '33-69%',
+    dur: '18-24 months',
+    what: 'The full programme, including the comparative arm, the clinical comedogenicity study and the fractionation mapping.',
+    say: 'Adds emollient performance on validated endpoints, and competitive claims, if the results go our way.',
+    v: 'Off the table without more capital',
+  },
+];
+
+const swot = {
+  f: [
+    'The esterified form and low acid value principle is the most defensible scientific claim on offer, and it rests on a study done in human skin.',
+    'The two dominant saturated fatty acids, roughly 46% of the profile between them, have ex vivo evidence of rebuilding the barrier. Grade B1, on damaged skin, with isolated fatty acids: it qualifies the risk, it does not license a claim.',
+    'At skin temperature the material is semisolid and fully melted only at 46 °C: the physical class of petrolatum, with a thermal ranking now documented from a primary source.',
+    'Cholesterol oxidation products are a marker no plant matrix even has, with a documented process lever and a number we can set a target against.',
+    'Traceability and circularity here can be checked rather than merely told, which is more than the market average manages.',
+    'A declaration that nothing comes from palm oil costs us almost nothing, and nobody can argue with it.',
+    'Two documented misattributions in the sector literature, traced back to source by us, are a credibility asset that cost nothing to acquire.',
+  ],
+  d: [
+    'No high-grade evidence on topical tallow whatsoever. We do not clear the bar a formulator expects.',
+    'Stickiness measured on an instrument, on the bovine matrix, on the main endpoint of the category we sit in.',
+    'Exposed to lipase hydrolysis in place, where the hydrocarbon and silicone comparators are not. With one qualification: the direction of the net effect is unknown, not negative.',
+    'We cannot compete on occlusion, and we cannot compete on barrier repair.',
+    'Nothing defensible in intellectual property on fractionation or refining. The prior art is public and largely expired.',
+    'A very small outfit, limited capacity to report, no laboratory of our own.',
+    'Two of the three public-finance instruments and all the tax incentives depend on a status not yet secured, which in turn depends on an open question: whether the artificial intelligence in AMSA is substantial or marginal.',
+  ],
+  o: [
+    'Nobody today puts traceability, an oxidative risk index and per-batch characterisation in one document.',
+    'On the emollient axis the outcome of a study is genuinely unknown, and the literature is badly indexed. A new datum is worth a lot there.',
+    'The window for being first with clinical data was still open at the last bibliographic check.',
+    'The deforestation paperwork asymmetry opens a compliance conversation with European processors and soap makers.',
+    'The restriction on certain cyclosiloxanes opens a line of demand, conditionally and with a caveat of its own.',
+  ],
+  m: [
+    'The attention cycle is somewhere between peak and ebb. In the social media items analysed, dermatologists recommend tallow 7% of the time.',
+    'The trend that rules animal ingredients out by definition is the fastest growing segment there is.',
+    'Reputational damage by association, from other people’s indefensible claims and from misattributions circulating in the literature.',
+    'Tallow derivative nomenclatures are already listed for cosmetic use, so even the naming ground is taken.',
+    'A competitor publishes primary data first and the gap stops being an advantage.',
+  ],
+};
+
+// The roadmap, carried over from the live site but relabelled as a hypothesis.
+const phases = [
+  { ph: 'Phases 0 and 1', t: 'Qualification laboratory (today)', n: 'Traced tallow, qualified batch by batch. The measurement platform doubles as internal quality control and as the engine behind the Passport. Provenance data accumulates paired with analytical data.' },
+  { ph: 'Phase 2', t: 'Low-risk adjacency', n: 'Extend to neighbouring matrices: qualifying circular feedstocks, authenticating provenance. The platform stops being cosmetics-only.' },
+  { ph: 'Phase 3', t: 'Licensing the framework', n: 'The method applied to high-value matrices, with datasets and software modules sold alongside it.' },
+  { ph: 'Phase 4', t: 'Multi-matrix platform', n: 'Intellectual property becomes the centre of gravity, and ingredient production stays on as a shop window and a source of data.' },
+];
+
+// The four repositionings, in order of readiness.
+const pivots = [
+  { t: 'The lipid qualification platform, with the tallow taken out', d: 'Spectroscopy plus chemometrics plus predictive models works on any lipid. It is the most portable asset we have and the most defensible place to move to.' },
+  { t: 'The traceability infrastructure, pointed at other raw materials from the same district', d: 'The Passport and the chain-of-custody logic transfer to other by-products from the same territory.' },
+  { t: 'The evidence library, sold on its own', d: 'Position papers, documentary due diligence, scientific positioning work for other operators in the category. Having traced two misattributions back to source makes this more plausible than it looked before.' },
+  { t: 'From producer to analytical service', d: 'Certify other people’s tallow batch by batch, competitors included, instead of making our own. That sidesteps the volume and price constraint entirely, and public prior art on fractionation strengthens the case rather than weakening it: if the process is not defensible, the qualification service is.' },
+];
+---
+<OdeV3Layout title={m.title} description={m.description} lang={lang} active="investitori">
+  <header class="pg">
+    <p class="ode-eyebrow">Investors</p>
+    <h1>The verdict, in two halves</h1>
+    <p class="lede">
+      An analysis that cannot come out negative is not an analysis. This page leads with the
+      negative half of the verdict, because that is the half an investor would find anyway, and
+      because the conditional half only means anything once the first has been said out loud.
+    </p>
+  </header>
+
+  <div class="verdict">
+    <div class="verdict-half verdict-half--no">
+      <span class="verdict-k"><Finding kind="contro" lang={lang} /></span>
+      <h2>As a tallow producer competing on volume, the project does not hold</h2>
+      <p>
+        The squeeze between volume and difference has no answer, the market we can reach is
+        smaller than the trend suggests and cannot be sized, the attention cycle is turning, and
+        the experimental programme needed to back competitive claims eats an unsustainable share
+        of the capital. <strong>Pitched that way, it should be stopped.</strong>
+      </p>
+    </div>
+    <div class="verdict-half verdict-half--si">
+      <span class="verdict-k"><Finding kind="pro" lang={lang} /></span>
+      <h2>As a laboratory qualifying and certifying an ingredient batch by batch, the position is defensible</h2>
+      <p>
+        Supplying a proprietary documentary and analytical package to a narrow set of European
+        premium formulators, with the measurement platform as an asset that travels.
+        <strong>On four specific conditions</strong>, set out below.
+      </p>
+    </div>
+  </div>
+  <p class="note">
+    <DataTag kind="fonte" label="Two-part verdict and four conditions. OdE research consolidation, part E.4." />
+  </p>
+
+  <Section n="1" title="The four conditions">
+    <ol class="conds">
+      <li><span class="c-n">01</span><p>The three checks that cost almost nothing come back positive: at least one formulator asks for a sample, the non-palm provenance argument turns out to have commercial weight, and the quotations confirm our orders of magnitude.</p></li>
+      <li><span class="c-n">02</span><p>We take the minimum scenario, or at most the intermediate one, and keep the bulk of the capital for production, relationships and market rather than experiments.</p></li>
+      <li><span class="c-n">03</span><p>We buy in regulatory and reporting expertise as targeted consultancy, because the need comes in bursts and the skill we are missing most is regulatory rather than technical.</p></li>
+      <li><span class="c-n">04</span><p>We generate one defensible proprietary datum <strong>before</strong> we open the whole evidence library. The latest revision of the research says exactly which one: <strong>the composition of what comes off, not how fast it comes off</strong>. Rate tells you how much of the material hydrolyses. Composition tells you whether what it releases is harmful, neutral or helpful. Only the second answers the objection an informed formulator will actually raise, and only the second is a number nobody else has.</p></li>
+    </ol>
+    <p class="note">
+      All four are within reach on the resources available. They are not a wish list: the fourth
+      in particular is why <a href={r.evidenza}>Open questions</a> publishes costs and stopping
+      criteria and keeps the protocols back.
+    </p>
+  </Section>
+
+  <Section n="2" title="The most important thing on this page">
+    <div class="headline">
+      <p class="headline-big">
+        Deciding whether to carry on or stop costs <strong>under three thousand euros and ninety
+        days</strong>.
+      </p>
+      <p class="headline-sub">
+        You do not need a hundred thousand euros to find out whether this is worth continuing.
+        What makes a first serious technical conversation with a formulator credible is almost
+        entirely paperwork, and the market gate turns on eight to ten qualified conversations. The
+        right frame is not "we need to raise money for experiments". It is "we need to spend a few
+        thousand euros to find out whether we need to raise money at all".
+      </p>
+    </div>
+    <div class="grid">
+      <StatCard value="1,000-3,000 €" caption="Cost of the documentary package for a first credible exploratory conversation: technical data sheet, fatty acid profile, declarations, supply chain history, sample." kind="bench" source="Standard documentary requirements for a new cosmetic ingredient supplier on the EU market, per the public reference guide for exporters (cbi.eu). OdE research consolidation, part C.4." />
+      <StatCard value="90 days" caption="Horizon within which the three near-zero-cost checks and the market gate return an outcome." kind="stima" source="Ninety-day operating plan. OdE research consolidation, part F.1." />
+      <StatCard value="8-10" caption="Qualified conversations with European premium formulators on which the market gate is decided." kind="stima" source="Market gate criterion, with the pass threshold set before execution. OdE research consolidation, part E.1." />
+    </div>
+  </Section>
+
+  <Section n="3" title="The real numbers of the experimental programme">
+    <p>
+      Here is the number that governs the whole plan, and that nobody had laid out before the
+      research: the full programme costs a share of the capital big enough that it has to be said
+      out loud rather than buried. The scenarios below aggregate twelve experiments, each with
+      its own cost and duration, itemised in <a href={r.evidenza}>Open questions</a>.
+    </p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th scope="col">Scenario</th><th scope="col">Cost</th><th scope="col">Share of capital</th>
+            <th scope="col">Duration</th><th scope="col">What OdE could then state</th><th scope="col">Verdict</th>
+          </tr>
+        </thead>
+        <tbody>
+          {scenarios.map((s) => (
+            <tr class:list={[s.k === 'Intermediate' && 'is-ode', s.k === 'Complete' && 'is-gap']}>
+              <th scope="row">{s.k}<span class="s-what">{s.what}</span></th>
+              <td class="num">{s.cost}</td><td class="num">{s.pct}</td><td class="num">{s.dur}</td>
+              <td>{s.say}</td><td>{s.v}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="note">
+      <DataTag kind="stima" label="Scenario composition reconstructed line by line, each item traced to its source row. No figure here is a quotation. OdE research consolidation, parts C.1, C.5 and C.5bis." />
+      Percentages are computed on a reference capital of <strong>350,000 euros</strong>, used as a planning assumption in this dossier. This is not an announced funding round.
+    </p>
+    <Callout tone="warn" title="How to read it, with nothing discounted">
+      <p>
+        The complete scenario on its own eats <strong>between a third and more than two thirds of
+        the capital</strong>, before a euro goes on production, formulation, people or market. A
+        very small outfit cannot carry that, so it comes off the table unless more capital or
+        public co-funding arrives.
+      </p>
+      <p>
+        The intermediate scenario is the sensible ceiling. The minimum is where you have to start,
+        and it is almost all licence to operate plus paperwork. It buys no competitive advantage.
+        It buys the right to be in the market at all.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="4" title="Strengths, weaknesses, opportunities and threats">
+    <div class="swot">
+      <div class="sw sw--f"><h3>Strengths</h3><ul>{swot.f.map((x) => <li>{x}</li>)}</ul></div>
+      <div class="sw sw--d"><h3>Weaknesses</h3><ul>{swot.d.map((x) => <li>{x}</li>)}</ul></div>
+      <div class="sw sw--o"><h3>Opportunities</h3><ul>{swot.o.map((x) => <li>{x}</li>)}</ul></div>
+      <div class="sw sw--m"><h3>Threats</h3><ul>{swot.m.map((x) => <li>{x}</li>)}</ul></div>
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Matrix built on the seven research tracks, each entry traced to its source track. OdE research consolidation, part B.1." />
+    </p>
+    <Callout tone="honest" title="An asymmetry worth noticing, which is itself a finding">
+      <p>
+        In the evidence library behind this page, <strong>the arguments that favour OdE mostly
+        rest on one research track each, while the ones against us often have three tracks
+        converging on them</strong>. That asymmetry is worth staring at rather than smoothing
+        over: the good news is more fragile than the bad news. The latest revision
+        <strong>softens it slightly</strong>, adding independent support to three favourable
+        arguments, but it does not turn it round.
+      </p>
+      <p>
+        One thing follows from that: the best value-for-money move is not an experiment. It is
+        taking the documentary package to European premium formulators. No clinical study needed,
+        and the first leg of the verdict is settled there.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="5" title="The moat cannot be the process">
+    <p>
+      This is the newest limit on the thesis, and it counts against us. The prior-art map shows
+      that <strong>fractionating and refining tallow sits in the public domain</strong>: four
+      patent families on fractionation and at least six on refining and deodorisation that apply
+      to animal fats, the oldest of them expired decades ago.
+      <DataTag kind="fonte" label="Prior-art mapping of USPTO patents on tallow fractionation and animal fat refining. OdE research consolidation v4.0, section C.6. It is a map, not an opinion: a freedom-to-operate assessment requires qualified patent counsel." />
+    </p>
+    <p class="ev-line"><Status kind="dimostrato" lang={lang} /> <Finding kind="contro" lang={lang} /></p>
+    <div class="grid-2">
+      <article class="fin">
+        <h3>The good side</h3>
+        <p>
+          We have broad freedom to operate on fractionation and refining, with no infringement
+          risk and nothing to license. And the idea of fixing stickiness by fractionation has
+          <strong>documented precedent</strong>. It is not a technology bet, it is applying a
+          known process.
+        </p>
+      </article>
+      <article class="fin">
+        <h3>The bad side, which weighs more</h3>
+        <p class="fin-c">
+          <strong>Anyone can fractionate tallow</strong>, and the prior art already describes
+          semisolid fractions fit for cosmetic use. What stays defensible is the proprietary
+          datum, the supply-chain dataset and the Passport as infrastructure.
+          <strong>Not how we make it.</strong>
+        </p>
+      </article>
+    </div>
+    <Callout tone="warn" title="What that means, put the way due diligence would put it">
+      <p>
+        If OdE went out claiming a distinctive process, <strong>technical due diligence would
+        take the position apart</strong>. We put it here because it is exactly what an investor
+        would find by the second meeting, and because an argument that only survives while nobody
+        checks is not an argument.
+      </p>
+      <p>
+        The flip side is that it strengthens one of the pivots in section 8: if the process is
+        not defensible, the qualification service is.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="6" title="Public funding changes the cost, not the verdict">
+    <p>
+      Two instruments are realistically within reach, and they are not interchangeable.
+    </p>
+    <div class="grid-2">
+      <article class="fin">
+        <h3>Regional grant for innovative startups</h3>
+        <p>
+          A non-repayable grant of up to 60% of eligible spend, with bonuses on top.
+          <strong>It names the use of external laboratories for research and testing</strong>
+          among eligible costs, which settles the main uncertainty hanging over the other
+          instrument.
+        </p>
+        <p class="fin-c">
+          Against it: the minimum project size is above our intermediate scenario, selection is
+          competitive with a cut-off, and as of this survey the window is shut until the next
+          round.
+        </p>
+      </article>
+      <article class="fin">
+        <h3>National zero-interest instrument</h3>
+        <p>
+          A zero-interest, unsecured loan of up to 80% of eligible spend, always open and quick to
+          process. It would cut the intermediate scenario's exposure of our own capital from
+          roughly 16-26% down to about 6%.
+        </p>
+        <p class="fin-c">
+          Against it, decisively: <strong>this region offers no non-repayable component, and the
+          loan has to be repaid in full even if a gate stops the project dead</strong>. Whether
+          testing outsourced to commercial laboratories is eligible is not spelled out in the
+          official text. And it presupposes a status we do not yet have.
+        </p>
+      </article>
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Synoptic table of instruments with body, form, intensity, critical requirement and window status at the consultation date. OdE research consolidation, parts D.1 and D.1bis." />
+    </p>
+    <Callout tone="warn" title="Deferred money, not free money">
+      <p>
+        The real appeal of a zero-interest loan is not the missing interest. It is that the
+        exposure spreads out over time while the proprietary datum arrives straight away. But
+        <strong>if that datum comes back negative, you have paid for a failed experiment and you
+        still owe the money</strong>, in instalments, for a decade. On top of that: debt on the
+        balance sheet of an outfit that will need to raise equity later, and a standing reporting
+        burden that lands squarely on the one competence we have already flagged as the
+        bottleneck.
+      </p>
+      <p>
+        Public funding <strong>loosens none of the four conditions</strong>. The free checks are
+        still the entry gate, and taking on debt makes the fourth condition tighter, not looser.
+        <Status kind="costruzione" lang={lang} />
+      </p>
+    </Callout>
+    <Callout tone="honest" title="Innovative-startup status is a goal, not a fact, and it depends on a question about the product">
+      <p>
+        Both instruments presuppose registration in the special section of the companies
+        register. That registration is <strong>something OdE is aiming at</strong>, not something
+        it has, and the innovative asset put forward to support it is the artificial intelligence
+        inside <a href={r.amsa}>AMSA</a>.
+      </p>
+      <p>
+        The awkward part is that <strong>we do not yet know whether the artificial intelligence
+        in AMSA is doing real work or is decoration</strong>. That is a technical question before
+        it is an administrative one: what does it do that mature chemometrics would not do on its
+        own, on this matrix, with the number of batches we will actually have? We are working it
+        out, and the answer is not written yet.
+      </p>
+      <p>
+        <strong>We are putting the perverse incentive on the page, because it is real.</strong>
+        A status carrying genuine tax benefits pushes you towards answering yes to a technical
+        question before you have measured anything. The internal rule in
+        <a href={r.amsa}>AMSA</a> says the opposite, and it was written first: an advanced model
+        that cannot beat the chemometric baseline does not ship. If the answer comes back
+        "decoration", the right move is to go after the classification on another basis, or to do
+        without it, and not to rebuild the product around a requirement.
+        <Status kind="scommessa" lang={lang} />
+      </p>
+    </Callout>
+    <p class="note phline">
+      <span class="ph">To be confirmed</span>
+      Two separate things are still open: whether the artificial intelligence in AMSA is doing
+      real work, which is the question above, and what the registration route looks like once that
+      one is answered. The tax incentives in the next section rest on the same prerequisite.
+    </p>
+  </Section>
+
+  <Section n="7" title="Incentives for investors, subject to the same condition">
+    <p>
+      Italian law rewards investing in the equity of innovative startups. The reliefs are real and
+      they are worth having, and they are <strong>every one of them conditional on registration in
+      the special section</strong>, which is the still-open goal from the previous section, hanging
+      on a technical question about the product. So they come with that caveat attached:
+      <strong>as things stand, none of these reliefs is available</strong>, and presenting them as
+      secured would be precisely what this site holds against the rest of the market.
+    </p>
+    <div class="grid">
+      <StatCard value="30%" caption="Income tax relief for individuals, on an annual investment cap, with a minimum three-year holding period." kind="fonte" source="Relief regime for investments in innovative startups, art. 29 of Decree-Law 179/2012 as amended. Rates and caps to be re-verified at publication date." />
+      <StatCard value="65%" caption="Income tax relief under the de minimis regime, on a lower annual cap. Alternative to, and not cumulative with, the previous one." kind="fonte" source="Rate raised by Law 193/2024. To be re-verified at publication date." />
+      <StatCard value="30%" caption="Deduction for corporate income tax payers investing in the equity." kind="fonte" source="Relief regime for investments in innovative startups. To be re-verified at publication date." />
+    </div>
+    <p class="note">
+      There are dedicated routes for non-EU investors too, with thresholds that vary by type. We
+      will send them on request, with the date we last checked, because thresholds and
+      requirements move.
+      <DataTag kind="fonte" label="Italian investor visa programme, official MIMIT portal (investorvisa.mise.gov.it). Thresholds and requirements to be re-verified at publication date." />
+      None of this is tax advice.
+    </p>
+  </Section>
+
+  <Section n="8" title="If the main thesis fails">
+    <p>
+      Four repositionings, each one opened up by assets we have already built, in order of
+      readiness. This is not a rhetorical plan B. It is why money put into measurement survives
+      even the worst case on tallow.
+    </p>
+    <ol class="pivots">
+      {pivots.map((p, i) => (
+        <li><span class="p-n">{String(i + 1).padStart(2, '0')}</span><div><h3>{p.t}</h3><p>{p.d}</p></div></li>
+      ))}
+    </ol>
+    <p class="note">
+      <DataTag kind="fonte" label="Repositioning scenarios in order of readiness. OdE research consolidation, part E.3." />
+      The research is blunt about this: if the three free checks come back negative, the honest
+      move is to reposition onto the measurement platform and the library rather than push on with
+      tallow.
+    </p>
+  </Section>
+
+  <Section n="9" title="The trajectory, offered as a hypothesis">
+    <p>
+      Four phases. The first is where we are now. The other three are a reasoned direction of
+      travel, not milestones we have hit, and they are labelled accordingly.
+    </p>
+    <ol class="phases">
+      {phases.map((p, i) => (
+        <li>
+          <span class="ph-k">{p.ph}</span>
+          <div>
+            <h3>{p.t} {i > 0 && <Status kind="scommessa" lang={lang} />}</h3>
+            <p>{p.n}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </Section>
+
+  <Section n="10" title="Who’s behind this?">
+    <div class="bio-intro">
+      <figure class="bio-face">
+        <img
+          src="/images/home/portrait.png"
+          alt="Continuous-line portrait of Matteo Martignoni"
+          width="1122"
+          height="1402"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+      <p>
+        Matteo Martignoni is a manager and entrepreneur trained in Europe and Australia, across
+        fashion, beauty and culture. He has run brands inside a company turning over 1.3 billion
+        euros and built three of his own from nothing. The two cards below weigh that background
+        the way this site weighs everything else.
+      </p>
+    </div>
+    <div class="bio">
+      <div class="bio-half bio-half--yes">
+        <h3>What this background covers</h3>
+        <ul>
+          <li>
+            <h4>Four years inside A&#275;sop</h4>
+            <p>An eighteen-country cosmetics company, at the time turning over more than 80
+            million Australian dollars and growing 30% a year. Three of them at the Melbourne
+            headquarters as General Manager Marketing, Creativity and Product Development,
+            then a year founding the Italian branch. The role owned the internal laboratory:
+            its chemists formulated the products he and his peers decided to take forward, and
+            international compliance and supplier relations sat in the same team.</p>
+          </li>
+          <li>
+            <h4>A category widened, not created</h4>
+            <p>Dennis Paphitis had created and tested A&#275;sop's fragrances years earlier. The
+            work here was to study the market and the brand's olfactory signature and then,
+            with Paphitis and the CEO, to widen the category and lay the groundwork for what
+            it has since become, alongside IFF and its perfumers.</p>
+          </li>
+          <li>
+            <h4>What that means for this page</h4>
+            <p>The programme costed in section 3 has to be commissioned, not merely planned.
+            Somebody has to pick the laboratory, read the result and decide whether it clears
+            the gate or kills the line. That is the job he held for four years, one level up:
+            the brief to the chemists, the clearance across eighteen markets, the supplier
+            seen inside their own plant.</p>
+          </li>
+          <li>
+            <h4>Twenty-five years of brand work before that</h4>
+            <p>Four roles at Diesel, a company doing 1.3 billion euros, including the first
+            Diesel fragrance with L'Or&#233;al out of Paris. EMEA marketing at Eastpak, inside
+            VF Corporation. His own Paris consultancy, with Uniqlo, Louis Vuitton and
+            L'Or&#233;al Luxe among the clients. Today the Italian branch of Reflex.</p>
+          </li>
+          <li>
+            <h4>An AI product already built</h4>
+            <p>Co-founder and CEO of Nova since 2024, on a proprietary platform. That does not
+            settle whether the artificial intelligence inside AMSA is substantial rather than
+            marginal, which is still open on this page. It does mean the person asking the
+            question has taken an AI product from intuition to platform once.</p>
+          </li>
+        </ul>
+      </div>
+      <div class="bio-half bio-half--no">
+        <h3>What it does not cover</h3>
+        <ul>
+          <li>
+            <h4>He is not a chemist</h4>
+            <p>At A&#275;sop the chemists were on his team: the brief and the judgement were his,
+            the bench work was theirs. The programme is costed to be commissioned from
+            laboratories outside the company, which is how it can start at all, but a
+            proprietary dataset eventually needs somebody whose job is the data.</p>
+          </li>
+          <li>
+            <h4>Cosmetic compliance is not the byproduct pathway</h4>
+            <p>Regulation (EC) 1069/2009, and the route this material has to travel, are set out
+            under <a href={r.normativa}>Regulation</a>. Clearing a finished cosmetic across
+            eighteen markets is a different road, and nobody here has taken a material down this
+            one before.</p>
+          </li>
+          <li>
+            <h4>Industrial process is not chemical process</h4>
+            <p>Diesel put him alongside apparel manufacturing, which is industrial process
+            experience. A lipid processing plant is another thing, and it is new.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">
+      These career facts are self-declared, and stated here as such. Everything else on this site
+      resolves to a document or a measurement. This section does not, and it should be weighed
+      accordingly.
+    </p>
+  </Section>
+
+  <Section n="11" title="What you should know before you talk to us">
+    <p class="measure">
+      Three things we cannot tell you, and that you would find out anyway, so here they are.
+      There is no clinical evidence on this material. The market where our difference counts
+      cannot be sized from public data. And the corporate status that half the financial
+      instruments on this page depend on is still an open question.
+    </p>
+    <p class="measure">
+      If a conversation still makes sense to you after that, it makes sense to us too.
+    </p>
+    <p class="contact">
+      <a href="mailto:mm@matteomartignoni.com?subject=OdE%20-%20investor%20conversation">mm@matteomartignoni.com</a>
+    </p>
+  </Section>
+
+  <ReadNext
+    lang={lang}
+    links={[
+      { href: r.posizione, label: 'Position: the structural constraint in full' },
+      { href: r.audit, label: 'The Audit: what the verdict rests on' },
+      { href: r.evidenza, label: 'Open questions: the gates and the stopping criteria' },
+    ]}
+  />
+</OdeV3Layout>
+
+<style>
+  .verdict { display: grid; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); gap: 1.1rem; margin: 0.5rem 0 0.8rem; }
+  .verdict-half { border-radius: var(--ode-radius); padding: 1.4rem 1.5rem; border: 1px solid var(--rule); }
+  .verdict-half--no { background: var(--pink-soft); border-color: var(--pink); }
+  .verdict-half--si { background: var(--green-soft); border-color: var(--green-border); }
+  .verdict-k { display: block; margin-bottom: 0.7rem; }
+  .verdict-half h2 { font-size: 1.15rem; font-weight: 500; line-height: 1.35; color: var(--ink); margin: 0 0 0.7rem; }
+  .verdict-half p { margin: 0; font-size: 0.93rem; line-height: 1.6; color: var(--body); }
+
+  .conds { list-style: none; margin: 1.2rem 0; padding: 0; display: flex; flex-direction: column; gap: 0.9rem; }
+  .conds li { display: grid; grid-template-columns: 2.4rem 1fr; gap: 1rem; align-items: baseline; }
+  .c-n { font-family: var(--ode-font-mono); font-size: 0.95rem; color: var(--accent); }
+  .conds p { margin: 0; font-size: 0.93rem; line-height: 1.6; color: var(--body); max-width: 42rem; }
+
+  .headline {
+    background: var(--panel-strong);
+    border: 1px solid var(--green-border);
+    border-radius: var(--ode-radius);
+    padding: 1.5rem 1.7rem;
+    margin: 1.2rem 0 1.4rem;
+    max-width: 44rem;
+  }
+  .headline-big { margin: 0; font-size: clamp(1.15rem, 2.5vw, 1.5rem); line-height: 1.35; font-weight: 300; color: var(--ink); }
+  .headline-big strong { font-weight: 500; }
+  .headline-sub { margin: 0.9rem 0 0; font-size: 0.93rem; line-height: 1.6; color: var(--body); }
+
+  .s-what { display: block; font-weight: 400; font-size: 0.8rem; color: var(--muted); margin-top: 0.3rem; line-height: 1.45; max-width: 16rem; }
+  .is-gap td, .is-gap th { border-bottom-style: dashed; border-bottom-color: var(--ink); }
+
+  /* Quattro quadranti, nell'ordine canonico della matrice: forze in alto a
+     sinistra, debolezze in alto a destra, opportunita' in basso a sinistra,
+     minacce in basso a destra. Le due righe separano cio' che e' interno da
+     cio' che e' esterno, le due colonne cio' che gioca a favore da cio' che
+     gioca contro, ed e' la ragione per cui la colonna destra e' tratteggiata.
+     Con `auto-fit` la griglia trovava spazio per tre colonne e la matrice si
+     srotolava in una sequenza, con le minacce sole su una riga propria. */
+  .swot {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 1.3rem 0;
+  }
+  /* Sotto gli 800px due colonne scendono a una quarantina di caratteri per
+     riga, ed e' anche la larghezza di un tablet in verticale: la matrice si
+     impila, e l'ordine di lettura resta quello dei quadranti. */
+  @media (max-width: 800px) {
+    .swot { grid-template-columns: 1fr; }
+    /* Impilato, il quadrante prenderebbe tutta la colonna e la riga arriverebbe
+       a un centinaio di caratteri. A 0,87rem la misura comoda sta intorno ai
+       settanta, che e' quello che danno 34rem. */
+    .sw { max-width: 34rem; }
+  }
+  .sw { border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.1rem 1.2rem; background: var(--panel); }
+  .sw h3 { font-size: 0.72rem; font-family: var(--ode-font-mono); letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 0.7rem; }
+  .sw ul { margin: 0; padding-left: 1.05rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  .sw li { font-size: 0.87rem; line-height: 1.5; color: var(--body); }
+  .sw--f h3, .sw--o h3 { color: var(--green); }
+  .sw--d h3, .sw--m h3 { color: var(--pink-ink); }
+  .sw--d, .sw--m { background: transparent; border-style: dashed; border-color: var(--ink); }
+
+  .fin { border: 1px solid var(--rule); border-radius: var(--ode-radius); padding: 1.2rem 1.3rem; background: var(--panel); }
+  .fin h3 { font-size: 1.02rem; font-weight: 500; color: var(--ink); margin: 0 0 0.55rem; }
+  .fin p { font-size: 0.9rem; line-height: 1.58; color: var(--body); margin: 0 0 0.6rem; }
+  .fin-c { color: var(--pink-ink) !important; margin-bottom: 0 !important; }
+
+  .pivots, .phases { list-style: none; margin: 1.2rem 0; padding: 0; display: flex; flex-direction: column; gap: 1rem; }
+  .pivots li { display: grid; grid-template-columns: 2.4rem 1fr; gap: 1rem; }
+  .p-n { font-family: var(--ode-font-mono); font-size: 1rem; color: var(--accent); }
+  .pivots h3, .phases h3 { font-size: 1rem; font-weight: 500; color: var(--ink); margin: 0 0 0.35rem; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: baseline; }
+  .pivots p, .phases p { font-size: 0.9rem; line-height: 1.55; color: var(--body); margin: 0; max-width: 42rem; }
+  .phases li { display: grid; grid-template-columns: 7rem 1fr; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--rule); }
+  .phases li:last-child { border-bottom: 0; padding-bottom: 0; }
+  .ph-k { font-family: var(--ode-font-mono); font-size: 0.8rem; color: var(--accent); }
+
+  /* Scheda del fondatore: due blocchi impilati, non due colonne. Con cinque
+     voci di prosa da un lato e tre dall'altro, una griglia a due colonne
+     livellerebbe le righe sull'elemento piu' alto e stringerebbe la misura,
+     che e' il difetto corretto in Normativa. Impilati, i due blocchi tengono
+     la misura piena e l'ordine di lettura resta quello giusto: prima cio' che
+     il percorso copre, poi cio' che non copre. Il codice visivo e' quello che
+     la SWOT usa gia' su questa pagina: pieno per cio' che gioca a favore,
+     tratteggiato per cio' che gioca contro. */
+  /* Il ritratto a tratto continuo e' lo stesso della home del sito ospitante,
+     riferito e non duplicato: nessun file nuovo, e se il disegno cambia
+     cambia in un posto solo. Riquadrato come le altre schede della consegna
+     (bordo sottile, raggio, fondo pannello) invece che sul disco tondo della
+     home, perche' dentro questo microsito non esistono cerchi. */
+  .bio-intro {
+    display: flex;
+    gap: 1.3rem;
+    align-items: flex-start;
+    box-sizing: border-box;
+    max-width: var(--ode-box);
+    margin: 1.2rem 0 0;
+  }
+  .bio-intro p { margin: 0; }
+  .bio-face {
+    flex: 0 0 6.5rem;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0.55rem;
+    border: 1px solid var(--rule);
+    border-radius: var(--ode-radius);
+    background: var(--panel);
+  }
+  .bio-face img { display: block; width: 100%; height: auto; }
+  /* Sotto i 560px la colonna di testo scenderebbe sotto i quaranta caratteri:
+     il ritratto passa sopra, alla larghezza che aveva, e non si allarga. */
+  @media (max-width: 560px) {
+    .bio-intro { flex-direction: column; gap: 0.9rem; }
+    .bio-face { flex: none; width: 6.5rem; }
+  }
+
+  .bio { display: flex; flex-direction: column; gap: 1rem; margin: 1.3rem 0; }
+  .bio-half {
+    box-sizing: border-box;
+    max-width: var(--ode-box);
+    border: 1px solid var(--rule);
+    border-radius: var(--ode-radius);
+    padding: 1.2rem 1.3rem;
+    background: var(--panel);
+  }
+  .bio-half--no { background: transparent; border-style: dashed; border-color: var(--ink); }
+  .bio-half h3 {
+    font-size: 0.72rem;
+    font-family: var(--ode-font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 0 0 0.8rem;
+  }
+  .bio-half--yes h3 { color: var(--green); }
+  .bio-half--no h3 { color: var(--pink-ink); }
+  .bio-half ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1rem; }
+  .bio-half h4 { font-size: 0.98rem; font-weight: 500; color: var(--ink); line-height: 1.35; margin: 0 0 0.3rem; }
+  .bio-half p { font-size: 0.9rem; line-height: 1.58; color: var(--body); margin: 0; }
+
+  .contact { margin: 1rem 0 0; font-size: 1.02rem; }
+  .contact a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; font-family: var(--ode-font-mono); }
+  .phline { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem; }
+  @media (max-width: 620px) { .phases li { grid-template-columns: 1fr; gap: 0.3rem; } }
+</style>

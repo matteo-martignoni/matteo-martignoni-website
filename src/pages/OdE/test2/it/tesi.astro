@@ -1,0 +1,565 @@
+---
+import OdeV3Layout from '../../../../layouts/OdeV3Layout.astro';
+import Section from '../../../../components/ode-v3/Section.astro';
+import DataTag from '../../../../components/ode-v3/DataTag.astro';
+import ScaleFigure from '../../../../components/ode-v3/ScaleFigure.astro';
+import Status from '../../../../components/ode-v3/Status.astro';
+import Finding from '../../../../components/ode-v3/Finding.astro';
+import Callout from '../../../../components/ode-v3/Callout.astro';
+import StatCard from '../../../../components/ode-v3/StatCard.astro';
+import ReadNext from '../../../../components/ode-v3/ReadNext.astro';
+import { odeMeta, odeRoutes } from '../../../../i18n/ode-v3';
+
+const lang = 'it' as const;
+const m = odeMeta[lang].tesi;
+const r = odeRoutes[lang];
+
+// I valori reali del numero di acidità, con il loro significato.
+const acid = [
+  { m: 'Sego di vitello grezzo e sbiancato', v: '0,8', ffa: '0,4%', n: 'Materia prima in posizione favorevole sul parametro critico.' },
+  { m: 'Lardo puro reso, limite Codex', v: '1,3', ffa: '0,65%', n: 'Il limite più stringente dell’intera famiglia dei grassi animali. Riflette la selezione della materia prima, non una proprietà della specie.' },
+  { m: 'Sego edibile, limite Codex', v: '2,5', ffa: '1,25%', n: 'Soglia di grado commerciale alimentare, non soglia di sicurezza cutanea. Nessuno l’ha mai legata a un esito sulla pelle.' },
+  { m: 'Sego interesterificato chimicamente, miscela 9:1', v: '17,4', ffa: '8,8%', n: 'Circa sette volte il limite Codex. È il tipo di materiale su cui poggia la scarsa evidenza umana esistente.' },
+];
+
+// Il profilo in acidi grassi, due caratterizzazioni indipendenti.
+const profile = [
+  { fa: 'C16:0 palmitico', a: '29,88%', b: '30,3%' },
+  { fa: 'C18:0 stearico', a: '12,00%', b: '16,2%' },
+  { fa: 'C18:1 oleico', a: '45,19%', b: '35,4%' },
+  { fa: 'C14:0 miristico', a: '5,76%', b: '6,3%' },
+  { fa: 'C16:1 palmitoleico', a: '5,38%', b: '3,2%' },
+  { fa: 'C18:2 linoleico', a: '0,50%', b: '1,3%' },
+];
+
+// I comparatori e la loro esposizione al meccanismo dell'idrolisi.
+const lipase = [
+  { mat: 'Sego bovino, grasso suino', cls: 'Trigliceridi', bond: 'Sì, tre legami estere per molecola', out: 'Esposto' },
+  { mat: 'Oli vegetali (cocco, oliva, girasole)', cls: 'Trigliceridi', bond: 'Sì', out: 'Esposto quanto il sego' },
+  { mat: 'Petrolato', cls: 'Miscela di idrocarburi saturi', bond: 'No', out: 'Immune' },
+  { mat: 'Olio minerale', cls: 'Idrocarburi liquidi', bond: 'No', out: 'Immune' },
+  { mat: 'Squalano', cls: 'Idrocarburo', bond: 'No', out: 'Immune' },
+  { mat: 'Dimeticone e siliconi', cls: 'Polimero silossanico', bond: 'No', out: 'Immune' },
+];
+
+// Dove non possiamo competere. Dichiarato, non attenuato.
+const cannot = [
+  {
+    t: 'Occlusione, contro il petrolato',
+    d: 'Nessun trigliceride si avvicina al petrolato come occlusivo. Non rivendichiamo superiorità occlusiva, e non lo faremo nemmeno se l’esperimento dovesse andarci bene: il massimo esito favorevole possibile è la non inferiorità rispetto all’olio minerale.',
+  },
+  {
+    t: 'Riparazione della barriera, contro i sistemi a ceramidi',
+    d: 'In uno studio randomizzato su 121 pazienti, i punteggi di gravità di una miscela di lipidi fisiologici a rapporto corretto non differiscono in modo statisticamente significativo da quelli di un corticosteroide di media potenza a 28 giorni, il che non equivale a dimostrarne l’equivalenza. Il sego non fornisce ceramidi né colesterolo in rapporto fisiologico. Non rivendichiamo riparazione della barriera in senso fisiologico.',
+  },
+  {
+    t: 'Appiccicosità, sull’endpoint primario della nostra stessa categoria',
+    d: 'Il sego appartiene alla categoria degli emollienti, il cui obiettivo dichiarato è restituire alla superficie morbidezza, flessibilità e lubricità. L’appiccicosità produce il profilo di attrito opposto. È stata misurata strumentalmente, con analizzatore di texture, su sego bovino: cioè con metodo strumentale e sulla nostra matrice primaria, non per giudizio di panel su una matrice diversa. È un difetto sull’endpoint principale, non un dettaglio di accettabilità.',
+  },
+  {
+    t: 'Contenuto di acido linoleico',
+    d: 'Il sego è povero di acido linoleico, fra lo 0,5% e l’1,3% secondo due caratterizzazioni indipendenti. La letteratura cosmetica sui lipidi attribuisce la funzione barriera soprattutto agli oli ad alto contenuto di linoleico e alfa-linolenico. È un dato sfavorevole e non ha attenuanti.',
+  },
+];
+---
+<OdeV3Layout title={m.title} description={m.description} lang={lang} active="tesi">
+  <header class="pg">
+    <p class="ode-eyebrow">La Tesi</p>
+    <h1>Un parametro decide, e quasi nessuno lo dichiara</h1>
+    <p class="lede">
+      Questa pagina spiega la chimica che sostiene OdE, la complicazione che la erode, e
+      perché da entrambe discende che il prodotto è la qualificazione e non il sego.
+      Contiene il nostro argomento più forte e la nostra vulnerabilità più seria, nell’ordine
+      in cui un tecnico competente le incontrerebbe.
+    </p>
+  </header>
+
+  <Section n="1" title="Il principio riguarda una molecola precisa, non una classe">
+    <p>
+      Un acido grasso incastrato dentro un trigliceride si comporta come un mattone dentro un
+      muro. <strong>L’acido oleico</strong> libero si comporta come un mattone sciolto: si
+      intercala fra gli strati ordinati della barriera cutanea e li disturba.
+    </p>
+    <p>
+      Questo è stato misurato direttamente. In uno studio su avambraccio umano, applicando le
+      sostanze pure e senza alcun veicolo promotore, l’acido oleico libero e le sue miscele con
+      oltre il 25% di forma libera hanno aumentato in modo significativo la perdita d’acqua
+      transepidermica e la penetrazione di un tracciante a 24 ore, mentre il trigliceride
+      corrispondente al 100% non ha prodotto alcuna variazione statisticamente rilevabile.
+      <DataTag kind="fonte" label="Mack Correa MC, Mao G, Saad P, Flach CR, Mendelsohn R, Walters RM. Molecular interactions of plant oil components with stratum corneum lipids. Exp Dermatol 2014;23(1):39-44. DOI 10.1111/exd.12296. Cute umana volare in vivo, sostanze pure, nessun glicole propilenico." />
+    </p>
+    <p class="ev-line"><Status kind="dimostrato" lang={lang} /> <Finding kind="pro" lang={lang} /></p>
+
+    <Callout tone="warn" title="Una correzione che ci riguarda, e che va nella direzione opposta a quella che ci aspettavamo">
+      <p>
+        Fino alla revisione più recente della nostra ricerca questo principio era enunciato in
+        forma generale: "l’acido grasso libero disturba la barriera, la forma esterificata no".
+        <strong>Era sbagliato per difetto di precisione.</strong> Lo studio testa l’acido oleico
+        contro il suo trigliceride: il risultato riguarda l’oleico, non la classe degli acidi
+        grassi liberi, e non è estendibile ai saturi.
+      </p>
+      <p>
+        La distinzione conta perché i due acidi grassi saturi dominanti del sego, palmitico e
+        stearico, sono insieme circa il 46% del profilo, e per loro esiste evidenza di segno
+        contrario: applicati per via topica su cute umana ex vivo aumentano la produzione e il
+        trasporto di lipidi nello strato corneo.
+        <DataTag kind="fonte" label="Nip J et al., Unilever R&amp;D. International Journal of Cosmetic Science 2024. DOI 10.1111/ics.12961. Cute umana ex vivo, tape-stripped, acidi grassi isolati e non sego. Grado B1, evidenza traslata da cute danneggiata a manutenzione di cute sana; autori con interesse commerciale dichiarabile." />
+      </p>
+      <p>
+        <strong>Che cosa questo NON autorizza a dire.</strong> Non che il sego rafforzi o ripari
+        la barriera: lo studio è su cute danneggiata, ex vivo, con acidi grassi isolati e non con
+        il sego, e i suoi autori hanno un interesse commerciale. L’uso corretto è stretto e uno
+        solo: <strong>toglie il presupposto che tutto ciò che si libera per idrolisi sia
+        dannoso</strong>. È la premessa della sezione 3, e nient’altro.
+      </p>
+    </Callout>
+
+    <p>
+      Nel sego l’acido grasso è <strong>legato</strong>. La domanda che conta, quindi, non è se
+      il sego contenga acido oleico, ma <strong>quanto se ne è liberato</strong>. Quel numero ha
+      un nome, una norma e un prezzo: si chiama numero di acidità.
+    </p>
+
+    <Callout tone="honest" title="Le due qualificazioni che un tecnico verificherà per prime">
+      <p>
+        <strong>La trasferibilità non è dimostrata.</strong> Quasi tutta l’evidenza di barriera
+        usa oli vegetali insaturi liquidi, non grassi animali saturi semisolidi. Il principio è
+        meccanicisticamente fondato e coerente con il corpus, ma nessuno ha mai replicato quel
+        confronto su un grasso animale saturo.
+      </p>
+      <p>
+        <strong>Non esiste una soglia di acidità validata contro un esito cutaneo.</strong> Né
+        per il sego né per alcun altro lipide topico. I limiti che citiamo qui sotto sono
+        soglie di grado commerciale, costruite per una finalità diversa. Definire la relazione
+        fra numero di acidità e esito di barriera è precisamente lo spazio di ricerca che
+        rivendichiamo, ed è <a href={r.evidenza}>ancora da percorrere</a>.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="2" title="Il numero di acidità, e quanto costa saperlo">
+    <p>
+      Il numero di acidità misura quanti acidi grassi si sono staccati dal trigliceride, in
+      milligrammi di idrossido di potassio per grammo di grasso. È un parametro normato, la
+      determinazione è una titolazione, e su listino pubblico di laboratorio accreditato costa
+      poche decine di euro.
+      <DataTag kind="fonte" label="Numero di acidità e acidi grassi liberi secondo EN ISO 660. Prezzo indicativo circa 35-60 euro per campione su listino pubblico di laboratorio analitico, verificato nella Traccia 6 v2 sez. 8 e nel Consolidamento OdE, parte D.3." />
+    </p>
+    <p class="measure">
+      È misurabile, è economico, è il parametro da cui dipende la sicurezza secondo la chimica
+      della sezione 1. E quasi nessuno, in questo mercato, lo dichiara.
+    </p>
+
+    <ScaleFigure
+      max={20}
+      unit="mg KOH/g"
+      band={true}
+      refs={[
+        { value: 1.3, display: '1,3' },
+        { value: 2.5, display: '2,5' },
+      ]}
+      bars={[
+        { label: 'Sego di vitello grezzo e sbiancato', value: 0.8, display: '0,8', tone: 'ok' },
+        { label: 'Sego interesterificato chimicamente, miscela 9:1', value: 17.4, display: '17,4', tone: 'against' },
+      ]}
+    >
+      Le due linee tratteggiate sono i limiti pubblicati: <strong>1,3</strong> per il lardo puro
+      reso, <strong>2,5</strong> per il sego edibile. La materia prima sta sotto entrambi. Il
+      materiale su cui poggia davvero la scarsa evidenza umana sta a <strong>sette volte</strong>
+      il più alto dei due. I valori completi, acidi grassi liberi compresi, sono nella tabella
+      qui sotto.
+    </ScaleFigure>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th scope="col">Materiale o limite</th>
+            <th scope="col">mg KOH/g</th>
+            <th scope="col">FFA</th>
+            <th scope="col">Che cosa significa</th>
+          </tr>
+        </thead>
+        <tbody>
+          {acid.map((a) => (
+            <tr><th scope="row">{a.m}</th><td class="num">{a.v}</td><td class="num">{a.ffa}</td><td>{a.n}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Valori misurati su sego di vitello grezzo e su miscele interesterificate: Kowalska M, Woźniak M, Żbikowska A, Kozłowska M. Biomolecules 2020;10:115. DOI 10.3390/biom10010115, determinazione secondo ISO 660, media di tre determinazioni." />
+      <DataTag kind="fonte" label="Limiti di numero di acidità e di perossidi per lardo puro reso, grasso suino reso, premier jus e sego edibile: FAO/WHO Codex Alimentarius, Standard for Named Animal Fats CXS 211-1999, Sezione 3 e Appendice, testo primario." />
+    </p>
+
+    <h3 class="sub-h">È il processo a generare acidità, ed è controllabile</h3>
+    <p class="measure">
+      Il confronto fra metodi di rendering su una stessa materia prima mostra che le condizioni
+      di processo determinano il risultato. Rispetto a un rendering ad alta temperatura, un
+      rendering a bassa temperatura produce un numero di acidità circa 3,8 volte inferiore e
+      perossidi circa 2,3 volte inferiori, con differenze statisticamente significative.
+      <DataTag kind="fonte" label="Limmatvapirat C, Limmatvapirat S, Krongrawa W, et al. Beef tallow: extraction, physicochemical property, fatty acid composition, antioxidant activity, and formulation of lotion bars. J Appl Pharm Sci 2021;11(09):018-028. DOI 10.7324/JAPS.2021.110903. Numero di acidità 0,20-0,22 con rendering a 80 °C per 10 minuti, contro 0,73-0,76 con rendering a microonde a 135 °C per 5 minuti." />
+    </p>
+    <p class="measure">
+      Lo stesso studio, però, va letto con onestà anche dove non ci conviene: le differenze di
+      attività antiossidante fra i metodi <strong>non</strong> sono statisticamente
+      significative. Il metodo di rendering influenza acidità e perossidi, non l’attività
+      antiossidante.
+    </p>
+    <Callout tone="honest" title="E una tensione che non ha una soluzione unica">
+      <p>
+        Lo stesso lavoro mostra che la frazione più morbida del sego ha più insaturi e maggiore
+        attività antiossidante misurata. Ma più insaturi significa anche
+        <strong>maggiore suscettibilità all’ossidazione nel tempo</strong> e
+        <strong>minore contenuto di grasso solido a temperatura cutanea</strong>, cioè meno di
+        quella classe fisica di cui parliamo nella sezione 4.
+      </p>
+      <p>
+        La frazione che ottimizza l’attività antiossidante in vitro non è quella che ottimizza
+        la stabilità di magazzino, e non è quella che ottimizza la persistenza sulla pelle.
+        <strong>Il frazionamento non ha un ottimo unico: ha una curva di compromesso, e quella
+        curva va mappata invece che dichiarata.</strong> È uno degli esperimenti elencati in
+        <a href={r.evidenza}>Domande aperte</a>, ed è fra i più costosi.
+      </p>
+    </Callout>
+    <p class="ev-line"><Status kind="dimostrato" lang={lang} /> <Finding kind="pro" lang={lang} /></p>
+
+    <Callout tone="warn" title="Un dettaglio che rovescia la lettura dell’evidenza esistente">
+      <p>
+        Gli unici studi con esito umano sul sego usano materiale interesterificato chimicamente,
+        con numero di acidità fino a circa sette volte il limite Codex. Cioè proprio il tipo di
+        materiale che la chimica della sezione 1 indica come potenzialmente disgregante.
+      </p>
+      <p>
+        Non è un argomento a nostro favore: è un argomento sul fatto che
+        <strong>la letteratura descrive un materiale diverso dal nostro</strong>, ovino,
+        interesterificato, in miscela e ad alta acidità. Il che significa che non possiamo
+        usarla né a favore né contro.
+      </p>
+    </Callout>
+
+    <h3 class="sub-h">Il profilo, per completezza</h3>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr><th scope="col">Acido grasso</th><th scope="col">Caratterizzazione A</th><th scope="col">Caratterizzazione B</th></tr>
+        </thead>
+        <tbody>
+          {profile.map((p) => (
+            <tr class:list={[p.fa.includes('linoleico') && 'is-gap']}>
+              <th scope="row">{p.fa}</th><td class="num">{p.a}</td><td class="num">{p.b}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="note">
+      Due caratterizzazioni indipendenti in gascromatografia con rivelatore a ionizzazione di
+      fiamma, su sego bovino.
+      <DataTag kind="fonte" label="Caratterizzazione A: Limmatvapirat 2021, DOI 10.7324/JAPS.2021.110903, campione a bassa temperatura. Caratterizzazione B: Kowalska 2020, DOI 10.3390/biom10010115, sego di vitello grezzo. Riga evidenziata: contenuto di acido linoleico, dato sfavorevole." />
+      La riga tratteggiata è quella sfavorevole a noi, ed è tratteggiata apposta.
+    </p>
+  </Section>
+
+  <Section n="3" title="La complicazione, dichiarata dove si aspetta la rivendicazione">
+    <p>
+      I batteri che vivono sulla pelle secernono lipasi, cioè enzimi il cui mestiere è tagliare
+      esattamente quel legame. Possono liberare l’acido grasso <strong>dove il prodotto si
+      trova</strong>, dopo che ha lasciato il nostro controllo. Un sego a basso numero di
+      acidità applicato sulla cute non resta necessariamente a basso numero di acidità.
+    </p>
+    <p class="ev-line"><Status kind="dimostrato" lang={lang} /> <Finding kind="contro" lang={lang} /></p>
+    <p class="measure">
+      Il meccanismo è certo. <strong>La direzione del suo effetto non lo è</strong>, e questa è
+      una revisione recente della nostra ricerca che va detta per intero, perché cambia la
+      natura del problema. Ciò che le lipasi liberano non è una sostanza sola: è una
+      <strong>miscela</strong>, per circa il 38% acido oleico, che la sezione 1 identifica come
+      sfavorevole, e per circa il 46% palmitico e stearico, per i quali l’evidenza disponibile
+      va nella direzione opposta. <strong>L’effetto netto non è mai stato misurato.</strong>
+    </p>
+    <p class="measure">
+      Non è una buona notizia travestita: è il passaggio da un conflitto fra fonti a una lacuna
+      sperimentale definita, che è una posizione migliore solo perché è risolvibile. La
+      conseguenza operativa è precisa e la trovate in
+      <a href={r.evidenza}>Domande aperte</a>: l’esperimento non deve misurare quanto in fretta
+      il materiale si idrolizza, deve misurare <strong>che cosa</strong> rilascia.
+    </p>
+    <p class="measure">
+      La catena regge in tutti i suoi anelli documentabili: le lipasi cutanee sono
+      caratterizzate, i trigliceridi degli acidi presenti nel sego sono loro substrati, e un
+      trigliceride intatto fornito a un batterio cutaneo viene scisso con rilascio dell’acido
+      grasso corrispondente.
+      <DataTag kind="fonte" label="Ingham E, Holland KT, Gowland G, Cunliffe WJ. Partial purification and characterization of lipase from Propionibacterium acnes. J Gen Microbiol 1981;124:393-401. DOI 10.1099/00221287-124-2-393." />
+      <DataTag kind="fonte" label="Bomar L, Brugger SD, Yost BH, Davies SS, Lemon KP. Corynebacterium accolens releases antipneumococcal free fatty acids from human nostril and skin surface triacylglycerols. mBio 2016;7:e01725-15. DOI 10.1128/mBio.01725-15. Idrolisi documentata di trioleina intatta." />
+    </p>
+
+    <h3 class="sub-h">Quanto è grande l’effetto, con i dati che abbiamo</h3>
+    <p class="measure">
+      Il valore che circola, circa il 90% di idrolisi, è misurato <strong>dentro il
+      comedone</strong>: ambiente chiuso, alta densità batterica, bassa ossigenazione, lunga
+      permanenza. Lo stesso studio, sulla stessa popolazione, misura sulla
+      <strong>superficie di cute integra</strong> circa il 25%. E il contributo batterico ha un
+      tetto misurato: azzerare il 99% dei batteri riduce gli acidi grassi liberi di superficie
+      solo del 50%.
+    </p>
+    <div class="grid">
+      <StatCard value="circa 25%" caption="Quota idrolizzata sulla superficie di cute integra, nello stesso studio che misura circa il 90% dentro il comedone." kind="fonte" source="Nicolaides N, Wells GC, et al. Lipid composition of comedones compared with that of human skin surface. J Invest Dermatol 1970;54:487-495. PMID 5454099." />
+      <StatCard value="al più metà" caption="Quota del carico di acidi grassi liberi di superficie attribuibile ai batteri: azzerarne il 99% riduce gli FFA solo del 50%." kind="fonte" source="Marples RR, Downing DT, Kligman AM. Control of free fatty acids in human surface lipids by Corynebacterium acnes. J Invest Dermatol 1971;56:127-131. PMID 4997367." />
+      <StatCard value="non misurata" caption="La composizione della miscela rilasciata sul materiale di OdE, che è il dato che decide il segno dell’effetto. Nessuno studio ha mai misurato quali acidi grassi compaiano, e in che proporzione, dopo applicazione di un trigliceride intatto sulla cute umana." kind="bench" />
+    </div>
+    <p class="note">
+      <Status kind="costruzione" lang={lang} />
+      Dedurre da questi due elementi che l’ordine di grandezza atteso sulla cute integra sia più
+      vicino al 25% che al 90% è un’<strong>inferenza dal contesto anatomico</strong>, non una
+      misura sul sego. La riportiamo come tale e non la useremo mai altrimenti.
+    </p>
+
+    <h3 class="sub-h">L’asimmetria, che è la parte peggiore</h3>
+    <p class="measure">
+      Una lipasi è un’idrolasi del legame carbossilestereo: per agire, quel legame deve
+      esistere. Ne discende una classificazione netta dei materiali con cui il sego viene
+      confrontato.
+    </p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr><th scope="col">Materiale</th><th scope="col">Classe chimica</th><th scope="col">Legami estere</th><th scope="col">Esito</th></tr>
+        </thead>
+        <tbody>
+          {lipase.map((l) => (
+            <tr class:list={[l.out === 'Esposto' && 'is-gap']}>
+              <th scope="row">{l.mat}</th><td>{l.cls}</td><td>{l.bond}</td><td>{l.out}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Classificazione per classe chimica e verifica delle vie di degradazione alternative per idrocarburi e siliconi, che risultano documentate solo in matrici ambientali e non nei commensali cutanei. Traccia 6 v2, sez. 5.11.1." />
+    </p>
+
+    <Callout tone="honest" title="Che cosa significa esattamente, senza attenuanti">
+      <p>
+        Non è una differenza di grado, è una <strong>differenza di classe chimica</strong>.
+        Nessuna condizione di processo, nessun controllo del numero di acidità in ingresso e
+        nessun protocollo di purificazione può rendere un trigliceride immune a un enzima che
+        taglia i legami estere. È una vulnerabilità strutturale, ed è asimmetrica rispetto ai
+        nostri comparatori commercialmente rilevanti.
+      </p>
+      <p>
+        Tre precisazioni che ne definiscono i confini, tutte necessarie per non sovrastimarla né
+        sottostimarla. Primo: <strong>gli oli vegetali condividono la vulnerabilità</strong>,
+        quindi l’asimmetria non esiste sul terreno "sego contro oli vegetali", esiste solo
+        contro il blocco idrocarburico e siliconico. Secondo:
+        <strong>l’immunità dei comparatori non è un beneficio, è un’assenza di meccanismo</strong>.
+        Petrolato e dimeticone non generano acidi grassi liberi, ma non generano nemmeno nulla:
+        sono inerti. Terzo: <strong>l’asimmetria riguarda l’esistenza del meccanismo, non il
+        segno del suo esito</strong>. Che noi siamo esposti e loro no è un fatto; che l’esposizione
+        sia un danno è precisamente ciò che non è stato misurato.
+      </p>
+    </Callout>
+
+    <h3 class="sub-h">Come formuliamo il claim, per intero</h3>
+    <blockquote class="claim">
+      <p>
+        Il nostro sego entra sulla cute con un carico minimo di acidi grassi liberi e con uno
+        stato ossidativo controllato e certificato per lotto. Come ogni lipide contenente
+        legami estere, e quindi come tutti gli oli vegetali con cui viene confrontato, è
+        substrato per le lipasi cutanee di origine microbica: una quota si idrolizza in situ.
+        I dati disponibili su cute integra indicano che quel processo è nettamente meno esteso
+        di quanto avvenga in ambiente follicolare chiuso. Ciò che viene liberato è una miscela,
+        e per le sue due componenti principali l’evidenza va in direzioni opposte: sfavorevole
+        per l’oleico, favorevole per palmitico e stearico. <strong>L’effetto netto sul nostro
+        materiale non è mai stato misurato, e non affermiamo di conoscerlo.</strong> Stiamo
+        progettando l’esperimento che ne misurerebbe la composizione, non solo la velocità.
+        Rispetto ai comparatori idrocarburici e siliconici, che non hanno legami estere e sono
+        quindi inerti a questo meccanismo, il nostro materiale è esposto e loro no: la nostra
+        tesi non è di essere inerti quanto loro, ma che ciò che rilasciamo sia fisiologicamente
+        compatibile e quantitativamente contenuto, e questo è ciò che intendiamo dimostrare.
+      </p>
+    </blockquote>
+    <p class="note">
+      È più lungo e meno vendibile di una frase pubblicitaria. È anche l’unico che regge
+      davanti a un formulatore competente, ed è per quello che il lavoro di
+      <a href={r.audit}>verifica</a> esiste.
+    </p>
+  </Section>
+
+  <Section n="4" title="Lo stato fisico: l’unico elemento realmente favorevole, con i suoi limiti">
+    <p>
+      Alla temperatura della superficie cutanea, circa 32 °C, il sego è semisolido, con un
+      contenuto di grasso solido stimato intorno al 21%. Non appartiene alla classe fisica degli
+      oli liquidi ma a quella del petrolato, il cui intervallo di fusione inizia sopra la
+      temperatura cutanea.
+      <DataTag kind="stima" label="Contenuto di grasso solido a 32 °C ottenuto per interpolazione lineare fra 24,0% a 30 °C e 17,3% a 35 °C, misure pNMR secondo AOCS Cd 16b-93. [CALCOLO DERIVATO], non misura diretta. La stima è plausibile ma sull’estremità alta della forbice attesa, che è 15-25% a 32 °C: nessuna pubblicazione riporta un valore numerico esplicito per il sego nativo a quella temperatura, esistono solo curve in figura. Traccia 4 v2 sez. 2.1, qualificata dalla libreria multilingue." />
+    </p>
+    <p class="measure">
+      Su questo asse esiste anche un dato misurato e citabile, non una stima: il sego è
+      <strong>completamente fuso solo a 46 °C</strong>, mentre il burro di cacao è già liquido
+      fra i 35 e i 37 °C. A temperatura cutanea l’ordine è palm stearin, poi sego bovino, poi
+      burro di cacao.
+      <DataTag kind="fonte" label="Osborn HT, Akoh CC. Journal of Food Science 2002. DOI 10.1111/j.1365-2621.2002.tb08762.x. Confronto dei profili di fusione. È il dato primario che àncora il posizionamento termico del materiale." />
+    </p>
+    <p class="ev-line"><Status kind="costruzione" lang={lang} /> <Finding kind="pro" lang={lang} /></p>
+    <p class="measure">
+      Conta perché la predizione più ostile della letteratura, cioè che un trigliceride ad alto
+      contenuto di oleico non riduca la perdita d’acqua transepidermica, è stata stabilita su
+      un olio vegetale <strong>liquido</strong>. Se la variabile che separa i due bracci di quel
+      confronto è lo stato fisico, la predizione non è automaticamente trasferibile al sego.
+    </p>
+
+    <Callout tone="honest" title="Che cosa questo argomento NON dimostra">
+      <ul>
+        <li>
+          <strong>Non dimostra che il sego occluda.</strong> Nessuna misura di perdita d’acqua
+          transepidermica su sego puro applicato tal quale è stata reperita in nessuna delle
+          tracce.
+        </li>
+        <li>
+          <strong>Il meccanismo del petrolato non è puramente di film.</strong> Il petrolato
+          penetra lo strato corneo e interagisce con i lipidi intercellulari. Se la sua
+          efficacia dipende in misura rilevante da quell’interazione, la condivisione dello
+          stato fisico è irrilevante.
+        </li>
+        <li>
+          <strong>I due materiali sono semisolidi per ragioni diverse.</strong> A 32 °C il sego
+          ha già perso circa quattro quinti della frazione solida che aveva a temperatura
+          ambiente. Non è stato possibile reperire dati di contenuto di grasso solido del
+          petrolato con metodo confrontabile, quindi il confronto resta qualitativo.
+        </li>
+        <li>
+          <strong>Il 79% liquido è pienamente accessibile.</strong> Anche nell’ipotesi che lo
+          stato semisolido rallenti l’idrolisi, quella protezione riguarderebbe circa un quinto
+          del materiale, e rallentare non è impedire.
+        </li>
+      </ul>
+      <p>
+        Per questo la soglia è scritta <strong>adesso, prima della misura</strong>: se il
+        contenuto di grasso solido misurato a 32 °C risultasse sotto il 15%, l’argomento della
+        classe fisica affine al petrolato cade e il materiale va riposizionato nella fascia
+        degli oli semiliquidi. La misura costa poche centinaia di euro ed è la prima spesa
+        analitica del piano, non l’ultima.
+      </p>
+    </Callout>
+    <p class="note">
+      Che lo stato semisolido rallenti l’idrolisi <strong>è un’ipotesi</strong>, costruita per
+      analogia con quanto documentato su lipasi digestive in modelli di digestione simulata, e
+      non su lipasi cutanee. Fino alla verifica sperimentale non entra nel posizionamento come
+      fattore protettivo, e il criterio che la invaliderebbe è già scritto: lo trovate in
+      <a href={r.evidenza}>Domande aperte</a>.
+      <DataTag kind="bench" label="Analogia con Hart K, Lin S, Thilakarathna SH, Wright AJ. Emulsion droplet crystallinity attenuates early in vitro digestive lipolysis. Food Chem 2018;260:145-151. DOI 10.1016/j.foodchem.2018.03.142. Lo stesso studio mostra che a fine digestione la differenza si annulla. Nessun dato su lipasi microbiche cutanee esiste." />
+    </p>
+  </Section>
+
+  <Section n="5" title="Dove non possiamo competere">
+    <p>
+      Elenco chiuso, dichiarato prima che lo scopriate da soli. Nessuna di queste voci è
+      negoziabile con una formulazione più abile.
+    </p>
+    <ul class="cannot">
+      {cannot.map((c) => (
+        <li>
+          <Finding kind="contro" lang={lang} />
+          <h3>{c.t}</h3>
+          <p>{c.d}</p>
+        </li>
+      ))}
+    </ul>
+    <p class="note">
+      <DataTag kind="fonte" label="Misura strumentale dell’appiccicosità su sego di vitello con Texture Analyzer CT3, compressione a un ciclo, sonda sferica in nylon: Kowalska 2020, DOI 10.3390/biom10010115. La matrice è bovina e la misura è strumentale, non un giudizio di panel su matrice ovina: entrambe le precisazioni rafforzano il dato sfavorevole." />
+      <DataTag kind="fonte" label="Benchmark riparativo: sistemi a lipidi fisiologici a rapporto corretto valutati contro fluticasone in uno studio randomizzato su 121 pazienti. Traccia 3 v4, sez. 5.5 e scheda R04." />
+    </p>
+
+    <Callout tone="warn" title="La claim che la categoria usa più di ogni altra, e perché non la usiamo">
+      <p>
+        "Il sego somiglia al sebo umano" è vera per la sola frazione trigliceridica. Il sebo
+        umano contiene circa il 25% di esteri cerosi e il 12-15% di squalene, entrambi assenti
+        nel sego, e il suo acido grasso caratteristico è esclusivo della specie umana.
+      </p>
+      <p>
+        Non è una formulazione da correggere: è una formulazione da non usare. Non compare
+        altrove su questo sito, e la trovate nella
+        <a href={r.audit}>tassonomia delle claim</a> fra quelle difendibili solo in parte.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="6" title="Che cosa ne consegue">
+    <p>
+      Sommando le cinque sezioni precedenti: esiste un principio chimico solido, esiste un
+      parametro misurabile ed economico che lo governa, esiste una complicazione reale che ne
+      limita la durata, e non esiste alcun dato sull’esito cutaneo del nostro materiale.
+    </p>
+    <p>
+      La conclusione non è che il sego funzioni. È che <strong>nessuno sa se funzioni, e nessuno
+      sta misurando che cosa c’è dentro</strong>. In queste condizioni l’unica attività
+      difendibile è la misura, e l’unico prodotto vendibile senza mentire è il documento che la
+      riporta.
+    </p>
+    <div class="closing">
+      <p>Il sego è il portatore. Il documento è il prodotto.</p>
+    </div>
+    <p class="note">
+      Che cosa contiene quel documento, campo per campo, è descritto in
+      <a href={r.amsa}>AMSA</a>. Da dove viene la materia prima e dove la sua tracciabilità si
+      interrompe è in <a href={r.filiera}>Filiera</a>. Che cosa un formulatore può dichiarare al
+      proprio cliente senza esporsi è in <a href={r.normativa}>Normativa</a>.
+    </p>
+  </Section>
+
+  <ReadNext
+    lang={lang}
+    links={[
+      { href: r.amsa, label: 'AMSA: che cosa misuriamo davvero' },
+      { href: r.evidenza, label: 'Domande aperte: che cosa manca e quanto costa' },
+      { href: r.audit, label: 'L’Audit: come lo sappiamo' },
+    ]}
+  />
+</OdeV3Layout>
+
+<style>
+  .ev-line { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1.2rem; }
+  .sub-h {
+    font-size: 1.12rem;
+    font-weight: 400;
+    color: var(--accent);
+    margin: 2.2rem 0 0.8rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--rule);
+  }
+  .is-gap td, .is-gap th {
+    background: transparent;
+    border-bottom-style: dashed;
+    border-bottom-color: var(--ink);
+    color: var(--ink);
+  }
+  .claim {
+    margin: 1.4rem 0;
+    padding: 1.3rem 1.5rem;
+    /* Imbottitura propria, 1,5rem per lato: la cornice la include. */
+    box-sizing: border-box;
+    max-width: calc(var(--ode-measure) + 3rem);
+    background: var(--panel-strong);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 var(--ode-radius) var(--ode-radius) 0;
+  }
+  .claim p { margin: 0; font-size: 0.98rem; line-height: 1.68; color: var(--ink); }
+  .cannot { list-style: none; margin: 1.3rem 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1.4rem 1.8rem; }
+  .cannot h3 { font-size: 1rem; font-weight: 500; color: var(--ink); margin: 0.55rem 0 0.45rem; line-height: 1.35; }
+  .cannot p { font-size: 0.9rem; line-height: 1.58; color: var(--body); margin: 0; }
+  .closing {
+    margin: 1.6rem 0 0;
+    padding: 1.3rem 1.5rem;
+    background: var(--green-soft);
+    border: 1px solid var(--green-border);
+    border-radius: var(--ode-radius);
+    max-width: 34rem;
+  }
+  .closing p {
+    margin: 0;
+    font-size: clamp(1.1rem, 2.3vw, 1.35rem);
+    line-height: 1.4;
+    font-weight: 300;
+    color: var(--ink);
+  }
+</style>

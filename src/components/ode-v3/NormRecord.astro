@@ -1,0 +1,126 @@
+---
+// Scheda normativa per /OdE/test2, in forma di record e non di card.
+//
+// Perche' non riusa components/ode/NormCard.astro: quel componente e' del sito
+// originale e non va toccato. Ma soprattutto risolve un problema diverso. La
+// card sta dentro una griglia a piu' colonne, e con 175-360 caratteri di prosa
+// per campo finiva in colonne da 330px alte fino a 1195px, con un rapporto
+// altezza su larghezza di 3,6 e una misura di riga intorno ai trenta caratteri.
+// Le righe della griglia si allineavano poi all'elemento piu' alto, quindi le
+// voci brevi si portavano dietro il vuoto di quelle lunghe.
+//
+// Qui il record occupa una colonna sola e mette le etichette in una guida
+// stretta a sinistra: la prosa recupera la misura che ha nel resto del sito,
+// e l'altezza torna proporzionata al contenuto invece che alla griglia.
+interface Props {
+  code: string;          // es. "Reg. (EC) 1069/2009"
+  title: string;         // nome breve leggibile
+  status: 'vigente' | 'arrivo';
+  statusLabel: string;   // testo del chip, gia' localizzato
+  requisito: string;     // che cosa richiede
+  vince: string;         // che cosa comporta per OdE
+  perde?: string;        // chi mette in difficolta', facoltativo
+  labelRequisito: string;
+  labelPerde: string;
+  labelVince: string;
+}
+const {
+  code, title, status, statusLabel,
+  requisito, vince, perde,
+  labelRequisito, labelPerde, labelVince,
+} = Astro.props;
+---
+<article class={`nr nr--${status}`}>
+  <header class="nr-head">
+    <span class="nr-code">{code}</span>
+    <span class={`nr-status nr-status--${status}`}>{statusLabel}</span>
+  </header>
+  <h3 class="nr-title">{title}</h3>
+  <dl class="nr-body">
+    <dt>{labelRequisito}</dt>
+    <dd>{requisito}</dd>
+    {perde && (<><dt class="dt-perde">{labelPerde}</dt><dd>{perde}</dd></>)}
+    <dt class="dt-vince">{labelVince}</dt>
+    <dd>{vince}</dd>
+  </dl>
+</article>
+
+<style>
+  /* La guida delle etichette e' arredo, non prosa: sta fuori dalla misura,
+     cosi' la colonna di testo resta larga quanto il testo del resto del sito. */
+  .nr {
+    --nr-rail: 8.5rem;
+    --nr-gap: 1.1rem;
+    box-sizing: border-box;
+    max-width: calc(var(--ode-measure) + var(--nr-rail) + var(--nr-gap) + 2.6rem);
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--rule);
+    border-radius: var(--ode-radius);
+    padding: 1.1rem 1.3rem;
+  }
+  .nr + .nr { margin-top: 0.9rem; }
+  .nr--arrivo { border-left-color: var(--green-border); }
+  .nr--vigente { border-left-color: var(--lav-border); }
+
+  .nr-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .nr-code { font-family: var(--ode-font-mono); font-size: 0.78rem; color: var(--accent); }
+  .nr-status {
+    font-family: var(--ode-font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.1em 0.45em;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .nr-status--vigente { background: var(--lav-soft); color: var(--lav-ink); }
+  .nr-status--arrivo { background: var(--green-soft); color: var(--accent); }
+
+  .nr-title {
+    font-size: 1.08rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0.15rem 0 0.75rem;
+    padding-bottom: 0.65rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .nr-body {
+    display: grid;
+    grid-template-columns: var(--nr-rail) 1fr;
+    gap: 0.55rem var(--nr-gap);
+    margin: 0;
+  }
+  .nr-body dt {
+    font-family: var(--ode-font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1.45;
+    color: var(--muted);
+    padding-top: 0.2rem;
+  }
+  .dt-vince { color: var(--accent); }
+  .dt-perde { color: var(--pink-ink); }
+  .nr-body dd {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--body);
+  }
+
+  /* Sotto i 640px la guida non ha piu' spazio: l'etichetta torna sopra il suo
+     valore, che e' l'unica forma che regge su uno schermo stretto. */
+  @media (max-width: 640px) {
+    .nr-body { grid-template-columns: 1fr; gap: 0.15rem 0; }
+    .nr-body dt { padding-top: 0.5rem; }
+    .nr-body dd + dt { margin-top: 0.35rem; }
+  }
+</style>

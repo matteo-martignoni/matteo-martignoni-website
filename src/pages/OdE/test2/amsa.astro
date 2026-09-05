@@ -1,0 +1,342 @@
+---
+import OdeV3Layout from '../../../layouts/OdeV3Layout.astro';
+import Section from '../../../components/ode-v3/Section.astro';
+import ControlLoop from '../../../components/ode/ControlLoop.astro';
+import PassportSections from '../../../components/ode/PassportSections.astro';
+import DataTag from '../../../components/ode-v3/DataTag.astro';
+import Status from '../../../components/ode-v3/Status.astro';
+import Finding from '../../../components/ode-v3/Finding.astro';
+import Callout from '../../../components/ode-v3/Callout.astro';
+import ReadNext from '../../../components/ode-v3/ReadNext.astro';
+import { odeMeta, odeRoutes } from '../../../i18n/ode-v3';
+
+const lang = 'en' as const;
+const m = odeMeta[lang].amsa;
+const r = odeRoutes[lang];
+
+// The measured parameters, with standard, role and status. This is the substance of the page.
+const params = [
+  { p: 'Acid value and free fatty acids', norm: 'EN ISO 660', role: 'A material-quality parameter; no validated cutaneous threshold', st: 'requisito' },
+  { p: 'Peroxide value', norm: 'EN ISO 3960, or ISO 27107 specific to animal fats', role: 'Primary oxidation. Codex threshold at 10 meq O₂/kg', st: 'requisito' },
+  { p: 'p-Anisidine value', norm: 'ISO 6885', role: 'Secondary oxidation. Peroxides come and go; this does not', st: 'differenziale' },
+  { p: 'TOTOX', norm: 'calculated, 2·PV + AnV', role: 'A composite summary index', st: 'differenziale' },
+  { p: 'Conjugated dienes', norm: 'ISO 3656', role: 'Early oxidation, before peroxides tell you anything', st: 'differenziale' },
+  { p: 'Fatty acid profile', norm: 'GC-FID, ISO 16958', role: 'The compositional fingerprint of the batch', st: 'requisito' },
+  { p: 'Solid fat content and melting profile', norm: 'pNMR, AOCS Cd 16b-93', role: 'Physical class at skin temperature, behaviour in formula', st: 'differenziale' },
+  { p: 'Accelerated oxidative stability', norm: 'Schaal Oven at 40-60 °C', role: 'Preferred to the 120 °C test for animal fats: at that temperature the matrix is nowhere near the state it will be used in', st: 'differenziale' },
+  { p: 'Trace heavy metals', norm: 'Ph. Eur. for the raw material', role: 'A cosmetic safety requirement', st: 'requisito' },
+  { p: 'Oxysterols with speciation', norm: 'QuEChERS GC-MS', role: 'The one oxidation route the standard metrics miss, and the one no vegetable matrix even has', st: 'differenziale' },
+];
+
+// The nine sections of the Digital Lipid Passport, revised against the research.
+const passport = [
+  { n: '01', title: 'Batch identity', fields: 'Batch code, species, supply chain of origin, slaughter date, rendering date and method, quantity' },
+  { n: '02', title: 'Documented provenance', fields: 'Chain of custody from slaughterhouse to rendering, references for the movement documents, the geographic area declared, with its limits' },
+  { n: '03', title: 'Chemical form', fields: 'Explicit declaration of triglyceride form, not amine, not saponified, not esterified with monohydric alcohols' },
+  {
+    n: '04', title: 'Profile and acidity',
+    groups: [
+      { label: 'Measured', kind: 'fonte' as const, fields: 'Full GC-FID profile, acid value, free fatty acids as a percentage' },
+    ],
+  },
+  {
+    n: '05', title: 'Oxidative state',
+    groups: [
+      { label: 'Measured', kind: 'fonte' as const, fields: 'Peroxides, p-anisidine, TOTOX, conjugated dienes' },
+      { label: 'Estimated', kind: 'stima' as const, fields: 'Oxidative Risk Score, as a metric of material quality' },
+    ],
+  },
+  { n: '06', title: 'Physical behaviour', fields: 'Solid fat content curve measured at skin temperature, slip point, unsaponifiables, moisture' },
+  { n: '07', title: 'Process parameters', fields: 'Time between slaughter and rendering, maximum temperature, time above 65 °C, time above 120 °C, antioxidants and dosage, storage conditions' },
+  { n: '08', title: 'Compliance and declarations', fields: 'Category 3 under the animal by-products regulation, BSE and TSE declaration, allergens, declaration of non-derivation from palm oil, heavy metals' },
+  { n: '09', title: 'What has NOT been tested', fields: 'Comedogenicity: not tested. Instrumental cutaneous outcome: not tested. Kinetics and composition of the in situ release: not measured. Alpha-gal content: not quantified' },
+];
+---
+<OdeV3Layout title={m.title} description={m.description} lang={lang} active="amsa">
+  <header class="pg">
+    <p class="ode-eyebrow">AMSA</p>
+    <h1>The proposed measurement platform</h1>
+    <p class="lede">
+      AMSA is a proposed multimodal spectroscopic platform with models in development. Its job is not to
+      tell you what tallow does to skin, because nobody knows that. Its job is to tell you what is
+      in the drum, batch by batch, using standardised methods.
+    </p>
+    <p class="sub">
+      It is the <a href={r.tesi}>Thesis</a> turned into an instrument. If the parameter that
+      decides is cheap to measure and almost nobody declares it, then measuring it properly and
+      declaring all of it is the product.
+    </p>
+  </header>
+
+  <Section n="1" title="The problem it solves">
+    <p>
+      Animal fats are hard to read spectroscopically. They are mostly saturated, so the
+      unsaturation signals are weak; fluorescence gets in the way of Raman; and species, feed,
+      season and rendering conditions push the material around from batch to batch. Take whatever
+      spectrum the instrument gives you and you get noise. Steer the acquisition and you get
+      something you can work with.
+    </p>
+    <p class="measure">
+      The proposed control loop would steer acquisition. It would retune the sensor at every pass until the spectrum clears
+      a quality threshold, and only then does it predict anything. That is the difference between
+      taking a measurement and being handed one.
+    </p>
+    <ControlLoop
+      inputLabel="Sample"
+      loopLabel="Iterate until quality control is acceptable"
+      loopNodes={['Exploratory scan', 'Quality evaluator', 'Policy controller', 'Action on the hardware']}
+      exitGate="Acceptable quality"
+      predict="Prediction with explanation"
+      outcome="Digital Lipid Passport"
+    />
+    <p class="note">
+      The architecture is still being settled, and the models are training on the first batches.
+      <Status kind="costruzione" lang={lang} />
+    </p>
+  </Section>
+
+  <Section n="2" title="The proposed panel and reference methods">
+    <p>
+      This table describes the proposed analytical scope, not a completed set of OdE measurements. The right-hand column splits what is a
+      <strong>requirement</strong>, which has to be done anyway and buys no advantage, from what
+      is a <strong>differentiator</strong>, which is optional and only pays if you tell somebody
+      about it. Mix the two up and you spend money on compliance while thinking you are building
+      a position.
+      <DataTag kind="fonte" label="Requirement versus differentiator convention inherited from Track 6 v2, sec. 8.3, and checked against the scope of Reg. (EU) 2023/915, which for 3-MCPD and glycidyl esters covers vegetable, fish and marine oils and not terrestrial animal fats." />
+    </p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr><th scope="col">Parameter</th><th scope="col">Standard or method</th><th scope="col">Why we measure it</th><th scope="col">Role</th></tr>
+        </thead>
+        <tbody>
+          {params.map((p) => (
+            <tr>
+              <th scope="row">{p.p}</th>
+              <td class="num">{p.norm}</td>
+              <td>{p.role}</td>
+              <td><span class:list={['role', `role--${p.st}`]}>{p.st === 'requisito' ? 'Requirement' : 'Differentiator'}</span></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="note">
+      <DataTag kind="fonte" label="Reference thresholds: peroxide value not above 10 meq O₂/kg and acid value not above 2.5 mg KOH/g for edible tallow, 1.3 for pure rendered lard. FAO/WHO Codex Alimentarius CXS 211-1999, Section 3." />
+      <DataTag kind="fonte" label="Preference for the Schaal Oven at 40-60 °C over the accelerated 120 °C test for animal fats, and composition of the oxidative parameter basket: Track 2 v2.1, sec. 8.2." />
+    </p>
+  </Section>
+
+  <Section n="3" title="The Oxidative Risk Score, and what it is not">
+    <p>
+      The Oxidative Risk Score rolls the measured parameters into one number describing the
+      oxidative state of a batch. It is useful because the market has nothing of the kind, and
+      because a score anchored to standardised methods can be audited.
+    </p>
+    <Callout tone="honest" title="An internal rule, stated publicly">
+      <p>
+        <strong>The Oxidative Risk Score presents itself as a metric of quality and stability of
+        the lipid material. It does not present itself as a predictor of cutaneous
+        outcome.</strong>
+      </p>
+      <p>
+        The reason: nobody has ever oxidised a triglyceride to a stated value, put it on skin,
+        and regressed a measured outcome against that value. That bridge does not exist, for
+        tallow or for any other lipid, and until it does, any predictive claim would be
+        indefensible.
+        <DataTag kind="fonte" label="Gap verified on PubMed, PMC, ScienceDirect, Wiley, MDPI, Springer, CIR and FAO Codex, with declared queries. Track 2 v2.1, sec. 7.1 and internal rule in sec. 8.1." />
+      </p>
+      <p>
+        Same goes for the weighting. With no quantified correlation between an analytical
+        parameter and a skin outcome, <strong>any fine-grained weighting is largely
+        arbitrary</strong>, and the methods document behind the score says so. The weights are an
+        engineering judgement about quality. They are not coefficients from a dose-response
+        model.
+      </p>
+    </Callout>
+    <p class="ev-line"><Status kind="costruzione" lang={lang} /> <Finding kind="neutro" lang={lang} /></p>
+
+    <h3 class="sub-h">Oxysterols: the one axis no vegetable matrix has</h3>
+    <p class="measure">
+      Cholesterol is the one oxidation substrate tallow has and vegetable oils, by construction,
+      do not. Heat it and it generates oxysterols, and heated animal fats carry enough of them to
+      measure with a method validated on lard and tallow specifically.
+      <DataTag kind="fonte" label="QuEChERS-GC-MS method validated on lard and tallow, separating seven oxysterols, cholesterol and an internal standard. Contents reported in tallow one to two orders of magnitude above those of lard and butter. Track 2 v2.1, sec. 5.3bis and 8.3." />
+    </p>
+    <p class="measure">
+      This is a process lever, not a story. Cholesterol holds up well at 100 °C and falls apart
+      above 120 °C, and adding ascorbyl palmitate and tocopherol to heated tallow stopped
+      detectable oxysterols forming at all. Render cold, with antioxidants and controlled times,
+      and you have something you can measure and something you can talk about.
+    </p>
+    <Callout tone="warn" title="The counter-datum, reported with the same rigour">
+      <p>
+        <strong>Not all oxysterols are harmful.</strong> The side-chain ones are agonists of a
+        nuclear receptor, and applied topically in a mouse model they drive epidermal
+        differentiation. The line runs between side-chain oxysterols and ring oxysterols at
+        position 7, and the ones heat produces in tallow fall in the second group.
+      </p>
+      <p>
+        So reporting a total would be scientifically naive. The defensible minimum is
+        <strong>speciation</strong>, with 7-ketocholesterol as the sentinel. And since no sector
+        anywhere sets a regulatory threshold for oxysterols, the Passport applies no pass or fail
+        criterion. It measures, states the method and the process parameters that go with it, and
+        leaves the judgement to the formulator. A made-up threshold would be worse than none.
+      </p>
+      <p>
+        What we have set ourselves instead is an <strong>internal target, and we label it as
+        one</strong>: total oxysterols below 1 μg/g. It is not a standard, and writing it down
+        does not make it one. It is the bar we will hold our own rendering process to, set before
+        we measure. Above 5 μg/g the ultrapurity claim does not hold, and then the process
+        changes, not the claim.
+        <DataTag kind="stima" label="Internal target derived from the finding that oxysterols form in negligible quantities in tallow processed with controlled refining, with a limit of quantification of the available methods around 0.1 μg/g. OdE research consolidation v4.0, thesis 9 and ultrapurity gate. No regulatory threshold exists for this parameter in any sector." />
+      </p>
+    </Callout>
+  </Section>
+
+  <Section n="4" title="The Digital Lipid Passport">
+    <p>
+      The proposed document would travel with the batch and link to its supporting records. Its nine sections include what has not been tested.
+    </p>
+    <PassportSections sections={passport} />
+    <Callout tone="honest" title="Why section 09 exists">
+      <p>
+        List only what you measured and the reader is left guessing about the rest, and in this
+        category whoever is selling fills that silence. Putting "what has not been tested" in the
+        dossier makes honesty a field of the product rather than a preamble nobody reads
+        twice.
+      </p>
+      <p>
+        It also carries an anti-contamination statement: the safety data we cite are for
+        <strong>triglyceride tallow</strong>, not for ethoxylated tallow amines, which are a
+        different molecule and the source of more than one mix-up in the literature. The detail
+        is in the <a href={r.audit}>Audit</a>.
+      </p>
+    </Callout>
+    <p class="note">
+      <a href={r.live}>AMSA Live</a> walks through how a Passport is read, from sample to
+      document. It is a simulation, and it says so on every screen.
+    </p>
+  </Section>
+
+  <Section n="5" title="The method, for anyone who wants to check it">
+    <p>
+      The setup is disciplined and starts from the baseline. Mature chemometrics goes first, and
+      advanced models only get in where they add measured value. Four choices hold it up.
+    </p>
+    <div class="method">
+      <article class="mi">
+        <span class="mi-k">Data scale</span>
+        <p>Four levels, from untracked public data up to proprietary supply chain data with a measured outcome attached. Value rises with the level, and the top level is the only one money cannot buy, because it has to be grown inside a supply chain.</p>
+      </article>
+      <article class="mi">
+        <span class="mi-k">Chemometrics first</span>
+        <p>Principal component analysis and partial least squares regression are the reference, and they are not optional. An advanced model that cannot beat that baseline does not ship.</p>
+      </article>
+      <article class="mi">
+        <span class="mi-k">Few-shot learning</span>
+        <p>Tracked batches are few and expensive to characterise. The question is not which class a sample belongs to. It is how close it sits, in a representation space, to batches we know to be sound, oxidised or unstable.</p>
+      </article>
+      <article class="mi">
+        <span class="mi-k">Quantified confidence</span>
+        <p>Every prediction comes with its interval and a distance score from the training distribution. A sample that sits far from anything the model has seen buys caution, replicates or an outside test. It does not buy a confident answer.</p>
+      </article>
+    </div>
+    <p class="note">
+      <Status kind="costruzione" lang={lang} />
+      The moat, if there is one, is data and access rather than algorithm. Instruments and methods
+      are for sale; supply chain data paired with a measured outcome is not. But it is a moat
+      <strong>still to be dug</strong>, not one already there, and the causal link it depends on
+      is unproven today: see the four-link chain in the <a href={r.audit}>Audit</a>.
+    </p>
+    <Callout tone="warn" title="And it is not one of process either">
+      <p>
+        This belongs here, because this is where a technical reader would ask.
+        <strong>Fractionating and refining tallow is prior art, and largely in the public
+        domain.</strong> Anyone can fractionate this material, and expired patents already
+        describe semi-solid fractions fit for cosmetic use.
+      </p>
+      <p>
+        There is an upside for us, freedom to operate with nothing to license, and a downside
+        that weighs more: <strong>how we make it is not defensible</strong>. What is left is the
+        proprietary datum, the supply chain dataset and this document as infrastructure. The full
+        picture is in <a href={r.investitori}>Investors</a>.
+      </p>
+    </Callout>
+
+    <h3 class="sub-h">How much the artificial intelligence is really doing</h3>
+    <p class="measure">
+      AMSA has artificial intelligence in the name, so we should be the ones to ask the awkward
+      question rather than the reader: <strong>is the artificial intelligence in AMSA doing real
+      work, or is it decoration?</strong> Today we do not know. We are working it out.
+    </p>
+    <p class="measure">
+      The question has a precise shape, and it comes from the section above: what does a learned
+      model do that principal component analysis and partial least squares regression would not do
+      on their own, on a mostly saturated matrix, with the number of characterised batches we will
+      realistically have? If the answer is that it steers acquisition and quantifies confidence in
+      ways chemometrics cannot, the artificial intelligence is doing real work. If the answer is
+      that it reaches the same place with more moving parts, it is decoration, and the right move
+      is to say so and take it out rather than keep it for the name.
+    </p>
+    <Callout tone="warn" title="Why this question has to be kept clean">
+      <p>
+        There is a reason we might be tempted to answer yes before measuring anything.
+        <strong>This is the very asset put forward to support the innovative-startup
+        classification</strong>, and hanging off that classification are two of the three
+        public-finance instruments and every tax incentive for investors. The picture is in
+        <a href={r.investitori}>Investors</a>.
+      </p>
+      <p>
+        We put it here because an incentive you have named is less dangerous than one you have
+        not. The rule stands as written above, and it was written first: <strong>an advanced
+        model that cannot beat the chemometric baseline does not ship</strong>. That holds even
+        when honouring it is expensive.
+        <Status kind="scommessa" lang={lang} />
+      </p>
+    </Callout>
+  </Section>
+
+  <ReadNext
+    lang={lang}
+    links={[
+      { href: r.filiera, label: 'Supply chain: where the provenance data comes from' },
+      { href: r.normativa, label: 'Regulation: requirement or differentiator' },
+      { href: r.live, label: 'AMSA Live: see it work' },
+    ]}
+  />
+</OdeV3Layout>
+
+<style>
+  .ev-line { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1.2rem; }
+  .sub-h {
+    font-size: 1.12rem;
+    font-weight: 400;
+    color: var(--accent);
+    margin: 2.2rem 0 0.8rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--rule);
+  }
+  .role {
+    display: inline-block;
+    font-family: var(--ode-font-mono);
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.15em 0.45em;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .role--requisito { background: var(--lav-soft); color: var(--lav-ink); }
+  .role--differenziale { background: var(--green-soft); color: var(--green); }
+  .method { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1.1rem; margin: 1.3rem 0; }
+  .mi {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: var(--ode-radius);
+    padding: 1.1rem 1.2rem;
+  }
+  .mi-k { display: block; font-size: 0.95rem; font-weight: 500; color: var(--accent); margin-bottom: 0.4rem; }
+  .mi p { margin: 0; font-size: 0.88rem; line-height: 1.55; color: var(--body); }
+</style>
