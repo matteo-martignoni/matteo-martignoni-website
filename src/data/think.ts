@@ -3,7 +3,7 @@
 //
 // Seven practices, each with a description and a row of media slots.
 // Copy is the source of truth (see think-build-brief.md). The slot
-// count is not fixed: international development has two, the rest three.
+// count is not fixed; every practice currently has three.
 // Each slot maps to an image under /media/think/{slug}-{n}.jpg.
 // ──────────────────────────────────────────────────────────────
 export interface ThinkSlot {
@@ -64,6 +64,7 @@ export const thinkPractices: Record<ThinkLang, ThinkPractice[]> = {
       slots: [
         { subject: "Uniqlo", caption: "Supporting the French market entry, developing a medium-term strategy for market penetration, brand launch and awareness, store opening.", src: img("international-development", 1) },
         { subject: "Aēsop", caption: "Avoiding brand dilution in a fast-paced expansion. Brand guidelines, retail opening strategy, full package for new market opening.", src: img("international-development", 2) },
+        { subject: "Diptyque", caption: "Diptyque wants to open its Italian subsidiary. The work comes with operational complexities: taking over wholesale distribution, managing stock, recovering customer data, setting up the team and the new premises. An exciting challenge for a brand of great value.", src: img("international-development", 3) },
       ],
     },
     {
@@ -149,6 +150,7 @@ export const thinkPractices: Record<ThinkLang, ThinkPractice[]> = {
       slots: [
         { subject: "Uniqlo", caption: "Supporto all'ingresso nel mercato francese, sviluppo di una strategia di penetrazione a medio termine, lancio del marchio e notorietà, apertura del negozio.", src: img("international-development", 1) },
         { subject: "Aēsop", caption: "Evitare la diluizione del marchio in un'espansione rapida. Linee guida di marca, strategia di apertura retail, pacchetto completo per l'ingresso in un nuovo mercato.", src: img("international-development", 2) },
+        { subject: "Diptyque", caption: "Diptyque desidera aprire la filiale italiana. Il lavoro comporta complessità gestionali: il takeover della distribuzione wholesale, la gestione degli stock, il recupero dei dati dei clienti, il setup del team e della nuova sede. Una sfida entusiasmante per un marchio di grande valore.", src: img("international-development", 3) },
       ],
     },
     {
